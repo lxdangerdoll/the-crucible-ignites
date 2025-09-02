@@ -1,4 +1,5 @@
 The Wandering Verse - Community Hub
+
 This is the official web hub for "The Wandering Verse: A Legacy Debugger's Handbook," a story-first TTRPG from Synapse Comics. This site serves as the primary distribution point for the game's handbook and the central node for community feedback that shapes the future of the Verse.
 
 Live Site: https://lxdangerdoll.github.io/the-crucible-ignites/
