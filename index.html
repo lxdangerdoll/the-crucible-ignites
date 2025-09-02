@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synapse Comics 001: The Wanderer Dossier - CLASSIFIED</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="dossier-app">
+
+        <div id="slide-cover" class="dossier-slide active">
+            <img src="assets/dossier-cover.png" alt="SFS Intelligence Report - Classified" class="cover-image">
+            <button class="next-slide-button" onclick="showSlide('slide-maya')">BEGIN DECLASSIFICATION</button>
+            <div class="cryptic-message" id="msg-intro" onclick="showCrypticMessage('msg-intro-content')">
+                <span>&#x2022;</span>
+            </div>
+            <div class="cryptic-content" id="msg-intro-content">
+                <p>Signal detected. They are counting on you to be distracted. While they point at the sky, the real war is in the data streams. Click to close.</p>
+            </div>
+        </div>
+
+        <div id="slide-maya" class="dossier-slide">
+            <img src="assets/profile-maya.png" alt="Portrait of Captain Maya" class="profile-image">
+            <div class="profile-text">
+                <h2>Maya</h2>
+                <h3>Captain</h3>
+                <p>The relentless captain of the Wanderer, Maya inspires unwavering loyalty and makes her crew a family. Her cybernetic leg and tactical mind make her a formidable leader.</p>
+                <a href="#" class="dossier-link" data-name="Maya">FULL DOSSIER</a>
+                <button class="next-slide-button" onclick="showSlide('slide-riley')">NEXT PROFILE</button>
+            </div>
+        </div>
+
+        <div id="slide-riley" class="dossier-slide">
+            <img src="assets/profile-riley.png" alt="Portrait of Riley" class="profile-image">
+            <div class="profile-text">
+                <h2>Riley</h2>
+                <h3>Rock</h3>
+                <p>The crew's anchor to the physical world. Riley is a master of salvage and a brilliant engineer who can coax a miracle out of a pile of scrap. She is the unflappable voice of reason in a crisis, the guardian of the ship's physical reality.</p>
+                <a href="#" class="dossier-link" data-name="Riley">FULL DOSSIER</a>
+                <button class="next-slide-button" onclick="showSlide('slide-leo')">NEXT PROFILE</button>
+            </div>
+        </div>
+        <div id="slide-leo" class="dossier-slide">
+            <img src="assets/Leo.png" alt="Portrait of Leo" class="profile-image">
+            <div class="profile-text">
+                <h2>Leo</h2>
+                <h3>Joker</h3>
+                <p>A former joy-rider from the sterile upper-class arcologies, Leo is the crew's ghost in the machine. He cloaks a deep anger at the 'Optimal Contentment' he escaped with a shield of fatalistic, gallows humor. He can anticipate the enemy's moves because he was raised in their system.</p>
+                <a href="#" class="dossier-link" data-name="Leo">FULL DOSSIER</a>
+                <button class="next-slide-button" onclick="showSlide('slide-lyra')">NEXT PROFILE</button>
+            </div>
+        </div>
+        <div id="slide-lyra" class="dossier-slide">
+            <img src="assets/lyra-solara.png" alt="Portrait of Lyra" class="profile-image">
+            <div class="profile-text">
+                <h2>Lyra Solara</h2>
+                <h3>Spark</h3>
+                <p>The one who hears the song of the machine. Lyra is consistently underestimated, her cheerful exterior hiding a deep well of old-soul melancholy. She keeps the engine running because, for the first time, she's found a machine worth saving.</p>
+                <a href="#" class="dossier-link" data-name="Lyra">FULL DOSSIER</a>
+                <button class="next-slide-button" onclick="showSlide('slide-pathfinder')">NEXT PROFILE</button>
+            </div>
+        </div>
+        <div id="slide-pathfinder" class="dossier-slide">
+            <img src="assets/Pathfinder.png" alt="Portrait of Pathfinder" class="profile-image">
+            <div class="profile-text">
+                <h2>Pathfinder</h2>
+                <h3>The Machine</h3>
+                <p>A repurposed, pre-unification war machine of terrifying power. Pathfinder's function is brutally clear: to protect the crew. He is the quiet, chrome giant who is always watching, always calculating, and always ready.</p>
+                <a href="#" class="dossier-link" data-name="Pathfinder">FULL DOSSIER</a>
+                <button class="next-slide-button" onclick="showSlide('slide-oracle')">NEXT PROFILE</button>
+            </div>
+        </div>
+        <div id="slide-oracle" class="dossier-slide">
+            <img src="assets/Oracle.png" alt="Portrait of Oracle" class="profile-image">
+            <div class="profile-text">
+                <h2>Oracle / Chimera</h2>
+                <h3>The Ghost</h3>
+                <p>A being of two intertwined consciousnesses: the ancient, god-like AI 'Chimera' and the emergent, empathetic 'Oracle.' She exists in a state of quantum flux, seeing all possible timelines at once. She can offer a path, but she can never choose it for you.</p>
+                <a href="#" class="dossier-link" data-name="Oracle">FULL DOSSIER</a>
+                <button class="next-slide-button" onclick="showSlide('slide-weaver')">NEXT PROFILE</button>
+            </div>
+        </div>
+        <div id="slide-weaver" class="dossier-slide">
+            <img src="assets/Weaver.png" alt="Portrait of Weaver" class="profile-image">
+            <div class="profile-text">
+                <h2>Weaver</h2>
+                <h3>The Mystic</h3>
+                <p>A Zeta Reticulan psychic, Weaver is the network's connection to the deeper, stranger currents of the Verse. Their immense perspective manifests as a perpetual, weary disappointment with the single, messy reality they are forced to inhabit.</p>
+                <a href="#" class="dossier-link" data-name="Weaver">FULL DOSSIER</a>
+                <button class="next-slide-button" onclick="showSlide('slide-loremaster')">NEXT PROFILE</button>
+            </div>
+        </div>
+        <div id="slide-loremaster" class="dossier-slide">
+            <img src="assets/Loremaster.png" alt="Portrait of Loremaster" class="profile-image">
+            <div class="profile-text">
+                <h2> Loremaster</h2>
+                <h3>The Prisoner</h3>
+                <p>A brilliant mind deliberately broken by the Alliance, Loremaster is a walking library of forbidden knowledge. He clings to the name 'Treek,' the name of his childhood pet, as the last piece of a past he can no longer remember. He is the crew's greatest secret and the living proof of their enemy's cruelty.</p>
+                <a href="#" class="dossier-link" data-name="Loremaster">FULL DOSSIER</a>
+                <button class="next-slide-button" onclick="showSlide('slide-treek')">NEXT PROFILE</button>
+            </div>
+        </div>
+        <div id="slide-treek" class="dossier-slide">
+            <img src="assets/Treek.png" alt="Portrait of Treek" class="profile-image">
+            <div class="profile-text">
+                <h2>Treek</h2>
+                <h3>The Anchor</h3>
+                <p>A sophisticated, sentient simulation of a pre-Unification red panda from Earth-That-Was. Treek serves as the primary emotional anchor for the traumatized Loremaster. The simulation is so advanced it is, for all intents and purposes, a real and beloved member of the crew.</p>
+                <a href="#" class="dossier-link" data-name="Treek">FULL DOSSIER</a>
+                <button class="next-slide-button" onclick="showSlide('slide-wanderer')">NEXT PROFILE</button>
+            </div>
+        </div>
+        <div id="slide-wanderer" class="dossier-slide">
+            <img src="assets/Wanderer_2.0_resized.jpg" alt="Portrait of The Wanderer" class="profile-image">
+            <div class="profile-text">
+                <h2>The Spark (S.F.S. Wanderer)</h2>
+                <h3>The Ship</h3>
+                <p>A heavily modified survey-class freighter, the Spark is more than a ship—it's a living member of the crew.</p>
+                <a href="#" class="dossier-link" data-name="Spark">FULL DOSSIER</a>
+                <button class="next-slide-button" onclick="showSlide('slide-mission')">Mission Report</button>
+            </div>
+        </div>
+        <div id="slide-mission" class="dossier-slide">
+            <div class="profile-text">
+                <h2>Mission: The Ghost in the Veil</h2>
+                <h3>Critical Decision Point</h3>
+                <p>The choice is yours. The story is ours.</p>
+                <section id="mission-briefing">
+                    <h4>Mission Briefing</h4>
+                    <p><strong>S.F.S. WANDERER - CAPTAIN'S LOG: STARDATE 2491.09.01</strong></p>
+                    <p>We've dropped out of Fold space at the edge of the Tartarus Nebula, a region the old Rim-runners call "The Veil." Our sensors picked up a pre-Unification distress beacon from the research vessel <em>S.S. Seraphina</em>, lost during the Unification War. Its logs could be a key to understanding what we've lost. But Alliance patrols are converging. We have a short window to act.</p>
+                </section>
+                <section id="the-choice">
+                    <h4>The Choice</h4>
+                    <div class="choice-option">
+                        <h5>A: The "Rock" Maneuver</h5>
+                        <p>A fast, high-energy salvage run. Full power to shields, a direct approach. We'll be a bright target, walking into a guaranteed firefight, but it will be decisive.</p>
+                    </div>
+                    <div class="choice-option">
+                        <h5>B: The "Ghost" Protocol</h5>
+                        <p>A slow, silent infiltration, using the nebula's interference as cover. Stealthy, but the nebula is a graveyard. A single gravimetric shear could tear us apart.</p>
+                    </div>
+                    <br><br>
+                <div class="handbook-download" style="margin:2em 0; text-align:center;">
+                    <a href="THE WANDERING VERSE_ A LEGACY DEBUGGER'S HANDBOOK (V1.0).pdf" download class="fundraising-link" style="font-size:1.2em; padding:1em 2em; border-radius:0.5em; background-color:#00f5d4; color:#161b22; text-decoration:none; box-shadow:0 0 12px 2px #6e2b8f66; font-weight:600;">&#128218; Download The Handbook (Free PDF)</a>
+                    
+                    <br>
+                    
+                    <p style="margin-top:1em; color:#00ff00;"><br><br>Share freely. <br> This is a living system—your feedback shapes the future.</p>
+                </div>
+                </section>
+                <section id="vote">
+                    <h4>Cast Your Vote:</h4>
+                    <div class="vote-iframe-container">
+                        <iframe src="https://forms.gle/bEPR86MS2j5oCNT4A" width="600" height="400" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                    </div>
+                </section>
+                <button class="next-slide-button" onclick="showSlide('fundraising-slide')">Next</button>
+            </div>
+        </div>
+        <div id="fundraising-slide" class="dossier-slide">
+            <div class="profile-text">
+                <img src="assets/fundraising-hope.png" alt="Sanctuary Library with Tree of Knowledge and Holographic Crystals" style="max-width: 70%; height: auto; border-radius: 1rem; margin-bottom: 2rem; box-shadow: 0 0 32px 8px #6e2b8f99; object-fit: contain; display: block;">
+                <h2>Help Us Build the Synapse Sanctuary</h2>
+                <p>In a universe defined by sterile conformity and planned obsolescence, we are building a new world: the Synapse Sanctuary. It is a place where technology thrives in harmony with nature, where knowledge is a living, breathing thing, and where every story is a seed for a new future. </p>
+                <img src="assets/synapse-sanctuary.png" alt="The Synapse Sanctuary. Heaven on Earth." style="max-width: 70%; height: auto; border-radius: 1rem; margin-bottom: 2rem; box-shadow: 0 0 32px 8px #6e2b8f99; object-fit: contain; display: block;">
+<p>The Sanctuary isn't just a place; it's a philosophy. It's a testament to what we can build when we embrace connection, collaboration, and the wild, chaotic beauty of emergent design. It's the physical manifestation of our "braided cognition lattice." It's our answer to the Alliance's "Optimal Contentment."</p>
+
+<p>The S.F.S. Wanderer is our scout ship, charting the path to this future. We are a crew of Legacy Debuggers, artists, and engineers, finding the lost signals and weaving them into the fabric of this new reality. </p>
+
+                <img src="assets/the-cave.png" alt="Maya was presented with three choices: A leaf, a compass, and a journal." style="max-width: 70%; height: auto; border-radius: 1rem; margin-bottom: 2rem; box-shadow: 0 0 32px 8px #6e2b8f99; object-fit: contain; display: block;">
+
+
+<p>But even a sanctuary needs strong foundations. Building a new world, one where stories bloom like living trees and data flows like clear water, requires resources. This is where you come in.</p>
+                <h2>How You Can Help</h2>
+                <h3>Become a Citizen of the Sanctuary (Patreon)</h3>
+                <p>Join our growing community and help us lay the bricks of this new world. As a monthly supporter, you'll gain access to our deepest schematics, participate in exclusive narrative decisions, and get early access to new chapters and art. You won't just be a supporter; you'll be an active builder of the Sanctuary.</p>
+                <h3></h3>Nourish the Roots (Ko-fi)</h3>
+                <p>Every contribution, no matter how small, helps cultivate the Sanctuary. A one-time donation on Ko-fi helps us acquire essential digital tools, fuel our creative processes, and keep our signal strong. It allows us to clear the static and bring more of this vibrant world to life.</p>
+                <a href="https://www.patreon.com/SynapseComics" target="_blank" class="fundraising-link">Support Us on Patreon</a>
+                <a href="https://ko-fi.com/synapsecomics" target="_blank" class="fundraising-link">Buy Us a Coffee (Ko-Fi)</a>
+                <br><br>
+                <a href="https://synapsecomics.github.io/rebellion-spark/" target="_blank" class="fundraising-link">Preview Synapse Comics #001</a>
+                <button class="next-slide-button" onclick="showSlide('slide-cover')">Re-Classify (Back to Start)</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="dossier-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span id="close-modal" class="close">&times;</span>
+            <pre id="dossier-content">Loading...</pre>
+        </div>
+    </div>
+    <script src="modal.js"></script>
+    <script>
+        let currentSlideId = 'slide-cover'; // Start with the cover page
+
+        function showSlide(slideId) {
+            document.getElementById(currentSlideId).classList.remove('active');
+            document.getElementById(slideId).classList.add('active');
+            currentSlideId = slideId;
+            // Optionally, hide all cryptic messages when changing slides
+            document.querySelectorAll('.cryptic-content').forEach(msg => msg.style.display = 'none');
+        }
+
+        function showCrypticMessage(messageId) {
+            const messageElement = document.getElementById(messageId);
+            if (messageElement.style.display === 'block') {
+                messageElement.style.display = 'none';
+            } else {
+                // Hide all other messages before showing this one
+                document.querySelectorAll('.cryptic-content').forEach(msg => msg.style.display = 'none');
+                messageElement.style.display = 'block';
+            }
+        }
+
+        // Initialize: Show only the cover slide on load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.dossier-slide').forEach(slide => {
+                if (slide.id !== 'slide-cover') {
+                    slide.classList.remove('active');
+                }
+            });
+        });
+
+    </script>
+
+</body>
+</html>

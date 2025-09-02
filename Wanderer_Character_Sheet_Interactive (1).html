@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>S.F.S. Wanderer — Interactive Character Sheet</title>
+  <meta name="description" content="An accessible, printable, offline-ready character sheet for the Wanderer TTRPG." />
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: #121826;
+      --ink: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #c7d2fe;
+      --line: #253047;
+      --good: #34d399;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+    }
+    * { box-sizing: border-box; }
+    html, body { background: var(--bg); color: var(--ink); margin: 0; font: 16px/1.45 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"; }
+    .wrap { max-width: 920px; margin: 24px auto; padding: 16px; }
+    header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+    header h1 { margin: 0; font-size: 28px; letter-spacing: .5px; }
+    header small { color: var(--muted); }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 860px) {
+      .grid { grid-template-columns: 1.2fr .8fr; }
+    }
+    section { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+    section h2 { margin: 0 0 8px; font-size: 18px; letter-spacing: .3px; }
+    label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+    input[type=text], textarea, select, input[type=number] {
+      width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--line); background: #0e1422; color: var(--ink);
+    }
+    textarea { min-height: 80px; }
+    .row { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    @media (min-width: 640px) { .row.two { grid-template-columns: repeat(2, 1fr); } .row.three { grid-template-columns: repeat(3, 1fr); } .row.four { grid-template-columns: repeat(4, 1fr); } }
+    .pill { display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border:1px solid var(--line); border-radius:999px; color:var(--accent); }
+    .box { border:1px dashed var(--line); border-radius:10px; padding:10px; }
+    .kpi { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:13px; }
+    .kpi strong { color: var(--ink); }
+    .checkline { display:flex; gap:10px; flex-wrap:wrap; }
+    .checkline label { color: var(--ink); font-size: 14px; display:inline-flex; align-items:center; gap:6px; background:#0e1422; border:1px solid var(--line); border-radius:8px; padding:6px 8px; }
+    .note { font-size: 12px; color: var(--muted); }
+    .btnrow { display:flex; flex-wrap:wrap; gap:8px; }
+    button { background:#0e1422; color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px 12px; cursor:pointer; }
+    button:hover { background:#10182a; }
+    .good { color: var(--good); } .warn { color: var(--warn); } .bad{ color: var(--bad); }
+    .muted { color: var(--muted); }
+    .sr-only { position:absolute; left:-10000px; width:1px; height:1px; overflow:hidden; }
+    .tags { display:flex; gap:8px; flex-wrap:wrap; }
+    .tag { border:1px solid var(--line); border-radius:999px; padding:4px 10px; font-size:12px; color:var(--muted); }
+    footer { margin-top: 12px; color: var(--muted); font-size: 12px; }
+    /* Print styles */
+    @media print {
+      body { background:#fff; color:#000; }
+      section { break-inside: avoid; background:#fff; border-color:#ccc; }
+      header small, .btnrow, .note, .tags { display:none; }
+      input, textarea, select { border-color:#999; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main">
+    <header aria-live="polite">
+      <h1>S.F.S. Wanderer — Interactive Character Sheet</h1>
+      <small>Signal: the encrypted beacon of humanity’s last recorded memories.</small>
+      <div class="tags">
+        <div class="tag">Offline-ready</div>
+        <div class="tag">Printable</div>
+        <div class="tag">Accessible</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Left column -->
+      <div class="col">
+        <section>
+          <h2>Identity</h2>
+          <div class="row two">
+            <div>
+              <label for="name">Name</label>
+              <input id="name" type="text" autocomplete="off" />
+            </div>
+            <div>
+              <label for="role">Role / Archetype</label>
+              <select id="role">
+                <option value="">Select…</option>
+                <option>Captain (Anchor)</option>
+                <option>Pilot (Spark)</option>
+                <option>Engineer (Threadbinder)</option>
+                <option>Archivist (Lantern-Keeper)</option>
+                <option>Medic (Healer)</option>
+                <option>Stowaway (Wild Card)</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="drive">Drive — Why you stay aboard</label>
+              <input id="drive" type="text" />
+            </div>
+          </div>
+          <div class="note">Tip: keep it in 1 sentence. Secrets ride with us, but they don’t eat in the galley.</div>
+        </section>
+
+        <section>
+          <h2>Stats</h2>
+          <div class="row four">
+            <div>
+              <label for="courage">Courage</label>
+              <input id="courage" type="number" min="-1" max="3" value="0" />
+            </div>
+            <div>
+              <label for="connection">Connection</label>
+              <input id="connection" type="number" min="-1" max="3" value="0" />
+            </div>
+            <div>
+              <label for="ingenuity">Ingenuity</label>
+              <input id="ingenuity" type="number" min="-1" max="3" value="0" />
+            </div>
+            <div>
+              <label for="resilience">Resilience</label>
+              <input id="resilience" type="number" min="-1" max="3" value="0" />
+            </div>
+          </div>
+          <div class="box" style="margin-top:10px">
+            <div class="kpi"><strong>Fray Roll:</strong> Roll 2d6 + one stat. Strong hit = succeed & reinforce a Thread. Weak hit = succeed but lose a Thread. Miss = fail, create a beat for another crewmate.</div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Threads & Lantern</h2>
+          <div class="row two">
+            <div>
+              <label>Threads (bonds you can burn)</label>
+              <div class="checkline" id="threads">
+                <label><input type="checkbox" /> 1</label>
+                <label><input type="checkbox" /> 2</label>
+                <label><input type="checkbox" /> 3</label>
+                <label><input type="checkbox" /> 4</label>
+                <label><input type="checkbox" /> 5</label>
+              </div>
+              <div class="note">Default guidance: spend ≤ 2 Threads per scene. Repair Threads via connection scenes.</div>
+            </div>
+            <div>
+              <label>Lantern (crew’s shared memory)</label>
+              <div class="checkline" id="lantern">
+                <label><input type="checkbox" /> 1</label>
+                <label><input type="checkbox" /> 2</label>
+                <label><input type="checkbox" /> 3</label>
+                <label><input type="checkbox" /> 4</label>
+                <label><input type="checkbox" /> 5</label>
+              </div>
+              <div class="note">Fill to leave a legacy. If it empties, something is forgotten.</div>
+            </div>
+          </div>
+          <div class="row two" style="margin-top:8px">
+            <div>
+              <label for="threadnotes">Bonds (names & notes)</label>
+              <textarea id="threadnotes" placeholder="e.g., Lyra — pulled me from a void breach; I owe her a life."></textarea>
+            </div>
+            <div>
+              <label for="lanternnotes">Lantern log (what we left behind)</label>
+              <textarea id="lanternnotes" placeholder="e.g., Logged the Gorgon Station lullaby into the Ledger."></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Bond Prompts</h2>
+          <div class="row">
+            <label for="bond1">Who saved me once? What scar did it leave?</label>
+            <input id="bond1" type="text" />
+            <label for="bond2">Who do I fight with constantly, but would die for?</label>
+            <input id="bond2" type="text" />
+            <label for="bond3">Who reminds me of someone I lost?</label>
+            <input id="bond3" type="text" />
+          </div>
+        </section>
+      </div>
+
+      <!-- Right column -->
+      <div class="col">
+        <section>
+          <h2>Fray Conditions</h2>
+          <div class="row">
+            <div class="box">
+              <div class="checkline">
+                <label><input id="frayed" type="checkbox" /> Frayed</label>
+                <label><input id="entangled" type="checkbox" /> Entangled</label>
+                <label><input id="exhausted" type="checkbox" /> Exhausted</label>
+                <label><input id="corrupted" type="checkbox" /> Corrupted</label>
+                <label><input id="inspired" type="checkbox" /> Inspired</label>
+              </div>
+              <div class="note">Effects: Frayed = strained connections; Entangled = must burn a Thread to act freely; Exhausted = -1 Resilience; Corrupted = next strong hit costs a Thread; Inspired = gain a Thread when acting together.</div>
+            </div>
+            <div class="box" style="margin-top:10px">
+              <div class="kpi"><strong>Repair:</strong> Share a meaningful scene and roll Connection. On a hit, restore 1 Thread; on a weak hit, restore 1 but mark Frayed; on a miss, no restore and mark Exhausted.</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Turn Order — The Thread Cycle</h2>
+          <div class="box">
+            <div class="kpi"><strong>1. Captain’s Call:</strong> frame the crisis. <strong>2. First Volunteer:</strong> claims the stage. <strong>3. Hand-Off:</strong> acting player chooses who goes next. <strong>4. Void Intrusion:</strong> GM acts last each cycle.</div>
+          </div>
+          <div class="note" style="margin-top:8px">Nobody waits in a line; the spotlight rotates. The void always pushes back.</div>
+        </section>
+
+        <section>
+          <h2>Notes</h2>
+          <textarea id="notes" placeholder="Clues, inventory, debts, ship quirks..."></textarea>
+        </section>
+
+        <section>
+          <h2>Utilities</h2>
+          <div class="btnrow" role="group" aria-label="Sheet Actions">
+            <button id="saveBtn">Save to file</button>
+            <input class="sr-only" type="file" id="fileIn" accept="application/json" />
+            <button id="loadBtn">Load from file</button>
+            <button id="resetBtn" class="warn">Reset</button>
+            <button onclick="window.print()">Print</button>
+          </div>
+          <div id="status" class="note" aria-live="polite"></div>
+        </section>
+      </div>
+    </div>
+
+    <footer>
+      <p>Design: Wanderer TTRPG. This sheet stores data locally (your browser) and can export/import JSON files for portability. No external scripts, works offline once saved.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Minimal state manager
+    const fields = [
+      "name","role","drive",
+      "courage","connection","ingenuity","resilience",
+      "bond1","bond2","bond3",
+      "threadnotes","lanternnotes","notes"
+    ];
+    const checks = {
+      threads: 5, lantern: 5
+    };
+    const flags = ["frayed","entangled","exhausted","corrupted","inspired"];
+
+    function getState(){
+      const s = {};
+      fields.forEach(id => s[id] = document.getElementById(id).value);
+      // check groups
+      s.threads = Array.from(document.querySelectorAll("#threads input[type=checkbox]")).map(c => c.checked);
+      s.lantern = Array.from(document.querySelectorAll("#lantern input[type=checkbox]")).map(c => c.checked);
+      flags.forEach(f => s[f] = document.getElementById(f).checked);
+      return s;
+    }
+    function setState(s){
+      if(!s) return;
+      fields.forEach(id => { if (s[id] !== undefined) document.getElementById(id).value = s[id]; });
+      // restore groups
+      const th = document.querySelectorAll("#threads input[type=checkbox]");
+      const la = document.querySelectorAll("#lantern input[type=checkbox]");
+      (s.threads || []).forEach((v,i)=> th[i] && (th[i].checked = !!v));
+      (s.lantern || []).forEach((v,i)=> la[i] && (la[i].checked = !!v));
+      flags.forEach(f => { if (s[f] !== undefined) document.getElementById(f).checked = !!s[f]; });
+    }
+
+    // Local storage autosave
+    const KEY = "wanderer.sheet.v1";
+    function saveLocal(){ localStorage.setItem(KEY, JSON.stringify(getState())); }
+    function loadLocal(){ try { setState(JSON.parse(localStorage.getItem(KEY))); } catch(e){} }
+
+    // Wire events
+    window.addEventListener("DOMContentLoaded", () => {
+      loadLocal();
+      document.querySelectorAll("input, textarea, select").forEach(el => {
+        el.addEventListener("change", saveLocal);
+        el.addEventListener("input", saveLocal);
+      });
+      const status = document.getElementById("status");
+      document.getElementById("saveBtn").onclick = () => {
+        const blob = new Blob([JSON.stringify(getState(), null, 2)], {type: "application/json"});
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        const who = document.getElementById("name").value || "wanderer_character";
+        a.download = who.replace(/\s+/g, "_") + ".json";
+        a.click();
+        status.textContent = "Saved a portable .json of your sheet.";
+      };
+      document.getElementById("loadBtn").onclick = () => {
+        document.getElementById("fileIn").click();
+      };
+      document.getElementById("fileIn").onchange = (ev) => {
+        const file = ev.target.files && ev.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => { setState(JSON.parse(reader.result)); saveLocal(); status.textContent = "Loaded sheet data from file."; };
+        reader.readAsText(file);
+      };
+      document.getElementById("resetBtn").onclick = () => {
+        if (!confirm("Reset all fields? This clears local data.")) return;
+        localStorage.removeItem(KEY);
+        document.querySelectorAll("input[type=text], textarea").forEach(el => el.value = "");
+        document.querySelectorAll("input[type=number]").forEach(el => el.value = 0);
+        document.querySelectorAll("input[type=checkbox]").forEach(el => el.checked = false);
+        document.getElementById("role").value = "";
+        status.textContent = "Sheet reset.";
+      };
+    });
+  </script>
+</body>
+</html>
