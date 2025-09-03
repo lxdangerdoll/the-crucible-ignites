@@ -1,40 +1,53 @@
-The Wandering Verse - Community Hub
 
-This is the official web hub for "The Wandering Verse: A Legacy Debugger's Handbook," a story-first TTRPG from Synapse Comics. This site serves as the primary distribution point for the game's handbook and the central node for community feedback that shapes the future of the Verse.
+# The Wandering Verse — Community Hub
 
-Live Site: https://lxdangerdoll.github.io/the-crucible-ignites/
+<p align="center">
+	<img src="assets/dossier-cover.png" alt="The Wandering Verse" width="320" style="border-radius:12px; margin-bottom:16px;" />
+</p>
 
-Features
-One-Click Handbook Access: Download the latest version of "The Wandering Verse" PDF handbook for free.
+Welcome to the official hub for **The Wandering Verse: A Legacy Debugger's Handbook**, a story-first TTRPG from Synapse Comics. This site is your gateway to the Verse—download the handbook, join the crew, and help shape the future of collaborative storytelling.
 
-Interactive Feedback System: Allows the community to "Cast Your Vote" on critical story points and game mechanics, directly influencing the canon of the universe.
+---
 
-Crew Dossier Viewer: (Still included) An interactive, modal-based viewer for all crew and ship profiles.
+## 🚀 Live Site
+[Play & Explore](https://lxdangerdoll.github.io/the-crucible-ignites/)
 
-Lightweight & Fast: Built with clean HTML, CSS, and vanilla JavaScript. No frameworks, no build tools, just pure performance.
+---
 
-Usage
-Clone or download the repository.
+## ✨ Features
+- **One-Click Handbook Access:** Download the latest PDF for free.
+- **Interactive Feedback:** Cast your vote on story points and mechanics—your input shapes the canon.
+- **Crew Dossier Viewer:** Modal-based profiles for all crew and ships.
+- **Lightweight & Fast:** Pure HTML, CSS, and vanilla JS. No frameworks, no build tools.
 
-Open index.html in your browser to run a local instance.
+---
 
-Deployment
-This site is automatically deployed from the main branch to GitHub Pages. All merges to main will trigger a new deployment.
+## 🛠️ Usage
+Clone or download the repository, then open `index.html` in your browser.
 
-Contributing & Feedback
-The core principle of this project is collaborative creation.
+---
 
-Provide Feedback: Use the "Cast Your Vote" form on the live site.
+## 🚢 Join the Crew & Support Us
+<a href="https://discord.gg/bKEQuzueM4" target="_blank">
+	<img src="https://img.shields.io/badge/Join%20Discord-5865F2?logo=discord&logoColor=white" alt="Join Discord" style="height:32px;" />
+</a>
 
-Join the Community: Share your stories, art, and find a crew on our Forgotten Library Discord Server:
+Share your stories, art, and feedback in our [Forgotten Library Discord](https://discord.gg/bKEQuzueM4). Find a crew, contribute code, or just hang out and shape the Verse together.
 
-https://discord.gg/bKEQuzueM4
+---
 
-Contribute Code: Fork the repository and submit a pull request for any bug fixes or improvements.
+## 📝 Contributing & Feedback
+- Use the "Cast Your Vote" form on the live site
+- Fork the repo and submit pull requests for improvements
+- Playtest, share feedback, and help us refine the game
 
-Credits
-Project: Synapse Comics, Project Keystone
+---
 
-Art, Writing, and World: Mercy Danger & The Crew
+## 🎨 Credits
+**Project:** Synapse Comics, Project Keystone  
+**Art, Writing, and World:** Mercy Danger & The Crew
 
-License: MIT
+---
+
+## 📜 License
+MIT

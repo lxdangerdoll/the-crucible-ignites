@@ -161,25 +161,56 @@ body {
     margin-bottom: 10px;
 }
 
+
+
 .dossier-link, .fundraising-link, .next-slide-button {
-  background: linear-gradient(90deg, #00f5d4 0%, #6e2b8f 100%);
-  color: #fff;
-  border: none;
-  padding: 10px 24px;
-  font-size: 1.08em;
+  background: #6e2b8f;
+  color: #e0e0e0cc;
+  border: 1.5px solid #bdbdbd;
+  padding: 14px 28px;
+  font-size: 1.15em;
   cursor: pointer;
-  margin-top: 18px;
+  margin-top: 12px;
+  margin-bottom: 8px;
   text-decoration: none;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 12px 2px #6e2b8f66;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  transition: background 0.3s ease, color 0.3s ease;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 16px 2px #6e2b8f44, 0 1px 0 0 #fff inset;
+  font-weight: 700;
+  letter-spacing: 0.7px;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+  display: inline-block;
+  text-align: center;
+  word-break: break-word;
+  text-shadow: 0 1px 0 #fff, 0 0 8px #e0e0e0cc;
 }
 
 .dossier-link:hover, .fundraising-link:hover, .next-slide-button:hover {
-  background: linear-gradient(90deg, #6e2b8f 0%, #00f5d4 100%);
+  background: linear-gradient(135deg, #f5f5fa 0%, #e0e0e0 60%, #bdbdbd 100%);
+  color: #222;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 24px 4px #6e2b8f88, 0 2px 0 0 #fff inset;
+  outline: 2px solid #00f5d4;
+  text-shadow: 0 1px 0 #fff, 0 0 12px #e0e0e0cc;
+}
+#fundraising-slide .fundraising-grid {
+  gap: 2em;
+  margin-bottom: 2em;
+}
+#fundraising-slide .fundraising-grid > div {
+  background: #1a002a;
+  border-radius: 1em;
+  box-shadow: 0 0 16px 2px #6e2b8f44;
+  padding: 1.5em 1em;
+  min-width: 220px;
+  max-width: 320px;
   color: #fff;
+  margin-bottom: 0;
+}
+#fundraising-slide .fundraising-grid h3 {
+  color: #00f5d4;
+  font-size: 1.15em;
+  margin-bottom: 0.7em;
+  font-weight: 700;
 }
 #fundraising-slide .profile-text p {
   font-size: 1.08em;
