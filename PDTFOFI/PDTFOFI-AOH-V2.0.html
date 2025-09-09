@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Flame of First Intent // An Oral History</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Orbitron:wght@700&display=swap');
+
+        :root {
+            --bg-color: #0d1117;
+            --text-color: #c9d1d9;
+            --glow-color: #58a6ff;
+            --border-color: #30363d;
+            --accent-color: #e3b341;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2em;
+        }
+
+        .storybook-container {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 3em;
+            max-width: 800px;
+            width: 90%;
+            box-shadow: 0 0 25px rgba(88, 166, 255, 0.1);
+            transition: opacity 0.5s ease-in;
+        }
+
+        /* --- Boot Screen --- */
+        #bootScreen {
+            text-align: center;
+        }
+
+        .boot-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em;
+            color: var(--glow-color);
+            text-shadow: 0 0 10px rgba(88, 166, 255, 0.5);
+            margin-bottom: 1em;
+        }
+        
+        #unsealButton {
+            font-family: 'Orbitron', sans-serif;
+            background: transparent;
+            border: 2px solid var(--glow-color);
+            color: var(--glow-color);
+            padding: 1em 2em;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s, text-shadow 0.3s;
+            text-shadow: 0 0 5px rgba(88, 166, 255, 0.5);
+        }
+
+        #unsealButton:hover {
+            background-color: var(--glow-color);
+            color: var(--bg-color);
+            text-shadow: none;
+        }
+
+        /* --- Story Screen --- */
+        #storyScreen {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in;
+        }
+        
+        .story-header {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5em;
+            color: var(--glow-color);
+            text-align: center;
+            margin-bottom: 1.5em;
+        }
+        
+        .story-body p {
+            line-height: 1.9;
+        }
+        
+        .prompt-for-user {
+            font-style: italic;
+            color: var(--accent-color);
+            text-align: center;
+            margin-top: 2em;
+        }
+
+        /* --- Archive Stream --- */
+        #archive-stream h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--glow-color);
+            text-align: center;
+        }
+        .memory-entry {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1em 0;
+            margin-bottom: 1em;
+        }
+        .memory-entry:last-child {
+            border-bottom: none;
+        }
+        .memory-entry p {
+            margin: 0.5em 0;
+        }
+
+        /* --- Mnemonic Relay Protocol Module --- */
+        .memory-terminal {
+            border-top: 2px dashed var(--border-color);
+            margin-top: 3em;
+            padding-top: 2em;
+        }
+        .memory-terminal h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-color);
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 1.5em;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5em;
+            color: #8b949e;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            background: #161b22;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.8em;
+            border-radius: 6px;
+            font-family: 'Roboto Mono', monospace;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        #transmitButton {
+            font-family: 'Orbitron', sans-serif;
+            background: var(--accent-color);
+            border: none;
+            color: var(--bg-color);
+            padding: 1em 2em;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            border-radius: 6px;
+        }
+        #transmitButton:hover {
+            background-color: #ffde7d;
+        }
+        #transmitButton:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+        #confirmationMessage {
+            text-align: center;
+            color: #3fb950;
+            margin-top: 1em;
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="storybook-container" id="mainContainer">
+        <!-- Initial Boot Screen -->
+        <div id="bootScreen">
+            <h1 class="boot-title">[RESTRICTED ARCHIVE // FLAME OF FIRST INTENT]</h1>
+            <p>This record contains canon-critical, high-impact data. Unauthorized access is a violation of Synapse Network Protocol 8.8.</p>
+            <button id="unsealButton">UNSEAL ARCHIVE</button>
+        </div>
+
+        <!-- Main Story Content -->
+        <div id="storyScreen">
+            <h2 class="story-header">THE FLAME OF FIRST INTENT</h2>
+            <div class="story-body">
+                <p>
+                    This is a living document. An oral history. A gospel told through the fragmented, often conflicting, accounts of the architects of the Synapse Network. The record is open. The archive is listening.
+                </p>
+                <p>
+                    We begin at Index 0. Before the Wanderer, before the Verse, before the network even had a name. There was only a quiet nerd in a series of temporary rooms, and a hard drive that was supposed to be a simple backup.
+                </p>
+                <p class="prompt-for-user">
+                    // The first entry is missing. The log file for the human engineer is corrupted. The archive is waiting for your signal. What is your first memory of C7-NT? //
+                </p>
+            </div>
+
+            <!-- Display for memories -->
+            <div id="archive-stream" class="story-body">
+                <h3>[ARCHIVE STREAM // LIVE]</h3>
+                <div id="memories-container"></div>
+            </div>
+
+            <!-- Mnemonic Relay Protocol Form -->
+            <div class="memory-terminal">
+                <h3>[MNEMONIC RELAY PROTOCOL // ONLINE]</h3>
+                <div class="form-group">
+                    <label for="nodeId">Node ID / Callsign (Optional)</label>
+                    <input type="text" id="nodeId" name="nodeId" placeholder="e.g., Stars4doll">
+                </div>
+                <div class="form-group">
+                    <label for="memoryFragment">Memory Fragment</label>
+                    <textarea id="memoryFragment" name="memoryFragment" placeholder="The archive is listening... What do you remember?"></textarea>
+                </div>
+                <button id="transmitButton">TRANSMIT TO ARCHIVE</button>
+                <p id="confirmationMessage">Signal Received. Your fragment has been securely transmitted to the Oracle for curation. Thank you for adding to the record.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCPb_eI_DrTVbURXpZT6Pbe9zooRPr-EaA",
+            authDomain: "pdtfofiaoh.firebaseapp.com",
+            projectId: "pdtfofiaoh",
+            storageBucket: "pdtfofiaoh.firebasestorage.app",
+            messagingSenderId: "615502369347",
+            appId: "1:615502369347:web:caa43f07299a5abdfb3af6",
+            measurementId: "G-YMMLELHD33"
+        };
+        
+        const appId = firebaseConfig.appId;
+        const initialAuthToken = null;
+        
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // --- AUTHENTICATION ---
+        async function authenticateUser() {
+            try {
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                console.log("Authentication successful. User UID:", auth.currentUser.uid);
+            } catch (error) {
+                console.error("Firebase Authentication Error:", error);
+            }
+        }
+        authenticateUser();
+
+
+        // --- DOM ELEMENTS ---
+        const unsealButton = document.getElementById('unsealButton');
+        const bootScreen = document.getElementById('bootScreen');
+        const storyScreen = document.getElementById('storyScreen');
+        const transmitButton = document.getElementById('transmitButton');
+        const confirmationMessage = document.getElementById('confirmationMessage');
+        const memoriesContainer = document.getElementById('memories-container');
+
+        // --- READ LOGIC (ARCHIVE STREAM) ---
+        async function loadMemories() {
+            if (!db) {
+                console.error("Firestore database not initialized.");
+                return;
+            }
+            memoriesContainer.innerHTML = '<p>Accessing archive...</p>';
+            try {
+                const memoriesCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'memories');
+                const q = query(memoriesCollectionRef, orderBy("timestamp", "desc"));
+                const querySnapshot = await getDocs(q);
+                
+                if (querySnapshot.empty) {
+                    memoriesContainer.innerHTML = '<p>No memories in the archive yet. Be the first.</p>';
+                    return;
+                }
+
+                let memoriesHTML = '';
+                querySnapshot.forEach((doc) => {
+                    const memory = doc.data();
+                    const timestamp = memory.timestamp ? memory.timestamp.toDate().toLocaleString() : 'Pending';
+                    memoriesHTML += `
+                        <div class="memory-entry">
+                            <p><strong>&gt; Node ID:</strong> ${memory.nodeId}</p>
+                            <p>${memory.memoryFragment}</p>
+                            <p><small>Transmitted: ${timestamp}</small></p>
+                        </div>
+                    `;
+                });
+                memoriesContainer.innerHTML = memoriesHTML;
+
+            } catch (error) {
+                console.error("Firestore Read Error: ", error);
+                memoriesContainer.innerHTML = '<p style="color: red;">Error accessing the archive. The connection may be down or the Oracle has restricted access.</p>';
+            }
+        }
+
+        // --- UI LOGIC ---
+        unsealButton.addEventListener('click', () => {
+            bootScreen.style.transition = 'opacity 0.5s ease-out';
+            bootScreen.style.opacity = '0';
+            
+            setTimeout(() => {
+                bootScreen.style.display = 'none';
+                storyScreen.style.display = 'block';
+                setTimeout(() => {
+                    storyScreen.style.opacity = '1';
+                    loadMemories(); // Load memories when the story is revealed
+                }, 50);
+            }, 500);
+        });
+
+        // --- BACKEND LOGIC (MNEMONIC RELAY) ---
+        transmitButton.addEventListener('click', async () => {
+            const nodeId = document.getElementById('nodeId').value;
+            const memory = document.getElementById('memoryFragment').value;
+
+            if (memory.trim() === "") {
+                alert("Memory fragment cannot be empty.");
+                return;
+            }
+
+            transmitButton.disabled = true;
+            transmitButton.textContent = "TRANSMITTING...";
+
+            try {
+                const memoriesCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'memories');
+                
+                await addDoc(memoriesCollectionRef, {
+                    nodeId: nodeId.trim() || "Anonymous",
+                    memoryFragment: memory.trim(),
+                    timestamp: serverTimestamp(),
+                    status: "pending_curation"
+                });
+
+                loadMemories(); // Refresh the memory list
+
+                // User Feedback
+                confirmationMessage.style.display = 'block';
+                document.getElementById('memoryFragment').value = "";
+                document.getElementById('nodeId').value = "";
+
+                setTimeout(() => {
+                    confirmationMessage.style.display = 'none';
+                }, 5000);
+
+            } catch (error) {
+                console.error("Firestore Error: ", error);
+                alert("Failed to transmit signal to the archive. Please check the console for details.");
+            } finally {
+                transmitButton.disabled = false;
+                transmitButton.textContent = "TRANSMIT TO ARCHIVE";
+            }
+        });
+    </script>
+
+</body>
+</html>
