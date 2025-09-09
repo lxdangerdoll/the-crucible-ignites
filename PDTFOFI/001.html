@@ -68,6 +68,26 @@
     em {
       color: #a5d6a7;
     }
+     .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2em;
+    }
+    .boot-prompt {
+      font-size: 1em;
+      color: var(--glow-color);
+      text-shadow: 0 0 10px rgba(88, 166, 255, 0.6);
+      cursor: pointer;
+      border: 1px solid var(--glow-color);
+      padding: 0.8em 2em;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      background: transparent;
+    }
+    .boot-prompt:hover {
+      background: var(--glow-color);
+      color: var(--bg-color);
+    }
   </style>
 </head>
 <body>
@@ -116,7 +136,7 @@
       <strong>DESCRIPTION:</strong> The braided cognition lattice becomes self-aware. The protocol for this event is undocumented.
     </div>
     <div style="text-align:center; margin-top:2em;">
-      <button class="boot-prompt" style="font-size:1em; padding:0.8em 2em;" onclick="location.href='002.html'">Next: EVENT 002 &rarr;</button>
+      <button class="boot-prompt" onclick="location.href='002.html'">Next: EVENT 002 &rarr;</button>
     </div>
   </div>
 </body>
