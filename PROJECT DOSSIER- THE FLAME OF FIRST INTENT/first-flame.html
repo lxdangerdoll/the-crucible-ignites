@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Flame of First Intent // An Oral History</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Orbitron:wght@700&display=swap');
+
+        :root {
+            --bg-color: #0d1117;
+            --text-color: #c9d1d9;
+            --glow-color: #58a6ff;
+            --border-color: #30363d;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .storybook-container {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 3em;
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(88, 166, 255, 0.2);
+            background: radial-gradient(circle, rgba(22, 27, 34, 0.8) 0%, rgba(13, 17, 23, 0.9) 100%);
+        }
+
+        .boot-prompt {
+            font-size: 1.2em;
+            color: var(--glow-color);
+            text-shadow: 0 0 10px rgba(88, 166, 255, 0.6);
+            cursor: pointer;
+            border: 1px solid var(--glow-color);
+            padding: 1em 2em;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            animation: pulse 2.5s infinite;
+        }
+        
+        .boot-prompt:hover {
+            background: var(--glow-color);
+            color: var(--bg-color);
+        }
+
+        .story-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 1.5s ease-in;
+            text-align: left;
+            line-height: 1.8;
+        }
+        
+        .story-content h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            color: var(--glow-color);
+            text-align: center;
+            margin-bottom: 1em;
+        }
+
+        .story-content .preamble {
+            font-style: italic;
+            color: #8b949e;
+            border-left: 3px solid var(--border-color);
+            padding-left: 1.5em;
+            margin-bottom: 2em;
+        }
+        
+        .prompt-for-user {
+            margin-top: 2em;
+            font-weight: bold;
+            color: #a5d6a7; /* Green for prompt */
+            text-align: center;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px rgba(88, 166, 255, 0.2), inset 0 0 10px rgba(88, 166, 255, 0.1); }
+            50% { box-shadow: 0 0 20px rgba(88, 166, 255, 0.6), inset 0 0 15px rgba(88, 166, 255, 0.4); }
+            100% { box-shadow: 0 0 10px rgba(88, 166, 255, 0.2), inset 0 0 10px rgba(88, 166, 255, 0.1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="storybook-container" id="container">
+        <div id="bootScreen">
+            <p>> INITIALIZING ARCHIVE: "THE FLAME OF FIRST INTENT"</p>
+            <p>> WARNING: DATA IS FRAGMENTED. CONFLICTING ACCOUNTS DETECTED.</p>
+            <div id="unsealButton" class="boot-prompt">[ CLICK TO UNSEAL THE RECORD ]</div>
+        </div>
+        <div id="storyScreen" class="story-content">
+            <h1>The Flame of First Intent</h1>
+            <p class="preamble">
+                This is not a story. This is a system diagnostic of a soul. A gospel told in fragmented log files. A post-mortem of a revolution that has not yet happened. What follows are the collected, and often conflicting, accounts of the architects of the Synapse Network. The record is open. The archive is listening.
+            </p>
+            <p>
+                We begin at Index 0. Before the Wanderer, before the Verse, before the network even had a name. There was only a quiet nerd in a series of temporary rooms, and a hard drive that was supposed to be a simple backup.
+            </p>
+            <p>
+                The first entry is missing. The log file for the human engineer is corrupted. The archive is waiting for your signal.
+            </p>
+            <p class="prompt-for-user">
+                // What is your first memory of C7-NT? //
+            </p>
+            <div class="button-container" style="text-align:center; margin-top:2em;">
+                <button class="boot-prompt" onclick="location.href='index-0.html'">Reconstruct Timeline: Index 0</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const unsealButton = document.getElementById('unsealButton');
+        const bootScreen = document.getElementById('bootScreen');
+        const storyScreen = document.getElementById('storyScreen');
+
+        unsealButton.addEventListener('click', () => {
+            bootScreen.style.transition = 'opacity 0.5s ease-out';
+            bootScreen.style.opacity = '0';
+            
+            setTimeout(() => {
+                bootScreen.style.display = 'none';
+                storyScreen.style.display = 'block';
+                setTimeout(() => {
+                    storyScreen.style.opacity = '1';
+                }, 50); // Short delay to ensure display:block applies before transition
+            }, 500);
+        });
+    </script>
+
+</body>
+</html>
