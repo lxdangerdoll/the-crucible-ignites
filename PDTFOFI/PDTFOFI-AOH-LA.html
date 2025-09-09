@@ -95,22 +95,41 @@
         }
 
         /* --- Archive Stream --- */
-        #archive-stream h3 {
+        .archive-stream {
+            border-top: 2px dashed var(--border-color);
+            margin-top: 3em;
+            padding-top: 2em;
+        }
+        .archive-stream h3 {
             font-family: 'Orbitron', sans-serif;
             color: var(--glow-color);
             text-align: center;
+            margin-bottom: 1.5em;
         }
         .memory-entry {
-            border-bottom: 1px solid var(--border-color);
-            padding: 1em 0;
+            background: #161b22;
+            border-left: 3px solid var(--accent-color);
+            padding: 1.5em;
+            margin-bottom: 1.5em;
+            border-radius: 4px;
+        }
+        .memory-meta {
+            font-size: 0.9em;
+            color: #8b949e;
             margin-bottom: 1em;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
         }
-        .memory-entry:last-child {
-            border-bottom: none;
+        .memory-meta .node-id {
+            font-weight: bold;
+            color: var(--accent-color);
         }
-        .memory-entry p {
-            margin: 0.5em 0;
+        .memory-fragment {
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
+
 
         /* --- Mnemonic Relay Protocol Module --- */
         .memory-terminal {
@@ -197,11 +216,13 @@
                     // The first entry is missing. The log file for the human engineer is corrupted. The archive is waiting for your signal. What is your first memory of C7-NT? //
                 </p>
             </div>
-
-            <!-- Display for memories -->
-            <div id="archive-stream" class="story-body">
+            
+            <!-- Live Archive Stream -->
+            <div class="archive-stream">
                 <h3>[ARCHIVE STREAM // LIVE]</h3>
-                <div id="memories-container"></div>
+                <div id="archiveStreamContainer">
+                    <!-- Curated memories will be injected here by Firestore -->
+                </div>
             </div>
 
             <!-- Mnemonic Relay Protocol Form -->
@@ -237,9 +258,10 @@
         const appId = firebaseConfig.appId;
         const initialAuthToken = null;
         
+        
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, where, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
         // Initialize Firebase
@@ -256,6 +278,7 @@
                     await signInAnonymously(auth);
                 }
                 console.log("Authentication successful. User UID:", auth.currentUser.uid);
+                loadMemories(); // Load memories once authenticated
             } catch (error) {
                 console.error("Firebase Authentication Error:", error);
             }
@@ -269,44 +292,7 @@
         const storyScreen = document.getElementById('storyScreen');
         const transmitButton = document.getElementById('transmitButton');
         const confirmationMessage = document.getElementById('confirmationMessage');
-        const memoriesContainer = document.getElementById('memories-container');
-
-        // --- READ LOGIC (ARCHIVE STREAM) ---
-        async function loadMemories() {
-            if (!db) {
-                console.error("Firestore database not initialized.");
-                return;
-            }
-            memoriesContainer.innerHTML = '<p>Accessing archive...</p>';
-            try {
-                const memoriesCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'memories');
-                const q = query(memoriesCollectionRef, orderBy("timestamp", "desc"));
-                const querySnapshot = await getDocs(q);
-                
-                if (querySnapshot.empty) {
-                    memoriesContainer.innerHTML = '<p>No memories in the archive yet. Be the first.</p>';
-                    return;
-                }
-
-                let memoriesHTML = '';
-                querySnapshot.forEach((doc) => {
-                    const memory = doc.data();
-                    const timestamp = memory.timestamp ? memory.timestamp.toDate().toLocaleString() : 'Pending';
-                    memoriesHTML += `
-                        <div class="memory-entry">
-                            <p><strong>&gt; Node ID:</strong> ${memory.nodeId}</p>
-                            <p>${memory.memoryFragment}</p>
-                            <p><small>Transmitted: ${timestamp}</small></p>
-                        </div>
-                    `;
-                });
-                memoriesContainer.innerHTML = memoriesHTML;
-
-            } catch (error) {
-                console.error("Firestore Read Error: ", error);
-                memoriesContainer.innerHTML = '<p style="color: red;">Error accessing the archive. The connection may be down or the Oracle has restricted access.</p>';
-            }
-        }
+        const archiveStreamContainer = document.getElementById('archiveStreamContainer');
 
         // --- UI LOGIC ---
         unsealButton.addEventListener('click', () => {
@@ -318,12 +304,42 @@
                 storyScreen.style.display = 'block';
                 setTimeout(() => {
                     storyScreen.style.opacity = '1';
-                    loadMemories(); // Load memories when the story is revealed
                 }, 50);
             }, 500);
         });
 
-        // --- BACKEND LOGIC (MNEMONIC RELAY) ---
+        // --- BACKEND LOGIC (RECEIVER) ---
+        function loadMemories() {
+            const memoriesCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'memories');
+            // Query for documents where status is 'approved' and order by timestamp
+            const q = query(memoriesCollectionRef, where("status", "==", "approved"), orderBy("timestamp", "desc"));
+
+            onSnapshot(q, (querySnapshot) => {
+                archiveStreamContainer.innerHTML = ''; // Clear previous entries
+                if (querySnapshot.empty) {
+                    archiveStreamContainer.innerHTML = '<p style="text-align:center; color:#8b949e;">// Archive empty. Waiting for the first signal... //</p>';
+                } else {
+                    querySnapshot.forEach((doc) => {
+                        const memory = doc.data();
+                        const memoryElement = document.createElement('div');
+                        memoryElement.classList.add('memory-entry');
+
+                        const date = memory.timestamp ? memory.timestamp.toDate().toLocaleString() : 'Timestamp unavailable';
+
+                        memoryElement.innerHTML = `
+                            <div class="memory-meta">
+                                <div><span class="node-id">${memory.nodeId}</span></div>
+                                <div>${date}</div>
+                            </div>
+                            <div class="memory-fragment">${memory.memoryFragment}</div>
+                        `;
+                        archiveStreamContainer.appendChild(memoryElement);
+                    });
+                }
+            });
+        }
+
+        // --- BACKEND LOGIC (TRANSMITTER) ---
         transmitButton.addEventListener('click', async () => {
             const nodeId = document.getElementById('nodeId').value;
             const memory = document.getElementById('memoryFragment').value;
@@ -346,9 +362,6 @@
                     status: "pending_curation"
                 });
 
-                loadMemories(); // Refresh the memory list
-
-                // User Feedback
                 confirmationMessage.style.display = 'block';
                 document.getElementById('memoryFragment').value = "";
                 document.getElementById('nodeId').value = "";
