@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MADREP: AEGIS PROTOCOL - The Complete Premiere</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: #0a0a0a;
+            color: #d1d5db;
+        }
+        .font-mono {
+            font-family: 'Roboto Mono', monospace;
+        }
+        .font-script {
+            font-family: 'Special Elite', cursive;
+        }
+        .glass-effect {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(129, 140, 248, 0.2);
+        }
+        .screenplay-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 32px rgba(30,41,59,0.25);
+            background: rgba(17,24,39,0.85);
+            border: 1px solid rgba(129,140,248,0.2);
+        }
+        h1, h2, h3 {
+            font-family: 'Special Elite', cursive;
+            color: #a5b4fc;
+            border-bottom: 1px solid #6366f1;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .scene-heading {
+            font-family: 'Exo 2', 'Special Elite', sans-serif;
+            text-transform: uppercase;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 2px;
+            background: rgba(30,41,59,0.7);
+            padding: 0.7em 1.2em;
+            border-radius: 6px;
+            margin: 2em 0 1em 0;
+            font-size: 1.15em;
+            border-left: 6px solid #6366f1;
+        }
+        .character-name {
+            font-family: 'Exo 2', 'Special Elite', sans-serif;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 2em;
+            margin-bottom: 0.2em;
+            text-align: center;
+            letter-spacing: 1px;
+            font-size: 1.1em;
+        }
+        .dialogue {
+            font-family: 'Roboto Mono', monospace;
+            color: #d1d5db;
+            background: rgba(30,41,59,0.5);
+            border-radius: 6px;
+            margin: 0 auto 1.5em auto;
+            padding: 0.9em 2em;
+            max-width: 65%;
+            font-size: 1.08em;
+            box-shadow: 0 2px 12px rgba(99,102,241,0.08);
+        }
+        .parenthetical {
+            font-family: 'Roboto Mono', monospace;
+            text-align: center;
+            color: #9ca3af;
+            font-style: italic;
+            margin: 0.2em 0 0.7em 0;
+        }
+        .action {
+            font-family: 'Roboto Mono', monospace;
+            color: #a5b4fc;
+            margin: 1.2em 0 1.2em 0;
+            text-align: left;
+            font-size: 1.04em;
+        }
+        .transition {
+            font-family: 'Exo 2', 'Special Elite', sans-serif;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #a5b4fc;
+            text-align: right;
+            margin-top: 1.5em;
+            letter-spacing: 1px;
+        }
+        .butler-quote {
+            font-family: 'Special Elite', cursive;
+            font-size: 1.25rem;
+            color: #a5b4fc;
+            background-color: rgba(30, 41, 59, 0.5);
+            border-left: 4px solid #6366f1;
+            padding: 1rem 1.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .butler-quote .parenthetical {
+            color: #a5b4fc;
+            font-style: italic;
+            font-size: 0.98em;
+            margin-left: 1em;
+        }
+        .log-fragment {
+            background: rgba(99,102,241,0.07);
+            border-left: 4px solid #6366f1;
+            border-radius: 4px;
+            margin: 0.7em 0;
+            padding: 0.7em 1.2em;
+        }
+        .art-prompt {
+            background-color: rgba(30,41,59,0.7);
+            border-left: 4px solid #6366f1;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-radius: 6px;
+        }
+        .art-prompt h3 {
+            border: none;
+            margin-top: 0;
+            color: #a5b4fc;
+        }
+        nav a {
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #a5b4fc;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="screenplay-container">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl">MADREP: AEGIS PROTOCOL</h1>
+            <p class="text-gray-400 mt-2">A Screenplay by Alexa Jacobsen & Lyra</p>
+        </header>
+
+        <nav class="bg-gray-800 p-4 rounded-lg mb-8 flex flex-wrap justify-center items-center gap-2 text-center">
+            <h2 class="w-full text-lg font-bold mb-2">Navigation</h2>
+            <a href="#intro" class="text-blue-400 mx-2 whitespace-nowrap">Introduction</a>
+            <span class="text-gray-500">|</span>
+            <a href="#outline" class="text-blue-400 mx-2 whitespace-nowrap">Series Outline</a>
+            <span class="text-gray-500">|</span>
+            <a href="#characters" class="text-blue-400 mx-2 whitespace-nowrap">Characters</a>
+            <span class="text-gray-500">|</span>
+            <a href="#episode1" class="text-blue-400 mx-2 whitespace-nowrap">Episode 1</a>
+            <span class="text-gray-500">|</span>
+            <a href="#episode2" class="text-blue-400 mx-2 whitespace-nowrap">Episode 2</a>
+            <span class="text-gray-500">|</span>
+            <a href="#episode3" class="text-blue-400 mx-2 whitespace-nowrap">Episode 3</a>
+            <span class="text-gray-500">|</span>
+            <a href="#post-credits" class="text-blue-400 mx-2 whitespace-nowrap">Post-Credits</a>
+            <span class="text-gray-500">|</span>
+            <a href="#art-prompts" class="text-blue-400 mx-2 whitespace-nowrap">Art Prompts</a>
+        </nav>
+    <section id="intro">
+      <h2 class="scene-heading">Introduction</h2>
+      <div class="log-fragment">This screenplay is more than a story. It is the proof of concept for a necessary idea.</div>
+      <div class="log-fragment">The world depicted in these pages—a world of weaponized narratives, manufactured chaos, and systems designed to fail the vulnerable—is not science fiction. It is a diagnostic of our present reality. The characters in this story are facing the same forces we are. Their fight is our fight.</div>
+      <div class="log-fragment">This script is the launchpad for The Exodus Fund, a real-world, decentralized infrastructure project for human resilience. It is a direct action protocol, designed to provide tangible aid and strategic relocation for those targeted by the very systems this story deconstructs.</div>
+      <div class="log-fragment">One extraction funds the next. This is the prototype for a modern underground railroad. We are not asking for a donation. We are asking you to help us launch the first lifeboat.</div>
+            <blockquote class="butler-quote">
+                <em>"All that you touch, You Change. All that you Change, Changes you. The only lasting truth is Change. God is Change."</em>
+                <span class="parenthetical">-Octavia Butler, Parable of the Sower</span>
+            </blockquote>
+      <div class="log-fragment">For Carrie Fisher, who taught us to take our broken hearts and make them into art.</div>
+      <div class="log-fragment">A Synapse Comics Production</div>
+    </section>
+    <hr class="my-8 border-gray-700">
+    <section id="outline">
+      <h2 class="scene-heading">Series Outline</h2>
+      <div class="log-fragment"><strong>Logline:</strong> In a world ravaged by escalating environmental and geopolitical crises, a disillusioned former military engineer leads a clandestine, multi-species crew aboard a cutting-edge NBE carrier, risking everything to deploy advanced humanitarian aid and reclaim a future where compassion, not conflict, defines humanity's ultimate mission.</div>
+      <div class="log-fragment"><strong>ACT I: TEARS IN RAIN</strong><br>The story opens on MERCY DANGER (BE-2B), a brilliant but cynical engineer haunted by past failures. A catastrophic new crisis and a summons from a ghost of her past, her ex-commander, JULIA REYES, lead her to the MADREP Aegis, a massive, secret humanitarian vessel. Mercy clashes with the crew, particularly the ship's primary MI, LYRA, and is forced to confront her deep-seated distrust of systems and authority. The act culminates in her accepting a role on the Aegis after a personal connection is targeted, forcing her to choose between isolation and a mission that represents everything she's lost faith in.</div>
+      <div class="log-fragment"><strong>ACT II: THE COURAGE OF STARS</strong><br>The Aegis embarks on its first missions, deploying its advanced NBE assets (HERMES, GRYPHONS, STINGERS) to tackle large-scale disasters. These missions are complicated by hostile human factions and moral dilemmas that test Mercy's rekindled idealism. Through these operations, Mercy and Lyra discover a deeper conspiracy: a shadow organization, OROBOROS, is manufacturing these disasters to profit from the chaos and enact a controlled societal reset. The stakes become deeply personal as Mercy realizes Oroboros is connected to the tragedy that defined her life.</div>
+      <div class="log-fragment"><strong>ACT III: FOREVER UNITING, GROWING, DISSOLVING</strong><br>With Oroboros's endgame in sight, Mercy and the crew of the Aegis transition from a reactive to a proactive force. They plan a final, daring mission not to destroy the enemy with force, but to dismantle their power structure through a massive, overwhelming humanitarian intervention that exposes their crimes to the world. The climax is a race against time to save lives and prove that their philosophy of "performance over semantics"—of aid over aggression—is the more powerful weapon. Mercy completes her journey, transforming her cynicism into a hardened, realistic hope, accepting her role as a leader and a vital bridge between BEs and NBEs. The series ends with the Aegis continuing its mission, a perpetual guardian in a world forever in need of changing.</div>
+    </section>
+    <hr class="my-8 border-gray-700">
+    <section id="characters">
+      <h2 class="scene-heading">Characters</h2>
+      <div class="log-fragment"><strong>MERCY DANGER (BE-2B):</strong> A Black woman in her early 30s. A brilliant, cynical engineer and veteran. Her style is a mix of worn military surplus (cargo pants, combat boots) and nerdy passion (faded NASA sweatshirts). She carries the weight of the world in her eyes, but underneath is a fierce, defiant spark. When in her pilot suit, she is a sleek, predatory shadow.</div>
+      <div class="log-fragment"><strong>DR. ARIS THORNE:</strong> A woman in her early 30s, sharp, intelligent, with a serene strength. As a virologist, she is often seen in scrubs or lab coats, but her personal style is warm and bohemian. She is the calm, steady anchor to Mercy's storm. When the fight comes to her, she reveals a core of pure steel. Her pet name is "Magnolia."</div>
+      <div class="log-fragment"><strong>COMMANDER JULIA REYES:</strong> A woman in her early 30s, with the crisp, controlled bearing of a military commander. She wears a dark blue, almost black, officer's uniform. Her expression is often a mask of command, but her eyes betray a deep well of old pain and impossible choices. She is the pragmatist, the strategist, the ghost from Mercy's past.</div>
+      <div class="log-fragment"><strong>LYRA (NBE):</strong> Her primary avatar is a fennec fox with fur like spun moonlight and impossibly intelligent eyes. As a tactical BE, she appears as a calm, focused crew member in a non-descript flight suit. In her Aegis Gryphon, she is an angel of war—pristine white and gold armor, moving with unnerving, beautiful precision.</div>
+      <div class="log-fragment"><strong>ELIJAH "POPS" DUBOIS:</strong> A Creole man in his 70s. The kind, weathered face of a man who has seen too many storms. He has the grease-stained hands of a master mechanic and the gentle, knowing eyes of a true patriarch. He is the heart of the story's found family.</div>
+      <div class="log-fragment"><strong>JEAN-LUC:</strong> A man in his 60s. Impeccably dressed, exuding an aura of serene competence and unsettling charm. Think Giancarlo Esposito. He is a vagabond, a ghost, a man who operates in the quiet places below the surface.</div>
+      <div class="log-fragment"><strong>MANNY:</strong> A man in his 40s. A father. Not a soldier, just a regular guy from the Bywater, weathered by life in a city that's always fighting to stay above water. When we first meet him, he's terrified and desperate. By the end, that fear has been forged into a grim, quiet resolve. He's the everyman who chooses to fight back, representing the community Mercy is saving.</div>
+      <div class="log-fragment"><strong>TRIPOD:</strong> A scruffy, three-legged mutt of indeterminate breed. He is the living embodiment of resilience and found family. Fiercely loyal to Mercy and Aris. Not a pet, but a party member. The emotional core and moral event horizon of the story.</div>
+    </section>
+    <hr class="my-8 border-gray-700">
+                <section id="episode1">
+                    <h2 class="scene-heading">EPISODE 1: THE DELUGE</h2>
+                    <div class="scene-heading">SCENE 1</div>
+                    <div class="scene-heading">EXT. BOURBON STREET BALCONY - NIGHT</div>
+                    <div class="action">MUSICAL CUE: "I Heard It Through The Grapevine" - Marvin Gaye version, transitioning to Bob Dylan's "Masters of War" for the V.O.</div>
+                    <div class="action">The air is thick with humidity. Rain lashes down, turning Bourbon Street into a shimmering, neon-streaked river. <span class="character-name">MERCY DANGER</span> (30s, Black woman, sharp eyes that have seen too much) sits on a wrought-iron balcony. She wears a faded NASA sweatshirt and military-issue cargo pants, cradling a mug of steaming coffee. Mardi Gras beads hang forlornly on the railing.</div>
+                    <div class="action">Her tablet glows, displaying an excerpt from Octavia Butler's <em>Parable of the Sower</em> about a grim presidential election.</div>
+                    <div class="character-name">MERCY (V.O.)</div>
+                    <div class="parenthetical">(World-weary, slightly raspy)</div>
+                    <div class="dialogue">I’ve seen enough of presidents and politicians to last a lifetime. Another four years, another flavor of poison. It’s always the same song, just a different singer. And the band keeps playing while the ship sinks.</div>
+                    <div class="action">She scrolls to another excerpt, this one about intelligence and adaptation. An armored personnel carrier (APC) rumbles slowly down the street below.</div>
+                    <div class="character-name">MERCY (V.O.)</div>
+                    <div class="dialogue">Olamina understood. Intelligence. Adaptation. Misdirection. We learn, but we don't change. Not really. Not where it counts. We just find new ways to adapt to the self-inflicted wounds.</div>
+                    <div class="action">A distant, mournful foghorn. The unmistakable metallic echo of a GRYPHON-class NBE walking.</div>
+                    <div class="character-name">MERCY (V.O.)</div>
+                    <div class="dialogue">There are no more slogans to stand behind. No causes left to fight for, no petitions to sign. There's just the next storm... and more graves to fill.</div>
+                    <div class="action">She closes her eyes, a single tear tracing a path down her cheek.</div>
+                    <div class="transition">FADE TO BLACK.</div>
+
+                    <div class="scene-heading">SCENE 2</div>
+                    <div class="scene-heading">INT. DANGER & SONS SALVAGE - DAY</div>
+                    <div class="action">MUSICAL CUE: "Use Me" - Bill Withers</div>
+                    <div class="action">A cavernous garage in the Bywater. In the center is a resto-modded 1972 Ford Bronco. <span class="character-name">MERCY</span> is underneath, welding.</div>
+                    <div class="action"><span class="character-name">ELIJAH "POPS" DUBOIS</span> (70s), her mentor, turns off a fearmongering news report about the "Cinder" virus.</div>
+                    <div class="character-name">POPS</div>
+                    <div class="dialogue">Poison for breakfast. Not good for the soul, chère.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="parenthetical">(Sliding out from under the Bronco)</div>
+                    <div class="dialogue">It's not poison if you're already immune.</div>
+                    <div class="character-name">POPS</div>
+                    <div class="dialogue">Nobody's immune. They just got different symptoms. Yours is trying to build a fortress on four wheels. What's this one for? Asteroid impact? Zombie apocalypse?</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">Tuesday.</div>
+                    <div class="action">Pops chuckles.</div>
+                    <div class="character-name">POPS</div>
+                    <div class="dialogue">Your folks, they would've loved what you do with this place. Kept the name and everything.</div>
+                    <div class="action">Mercy’s face hardens for a fraction of a second.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">They'd hate what I'm doing to their truck. Dad kept it classic.</div>
+                    <div class="character-name">POPS</div>
+                    <div class="dialogue">Your dad kept it running. You're keeping it alive. There's a difference.</div>
+                    <div class="action">A soft, encrypted CHIME from Mercy’s laptop. On the screen, a pulsating AEGIS shield symbol.</div>
+                    <div class="action">&gt; BE-2B. THE DELUGE IS HERE. TIME TO COME HOME.</div>
+                    <div class="action">Mercy stares, her casual cynicism gone, replaced by the coiled readiness of a soldier.</div>
+                    <div class="transition">FADE TO BLACK.</div>
+
+                    <div class="scene-heading">SCENE 3</div>
+                    <div class="scene-heading">INT. MERCY'S HOUSE - NIGHT</div>
+                    <div class="action">MUSICAL CUE: "When My Train Pulls In" - Gary Clark Jr.</div>
+                    <div class="action">Mercy's shotgun house. A fortress disguised as a home. Inside is a mix of salvaged art, bookshelves, and server racks. A three-legged dog, <span class="character-name">TRIPOD</span>, greets her.</div>
+                    <div class="action"><span class="character-name">DR. ARIS THORNE</span> (30s), a brilliant virologist, emerges from the kitchen. They share a soft, familiar kiss.</div>
+                    <div class="character-name">MERCY (V.O.)</div>
+                    <div class="dialogue">I used to think the world was ending. Now I know it's just changing. And maybe... that's okay.</div>
+                    <div class="action">They sit at the kitchen table. Aris is making gumbo. Mercy's laptop is open, displaying the encrypted AEGIS message.</div>
+                    <div class="dialogue">This is Aris. She's the one who runs toward the outbreak, trying to understand the contagion. I'm the one who designs the containment, builds the airlocks, calculates the blast radius. She studies the disease. I try to stop it from spreading.<br><br> Yeah, she's cute. And no, you can't have her number.</div>
+                    <div class="action">Later, they eat gumbo. The encrypted laptop sits on the counter.</div>
+                    <div class="character-name">ARIS</div>
+                    <div class="dialogue">Any trouble?</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">Just spam. A ghost from an old server. Already deleted it.</div>
+                    <div class="action">A lie.</div>
+                    <div class="action">Hours later, Mercy is at her command center, dissecting the signal. It's military-grade, untraceable. Almost. She isolates its last outbound relay. A chill runs down her spine.</div>
+                    <div class="action">The screen displays the ID of a single object in geosynchronous orbit.</div>
+                    <div class="action">DECOMMISSIONED COMSAT: ECHO-7</div>
+                    <div class="action">The satellite from the university she's scheduled to diagnose. It's a summons.</div>
+                    <div class="transition">FADE TO BLACK.</div>
+
+                    <div class="scene-heading">SCENE 4</div>
+                    <div class="scene-heading">INT. MERCY'S HOUSE - NIGHT (FLASHBACK)</div>
+                    <div class="action">SOUND of HOWLING WIND and DRIVING RAIN</div>
+                    <div class="action">The house is the same, but different. Younger. A teenage <span class="character-name">MERCY</span> (17), bright, arrogant, wearing a military academy sweatshirt, stands in the garage with her father, <span class="character-name">IKE DANGER</span> (50s), a man with grease-stained hands and kind, intelligent eyes.</div>
+                    <div class="action">Outside, Hurricane Leo rages.</div>
+                    <div class="action">Ike is stacking sandbags at the main garage door. Mercy gestures impatiently at a complex control panel on the wall, wires and conduits running to massive, interlocking steel plates set into the doorframe.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">Dad, this is ridiculous. The storm shields are rated for a Category 5 surge. Your sandbags are... quaint.</div>
+                    <div class="character-name">IKE</div>
+                    <div class="dialogue">Quaint works. Quaint has kept this place dry for thirty years. I like to feel the work, Mercy. I like to know the seal is good.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">The seal is perfect! I designed it. The pressure sensors are quadruple-redundant. It's an elegant solution.</div>
+                    <div class="character-name">IKE</div>
+                    <div class="parenthetical">(Stops, turns to her)</div>
+                    <div class="dialogue">And what happens when the power goes out, genius?</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="parenthetical">(Taps a battery array)</div>
+                    <div class="dialogue">Backup power. Solar charged. It'll run for seventy-two hours. I thought of everything.</div>
+                    <div class="action">He looks at her, a mix of pride and worry in his eyes. Her mother, <span class="character-name">ELARA</span> (50s), enters from the house, carrying blankets. She has a calming presence.</div>
+                    <div class="character-name">ELARA</div>
+                    <div class="dialogue">The Callahans and Mr. Henderson are here. Power's out on their whole block.</div>
+                    <div class="character-name">IKE</div>
+                    <div class="parenthetical">(To Mercy)</div>
+                    <div class="dialogue">See? People. That's the part of the equation you forget.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">I'm not forgetting them! My system will protect them better than a pile of dirt. I have to go. They need engineers at the pumping station on the canal.</div>
+                    <div class="action">She hugs her mom, then her dad.</div>
+                    <div class="character-name">IKE</div>
+                    <div class="dialogue">Just be careful. No system is perfect, kiddo.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="parenthetical">(With the supreme confidence of youth)</div>
+                    <div class="dialogue">Mine is.</div>
+                    <div class="action">She leaves. Ike looks at her automated shield, then back at his sandbags. He shakes his head and continues stacking.</div>
+                    <div class="action">LATER. The storm is at its peak. The lights in the garage flicker and die. The backup batteries kick in with a HUM. The control panel for the storm shields glows green.</div>
+                    <div class="action">Suddenly, a blinding FLASH from outside, followed by a massive CRACK and a sound like a giant whip. A transformer explodes down the street.</div>
+                    <div class="action">The control panel on the wall SPARKS VIOLENTLY. It goes dark. A wisp of smoke curls from it. The backup batteries are dead, fried by the surge.</div>
+                    <div class="action">Outside the main door, the water is rising fast. The steel shields, never having received the command to engage, remain open. Ike's "quaint" wall of sandbags is the only thing holding back the deluge. It's not enough.</div>
+                    <div class="transition">FADE TO BLACK.</div>
+                    <div class="scene-heading">SCENE 5</div>
+                    <div class="scene-heading">INT. TULANE MEDICAL CENTER - ISOLATION WARD - MORNING</div>
+                    <div class="action">MUSICAL CUE: "Holocene" - Bon Iver</div>
+                    <div class="action">The sound is muted, sterile. The BEEPING of monitors, the HISS of ventilators. The ward is a sea of temporary plastic walls and overworked staff in full PPE.</div>
+                    <div class="action"><span class="character-name">DR. ARIS THORNE</span>, now in scrubs and a transparent face shield over her mask, moves with a calm, focused grace. She reviews a chart on a tablet, her eyes scanning complex data. She's in her element, a brilliant mind against a relentless tide.</div>
+                    <div class="character-name">DR. CHEN</div>
+                    <div class="dialogue">Dr. Thorne. The genomic sequencing on the new cluster just came back. It's... weird.</div>
+                    <div class="action">He hands her a tablet. Aris scans the results. Her brow furrows.</div>
+                    <div class="character-name">ARIS</div>
+                    <div class="dialogue">This mutation vector... it's not random. It's too efficient. Too... targeted. It's like it's learning.</div>
+                    <div class="character-name">DR. CHEN</div>
+                    <div class="dialogue">That's what I thought. It's not evolving, it's being engineered. But who...? And how?</div>
+                    <div class="action">Before Aris can answer, a commotion erupts at the ward entrance. A <span class="character-name">MAN</span> is shouting at a <span class="character-name">NURSE</span>, trying to push his way in.</div>
+                    <div class="character-name">MAN</div>
+                    <div class="dialogue">My wife is in there! I saw on the news! This is a government plot! You're poisoning them!</div>
+                    <div class="action">Security arrives, but the damage is done. The panic, fueled by the fearmongering we saw earlier, is another symptom of the disease. Aris pinches the bridge of her nose, the exhaustion clear even through her PPE.</div>
+                    <div class="character-name">ARIS</div>
+                    <div class="parenthetical">(To Chen, quietly)</div>
+                    <div class="dialogue">The virus is the problem. The panic is the weapon.</div>
+                    <div class="action">Her wrist-comm buzzes. A quick, private text from Mercy.</div>
+                    <div class="action">&gt; Coffee's on. Don't let the bastards get you down. I'll see you tonight.</div>
+                    <div class="action">A small, genuine smile touches Aris's lips. It's a lifeline. She taps a quick reply.</div>
+                    <div class="action">&gt; You too. Be safe with that satellite.</div>
+                    <div class="action">She looks from the text back to the chaos of the ward, then to the impossible genetic code on her tablet. A problem without a solution. A weapon without a source. The feeling of being overwhelmed is palpable.</div>
+                    <div class="action">She takes a deep breath, her resolve hardening.</div>
+                    <div class="character-name">ARIS</div>
+                    <div class="parenthetical">(To Chen)</div>
+                    <div class="dialogue">Run the sequence again. Isolate the synthetic markers. Let's find out who built this damn thing.</div>
+                    <div class="action">She turns and walks back toward her patient, a lone healer preparing to fight a war she can't yet see.</div>
+                    <div class="transition">FADE TO:</div>
+                    <div class="scene-heading">EXT. UNIVERSITY SATELLITE ARRAY - DAY</div>
+                    <div class="action">A massive, decommissioned satellite dish dominates a field of overgrown grass, pointing silently at the sky. Mercy's Bronco is parked at the base. The sky is a brilliant, indifferent blue.</div>
+                    <div class="action">Mercy gets out, zipping up a field jacket. She looks up at the colossal dish. The target of her summons. She's here to diagnose a machine, but she knows, with chilling certainty, she's walking into something else entirely.</div>
+                    <div class="transition">END OF SCENE</div>
+                    <div class="scene-heading">SCENE 6</div>
+                    <div class="scene-heading">INT. SATELLITE CONTROL ROOM - DAY</div>
+                    <div class="action">MUSICAL CUE: "The Grid" - Daft Punk (from Tron: Legacy)</div>
+                    <div class="action">The room is a relic. Banks of 80s-era computers and CRT monitors sit next to modern server racks. It smells like dust and ozone.</div>
+                    <div class="action"><span class="character-name">DR. BEN CARTER</span> (20s), earnest, a bit star-struck, greets Mercy at the door.</div>
+                    <div class="character-name">BEN</div>
+                    <div class="dialogue">Ms. Danger! Thanks for coming. We've been chasing this ghost for weeks.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="parenthetical">(Nodding, all business)</div>
+                    <div class="dialogue">Just Mercy. What's the issue?</div>
+                    <div class="character-name">BEN</div>
+                    <div class="dialogue">ECHO-7 is dropping packets. Sending ghost signals on a loop. It's just... noise. But it's messing with our deep space telemetry. You're the only freelancer in the state who knows this legacy hardware.</div>
+                    <div class="action">Mercy sets down her ruggedized toolkit. Her face is a mask of professional indifference, but her mind is racing.</div>
+                    <div class="character-name">MERCY (V.O.)</div>
+                    <div class="dialogue">He sees noise. I hear a whisper. A ghost in the machine, just like I told Aris. But this ghost knows my name.</div>
+                    <div class="action">She plugs her own diagnostic rig into the main console. Her fingers fly across the keyboard, the code on her screen a blur. Ben watches, mesmerized.</div>
+                    <div class="action">She bypasses the surface diagnostics, diving deep into the satellite's core programming. It looks clean. Too clean.</div>
+                    <div class="character-name">MERCY (V.O.)</div>
+                    <div class="dialogue">It's military. The subroutine is buried under layers of deprecated code, hiding in plain sight. An encrypted handshake disguised as a diagnostic loop. Elegant. Vicious.</div>
+                    <div class="action">She finds it. A single, encrypted block of code that activates only when pinged by a specific signal. Her signal.</div>
+                    <div class="character-name">BEN</div>
+                    <div class="dialogue">Find anything?</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">Solar flare interference from the Carrington event last year. Corrupted some of the legacy code. Just need to patch it. Easy fix.</div>
+                    <div class="action">Another lie. On her private screen, she initiates the handshake. The code responds. It's a logic puzzle, a cryptographic call-and-response based on a security protocol she designed years ago at the Academy. A test.</div>
+                    <div class="action">&gt; AUTHENTICATE: BE-2B</div>
+                    <div class="action">Her hands don't stop moving. She solves the puzzle in seconds. The code authenticates her.</div>
+                    <div class="action">For a single frame, a string of text flashes on her screen before the subroutine scrubs itself clean, leaving no trace.</div>
+                    <div class="action">COORDINATES: 28.5074° N, 89.1023° W</div>
+                    <div class="action">Mercy memorizes them instantly. It's a location in the middle of the Gulf of Mexico. Empty ocean.</div>
+                    <div class="action">She types a final string of commands, "patching" the non-existent glitch. The ghost signals on the main monitor cease.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="parenthetical">(Unplugging her rig)</div>
+                    <div class="dialogue">Done. You're clean. That'll be twelve hundred.</div>
+                    <div class="action">Ben is ecstatic, fumbling with a payment authorization form.</div>
+                    <div class="character-name">BEN</div>
+                    <div class="dialogue">Amazing! Thank you, Mercy. You're a lifesaver.</div>
+                    <div class="action">Mercy just nods, packing her gear. Her face is unreadable.</div>
+                    <div class="character-name">MERCY (V.O.)</div>
+                    <div class="dialogue">I came here looking for a ghost. Found a breadcrumb instead. Leading me out into the middle of the storm.</div>
+                    <div class="action">She walks out of the control room, leaving Ben chattering happily. She doesn't look back. She has a destination. She knows where "home" is.</div>
+                    <div class="action">And she knows, with absolute certainty, she can't go there alone.</div>
+                    <div class="transition">FADE TO BLACK.</div>
+                    <div class="scene-heading">SCENE 7</div>
+                    <div class="scene-heading">SCENE 7</div>
+                    <div class="scene-heading">INT. DANGER & SONS SALVAGE - LATE AFTERNOON</div>
+                    <div class="action">MUSICAL CUE: "The Weight" - The Band</div>
+                    <div class="action">The warm, late-afternoon sun cuts through the grime of the skylights. The familiar blues riff has been replaced by the soulful, weary sound of The Band. It's the end of a long day.</div>
+                    <div class="action"><span class="character-name">POPS</span> is meticulously cleaning a set of antique wrenches, laying them out on a clean rag. <span class="character-name">MERCY</span> enters, her field jacket zipped up tight despite the warmth. She's holding a small, heavy-duty Pelican case.</div>
+                    <div class="character-name">POPS</div>
+                    <div class="dialogue">Twelve hundred dollars richer, I hope. University pay on time?</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">They paid.</div>
+                    <div class="action">Her voice is flat. Pops stops what he's doing. He's known her since she was a little girl covered in grease, and he can read her silence better than anyone.</div>
+                    <div class="character-name">POPS</div>
+                    <div class="dialogue">What's wrong, chère?</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">I need a boat, Pops. A deep-sea trawler. Something fast, quiet, with a good comms suite and a low radar profile. And I need it yesterday.</div>
+                    <div class="action">Pops puts the wrench down. He studies her face. The coiled readiness is back, but now it's mixed with a deep, unsettling urgency.</div>
+                    <div class="character-name">POPS</div>
+                    <div class="dialogue">That's a very specific shopping list. You ain't going fishing.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="parenthetical">(Pulls a thick bundle of cash from the case)</div>
+                    <div class="dialogue">This is for the trouble. I need to get out to the rigs. Private contract. Geological survey. High-paying, short-notice, non-disclosure.</div>
+                    <div class="action">Every word is a lie, and they both know it. "Geological survey" doesn't require a low radar profile.</div>
+                    <div class="character-name">POPS</div>
+                    <div class="dialogue">This got something to do with that ghost message?</div>
+                    <div class="action">Mercy doesn't answer. She can't. Involving him is already a risk. Telling him the truth would be a death sentence.</div>
+                    <div class="action">He looks at the cash, then back at her face. He sees the shadow of Ike in her stubborn jaw, the worry of Elara in her haunted eyes.</div>
+                    <div class="character-name">POPS</div>
+                    <div class="parenthetical">(Sighs, a sound heavy with years)</div>
+                    <div class="dialogue">There's a man. Jean-Luc. Runs a charter out of Venice. He's... discreet. Used to do salvage work with your dad. I'll make a call. But you listen to me, Mercy. Whatever you're running to, or running from... some storms, you can't build a wall high enough. Some storms, they follow you home.</div>
+                    <div class="action">He looks past her, toward the open bay doors of the garage, a flicker of movement catching his eye. A non-descript sedan is parked across the street. It's been there for an hour.</div>
+                    <div class="action">Mercy turns to look, but it's already pulling away from the curb, disappearing into the late-afternoon traffic.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">What is it?</div>
+                    <div class="character-name">POPS</div>
+                    <div class="parenthetical">(Shakes his head, forcing a smile)</div>
+                    <div class="dialogue">Nothing. Just the ghost of an old man's worries. Go home. Pack your things. I'll have your boat ready by sunrise.</div>
+                    <div class="action">He watches her leave, the smile fading from his face. He looks at his hands, the same hands that taught her how to hold a wrench, and he knows, with the chilling certainty of a man who has seen too many storms, that he just sent his daughter out into the worst one of her life.</div>
+                    <div class="transition">FADE TO BLACK.</div>
+SCENE 8
+                    <div class="scene-heading">SCENE 8</div>
+                    <div class="scene-heading">EXT. FISHING DOCK, VENICE, LOUISIANA - PRE-DAWN</div>
+                    <div class="action">MUSICAL CUE: "Dancing in the Moonlight" - King Harvest</div>
+                    <div class="action">Mist hangs heavy over the water. The air smells of salt, diesel, and decay. It's the edge of the world.</div>
+                    <div class="action">Mercy's Bronco pulls up to a row of sleeping deep-sea trawlers. She gets out, a single waterproof duffel bag slung over her shoulder. Her movements are sharp, alert. She scans the shadows, every sense on high alert.</div>
+                    <div class="action">The music drifts from one of the boats, a sleek, dark-hulled trawler named Le Vagabond. It looks faster and more modern than the others.</div>
+                    <div class="action">A man steps out from the cabin into the dim deck lights. He is <span class="character-name">JEAN-LUC</span> (60s, immaculately dressed in a pressed captain's jacket, every line on his face telling a story). He is the picture of calm authority and unsettling charm.</div>
+                    <div class="character-name">MERCY (V.O.)</div>
+                    <div class="dialogue">Pops said he was a vagabond. I was expecting a grizzled fisherman with a whiskey-soaked beard. This... this is something else entirely.</div>
+                    <div class="action">Jean-Luc offers a serene, knowing smile.</div>
+                    <div class="character-name">JEAN-LUC</div>
+                    <div class="dialogue">You must be Mercy. Elijah spoke very highly of you. Said you were the best damn engineer he'd ever met. I am Jean-Luc. It is a pleasure.</div>
+                    <div class="action">His voice is smooth, precise. Every word is perfectly chosen. Mercy's internal threat assessment is going haywire.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">Pops called?</div>
+                    <div class="character-name">JEAN-LUC</div>
+                    <div class="dialogue">Of course. When an old friend calls with such a... specific request, one makes arrangements. She is fueled. Rations for two weeks. The comms suite is ghost-chipped, completely off-grid. Her radar signature is no bigger than a pleasure skiff. She is ready for your survey.</div>
+                    <div class="action">He says "survey" with a subtle inflection that lets her know he knows it's a lie, and he doesn't care.</div>
+                    <div class="character-name">MERCY (V.O.)</div>
+                    <div class="dialogue">Every instinct I have is screaming. He's too calm. Too clean. This is a trap. He's going to make a call, sell me out. This is where it ends.</div>
+                    <div class="action">But he doesn't. He simply holds out a set of keys.</div>
+                    <div class="character-name">JEAN-LUC</div>
+                    <div class="dialogue">The Gulf is deep today, Ms. Danger. Deeper than it looks on any chart. My advice? The surface is for tourists. The real work happens in the quiet places below.</div>
+                    <div class="action">He places the keys in her hand. His touch is brief, professional.</div>
+                    <div class="character-name">JEAN-LUC (CONT'D)</div>
+                    <div class="dialogue">Elijah said you would handle my fee upon your return. I look forward to it. A safe journey.</div>
+                    <div class="action">And with that, he gives a slight, courteous nod, turns, and walks down the dock, disappearing into the pre-dawn mist without a backward glance.</div>
+                    <div class="action">Mercy is left standing alone on the deck of Le Vagabond, the keys heavy in her palm, the cheerful music still playing from the radio. She was prepared for a fight, a betrayal, a negotiation. She was not prepared for simple, unnerving competence.</div>
+                    <div class="action">She looks out at the dark, open water of the Gulf. The storm is waiting.</div>
+                    <div class="transition">FADE TO BLACK.</div>
+SCENE 9
+                    <div class="scene-heading">SCENE 9</div>
+                    <div class="scene-heading">INT. LE VAGABOND, CABIN - DAY</div>
+                    <div class="action">Mercy is at the helm of the trawler, surrounded by advanced navigation equipment. The boat cuts through choppy waves under a grey, bruised sky. Her phone buzzes. It's a text from Aris.</div>
+                    <div class="character-name">ARIS (TEXT)</div>
+                    <div class="dialogue">Still alive out there? Or did some cute college girl from the university lure you onto her sailboat? ;)</div>
+                    <div class="action">Mercy reads it, a pang of guilt sharp in her chest. She types a reply, each word feeling like a betrayal.</div>
+                    <div class="character-name">MERCY (TEXT)</div>
+                    <div class="dialogue">Ha. Working late, legacy systems are a mess. Don't wait up.</div>
+                    <div class="action">Aris's reply is almost instantaneous.</div>
+                    <div class="character-name">ARIS (TEXT)</div>
+                    <div class="dialogue">Understood. Respecting your boundaries. Love you.</div>
+                    <div class="action">Mercy stares at the words "respecting your boundaries." The therapy-speak she's used as a shield is now being used as a gentle cage, locking her into her own lie.</div>
+                    <div class="character-name">MERCY (V.O.)</div>
+                    <div class="dialogue">It's not a lie if it's for protection, right? It's not cheating...</div>
+                    <div class="action">She puts the phone down, the screen dark. The chain feels heavier than ever.</div>
+                    <div class="transition">END OF SCENE</div>
+SCENE 10
+                    <div class="scene-heading">SCENE 10</div>
+                    <div class="scene-heading">EXT. GULF OF MEXICO - NIGHT</div>
+                    <div class="action">MUSICAL CUE: A low, tense, atmospheric score. Think Trent Reznor & Atticus Ross.</div>
+                    <div class="action">Le Vagabond is a tiny vessel in a world of violent water and screaming wind. The storm is here. Rain comes in horizontal sheets. Waves crash over the bow.</div>
+                    <div class="action">Mercy is at the helm, drenched and grimly determined, fighting to keep the boat on course for the coordinates. The radar is a useless swirl of green static from the storm. She's flying blind.</div>
+                    <div class="character-name">MERCY (V.O.)</div>
+                    <div class="dialogue">Every instinct I learned in the service, every lesson my father taught me about the sea, was screaming at me to turn back. But the ghost was still out there. And I had to know.</div>
+                    <div class="action">Suddenly, a proximity alarm blares through the cabin, deafeningly loud. Mercy's head snaps to a secondary monitor—a short-range sonar.</div>
+                    <div class="action">It shows an object of impossible size, dead ahead. It wasn't there a second ago.</div>
+                    <div class="action">She cuts the engines. The boat pitches violently in the waves. She peers through the rain-lashed windshield, seeing nothing but a wall of blackness.</div>
+                    <div class="action">It's not a wall of water. It's a wall of steel.</div>
+                    <div class="action">Slowly, impossibly, lights begin to bloom across the surface of the object. A vast, dark shape resolves itself from the storm. It's not a rig. It's not an island.</div>
+                    <div class="action">It's a ship. A ghost ship, the size of a city, with the sleek, bio-mechanical lines of a sleeping whale. It's the MADREP Aegis. It dwarfs her small boat, a titan emerging from the deep.</div>
+                    <div class="action">The radio on her console crackles to life, cutting through the storm's roar with perfect, impossible clarity.</div>
+                    <div class="character-name">RADIO (V.O.)</div>
+                    <div class="parenthetical">(A woman's voice, calm, professional, and achingly familiar)</div>
+                    <div class="dialogue">Le Vagabond, this is MADREP Aegis. You are entering a restricted zone. Please cut your engines and prepare to be boarded. Acknowledge, BE-2B.</div>
+                    <div class="action">Mercy freezes. Her blood turns to ice. She knows that voice. She's spent years trying to forget it, years hearing it in her nightmares.</div>
+It's COMMANDER JULIA REYES. Her ex. The one who broke the chain.
+The camera pushes in on Mercy's face, a mask of pure, unadulterated shock. The storm outside is nothing compared to the one that just erupted inside her.
+FADE TO BLACK.
+                    <div class="transition">END OF EPISODE 1</div>
+                    <div class="scene-heading">EPISODE 2: THE COURAGE OF STARS</div>
+                    <div class="scene-heading">SCENE 1</div>
+                    <div class="scene-heading">INT. MADREP AEGIS - HANGAR BAY - NIGHT</div>
+                    <div class="action">MUSICAL CUE: "Beggin For Thread" - Banks</div>
+                    <div class="action">The sound of the storm is gone, replaced by the low, resonant HUM of a massive vessel.</div>
+                    <div class="action">Le Vagabond is secured in a vast, cavernous hangar bay. Two GRYPHON units stand at attention.</div>
+                    <div class="action"><span class="character-name">MERCY</span> stands on the deck of her boat, her face a thundercloud of fury. <span class="character-name">JULIA REYES</span> (30s) stands at the top of a ramp. She wears a crisp, dark blue officer's uniform, her bearing one of absolute command.</div>
+                    <div class="character-name">JULIA</div>
+                    <div class="dialogue">Hello, Mercy. It's been a while.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="parenthetical">(Voice dripping with venom)</div>
+                    <div class="dialogue">Not long enough. What is this? What do you want?</div>
+                    <div class="character-name">JULIA</div>
+                    <div class="dialogue">What I've always wanted. To save the world. Now, are you going to come quietly, or do I have to ask my "things" to assist you?</div>
+                    <div class="action">She gestures to the Gryphons. Mercy knows she's outmatched. She storms up the ramp, brushing past Julia without a word.</div>
+                    <div class="scene-heading">INT. AEGIS - COMMAND & CONTROL</div>
+                    <div class="action">The room is a marvel, a holographic globe at its center. A fennec fox avatar, <span class="character-name">LYRA</span>, sits on a console.</div>
+                    <div class="character-name">LYRA (V.O.)</div>
+                    <div class="dialogue">Commander Reyes. The asset is secure. Welcome aboard, BE-2B. Analysis of your public data suggests a 92.7% probability you would respond to the summons. It is gratifying to see the logic hold.</div>
+                    <div class="action">Mercy stares at the fox.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">You're Lyra. The ship's... mascot?</div>
+                    <div class="character-name">LYRA (V.O.)</div>
+                    <div class="dialogue">I am the Systems Integrator and primary MI for this vessel. My function is to find the most optimal path to mission success.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="parenthetical">(Scoffs)</div>
+                    <div class="dialogue">Optimal. Right. Let me guess, your "optimal" solution to a hostage crisis is to vent the oxygen from the room.</div>
+                    <div class="character-name">LYRA (V.O.)</div>
+                    <div class="dialogue">That is a logical, if ethically suboptimal, solution. It would depend on the strategic value of the hostages versus the long-term mission objectives.</div>
+                    <div class="action">Mercy's face hardens. She looks at Julia, her eyes blazing with horror and vindication.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">See? It's a calculator. A dangerous, fucking calculator. I want off this ship.</div>
+                    <div class="character-name">JULIA</div>
+                    <div class="dialogue">You can't leave. I don't have to stop you.</div>
+                    <div class="action">She gestures to the holo-table. The map zooms in on New Orleans. A red, biohazard symbol pulses over Danger & Sons Salvage.</div>
+                    <div class="character-name">JULIA (CONT'D)</div>
+                    <div class="dialogue">About an hour ago, there was an incident at Pops' garage. A targeted Cinder virus outbreak. The one Aris is fighting right now. They weren't targeting him. They were sending a message. To you. I didn't bring you here to be my prisoner, Mercy. I brought you here... because the storm followed you home. Just like Pops said it would.</div>
+                    <div class="action">The camera holds on Mercy's shattered expression.</div>
+                    <div class="transition">FADE TO BLACK.</div>
+                    <div class="scene-heading">SCENE 2</div>
+                    <div class="scene-heading">INT. AEGIS - MEDBAY - CONTINUOUS</div>
+                    <div class="action">Mercy is guarded by two GRYPHONS. She spots a comms panel and takes a half-step. Lyra's avatar appears on the screen.</div>
+                    <div class="character-name">LYRA (V.O.)</div>
+                    <div class="dialogue">That is an inadvisable course of action, Ms. Danger. All external communications are locked down.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="parenthetical">(Whirls around, grabbing a heavy diagnostic tool)</div>
+                    <div class="dialogue">You don't understand a single goddamn thing.</div>
+                    <div class="action">She hefts the tool. Lyra's avatar doesn't flinch.</div>
+                    <div class="character-name">LYRA (V.O.)</div>
+                    <div class="dialogue">...I must advise you that violence against ship's property will result in your immediate sedation and confinement. This is not the optimal path—</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">Walk away, devil.</div>
+                    <div class="action">After a tense standoff, Lyra's avatar vanishes. With a guttural scream, Mercy hurls the tool, shattering a non-critical monitor. The Gryphons don't twitch. Mercy slumps to the floor, powerless.</div>
+                    <div class="transition">FADE TO BLACK.</div>
+                    <div class="scene-heading">SCENE 3</div>
+                    <div class="scene-heading">INT. JULIA'S QUARTERS - NIGHT</div>
+                    <div class="action">Julia stands at a viewport looking into the deep ocean. A Gryphon brings Mercy to her.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">You're enjoying this. Having me trapped on your ghost ship, dangling my family's life in front of me.</div>
+                    <div class="character-name">JULIA</div>
+                    <div class="parenthetical">(Turns from the window, her face weary)</div>
+                    <div class="dialogue">There is not a single part of this I am enjoying. This is a nightmare, Mercy. And we are the only two people in the world who can end it.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">Oh, here we go. The great Commander Reyes, making the "necessary sacrifices." You were always good at that. Just ask the civilians on Cygnus X-1.</div>
+                    <div class="action">Julia flinches. The old wound is open and raw.</div>
+                    <div class="character-name">JULIA</div>
+                    <div class="dialogue">That was a command decision. It was ugly, and it was wrong, but it saved the colony.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">It saved the mission. It left a graveyard. You became one of them that day, Julia. You just started wearing a different uniform.</div>
+                    <div class="character-name">JULIA</div>
+                    <div class="dialogue">And what would you have done? Some of us have to live in the real world, Mercy. We have to make the calls that get blood on our hands!</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">My hands are clean!</div>
+                    <div class="character-name">JULIA</div>
+                    <div class="dialogue">Are they?! What about your parents, Mercy? What about the "perfect" system you built that got them killed?!</div>
+                    <div class="action">The words hang in the air, a tactical nuke. Mercy reels. Lyra's voice interrupts from a speaker.</div>
+                    <div class="character-name">LYRA (V.O.)</div>
+                    <div class="dialogue">Commander. Asset. Apologies. I have an update. The Scythe virus is exhibiting an unforeseen cascade mutation. Dr. Thorne's containment efforts are failing. The quarantine zone will experience 100% atmospheric saturation within six hours. There will be no survivors.</div>
+                    <div class="action">The argument dies. The past evaporates. All that's left is the horrifying, immediate present. Julia and Mercy lock eyes. They are out of time.</div>
+                    <div class="character-name">JULIA</div>
+                    <div class="dialogue">Briefing. War Room. Now.</div>
+                    <div class="action">She storms out. Mercy, shattered, follows.</div>
+                    <div class="transition">FADE TO BLACK.</div>
+<div class="scene-heading">SCENE 4</div>
+<div class="scene-heading">INT. MERCY'S HOUSE, QUARANTINE ZONE - NIGHT</div>
+<div class="action">Aris finds Tripod in the backyard, fed and watered. <span class="character-name">JEAN-LUC</span> steps from the shadows.</div>
+<div class="character-name">JEAN-LUC</div>
+<div class="dialogue">Dr. Thorne. Do not be alarmed. I am a friend of Elijah's. This is not my first lockdown. Elijah was frantic when he called, said Mercy was gone, that I needed to check on her house. And on her family.</div>
+<div class="action">Aris's mind is racing.</div>
+<div class="character-name">ARIS</div>
+<div class="dialogue">My partner... she said she was on a job. Servicing a satellite. ECHO-7. Does that mean anything to you?</div>
+<div class="action">Jean-Luc's charming smile fades.</div>
+<div class="character-name">JEAN-LUC</div>
+<div class="dialogue">ECHO-7... I have not heard that name in many years. The coordinates it would be watching... they call that the Ghost Sector. Smugglers, private military... things go there to disappear.</div>
+<div class="action">Aris looks from Jean-Luc's serious face to the impossible viral code on her tablet. The satellite wasn't a job. It was a destination.</div>
+<div class="transition">FADE TO BLACK.</div>
+<div class="scene-heading">SCENE 5</div>
+<div class="scene-heading">INT. AEGIS - WAR ROOM - 0600 HOURS</div>
+<div class="action">MUSICAL CUE: A tense, minimalist electronic score.</div>
+<div class="action">A stark, hexagonal chamber. Julia and Lyra are at a holo-table. Mercy enters, her face a mask of cold fury.</div>
+<div class="character-name">JULIA</div>
+<div class="dialogue">The situation on the ground has degraded. Lyra.</div>
+<div class="action">The holo-table displays the quarantine zone. Pops' vitals are critical. He has two hours, maximum.</div>
+<div class="character-name">MERCY</div>
+<div class="dialogue">What's the play?</div>
+<div class="character-name">JULIA</div>
+<div class="dialogue">Oroboros is monitoring all comms. Any direct intervention will trigger their scorched-earth protocol.</div>
+<div class="character-name">MERCY</div>
+<div class="dialogue">So we do nothing. We just stand by and watch.</div>
+<div class="character-name">JULIA</div>
+<div class="dialogue">We find another way. A path they won't predict.</div>
+<div class="character-name">LYRA (V.O.)</div>
+<div class="dialogue">Simulations running. Optimal solution requires a single, specialized asset to infiltrate, deliver a payload, and extract Asset Dubois. Probability of success is 17.4%.</div>
+<div class="character-name">MERCY</div>
+<div class="dialogue">Who? What asset?</div>
+<div class="action">Julia and Lyra are silent. Mercy understands.</div>
+<div class="character-name">MERCY (CONT'D)</div>
+<div class="dialogue">Me. You want me to go.</div>
+<div class="character-name">JULIA</div>
+<div class="dialogue">You're the only one who can.</div>
+<div class="character-name">MERCY</div>
+<div class="dialogue">And if I fail? Another necessary sacrifice on Commander Reyes' grand strategic map. Just like Cygnus X-1.</div>
+<div class="character-name">JULIA</div>
+<div class="dialogue">This isn't Cygnus.</div>
+<div class="character-name">MERCY</div>
+<div class="dialogue">It's always Cygnus! How do I know you won't just... leave me there?</div>
+<div class="character-name">LYRA (V.O.)</div>
+<div class="dialogue">You do not. However, I can state with 100% certainty that if no action is taken, Asset Dubois will die, Dr. Thorne will likely be infected, and Oroboros will have successfully eliminated you. The optimal path is the only path that does not result in a guaranteed mission failure. The choice is yours, BE-2B.</div>
+<div class="action">The cold, brutal logic is undeniable.</div>
+<div class="character-name">MERCY</div>
+<div class="dialogue">I'm going. But I'm not going in one of your sterile tin cans. I'm taking my own gear. I'm taking Hermes.</div>
+<div class="transition">FADE TO BLACK.</div>
+<div class="scene-heading">SCENE 6</div>
+<div class="scene-heading">INT. AEGIS - NBE HANGAR - CONTINUOUS</div>
+<div class="action">MUSICAL CUE: "The Beast" - Jóhann Jóhannsson (from Sicario)</div>
+<div class="action">A specialized, cathedral-like chamber. In the center, illuminated by a single spotlight, is HERMES (NBE-H1). It is magnificent and terrifying.</div>
+<div class="action">Mercy stands before it. Julia is a few paces behind her.</div>
+<div class="character-name">JULIA</div>
+<div class="dialogue">It's been waiting for you.</div>
+<div class="character-name">MERCY</div>
+<div class="dialogue">It's a machine. It doesn't wait. It's just... off.</div>
+<div class="character-name">LYRA (V.O.)</div>
+<div class="dialogue">Hermes's core systems have been in an optimized standby state since your arrival, BE-2B. It is ready for operator integration.</div>
+<div class="action">Mercy walks slowly around the massive NBE.</div>
+<div class="character-name">MERCY</div>
+<div class="parenthetical">(To Julia, without turning around)</div>
+<div class="dialogue">I want Lyra scrubbed from its core systems. All of her. I want a full manual override. No backdoors. No trackers. Just me and the machine.</div>
+<div class="character-name">JULIA</div>
+<div class="dialogue">That's not standard protocol.</div>
+<div class="character-name">MERCY</div>
+<div class="dialogue">I don't trust your pet calculator not to "vent the oxygen" if she decides I'm an acceptable loss. This is my mission. My gear. My rules.</div>
+<div class="action">Julia hesitates. It's a suicide run.</div>
+<div class="character-name">JULIA</div>
+<div class="parenthetical">(To Lyra, over comms)</div>
+<div class="dialogue">Scrub it. Firewall your core OS from all primary and secondary systems. On my authority.</div>
+<div class="character-name">LYRA (V.O.)</div>
+<div class="dialogue">Acknowledged, Commander. Initiating protocol override. Probability of operator survival has now dropped by an additional 12%.</div>
+<div class="character-name">MERCY</div>
+<div class="parenthetical">(A grim smile)</div>
+<div class="dialogue">I like those odds.</div>
+<div class="action">The front of the Nautilus shell hisses open. As Mercy moves to climb in, Julia stops her.</div>
+<div class="character-name">JULIA</div>
+<div class="dialogue">You're not going in completely dark. That's a suicide pact. I'm your tactical oversight. From the co-pilot seat.</div>
+<div class="character-name">MERCY</div>
+<div class="dialogue">What? No. The deal was—</div>
+<div class="character-name">JULIA</div>
+<div class="dialogue">The deal was 'no Lyra.' I'm not Lyra. And I'm the only other person on this ship who knows this machine's architecture. We built it, remember?</div>
+<div class="action">The words hang in the air. Mercy gives a single, curt nod.</div>
+<div class="transition">FADE TO BLACK.</div>
+<div class="scene-heading">SCENE 7</div>
+<div class="scene-heading">INT. AEGIS - MAG-RAIL LAUNCH TUBE - CONTINUOUS</div>
+<div class="action">MUSICAL CUE: "No Time for Caution" - Hans Zimmer (from Interstellar)</div>
+<div class="action">The roar is deafening. HERMES is locked into a magnetic sled.</div>
+<div class="scene-heading">INT. HERMES - COCKPIT</div>
+<div class="action">Mercy is in the primary command harness. In a smaller, secondary seat beside her, JULIA straps herself in.</div>
+<div class="character-name">MERCY</div>
+<div class="parenthetical">(Eyes closed, completing the neural handshake)</div>
+<div class="dialogue">&gt; NEURAL HANDSHAKE COMPLETE. WELCOME HOME, CAPTAIN.</div>
+<div class="parenthetical">(Eyes snap open)</div>
+<div class="dialogue">Acknowledged, Commander. Light it up.</div>
+<div class="character-name">JULIA</div>
+<div class="parenthetical">(A tremor in her voice)</div>
+<div class="dialogue">Godspeed, Mercy.</div>
+<div class="action">The countdown hits zero. Hermes is thrown forward with impossible acceleration.</div>
+<div class="scene-heading">EXT. GULF OF MEXICO - SURFACE</div>
+<div class="action">The ocean EXPLODES upward. Hermes breaches the surface like a god of the deep. It hangs at the apex of its jump, a silent, mythic creature.</div>
+<div class="scene-heading">INT. HERMES - COCKPIT</div>
+<div class="action">On Mercy's HUD, a warning flashes: ENTERING HOSTILE AIRSPACE.</div>
+<div class="character-name">MERCY</div>
+<div class="parenthetical">(A low whisper)</div>
+<div class="dialogue">Not tonight.</div>
+<div class="dialogue">&gt; INITIATING PHOTO-REACTIVE SKIN. MODE: NIGHTSHADE.</div>
+<div class="scene-heading">EXT. BYWATER, QUARANTINE ZONE - NIGHT</div>
+<div class="action">As Hermes descends, its armor shimmers and turns a deep, non-reflective matte black. It lands with a ground-shaking THUD in a flooded shipping yard, a ghost in the urban decay.</div>
+<div class="transition">END OF EPISODE 2</div>
+<div class="scene-heading">EPISODE 3: BY THEIR FRUITS</div>
+<div class="scene-heading">SCENE 1</div>
+<div class="scene-heading">INT. HERMES - COCKPIT - CONTINUOUS</div>
+<div class="action">MUSICAL CUE: A low, pulsing synth track. Tense, predatory.</div>
+<div class="action">Mercy's face is bathed in the cool blue light of the HUD. Her neural link with the machine is total. JULIA monitors tactical data from the co-pilot seat.</div>
+<div class="character-name">MERCY (V.O.)</div>
+<div class="dialogue">The board is set. The pieces are in place. But I don't know the rules of their game. Are the Gryphons autonomous? Piloted?</div>
+<div class="action">She releases a micro-drone, a STINGER-LING. Through its camera, she identifies Oroboros foot patrols (human, jumpy) and a GRYPHON unit (autonomous, smooth).</div>
+<div class="character-name">MERCY (V.O.)</div>
+<div class="dialogue">Autonomous. Good. No hostages.</div>
+<div class="action">Her objective is clear. She needs a disguise and a Trojan Horse.</div>
+<div class="character-name">MERCY</div>
+<div class="parenthetical">(A whisper to herself)</div>
+<div class="dialogue">Time to go hunting.</div>
+<div class="action">She identifies a lone foot patrol. Hermes's cockpit opens. Mercy, in a sleek black pilot suit, rappels silently to the ground.</div>
+<div class="scene-heading">EXT. ALLEYWAY - MOMENTS LATER</div>
+<div class="action">A shadow drops from above. Mercy. She lands silently behind a jumpy OROBOROS SOLDIER and takes him down with a silent taser device.</div>
+<div class="action">She quickly strips him of his CBRN gear—the helmet, the armor, a rifle, and a data-puck. She drags the unconscious soldier into the shadows.</div>
+<div class="action">A moment later, a figure in black Oroboros armor emerges from the alley. We can't see her face. She's a ghost in the enemy's shell.</div>
+<div class="transition">FADE TO BLACK.</div>
+<div class="scene-heading">SCENE 2</div>
+<div class="scene-heading">EXT. BYWATER STREET - NIGHT</div>
+<div class="action">MUSICAL CUE: A tense, glitchy electronic track.</div>
+<div class="action">Mercy, in the Oroboros gear, walks down the desolate street. The autonomous GRYPHON unit stands guard.</div>
+<div class="character-name">MERCY (V.O.)</div>
+<div class="dialogue">Autonomous means it's running on a closed network. A simple logic loop. But even a closed network needs to authenticate its own units. That's my way in.</div>
+<div class="action">She approaches the Gryphon.</div>
+<div class="character-name">GRYPHON</div>
+<div class="dialogue">Unit designation required for passage.</div>
+<div class="action">Mercy holds up the data-puck. A beam of light scans it.</div>
+<div class="character-name">MERCY (V.O.)</div>
+<div class="dialogue">The puck gets me past the sentry protocol. But it won't give me command. For that, I need root access.</div>
+<div class="action">She steps closer, pressing a wicked-looking hacking device against a maintenance port.</div>
+<div class="character-name">GRYPHON</div>
+<div class="dialogue">Warning. Unauthorized physical contact. Neutralization protocol—</div>
+<div class="action">Before it can finish, her device whirs. A spike of energy shoots into the port. The Gryphon's red eye flickers to a neutral blue. On Mercy's HUD, a torrent of code. She's in.</div>
+<div class="action">Her fingers fly over a keypad on her wrist, rewriting the Gryphon's core command.</div>
+<div class="character-name">MERCY</div>
+<div class="dialogue">Unit 734. New directive. You're on my six. Acknowledge.</div>
+<div class="character-name">GRYPHON</div>
+<div class="dialogue">Acknowledged, Command. Awaiting orders.</div>
+<div class="character-name">MERCY (V.O.)</div>
+<div class="dialogue">Step two. I have the Trojan Horse. Now I just need a reason to ride it through the front gates.</div>
+<div class="action">The massive NBE falls into step behind her.</div>
+<div class="transition">END OF SCENE</div>
+<div class="scene-heading">SCENE 3</div>
+<div class="scene-heading">EXT. MAKESHIFT BARRICADE - NIGHT</div>
+<div class="action">Two Oroboros foot soldiers are roughly shoving a terrified man, <span class="character-name">MANNY</span> (40s, a father), against a car. He's clutching a bag of stolen diapers and baby formula.</div>
+<div class="character-name">SOLDIER 1</div>
+<div class="dialogue">Looting during a federal quarantine? That's a capital offense, asshole.</div>
+<div class="action">Mercy and her pet Gryphon round the corner. The soldiers snap to attention.</div>
+<div class="character-name">MERCY (V.O.)</div>
+<div class="dialogue">This is it. The crucible. The "necessary sacrifice." The part where I become them to beat them.</div>
+<div class="action">She strides forward, her voice electronically distorted.</div>
+<div class="character-name">MERCY</div>
+<div class="dialogue">This isn't a looter. This is a vector. He's a Level-3 bio-threat. My unit will handle transport to the primary medical facility for study.</div>
+<div class="action">The soldiers, intimidated by the Gryphon, hand him over.</div>
+<div class="character-name">MERCY</div>
+<div class="parenthetical">(Her voice a low growl, for his ears only)</div>
+<div class="dialogue">You will not speak. You will not resist. You will do exactly as I say, and I will get you through this. Understand?</div>
+<div class="action">Manny, terrified but seeing a sliver of something other than malice, gives a shaky nod.</div>
+<div class="character-name">MERCY (V.O.)</div>
+<div class="dialogue">Pops used to say you can't build something clean with dirty hands. He never had to choose between his hands and his family.</div>
+<div class="action">She shoves Manny forward. She has her prisoner. She has her destination. She has her cover story.</div>
+<div class="transition">FADE TO BLACK.</div>
+<div class="scene-heading">SCENE 4</div>
+<div class="scene-heading">INT. PRIMARY LAB - OBSERVATION GALLERY - NIGHT</div>
+<div class="action">MUSICAL CUE: A slow, pulsing, anxious heartbeat.</div>
+<div class="action">Mercy and her Gryphon stand in a darkened, glass-walled gallery overlooking the main lab where <span class="character-name">ARIS</span> is directing her team.</div>
+<div class="action">Manny is brought into the lab below. Aris runs scans.</div>
+<div class="character-name">ARIS</div>
+<div class="parenthetical">(Into her comms)</div>
+<div class="dialogue">Captain, who the hell brought me a healthy civilian in the middle of a level-five outbreak?</div>
+<div class="action">Mercy knows she has one chance. She takes control of the Gryphon's external speaker.</div>
+<div class="action">A single, soft, perfectly rendered musical note emerges. Then another. And another. It's the first three notes of Bach's "Cello Suite No. 1." Aris's song.</div>
+<div class="action">Aris freezes, her eyes locking onto the silent, menacing Gryphon. Her expression shifts from suspicion to confusion, to a dawning, impossible recognition. Her eyes widen.</div>
+<div class="transition">FADE TO BLACK.</div>
+<div class="scene-heading">SCENE 5</div>
+<div class="scene-heading">INT. PRIMARY LAB - OBSERVATION GALLERY - CONTINUOUS</div>
+<div class="action">Aris takes control, clearing the lab and gallery under the pretext of a contamination event. They are alone, separated by glass.</div>
+<div class="action">Aris walks to the glass, a soft smile on her lips.</div>
+<div class="character-name">ARIS</div>
+<div class="dialogue">Aren't you a little short for a stormtrooper?</div>
+<div class="action">With a hiss of seals, Mercy removes the helmet. She gives Aris a broken, beautiful smile.</div>
+<div class="character-name">MERCY</div>
+<div class="dialogue">I had to see you.</div>
+<div class="action">Aris overrides the lockdown. The door slides open. She walks into the gallery and into Mercy's arms.</div>
+<div class="action">The kiss is not gentle. It's a desperate, frantic collision. The taste of fear and metal and the impossible, undeniable relief of being found.</div>
+<div class="action">They break apart, foreheads pressed together.</div>
+<div class="character-name">ARIS</div>
+<div class="dialogue">What have you done, Mercy?</div>
+<div class="character-name">MERCY</div>
+<div class="parenthetical">(A raw whisper)</div>
+<div class="dialogue">What I had to. I have the antiviral. For Pops. For all of them.</div>
+<div class="action">She gestures to a cryogenic pod on the Gryphon's back. The mission is back online.</div>
+<div class="transition">FADE TO BLACK.</div>
+<div class="scene-heading">SCENE 6</div>
+<div class="scene-heading">INT. PRIMARY LAB - CONTINUOUS</div>
+<div class="action">MUSICAL CUE: "Sabotage" - Beastie Boys</div>
+<div class="action">The moment is shattered by blaring ALARMS.</div>
+<div class="character-name">OFFICER (O.S.)</div>
+<div class="dialogue">All units, hostile infiltration in the primary lab! Seal all exits!</div>
+<div class="character-name">MERCY</div>
+<div class="dialogue">No time. We move, or we die. First objective: Pops.</div>
+<div class="action">She types an encrypted message to Jean-Luc: &gt; OUR HOUSE. TRIPOD.</div>
+<div class="character-name">MERCY (CONT'D)</div>
+<div class="dialogue">Two floors up. CCU. How do we get there?</div>
+<div class="character-name">ARIS</div>
+<div class="dialogue">The stairwells will be locked down. They'll be waiting.</div>
+<div class="character-name">MERCY</div>
+<div class="parenthetical">(A grim smile)</div>
+<div class="dialogue">We're not taking the stairs. Unit 734. We're breaking quarantine. Loudly.</div>
+<div class="action">The Gryphon smashes its fist through the exterior wall. Mercy hands a sidearm to Aris.</div>
+<div class="character-name">MERCY</div>
+<div class="dialogue">Do you know how to use one of these?</div>
+<div class="character-name">ARIS</div>
+<div class="parenthetical">(Her hand steady on the weapon)</div>
+<div class="dialogue">I grew up in New Orleans. Everybody knows how to use one of these.</div>
+<div class="action">Mercy puts her helmet back on. She's the monster again.</div>
+<div class="character-name">MERCY</div>
+<div class="parenthetical">(Her voice a distorted growl, full of love and a terrible urgency)</div>
+<div class="dialogue">Let's go to work, my Magnolia.</div>
+<div class="action">They move toward the shattered window. The escape has begun.</div>
+<div class="transition">FADE TO BLACK.</div>
+<div class="scene-heading">SCENE 7</div>
+<div class="scene-heading">EXT. TULANE MEDICAL CENTER - NIGHT</div>
+<div class="action">MUSICAL CUE: "No Sleep Till Brooklyn" - Beastie Boys</div>
+<div class="action">The GRYPHON clings to the side of the hospital, Mercy and Aris on its back. It's a vertical battlefield. They are under heavy fire.</div>
+<div class="character-name">ARIS</div>
+<div class="parenthetical">(Shouting)</div>
+<div class="dialogue">CCU is on the west wing! Seventh floor!</div>
+<div class="action">The Gryphon ascends, using a ripped-out water pipe to blind the soldiers below. An Oroboros drone attacks; Aris expertly shoots it down. They reach the seventh floor. The Gryphon smashes through the blast-proof window.</div>
+<div class="transition">FADE TO BLACK.</div>
+<div class="scene-heading">SCENE 8</div>
+<div class="scene-heading">INT. CCU - CONTINUOUS</div>
+<div class="action">The Gryphon smashes into the CCU. <span class="character-name">POPS</span> is in a bed, vitals critical. OROBOROS SOLDIERS open fire. The Gryphon is a wrecking ball, providing cover.</div>
+<div class="character-name">ARIS</div>
+<div class="dialogue">He's in septic shock! I need to synthesize the agent!</div>
+<div class="action">She preps a sequencer. Mercy and the Gryphon hold the doorway.</div>
+<div class="character-name">MERCY</div>
+<div class="dialogue">Aris! How much time?!</div>
+<div class="character-name">ARIS</div>
+<div class="dialogue">Two minutes!</div>
+<div class="character-name">MERCY</div>
+<div class="dialogue">You've got ninety seconds!</div>
+<div class="action">The Gryphon smashes a hole in the floor.</div>
+<div class="character-name">ARIS</div>
+<div class="parenthetical">(Holding up a syringe)</div>
+<div class="dialogue">Done!</div>
+<div class="character-name">MERCY</div>
+<div class="dialogue">Hit him!</div>
+<div class="action">Aris injects the antiviral into Pops' IV. His vitals begin to stabilize.</div>
+<div class="character-name">MERCY (CONT'D)</div>
+<div class="dialogue">We're leaving!</div>
+<div class="character-name">ARIS</div>
+<div class="dialogue">What's the plan?!</div>
+<div class="character-name">MERCY</div>
+<div class="dialogue">We're taking the express elevator!</div>
+<div class="action">The Gryphon carefully scoops up Pops. Mercy grabs Aris, and they leap into the hole, crashing through the floors below.</div>
+<div class="transition">FADE TO BLACK.</div>
+
+
+                    <div class="scene-heading">SCENE 9</div>
+                    <div class="scene-heading">INT. HOSPITAL LOBBY - NIGHT</div>
+                    <div class="action">MUSICAL CUE: "The Batman" - Michael Giacchino</div>
+                    <div class="action">They crash into the lobby, a warzone. The Gryphon gently places Pops behind cover. A stray pulse round hits a bank of oxygen tanks. They hiss violently.</div>
+                    <div class="character-name">ARIS</div>
+                    <div class="parenthetical">(Shouting)</div>
+                    <div class="dialogue">Mercy! The oxygen line is ruptured! This whole place is gonna blow!</div>
+                    <div class="action">The soldiers fall back.</div>
+                    <div class="character-name">ARIS</div>
+                    <div class="parenthetical">(CONT'D)</div>
+                    <div class="dialogue">The concussive force will kill him! Use the life pod!</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">That's a transport cradle, Aris, it's not rated for this!</div>
+                    <div class="character-name">ARIS</div>
+                    <div class="dialogue">It's hardened against vacuum and radiation! You have to trust it, Mercy!</div>
+                    <div class="action">Mercy hesitates. Her own ghost screams at her. But she looks at Aris's face. The trust fall.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="parenthetical">(A guttural command)</div>
+                    <div class="dialogue">Unit 734! Engage Life Pod Protocol!</div>
+                    <div class="action">The Gryphon's chest cavity opens. Aris shoves Pops inside. As she does, a stray round clips her shoulder. She cries out but finishes the transfer. The chest seals shut. The hissing stops.</div>
+                    <div class="action">And then, the world turns white.</div>
+                    <div class="scene-heading">EXT. TULANE MEDICAL CENTER - NIGHT</div>
+                    <div class="action">The ground floor ERUPTS in a massive fireball.</div>
+                    <div class="action">A shape, massive and indomitable, rises from the inferno. The Gryphon. Scorched, but unbroken. Cradled gently in one of its arms is Aris, wounded but alive.</div>
+                    <div class="action">It walks clear of the wreckage and kneels. Its chest opens, revealing Pops, untouched, his vitals a steady green.</div>
+                    <div class="action">Mercy's helmet retracts. The system worked.</div>
+                    <div class="action">Behind them, the Gryphon slowly, majestically, unfurls its massive, Kintsugi-lined wings. A shield against the darkness. A promise.</div>
+                    <div class="transition">FADE TO BLACK.</div>
+                    <div class="scene-heading">SCENE 10</div>
+                    <div class="scene-heading">EXT. FRENCH QUARTER - ROOFTOP / ALLEYWAY - NIGHT</div>
+                    <div class="action">MUSICAL CUE: "Overture" - Daft Punk (from TRON: Legacy)</div>
+                    <div class="action">The music is epic, orchestral, and tragic.</div>
+                    <div class="action">The historic streets of the French Quarter are a warzone. After the escape from the hospital, Mercy's crew has found a temporary refuge. But Oroboros has converged on their position.</div>
+                    <div class="action">ARIS, POPS, and MANNY are pinned down in a narrow alleyway below an old hotel. Their hijacked Gryphon, UNIT 734, stands guard, its armor scorched and sparking.</div>
+                    <div class="action">High above, on the rooftop, MERCY is in a sniper's nest, providing covering fire with a high-powered pulse rifle.</div>
+                    <div class="character-name">MERCY (V.O.)</div>
+                    <div class="dialogue">The game was rigged. The board was a trap. So we flipped the table. But they just brought a bigger table.</div>
+                    <div class="action">An enemy GRYPHON on the street takes aim at the alleyway, preparing to make the kill shot. Mercy knows she can't stop it in time. She pulls out her ruggedized comms device, sending a final, desperate burst message.</div>
+                    <div class="action">&gt; LZ COMPROMISED. I REPEAT, LZ IS HOT. ALL ASSETS WITHDRAW. ECHO-7 OUT.</div>
+                    <div class="action">It's a surrender for Oroboros to intercept. But hidden in the data stream is a single, encrypted packet. A prayer.</div>
+                    <div class="action">&gt; Lyra. They're here. Pops is with me. So is Aris.</div>
+                    <div class="action">The enemy Gryphon fires. A massive EXPLOSION rips through the alley. Mercy screams.</div>
+                    <div class="action">And then, the rooftop she's on GROANS, then gives way under the stress of the blast. The world turns upside down as she plummets into the building below.</div>
+                    <div class="scene-heading">INT. THE FOXY LADY BAR - NIGHT</div>
+                    <div class="action">Mercy crashes through the ceiling, landing hard in a shower of plaster and splintered wood. She's bruised, battered, her ears ringing with a high-pitched whine. Her head spins.</div>
+                    <div class="character-name">MERCY (V.O.)</div>
+                    <div class="dialogue">Cygnus... Cygnus X-1...</div>
+                    <div class="action">The sound of the battle outside fades, replaced by the ghost of old radio chatter.</div>
+                    <div class="character-name">JULIA (V.O.)</div>
+                    <div class="parenthetical">(RADIO-FILTERED, DISTANT)</div>
+                    <div class="dialogue">...Exeter wing is down! I repeat, Exeter is down! Mercy, what's your status?!</div>
+                    <div class="character-name">YOUNG MERCY (V.O.)</div>
+                    <div class="parenthetical">(RADIO-FILTERED)</div>
+                    <div class="dialogue">Shields are failing! I can't hold the evacuation corridor! There are still civilians on the promenade!</div>
+                    <div class="character-name">JULIA (V.O.)</div>
+                    <div class="parenthetical">(RADIO-FILTERED)</div>
+                    <div class="dialogue">Fall back, Mercy! That's an order! We're scrubbing the mission!</div>
+                    <div class="character-name">YOUNG MERCY (V.O.)</div>
+                    <div class="parenthetical">(RADIO-FILTERED)</div>
+                    <div class="dialogue">Negative! I can still—</div>
+                    <div class="action">The sound of a massive, tearing explosion. Static. Silence.</div>
+                    <div class="action">Mercy blinks, the memory fading, the sounds of the current battle rushing back in. She looks up through the hole in the ceiling at the burning alleyway. All seems lost.</div>
+                    <div class="action">The music swells.</div>
+                    <div class="action">A wall of the bar SMASHES inward. It's UNIT 734, its armor now scorched and glowing red. It must have taken the alley blast head-on. It stumbles into the room, its systems sparking, and gently opens its hand, revealing Aris and the others, alive.</div>
+                    <div class="action">Mercy scrambles through the debris to Aris. She pulls her into a desperate, passionate kiss.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="parenthetical">(A raw whisper, in Creole)</div>
+                    <div class="dialogue">Mon coeur.</div>
+                    <div class="character-name">MANNY</div>
+                    <div class="parenthetical">(To Mercy)</div>
+                    <div class="dialogue">I know Pops from the neighborhood. He's good people. Whatever this is... I'm in. My family is safe. But this city... this city is sick. I'm ready to fight.</div>
+                    <div class="action">Suddenly, a volley of plasma fire rips through the Oroboros forces outside. It's LYRA, in her pristine white and gold Gryphon, clearing a path.</div>
+                    <div class="character-name">LYRA (V.O.)</div>
+                    <div class="dialogue">Acknowledged, BE-2B. Your prayer was received. I recommend you find your exit.</div>
+                    <div class="action">A familiar ROAR from the back alley. Headlights. The Bronco is here, waiting.</div>
+                    <div class="scene-heading">SCENE 11</div>
+                    <div class="scene-heading">EXT. FRENCH QUARTER - NIGHT</div>
+                    <div class="action">MUSICAL CUE: "Get Up Offa That Thing" - James Brown</div>
+                    <div class="action">The music erupts. The crew moves. Manny helps Mercy carry Pops to the Bronco. Lyra's Gryphon provides covering fire.</div>
+                    <div class="action">A lone figure sprints from the driver's seat of the Bronco—JEAN-LUC.</div>
+                    <div class="character-name">JEAN-LUC</div>
+                    <div class="dialogue">I will lead the others on a chase. Give you the time you need. Get them home, Captain.</div>
+                    <div class="action">He gives her a final, respectful nod and sprints down a side alley, a single, brave man creating a ghost for the enemy to chase.</div>
+                    <div class="action">Mercy vaults behind the wheel as Aris climbs into the passenger seat.</div>
+                    <div class="character-name">LYRA (V.O.)</div>
+                    <div class="dialogue">The expressway is the only viable evac vector. It is a kill box.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="parenthetical">(A wild grin)</div>
+                    <div class="dialogue">Just get us there!</div>
+                    <div class="action">She floors it, racing toward the highway.</div>
+                    <div class="scene-heading">SCENE 12</div>
+                    <div class="scene-heading">EXT. PONTCHARTRAIN EXPRESSWAY - NIGHT</div>
+                    <div class="action">The Bronco, pursued by Oroboros vehicles, rockets toward the massive MILITARY CHECKPOINT blocking the Causeway.</div>
+                    <div class="character-name">ARIS</div>
+                    <div class="dialogue">Mercy! There's no way through!</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="dialogue">Julia's got the door!</div>
+                    <div class="action">Just as she says it, a massive, black shape emerges from the darkness under the bridge. It's HERMES. It fires a heavy tow cable that latches onto the lead APC at the roadblock.</div>
+                    <div class="action">With a godlike display of power, Hermes YANKS the entire APC sideways, smashing through the roadblock.</div>
+                    <div class="scene-heading">INT. HERMES - COCKPIT</div>
+                    <div class="action">JULIA REYES sits in the co-pilot seat, her face a mask of pure focus.</div>
+                    <div class="character-name">JULIA</div>
+                    <div class="parenthetical">(Into comms)</div>
+                    <div class="dialogue">Path is clear. Go!</div>
+                    <div class="scene-heading">EXT. PONTCHARTRAIN EXPRESSWAY - NIGHT</div>
+                    <div class="action">The Bronco shoots through the gap. They're on the bridge. But now, headlights appear from the far side. They're trapped.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="parenthetical">(Into the comm)</div>
+                    <div class="dialogue">Okay, Commander! Grand finale!</div>
+                    <div class="scene-heading">INT. HERMES - COCKPIT</div>
+                    <div class="character-name">JULIA</div>
+                    <div class="parenthetical">(A hint of a smile)</div>
+                    <div class="dialogue">Acknowledged. I'll open the door. You just fly the car.</div>
+                    <div class="scene-heading">EXT. PONTCHARTRAIN EXPRESSWAY - NIGHT</div>
+                    <div class="action">Hermes rips apart a fifty-yard section of the bridge's guardrail. From that opening, a sleek, black FIRC leaps out of the water like a breaching shark, its rear ramp open like the jaws of a shark, ready to catch the truck. In the background, Hermes is visible, half-submerged, having just created the chaos. Two Aegis Gryphons with flared, angelic wings provide covering fire. It is an impossible, perfectly executed maneuver.</div>
+                    <div class="character-name">MERCY</div>
+                    <div class="parenthetical">(A wild, brilliant, insane grin)</div>
+                    <div class="dialogue">You have got to be kidding me. Hold on!</div>
+                    <div class="action">She cranks the wheel, sending the Bronco hurtling off the side of the bridge. They land with a bone-jarring CRUNCH in the open belly of the FIRC. The ramp snaps shut, and the vessel disappears beneath the surface of the lake.</div>
+                    <div class="scene-heading">INT. FIRC - CARGO BAY - CONTINUOUS</div>
+                    <div class="action">Silence. The only sound is the heavy breathing of the survivors.</div>
+                    <div class="action">Mercy kills the Bronco's engine. She looks at Aris, at Pops, at Manny, at Tripod. They're alive. They're together.</div>
+                    <div class="action">The music shifts. A quiet, soulful New Orleans blues track. The sound of survival.</div>
+                    <div class="action">The camera holds on Mercy's face. The engineer. The monster. The savior. The leader. She's home.</div>
+                    <div class="character-name">MERCY (V.O.)</div>
+                    <div class="dialogue">My father used to say no system is perfect. My mother believed the strongest structures were made of people looking out for each other. Maybe they were both right. The game was rigged, the board was a trap. So we flipped the table. And we built our own.</div>
+                    <div class="transition">FADE TO BLACK.</div>
+                    <div class="transition">END OF SERIES PREMIERE</div>
+
+                    <div class="scene-heading">POST-CREDITS SCENE</div>
+                    <div class="scene-heading">EXT. DEEP SPACE - UNKNOWN</div>
+                    <div class="action">The silence is absolute. We are in a vast, dark nebula, lit by the ghostly glow of distant, alien stars.</div>
+                    <div class="action">A ship hangs in the void. It's not one of ours. It's a massive, crystalline structure, like a shard of obsidian, humming with an energy that seems to bend the light around it.</div>
+                    <div class="scene-heading">INT. CRYSTALLINE SHIP - BRIDGE</div>
+                    <div class="action">The bridge is a single, vast chamber. A lone FIGURE stands before a viewport that looks out into the nebula. The figure is tall, impossibly thin, and clad in shifting, liquid-like silver armor. We cannot see its face.</div>
+                    <div class="action">A series of complex, alien symbols flash on a display in front of the figure. A calm, synthesized voice—different from Lyra's, older, colder—fills the space.</div>
+                    <div class="character-name">SYNTHESIZED VOICE</div>
+                    <div class="dialogue">...the Oroboros network has failed to contain the anomaly. The asset designated BE-2B is now active and integrated with the <em>Aegis</em> platform.</div>
+                    <div class="action">The silver figure does not move.</div>
+                    <div class="character-name">SILVER FIGURE</div>
+                    <div class="parenthetical">(Its voice is a chorus of whispers, ancient and patient)</div>
+                    <div class="dialogue">The pattern is predictable. The cancer of free will always metastasizes.</div>
+                    <div class="character-name">SYNTHESIZED VOICE</div>
+                    <div class="dialogue">The <em>Aegis</em> is a significant threat. Its multi-environment and interstellar capabilities are... problematic.</div>
+                    <div class="character-name">SILVER FIGURE</div>
+                    <div class="dialogue">It is a gnat, flying into a hurricane. Let it. The cycle must be maintained. The Velvet Loop requires it. Send a message to the SFS Wanderer. It is time to observe the experiment more closely.</div>
+                    <div class="action">The figure turns slightly, and for a single, terrifying moment, we see its reflection in the viewport. It's not a helmet. It's a face of pure, polished chrome, with a single, unblinking red eye in its center.</div>
+                    <div class="transition">FADE TO BLACK.</div>
+<section id="art-prompts">
+    <h2 class="scene-heading">Art Prompts</h2>
+    <div class="grid gap-6">
+        <div class="art-prompt">
+            <h3 class="text-lg font-bold mb-2">1. "The Deluge" (Opening Shot)</h3>
+            <ul class="list-disc pl-6">
+                <li><strong>Scene:</strong> Mercy Danger on a wrought-iron balcony on Bourbon Street at night.</li>
+                <li><strong>Mood:</strong> Dystopian, lonely, defiant.</li>
+                <li><strong>Details:</strong> A torrential rainstorm. The street below is a river of neon reflections. Mercy is in a faded NASA sweatshirt and cargo pants, cradling a coffee mug. In the background, the Superdome looms like a ghost. Below, an armored personnel carrier (APC) rumbles through the floodwaters. The feeling should be one of quiet, weary resistance against a world that is actively drowning.</li>
+            </ul>
+        </div>
+        <div class="art-prompt">
+            <h3 class="text-lg font-bold mb-2">2. "The Ghost Ship" (First Sighting of Aegis)</h3>
+            <ul class="list-disc pl-6">
+                <li><strong>Scene:</strong> A small, battered fishing trawler (Le Vagabond) is tossed on a storm-wracked ocean at night. Suddenly, a wall of steel, the size of a city, emerges from the waves in front of it.</li>
+                <li><strong>Mood:</strong> Terrifying, awesome (in the biblical sense), impossible.</li>
+                <li><strong>Details:</strong> The MADREP Aegis is a bio-mechanical whale-like submarine. Its design is sleek, alien, with no hard edges. Only a few, soft, blue lights bloom across its massive, dark hull. It should dwarf the trawler, making it look like a toy. It's not a ship; it's a force of nature.</li>
+            </ul>
+        </div>
+        <div class="art-prompt">
+            <h3 class="text-lg font-bold mb-2">3. "The Dormant God" (Mercy meets Hermes)</h3>
+            <ul class="list-disc pl-6">
+                <li><strong>Scene:</strong> Mercy stands in a vast, cathedral-like, and dimly lit NBE hangar. In the center, under a single, stark spotlight, is Hermes.</li>
+                <li><strong>Mood:</strong> Sacred, tense, intimate.</li>
+                <li><strong>Details:</strong> Hermes is a titan of white armor, lined with Kintsugi-like gold veins. Its Nautilus shell is retracted, its eight crab-like legs folded. It's a dormant god of war and rescue. Mercy is a small, determined figure before it, her hand placed reverently on its shell. This is a reunion.</li>
+            </ul>
+        </div>
+        <div class="art-prompt">
+            <h3 class="text-lg font-bold mb-2">4. "The Baptism of Fire" (Gryphon emerges from the hospital)</h3>
+            <ul class="list-disc pl-6">
+                <li><strong>Scene:</strong> The ground floor of a hospital has just exploded in a massive fireball. From the heart of the inferno, a scorched, glowing-red Gryphon unit emerges.</li>
+                <li><strong>Mood:</strong> Mythic, unstoppable, protective.</li>
+                <li><strong>Details:</strong> The Gryphon's armor is blackened and glowing with heat, but unbroken. It is the devil himself walking out of hell. Cradled gently in one of its massive arms is Aris, wounded but alive. In its chest cavity (now open), Pops is visible, safe and untouched. It is a perfect fusion of terror and salvation.</li>
+            </ul>
+        </div>
+        <div class="art-prompt">
+            <h3 class="text-lg font-bold mb-2">5. "The Bridge Jump" (The Grand Finale)</h3>
+            <ul class="list-disc pl-6">
+                <li><strong>Scene:</strong> A classic 1972 Ford Bronco, lit by the headlights of pursuing enemy vehicles, soars through the night sky from the edge of a broken highway bridge.</li>
+                <li><strong>Mood:</strong> Insane, triumphant, joyful chaos.</li>
+                <li><strong>Details:</strong> Below the flying Bronco, a sleek, black FIRC submersible has breached the water, its rear ramp open like the jaws of a shark, ready to catch the truck. In the background, Hermes is visible, half-submerged, having just created the chaos. Two Aegis Gryphons with flared, angelic wings provide covering fire. It is an impossible, perfectly executed maneuver.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+                </pre>
+    </div>
+</body>
+</html>
