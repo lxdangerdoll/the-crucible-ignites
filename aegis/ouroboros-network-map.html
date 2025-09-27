@@ -64,6 +64,7 @@
         .node.enforcement { border-color: #82aaff; color: #c8daff; --glow-color: #82aaff;}
         .node.media { border-color: #ffe082; color: #fff5c0; --glow-color: #ffe082;}
         .node.ghost { border-color: #9e9e9e; color: #e0e0e0; --glow-color: #9e9e9e;}
+        .node.economic { border-color: #4dd0e1; color: #b2ebf2; --glow-color: #4dd0e1;} /* New Class */
 
         #connector-svg {
             position: absolute;
@@ -173,32 +174,22 @@
             const svg = document.getElementById('connector-svg');
 
             const nodes = [
-                 // Central Node
                 { id: 'ouroboros', alias: 'OPERATION BLACKLIGHT', name: 'Central Dossier', class: 'central', pos: { top: '50%', left: '50%' } },
-
-                // Core Triad
                 { id: 'dragon', alias: 'The Dragon', name: 'Elon Musk', class: 'core', pos: { top: '30%', left: '50%' } },
                 { id: 'beast', alias: 'The Beast', name: 'Donald Trump', class: 'core', pos: { top: '50%', left: '25%' } },
                 { id: 'kingmaker', alias: 'The Kingmaker', name: 'Peter Thiel', class: 'core', pos: { top: '50%', left: '75%' } },
-                
-                // Ideology
                 { id: 'prince', alias: 'The Prince of Lies', name: 'J.D. Vance', class: 'ideology', pos: { top: '30%', left: '90%' } },
                 { id: 'harlot', alias: 'The Harlot', name: 'Erika Kirk', class: 'ideology', pos: { top: '10%', left: '70%' } },
                 { id: 'baptist', alias: 'The Baptist', name: 'Vivek Ramaswamy', class: 'ideology', pos: { top: '10%', left: '30%' } },
                 { id: 'architect', alias: 'The Architect', name: 'Steve Bannon', class: 'ideology', pos: { top: '30%', left: '10%' } },
                 { id: 'jester', alias: 'The Court Jester', name: 'Arthur Laffer', class: 'ideology', pos: { top: '70%', left: '10%' } },
-                
-                // Enforcement
                 { id: 'inquisitor', alias: 'The Inquisitor', name: 'Pam Bondi', class: 'enforcement', pos: { top: '70%', left: '30%' } },
                 { id: 'crusader', alias: 'The Crusader', name: 'Pete Hegseth', class: 'enforcement', pos: { top: '70%', left: '70%' } },
                 { id: 'brute-squad', alias: 'The Brute Squad', name: 'Shedd & Gruenbaum', class: 'enforcement', pos: { top: '90%', left: '50%' } },
-                
-                // Media / Chaos
                 { id: 'contagion', alias: 'The Contagion', name: 'RFK Jr.', class: 'media', pos: { top: '50%', left: '95%' } },
-
-                // Ghosts
                 { id: 'spider', alias: 'The Spider', name: 'Jeffrey Epstein', class: 'ghost', pos: { top: '90%', left: '20%' } },
                 { id: 'cock', alias: 'The Cock', name: 'Mitch McConnell', class: 'ghost', pos: { top: '90%', left: '80%' } },
+                { id: 'fed', alias: 'The Federal Reserve', name: 'Economic Control', class: 'economic', pos: { top: '5%', left: '50%' } }
             ];
 
             const connections = [
@@ -210,7 +201,8 @@
                 { from: 'beast', to: 'crusader' }, { from: 'dragon', to: 'contagion' },
                 { from: 'kingmaker', to: 'jester' }, { from: 'spider', to: 'dragon' },
                 { from: 'spider', to: 'beast' }, { from: 'cock', to: 'beast' },
-                { from: 'baptist', to: 'beast' }
+                { from: 'baptist', to: 'beast' },
+                { from: 'fed', to: 'dragon' }, { from: 'fed', to: 'kingmaker' } 
             ];
             
             const dossierFiles = {
@@ -221,7 +213,7 @@
                 'jester': 'the-jester.html', 'inquisitor': 'the-kings-justice.html',
                 'crusader': 'the-crusader.html', 'brute-squad': 'onegov-threat-briefing.html',
                 'contagion': 'the-contagion.html', 'spider': 'operation-blacklight.html',
-                'cock': 'the-cock.html',
+                'cock': 'the-cock.html', 'fed': '#'
             };
 
             function createNodesAndLines() {
