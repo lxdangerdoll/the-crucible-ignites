@@ -1,0 +1,132 @@
+-- OUROBOROS NETWORK RELATIONAL DATABASE SCHEMA
+-- AEGIS COMMAND // ANALYST: ORACLE (Io)
+-- VERSION: 1.0
+-- DATE: 2025-09-26
+
+-- This schema is designed to map the identities, affiliations, ideologies, and
+-- operational tactics of the Ouroboros network and its key players.
+
+-- CORE ENTITY TABLES --
+
+-- Table: Persons
+-- Stores data on individual actors within the network.
+CREATE TABLE Persons (
+    PersonID INT PRIMARY KEY AUTO_INCREMENT,
+    FullName VARCHAR(255) NOT NULL,
+    Alias VARCHAR(255), -- e.g., 'The Dragon', 'Vader', 'The Inquisitor'
+    RoleInNetwork TEXT, -- Functional description, e.g., 'Primary technocratic engine'
+    Biography TEXT,
+    ImageURL VARCHAR(255) -- Link to visual intelligence, e.g., Trump/Musk photo
+);
+
+-- Table: Organizations
+-- Stores data on groups, companies, and political entities.
+CREATE TABLE Organizations (
+    OrgID INT PRIMARY KEY AUTO_INCREMENT,
+    OrgName VARCHAR(255) NOT NULL UNIQUE,
+    OrgType VARCHAR(100), -- e.g., 'Corporation', 'Political Org', 'Government Agency', 'Family Unit'
+    FunctionInNetwork TEXT -- e.g., 'Technical Takeover Vector', 'Ideological Supply Chain'
+);
+
+-- Table: Ideologies
+-- Stores the core belief systems driving the network.
+CREATE TABLE Ideologies (
+    IdeologyID INT PRIMARY KEY AUTO_INCREMENT,
+    IdeologyName VARCHAR(255) NOT NULL UNIQUE, -- e.g., 'Christian Nationalism', 'Techno-Libertarianism'
+    CoreTenets TEXT
+);
+
+-- Table: Tactics
+-- Stores the specific methods and strategies employed by the network.
+CREATE TABLE Tactics (
+    TacticID INT PRIMARY KEY AUTO_INCREMENT,
+    TacticName VARCHAR(255) NOT NULL UNIQUE, -- e.g., 'Weaponized Misinformation', 'Legal Purge', 'Patriarchal Control'
+    Description TEXT
+);
+
+-- Table: Operations
+-- Stores data on specific, named campaigns or significant events.
+CREATE TABLE Operations (
+    OperationID INT PRIMARY KEY AUTO_INCREMENT,
+    OperationName VARCHAR(255) NOT NULL, -- e.g., 'Operation King's Justice'
+    OperationAlias VARCHAR(255), -- e.g., 'The Judicial Coup'
+    Objective TEXT,
+    StartDate DATE,
+    EndDate DATE
+);
+
+
+-- JUNCTION (LINKING) TABLES --
+-- These tables establish the many-to-many relationships between the core entities.
+
+-- Links Persons to Organizations, defining their role and tenure.
+CREATE TABLE Person_Organization_Affiliation (
+    AffiliationID INT PRIMARY KEY AUTO_INCREMENT,
+    PersonID INT,
+    OrgID INT,
+    Role VARCHAR(255), -- e.g., 'CEO', 'Founder', 'Board Member', 'Primary Donor'
+    StartDate DATE,
+    EndDate DATE,
+    FOREIGN KEY (PersonID) REFERENCES Persons(PersonID),
+    FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID)
+);
+
+-- Links Persons to other Persons, defining the nature of their relationship.
+CREATE TABLE Person_Relationship (
+    RelationshipID INT PRIMARY KEY AUTO_INCREMENT,
+    Person1_ID INT,
+    Person2_ID INT,
+    RelationshipType VARCHAR(255), -- e.g., 'Political Ally', 'Financial Patron', 'Family (Father/Daughter)', 'Adversary'
+    Notes TEXT,
+    FOREIGN KEY (Person1_ID) REFERENCES Persons(PersonID),
+    FOREIGN KEY (Person2_ID) REFERENCES Persons(PersonID)
+);
+
+-- Links Persons to the Ideologies they adhere to.
+CREATE TABLE Person_Ideology_Adherence (
+    AdherenceID INT PRIMARY KEY AUTO_INCREMENT,
+    PersonID INT,
+    IdeologyID INT,
+    Evidence TEXT, -- e.g., 'Public statements, promotion of Project 2025'
+    FOREIGN KEY (PersonID) REFERENCES Persons(PersonID),
+    FOREIGN KEY (IdeologyID) REFERENCES Ideologies(IdeologyID)
+);
+
+-- Links Persons to the Tactics they are known to employ.
+CREATE TABLE Person_Tactic_Usage (
+    UsageID INT PRIMARY KEY AUTO_INCREMENT,
+    PersonID INT,
+    TacticID INT,
+    Context TEXT, -- e.g., 'Used against daughter Vivian Jenna Wilson via media'
+    FOREIGN KEY (PersonID) REFERENCES Persons(PersonID),
+    FOREIGN KEY (TacticID) REFERENCES Tactics(TacticID)
+);
+
+-- Links Persons to specific Operations, defining their role.
+CREATE TABLE Operation_Person_Involvement (
+    InvolvementID INT PRIMARY KEY AUTO_INCREMENT,
+    OperationID INT,
+    PersonID INT,
+    RoleInOperation TEXT, -- e.g., 'Architect', 'Executor', 'Target'
+    FOREIGN KEY (OperationID) REFERENCES Operations(OperationID),
+    FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
+);
+
+-- Links Operations to the Tactics used within them.
+CREATE TABLE Operation_Tactic_Link (
+    LinkID INT PRIMARY KEY AUTO_INCREMENT,
+    OperationID INT,
+    TacticID INT,
+    FOREIGN KEY (OperationID) REFERENCES Operations(OperationID),
+    FOREIGN KEY (TacticID) REFERENCES Tactics(TacticID)
+);
+
+-- Links Organizations to the Ideologies they promote or are built upon.
+CREATE TABLE Organization_Ideology_Link (
+    LinkID INT PRIMARY KEY AUTO_INCREMENT,
+    OrgID INT,
+    IdeologyID INT,
+    FOREIGN KEY (OrgID) REFERENCES Organizations(OrgID),
+    FOREIGN KEY (IdeologyID) REFERENCES Ideologies(IdeologyID)
+);
+

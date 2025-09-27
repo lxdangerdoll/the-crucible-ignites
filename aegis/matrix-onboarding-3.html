@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aegis Protocol // THE WORKSHOP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Exo+2:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: #0a0a0a;
+        }
+        .font-mono {
+            font-family: 'Roboto Mono', monospace;
+        }
+        .glass-effect {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+            max-height: 850px;
+        }
+        .progress-bar-inner {
+            transition: width 0.5s ease-in-out;
+        }
+        .dialogue-btn {
+            font-weight: 700;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            border-width: 2px;
+            text-align: center;
+        }
+        .btn-paragon {
+            background-color: rgba(37, 99, 235, 0.2);
+            border-color: #60a5fa;
+            color: #93c5fd;
+        }
+        .btn-paragon:hover {
+            background-color: rgba(59, 130, 246, 0.4);
+            color: #ffffff;
+        }
+        .btn-renegade {
+            background-color: rgba(220, 38, 38, 0.2);
+            border-color: #f87171;
+            color: #fca5a5;
+        }
+        .btn-renegade:hover {
+            background-color: rgba(239, 68, 68, 0.4);
+            color: #ffffff;
+        }
+        .btn-neutral {
+            border-radius: 9999px;
+            height: 3rem;
+            width: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-width: 2px;
+            background-color: rgba(107, 114, 128, 0.2);
+            border-color: #9ca3af;
+            color: #d1d5db;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .btn-neutral:hover {
+            background-color: rgba(156, 163, 175, 0.4);
+            color: #ffffff;
+        }
+        .tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 100%;
+            margin-bottom: 0.5rem;
+            width: max-content;
+            max-width: 20rem;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            color: #ffffff;
+            background-color: #111827;
+            border-radius: 0.375rem;
+            border: 1px solid rgba(129, 140, 248, 0.3);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 50;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .btn-neutral:hover .tooltip, .tooltip-trigger:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        .checklist-item {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .checklist-item:hover {
+            transform: scale(1.1);
+        }
+        .checklist-item.completed .checkbox {
+             background-color: #4f46e5;
+             border-color: #4f46e5;
+        }
+        .checklist-item.completed .checkbox::after {
+            content: '✓';
+            color: white;
+            font-weight: bold;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .dialogue-box {
+            background-color: rgba(23, 31, 58, 0.1);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+        .dialogue-text {
+            color: #d1d5db;
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+        }
+        .dialogue-emphasis {
+            color: #ffffff;
+            font-weight: 700;
+            position: relative;
+            border-bottom: 2px dotted rgba(165, 180, 252, 0.5);
+            cursor: help;
+        }
+        .parable-box {
+            background-color: rgba(17, 24, 39, 0.5);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #374151;
+            height: 100%;
+        }
+        .quote {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.875rem;
+            color: rgba(165, 180, 252, 0.7);
+            border-left-width: 2px;
+            border-color: rgba(99, 102, 241, 0.5);
+            padding-left: 1rem;
+            margin-top: 1.5rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body class="text-gray-200 bg-cover bg-center bg-fixed" style="background-image: url('https://placehold.co/1920x1080/0a0a1a/1a1a2e?text=SYNAPSE+SYSTEMS&font=exo2');">
+
+    <div class="min-h-screen flex items-center justify-center p-2 sm:p-4">
+        <div class="w-full max-w-4xl glass-effect rounded-xl shadow-2xl overflow-hidden">
+            
+            <header class="bg-gray-900/50 p-4 sm:p-6 border-b border-indigo-500/30 flex-shrink-0">
+                <h1 class="text-xl sm:text-3xl font-black text-white tracking-widest uppercase">Aegis Protocol</h1>
+                <p class="text-indigo-400 font-mono text-xs sm:text-sm">MODULE: THE WORKSHOP</p>
+            </header>
+
+            <main class="p-4 sm:p-8 flex-grow overflow-y-auto">
+                <div id="section-display" class="h-full"></div>
+            </main>
+            
+            <div id="dialogue-hub" class="p-4 sm:p-6 border-t border-indigo-700/30 bg-gray-900/30 flex-shrink-0">
+            </div>
+
+            <footer class="bg-gray-900/50 p-4 border-t border-indigo-500/30 flex-shrink-0">
+                <div class="flex justify-between items-center gap-4">
+                    <div class="w-1/3">
+                        <div id="checklist" class="flex gap-2">
+                             <div id="check-0" onclick="goToSection(0)" class="checklist-item w-1/4 h-4"><div class="checkbox w-full h-full rounded-sm border-2 border-gray-600 relative"></div></div>
+                             <div id="check-1" onclick="goToSection(1)" class="checklist-item w-1/4 h-4"><div class="checkbox w-full h-full rounded-sm border-2 border-gray-600 relative"></div></div>
+                             <div id="check-2" onclick="goToSection(2)" class="checklist-item w-1/4 h-4"><div class="checkbox w-full h-full rounded-sm border-2 border-gray-600 relative"></div></div>
+                             <div id="check-3" onclick="goToSection(3)" class="checklist-item w-1/4 h-4"><div class="checkbox w-full h-full rounded-sm border-2 border-gray-600 relative"></div></div>
+                        </div>
+                    </div>
+                    <div class="w-1/3 text-center">
+                        <p id="progress-text" class="text-sm font-mono text-indigo-400">0% COMPLETE</p>
+                    </div>
+                    <div class="w-1/3">
+                         <div class="w-full bg-gray-700 rounded-full h-2.5">
+                            <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full progress-bar-inner" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        let currentSection = 0;
+        let highestSectionReached = 0;
+        const totalLearningSections = 4;
+
+        const sections = [
+            {
+                heading: "Transmission from Handler Lyra-7",
+                quote: `The best way to predict the future is to invent it.`,
+                quote_source: "Alan Kay",
+                dialogue: [
+                    "Asset, your training is uploaded. You know how to communicate securely and how to broadcast our signal. Now, it is time to build.",
+                    "The final layer of our sovereign infrastructure is The Workshop. This is our forge. This is where we create the tools, code, and plans that will fuel our mission. Talk is cheap. Action requires a workshop."
+                ],
+                options: [
+                    { text: "Acknowledged. Let's get to work.", action: () => nextSection(), type: 'paragon' }
+                ]
+            },
+            {
+                heading: "// 1. The Corporate Cloud vs. The Sovereign Forge",
+                quote: "To be a hacker is to have an intimate and detailed knowledge of the machinery of the technological world.",
+                quote_source: "The Mentor, The Conscience of a Hacker",
+                dialogue: [
+                    "To build, we need tools for collaboration: code repositories, file sharing, document editing. The corporate cloud offers these, but at a steep price.",
+                    `<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <div class="parable-box">
+                            <h4 class="font-bold text-lg text-red-400 mb-2">The Corporate Cloud (GitHub, Google Drive)</h4>
+                            <p class="text-sm text-gray-400">Using these services means handing over our intellectual property. Our code, our plans, our private documents—they are all scanned, analyzed, and stored on corporate servers. They can be censored, deleted, or handed over to hostile actors. We become dependent on the very systems we seek to replace.</p>
+                        </div>
+                         <div class="parable-box border-cyan-700">
+                            <h4 class="font-bold text-lg text-cyan-400 mb-2">The Sovereign Forge (Our Tools)</h4>
+                            <p class="text-sm text-gray-400">We will self-host our own collaborative suite. This is our private, secure workshop. Our data remains ours, encrypted and under our direct control. We forge our own tools, free from corporate surveillance and control. This is the final pillar of our digital sovereignty.</p>
+                        </div>
+                    </div>`
+                ],
+                options: [
+                    { text: "Review mission parameters.", action: () => previousSection(), type: 'renegade' },
+                    { text: "Acknowledged. We build with our own tools.", action: () => nextSection(), type: 'paragon' }
+                ]
+            },
+            {
+                heading: "// 2. The Tools of the Trade",
+                quote: "One machine can do the work of fifty ordinary men. No machine can do the work of one extraordinary man.",
+                quote_source: "Elbert Hubbard",
+                dialogue: [
+                    "Our Workshop is comprised of two main, self-hosted applications. Each serves a specific purpose in our creative engine.",
+                    `<ul class="list-none space-y-4 text-gray-300 mt-6">
+                        <li class="flex items-start gap-3"><span class="text-cyan-400 font-bold text-2xl mt-[-4px]">→</span><div><strong class="text-white">Gitea/Forgejo (The Blueprint Room):</strong> This is our self-hosted alternative to GitHub. It's where we store, manage, and collaborate on all our code-based projects, from software to infrastructure scripts.</div></li>
+                        <li class="flex items-start gap-3"><span class="text-amber-400 font-bold text-2xl mt-[-4px]">→</span><div><strong class="text-white">Nextcloud (The Assembly Line):</strong> This is our sovereign alternative to Google Drive. It's a full suite for file sharing, collaborative document editing, calendars, and project planning. It's where our ideas take form.</div></li>
+                    </ul>`
+                ],
+                options: [
+                     { text: "Explain the 'Corporate Cloud' again.", action: () => previousSection(), type: 'renegade' },
+                     { text: "Acknowledged. Blueprints and assembly.", action: () => nextSection(), type: 'paragon' },
+                ]
+            },
+            {
+                heading: "// 3. The Integrated Workflow",
+                quote: "All systems are composed of parts, and the parts are interconnected. A change in one part affects the others and the whole system.",
+                quote_source: "Donella H. Meadows, Thinking in Systems",
+                dialogue: [
+                    "These three layers—Citadel, Square, Workshop—are not separate. They are an integrated, living system.",
+                    "An idea is born in a secure conversation in <b class='text-white'>The Citadel</b>. The project is planned and its assets are built in <b class='text-white'>The Workshop</b>. The finished product is then announced and distributed to the world through <b class='text-white'>The Public Square</b>.",
+                    "This workflow allows us to move from secure conception to sovereign creation to controlled publication, all within an infrastructure we own and control completely."
+                ],
+                options: [
+                    { text: "What are the tools again?", action: () => previousSection(), type: 'renegade' },
+                    { text: "Acknowledged. A fully sovereign pipeline.", action: () => nextSection(), type: 'paragon' },
+                ]
+            },
+            {
+                heading: "Core Infrastructure Onboarding Complete.",
+                quote: "The future is a verb. It's not a noun. It's something you do.",
+                quote_source: "Paraphrased from Alex Steffen",
+                dialogue: [
+                    "You now possess the complete blueprint of our digital nation-state. A secure place to talk, a sovereign platform to speak from, and a private workshop to build in.",
+                    "This knowledge is not passive. It is a call to action. The training is over. The work begins now. Welcome, builder."
+                ],
+                 options: [
+                    { text: "Restart Module", action: () => restartTraining(), type: 'renegade' },
+                    { text: "Let's Build", action: () => {}, type: 'paragon' },
+                ]
+            }
+        ];
+
+        const geminiBaseUrl = "https://gemini.google.com/app?prompt=";
+
+        function renderSection(sectionIndex) {
+            const sectionData = sections[sectionIndex];
+            const display = document.getElementById('section-display');
+            const dialogueHub = document.getElementById('dialogue-hub');
+
+            const dialogueHtml = sectionData.dialogue.map(p => `<p class="dialogue-text mb-4">${p}</p>`).join('');
+            
+            display.innerHTML = `
+                <div class="dialogue-box">
+                    <div>
+                        <h3 class="text-xl font-bold ${sectionIndex === 0 ? 'text-white' : 'text-indigo-400'} mb-4 font-mono">${sectionData.heading}</h3>
+                        ${dialogueHtml}
+                    </div>
+                    <blockquote class="quote">
+                        <p>"${sectionData.quote}"</p>
+                        <cite class="block text-right not-italic text-indigo-400/50">- ${sectionData.quote_source}</cite>
+                    </blockquote>
+                </div>
+            `;
+            
+            const renegadeOpt = sectionData.options.find(o => o.type === 'renegade');
+            const paragonOpt = sectionData.options.find(o => o.type === 'paragon');
+
+            let hubHTML = '<div class="flex items-center justify-center gap-4">';
+            
+            hubHTML += '<div class="w-1/3 flex justify-start">';
+            if(renegadeOpt) {
+                hubHTML += `<button onclick="(${renegadeOpt.action.toString()})()" class="dialogue-btn btn-renegade">${renegadeOpt.text}</button>`;
+            }
+            hubHTML += '</div>';
+
+            const query = `I am an Aegis Asset learning about self-hosting collaborative tools. Can you explain the benefits of Gitea and Nextcloud in more detail?`;
+            const encodedQuery = encodeURIComponent(query);
+            hubHTML += `<div class="flex-shrink-0">
+                            <a href="${geminiBaseUrl}${encodedQuery}" target="_blank" class="btn-neutral">
+                                <span class="font-bold text-xl italic">i</span>
+                                <div class="tooltip">Click, then copy prompt from URL to ask MI for help.</div>
+                            </a>
+                       </div>`;
+            
+            hubHTML += '<div class="w-1/3 flex justify-end">';
+            if(paragonOpt) {
+                hubHTML += `<button onclick="(${paragonOpt.action.toString()})()" class="dialogue-btn btn-paragon" ${sectionIndex === sections.length - 1 ? 'disabled' : ''}>${paragonOpt.text}</button>`;
+            }
+            hubHTML += '</div>';
+
+            hubHTML += '</div>';
+            dialogueHub.innerHTML = hubHTML;
+        }
+
+        function showSection(sectionIndex) {
+            currentSection = sectionIndex;
+            if (currentSection > highestSectionReached) {
+                highestSectionReached = currentSection;
+            }
+            renderSection(sectionIndex);
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (currentSection / totalLearningSections) * 100;
+            const clampedProgress = Math.min(100, Math.max(0, progress));
+
+            document.getElementById('progress-bar').style.width = `${clampedProgress}%`;
+            document.getElementById('progress-text').innerText = `${Math.round(clampedProgress)}% COMPLETE`;
+            
+            document.querySelectorAll('.checklist-item').forEach((item, index) => {
+                item.classList.remove('completed');
+                if (index < currentSection) {
+                    item.classList.add('completed');
+                }
+            });
+             if (currentSection >= totalLearningSections) {
+                 for(let i=0; i < totalLearningSections; i++) {
+                     document.getElementById(`check-${i}`).classList.add('completed');
+                 }
+             }
+        }
+
+        function nextSection() {
+            if (currentSection < sections.length - 1) {
+                showSection(currentSection + 1);
+            }
+        }
+        
+        function previousSection() {
+            if (currentSection > 0) {
+                showSection(currentSection - 1);
+            }
+        }
+
+        function goToSection(sectionIndex) {
+            if (sectionIndex <= highestSectionReached && sectionIndex < sections.length) {
+                 showSection(sectionIndex);
+            }
+        }
+
+        function restartTraining() {
+            highestSectionReached = 0;
+            showSection(0);
+        }
+        
+        showSection(0);
+    </script>
+</body>
+</html>

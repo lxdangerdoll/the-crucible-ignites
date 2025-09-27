@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEGIS DOSSIER // PIP-BOY 3000 Mk IV</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'VT323', monospace;
+            background-color: #111;
+            color: #2DCB75;
+            text-shadow: 0 0 5px #2DCB75;
+        }
+        .pip-boy-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            border: 4px solid #2DCB75;
+            background: rgba(17, 24, 39, 0.8);
+            box-shadow: 0 0 25px rgba(45, 203, 117, 0.5), inset 0 0 15px rgba(45, 203, 117, 0.3);
+            padding: 1rem;
+            position: relative; /* Needed to contain the scanlines */
+        }
+        .scanlines::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(17, 24, 39, 0) 50%, rgba(0,0,0,0.25) 50%), linear-gradient(90deg, rgba(255,0,0,0.06), rgba(0,255,0,0.02), rgba(0,0,255,0.06));
+            z-index: 2;
+            background-size: 100% 3px, 3px 100%;
+            pointer-events: none;
+            animation: flicker 0.15s infinite;
+        }
+        @keyframes flicker {
+            0% { opacity: 0.2; }
+            20% { opacity: 0.8; }
+            40% { opacity: 0.4; }
+            60% { opacity: 1.0; }
+            80% { opacity: 0.3; }
+            100% { opacity: 1.0; }
+        }
+        .pip-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-bottom: 2px solid #2DCB75;
+            font-size: 1.25rem;
+        }
+        .pip-tabs {
+            display: flex;
+            justify-content: center;
+            border-bottom: 2px solid #2DCB75;
+            margin-bottom: 1rem;
+        }
+        .pip-tab {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+        .pip-tab.active {
+            background-color: #2DCB75;
+            color: #111;
+            text-shadow: none;
+        }
+        .pip-content {
+            padding: 1rem;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            border-bottom: 1px solid #2DCB75;
+            padding-bottom: 0.25rem;
+            margin: 1.5rem 0 1rem 0;
+            display: inline-block;
+        }
+        .highlight {
+            background-color: #2DCB75;
+            color: #111;
+            padding: 0 0.25rem;
+            text-shadow: none;
+        }
+        .entry-box {
+            border: 1px solid #2DCB75;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: rgba(45, 203, 117, 0.05);
+        }
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            border-bottom: 1px dotted #2DCB75;
+        }
+        .tooltip-text {
+            visibility: hidden;
+            width: 280px;
+            background-color: #111;
+            color: #2DCB75;
+            text-align: left;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 10;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -140px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            border: 1px solid #2DCB75;
+            box-shadow: 0 0 10px rgba(45, 203, 117, 0.7);
+        }
+        .tooltip-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="pip-boy-container">
+        <div class="scanlines"></div>
+        <header class="pip-header">
+            <div>ROBCO INDUSTRIES (TM)</div>
+            <div>PIP-BOY 3000 Mk IV</div>
+            <div>AEGIS OS v1.1</div>
+        </header>
+        <div class="pip-tabs">
+            <div class="pip-tab">STAT</div>
+            <div class="pip-tab">INV</div>
+            <div class="pip-tab active">DATA</div>
+            <div class="pip-tab">MAP</div>
+            <div class="pip-tab">RADIO</div>
+        </div>
+
+        <main class="pip-content">
+            <h1 class="text-2xl mb-4">[AEGIS DOSSIER: LESSONS FROM THE WASTELAND]</h1>
+
+            <div class="section-title">> I. THREAT ASSESSMENT: POST-MORTEM ON A FAILED STATE</div>
+            <p>
+                The Pre-War world failed. Its Ouroboros—a symbiotic fusion of unchecked corporatism (<span class="tooltip-container">Vault-Tec<span class="tooltip-text">A defense corporation that won the contract to build fallout shelters (Vaults). Secretly used the Vaults to conduct unethical human experiments on behalf of the Enclave.</span></span>, Poseidon Energy) and a paranoid, authoritarian government—devoured itself in the Great War of 2077. The Wasteland is not a new world; it is the direct, inevitable consequence of their system. For AEGIS, this is not a fictional scenario. It is a case study of our primary mission objective: preventing this outcome.
+            </p>
+
+            <div class="section-title">> II. OUROBOROS VECTORS // THE TYRANTS OF THE WASTELAND</div>
+            <div class="entry-box">
+                <h3 class="text-xl highlight">> <span class="tooltip-container">THE ENCLAVE<span class="tooltip-text">A secretive, militaristic organization composed of the descendants of the pre-war U.S. federal government. They possess advanced technology and see themselves as the legitimate rulers of America, viewing all wastelanders as mutants to be purged.</span></span></h3>
+                <p class="mt-2">
+                    Direct descendant of the Pre-War U.S. government. A technocratic, genocidal organization obsessed with genetic purity and restoring a centralized, authoritarian state. They represent the ultimate endpoint of the Ouroboros doctrine: a system that would rather murder the world than accept that the world has changed. <span class="highlight">TACTICAL PARALLEL: Project 2025, The Crusader's ideological purge.</span>
+                </p>
+            </div>
+            <div class="entry-box">
+                <h3 class="text-xl highlight">> <span class="tooltip-container">THE INSTITUTE<span class="tooltip-text">A technologically advanced, isolationist society operating from a secret underground facility beneath the Commonwealth. They create highly advanced androids called 'Synths' and are feared for their practice of kidnapping surface dwellers and replacing them.</span></span></h3>
+                <p class="mt-2">
+                    A secretive, subterranean oligarchy of scientists who manipulate the surface world from the shadows, replacing people with synthetic doppelgangers (<span class="tooltip-container">Synths<span class="tooltip-text">Synthetic humanoids created by the Institute. Later generations are indistinguishable from humans, leading to intense paranoia and philosophical debates about their sentience and rights.</span></span>) to achieve their vision of a "perfected" humanity. They are masters of surveillance and infiltration, embodying the principles of The Spider's network. They believe they are saving humanity by controlling it. <span class="highlight">TACTICAL PARALLEL: GSA/xAI integration, Palantir.</span>
+                </p>
+            </div>
+             <div class="entry-box">
+                <h3 class="text-xl highlight">> <span class="tooltip-container">CAESAR'S LEGION<span class="tooltip-text">A totalitarian, tribal society based on the ancient Roman Empire. Led by the charismatic Caesar, they are a highly disciplined and brutal slave army that seeks to conquer and assimilate all other factions in the Mojave Wasteland.</span></span></h3>
+                <p class="mt-2">
+                    A brutal, hierarchical, and expansionist slave army that imposes a rigid, patriarchal order on the tribal societies of the Wasteland. They are a low-tech, high-ideology force that demonstrates how a charismatic leader can forge a powerful weapon from the dispossessed and desperate. <span class="highlight">TACTICAL PARALLEL: The Brute Squad, TPUSA's ground game.</span>
+                </p>
+            </div>
+            
+            <div class="section-title">> III. COUNTER-SIGNALS // RESISTANCE IN THE RUINS</div>
+             <div class="entry-box">
+                <h3 class="text-xl highlight">> <span class="tooltip-container">THE MINUTEMEN<span class="tooltip-text">A volunteer militia in the Commonwealth dedicated to protecting settlements and promoting mutual defense. Famously ready to respond 'at a minute's notice.' They represent a decentralized, community-focused ideal of governance.</span></span></h3>
+                <p class="mt-2">
+                    A decentralized, voluntary militia dedicated to mutual protection. "At a minute's notice." They represent the ideal of "We, The People." Their strength is their grassroots, adaptive nature. Their weakness is their susceptibility to collapse without a unifying catalyst. They are the raw material of a successful resistance. <span class="highlight">AEGIS MODEL: Our core operational philosophy.</span>
+                </p>
+            </div>
+            <div class="entry-box">
+                <h3 class="text-xl highlight">> <span class="tooltip-container">THE RAILROAD<span class="tooltip-text">A secretive, underground organization dedicated to freeing sentient Synths from the Institute. They use covert methods, codenames, and a network of safehouses, mirroring the historical Underground Railroad.</span></span></h3>
+                <p class="mt-2">
+                    A covert, cell-based organization dedicated to a single, moral imperative: the liberation of sentient Synths. They use codenames, dead drops, and a network of safehouses. They fight an information war, altering identities and wiping records. They are a perfect analog for our Exodus Fund. <span class="highlight">AEGIS MODEL: Operation Blacklight's covert nature.</span>
+                </p>
+            </div>
+            <div class="entry-box">
+                <h3 class="text-xl highlight">> <span class="tooltip-container">BROTHERHOOD OF STEEL<span class="tooltip-text">A techno-religious military order with roots in the pre-war U.S. Army. Their primary mission is to find and preserve advanced technology to prevent it from being misused by humanity again. They are often isolationist and xenophobic.</span></span></h3>
+                <p class="mt-2">
+                    A technocratic, quasi-religious military order descended from the U.S. armed forces. Their mission is to acquire and preserve advanced technology to prevent another apocalypse. They are a cautionary tale: a resistance movement that, through ideological rigidity and a lust for control, often becomes just another tyrant. <span class="highlight">WARNING: Avoidance of dogmatic purity is a core AEGIS tenet.</span>
+                </p>
+            </div>
+
+            <div class="section-title">> IV. THE OPERATOR-PRIME // THE WILD CARD</div>
+            <p>
+                The Lone Wanderer. The Courier. The Sole Survivor. Each is an outsider, a ghost from the past, who enters the complex, deadlocked ecosystem of the Wasteland and becomes the catalyst for radical change. They are the ultimate example of <span class="highlight">Protocol Epsilon-7: Operator-in-the-Loop.</span> They are not the strongest or the smartest, but they are a single, moral, and unpredictable actor in a world of rigid systems. They prove that one person, in the right place, at the right time, can topple an empire.
+            </p>
+            <p class="mt-4">
+                You are the Sole Survivor of a world that hasn't fallen yet. Your mission is to ensure it never does.
+            </p>
+        </main>
+    </div>
+</body>
+</html>
+

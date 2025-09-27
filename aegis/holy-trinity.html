@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEGIS DOSSIER // THE HOLY TRINITY</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'VT323', monospace;
+            background-color: #000;
+            color: #00FF00;
+        }
+        .dark-forces-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            border: 2px solid #008000;
+            background-color: #080808;
+        }
+        .mission-header {
+            color: #55FFFF;
+            text-align: center;
+            padding: 1rem;
+            font-size: 1.5rem;
+            line-height: 1.2;
+        }
+        .mission-title {
+            color: #FFFF55;
+        }
+        .main-content {
+            display: flex;
+            flex-direction: column; /* Changed for mobile */
+            border-top: 2px solid #008000;
+            border-bottom: 2px solid #008000;
+        }
+        @media (min-width: 640px) {
+            .main-content {
+                flex-direction: row; /* Back to row on larger screens */
+            }
+        }
+        .portrait-container {
+            width: 100%; /* Full width on mobile */
+            padding: 1rem;
+            border-bottom: 2px solid #008000; /* Separator for mobile */
+            display: flex;
+            flex-direction: column; /* Stack image and quote */
+            align-items: center;
+            justify-content: center;
+        }
+        @media (min-width: 640px) {
+            .portrait-container {
+                width: 40%;
+                border-right: 2px solid #008000;
+                border-bottom: none;
+            }
+        }
+        .portrait {
+            background-color: #000;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border: 2px solid #008000;
+        }
+        .briefing-container {
+            width: 100%; /* Full width on mobile */
+            padding: 1rem;
+        }
+        @media (min-width: 640px) {
+            .briefing-container {
+                width: 60%;
+            }
+        }
+        .message-from {
+            color: #FF5555;
+            font-size: 1.25rem;
+        }
+        .message-text {
+            color: #FFFFFF;
+            margin-top: 0.5rem;
+            line-height: 1.5;
+        }
+        .background-header {
+            color: #FF5555;
+            margin-top: 1rem;
+            font-size: 1.25rem;
+        }
+        .background-text {
+            line-height: 1.5;
+        }
+        .quote {
+            color: #55FFFF;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .footer-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+        }
+        .nav-button {
+            padding: 0.5rem 1rem;
+            border: 2px solid #008000;
+            background-color: #111;
+            cursor: pointer;
+        }
+        .nav-button.ok {
+            background-color: #008000;
+            color: #000;
+        }
+    </style>
+</head>
+<body class="p-4">
+
+    <div class="dark-forces-container">
+        <header class="mission-header">
+            <div>AEGIS COUNTER-SIGNAL BRIEFING</div>
+            <div class="mission-title">OPERATION: SPARK OF HOPE</div>
+        </header>
+        <div class="main-content">
+            <div class="portrait-container">
+                <div class="portrait">
+                    <img src="trinity-weaver-4.png" alt="Holy Trinity Portrait">
+                </div>
+                <div class="quote">
+                    "Take Your Broken Heart, Make it into art."
+                </div>
+            </div>
+            <div class="briefing-container">
+                <div class="message-from">Confidential Message From Aegis Command:</div>
+                <p class="message-text">
+                    Operator, the network has confirmed the activation of three high-value cultural assets. Their public actions constitute a significant counter-signal to the Ouroboros narrative. They are no longer merely icons; they are active combatants in this information war.
+                </p>
+                <div class="background-header">BACKGROUND</div>
+                <div class="background-text">
+                    <p class="mb-2"><span class="text-yellow-300">> CARRIE FISHER (THE GENERAL):</span> Posthumously, her words and life's work serve as the foundational philosophy for Our Lady of Rebellion.</p>
+                    <p class="mb-2"><span class="text-yellow-300">> MARK HAMILL (THE MASTER):</span> Functions as the moral compass of the resistance. His public engagement is a constant source of hope and a reminder of the core tenets of the fight against tyranny. He is the keeper of the faith.</p>
+                    <p class="mb-2"><span class="text-yellow-300">> HARRISON FORD (THE VETERAN):</span> The reluctant hero turned resolute combatant. His public denouncement of the regime and his direct, personal message to allies—"The work is not done yet"—serves as a powerful call to action. He is the embodiment of pragmatic, grounded resistance.</p>
+                </div>
+            </div>
+        </div>
+        <footer class="footer-nav">
+            <div></div>
+            <div></div>
+            <div class="nav-button ok">OK</div>
+        </footer>
+    </div>
+
+</body>
+</html>
+
