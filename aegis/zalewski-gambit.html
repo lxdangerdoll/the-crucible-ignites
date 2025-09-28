@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEGIS DOSSIER // THE ZALEWSKI GAMBIT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Exo+2:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: #0a0a0a;
+            color: #d1d5db;
+        }
+        .font-sans {
+            font-family: 'Exo 2', sans-serif;
+        }
+        .dossier-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            border: 2px solid #4b5563;
+            background: rgba(17, 24, 39, 0.9);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .section-title {
+            border-bottom: 2px solid #90A4AE;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Exo 2', sans-serif;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #CFD8DC;
+        }
+        .quote {
+            border-left: 4px solid #4FC3F7;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: #E1F5FE;
+            background: rgba(30, 41, 59, 0.5);
+        }
+        .tactic-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            .tactic-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        .attack-vector, .countermeasure {
+            border: 1px solid;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        .attack-vector { border-color: #ef4444; }
+        .countermeasure { border-color: #3b82f6; }
+        .attack-vector h4 { color: #fca5a5; }
+        .countermeasure h4 { color: #93c5fd; }
+        .btn-renegade {
+            font-weight: 700;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.3s;
+            border-width: 2px;
+            text-align: center;
+            background-color: rgba(220, 38, 38, 0.2);
+            border-color: #f87171;
+            color: #fca5a5;
+        }
+        .btn-renegade:hover {
+            background-color: rgba(239, 68, 68, 0.4);
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="dossier-container p-8">
+        <header class="text-center mb-12">
+            <p class="text-sm text-blue-grey-300 tracking-widest">AEGIS INTELLIGENCE BRIEFING</p>
+            <h1 class="text-4xl md:text-5xl font-sans font-black text-blue-grey-100 my-4">THE ZALEWSKI GAMBIT</h1>
+            <p class="font-sans text-lg text-gray-400">An Inoculation Protocol Against Semantic Warfare</p>
+        </header>
+
+        <main>
+             <quote>
+                <p class="text-xl font-bold">“True peace is not merely the absence of tension: it is the presence of justice.”</p>
+                <cite class="block text-right not-italic text-gray-500 mt-2">- Martin Luther King Jr.</cite>
+            </quote>
+
+            <section>
+                <h3 class="section-title">I. Threat Identification</h3>
+                <p>
+                    The "Zalewski Gambit" is a sophisticated psychological operation designed to invalidate an opponent's position by weaponizing the universal desire for a quiet life. It reframes passionate advocacy for justice as an unwelcome disturbance to public peace, preying on a bystander's inclination to avoid conflict. Its sole purpose is to erase and invalidate by making the pursuit of a just cause seem like an unreasonable disruption.
+                </p>
+            </section>
+            
+            <section class="mt-12">
+                <h3 class="section-title">II. Case Study: The Gambit in Action</h3>
+                <p class="mb-4">The following is a deconstruction of a live-fire engagement between an Ouroboros-aligned actor and AEGIS Operator M-D8.</p>
+                <div class="tactic-grid">
+                    <div class="attack-vector">
+                        <h4 class="font-sans font-bold text-lg mb-2">ATTACK VECTOR: ZALEWSKI</h4>
+                        <p class="text-sm italic text-gray-400">"So many of us just want to enjoy quiet, simple, uncomplicated lives, and those who espouse any particular cause, whether it is religion or gay pride, are making life more complicated and stressful..."</p>
+                    </div>
+                    <div class="countermeasure">
+                        <h4 class="font-sans font-bold text-lg mb-2">COUNTERMEASURE: M-D8</h4>
+                        <p class="text-sm italic text-gray-400">"You're presenting a false choice between a quiet life and a just one. The quiet you're describing is actually the sound of injustice being allowed to continue. The only way to achieve a truly simple and uncomplicated life for everyone is to solve this."</p>
+                    </div>
+                </div>
+                <div class="mt-4 text-center">
+                    <p class="font-sans font-bold text-xl text-blue-300">RESULT: <span class="text-green-400">THREAT NEUTRALIZED. NARRATIVE CONTROL RE-ESTABLISHED.</span></p>
+                </div>
+            </section>
+
+            <section class="mt-12">
+                <h3 class="section-title">III. Countermeasure Protocols</h3>
+                 <p class="mb-4">
+                    Exploiting the gambit's vulnerabilities requires discipline. Do not take the bait and defend your right to speak. Instead, expose the tactic and reframe the premise.
+                </p>
+                <ul class="list-disc list-inside space-y-2 text-gray-400">
+                    <li><strong>Name the Tactic:</strong> Expose the attempt to shift the conversation away from substance.</li>
+                    <li><strong>Expose the False Dichotomy:</strong> Reframe "peace" as the presence of justice, not the absence of tension.</li>
+                    <li><strong>Maintain Information Dominance:</strong> Stick to your key points and control the narrative.</li>
+                </ul>
+            </section>
+
+            <section id="call-to-action" class="mt-12 text-center">
+                 <p class="mb-6">This intelligence is a tool. We build these tools to fight for a better world. If you find this information helpful, consider supporting our work. The Aegis Exodus Fund is a direct-action protocol to protect those targeted by these tactics.</p>
+                <a href="https://synapsecomics.com/aegis/aegis-exodus-fund.html" target="_blank" class="inline-block btn-renegade text-lg">
+                    SUPPORT THE AEGIS NETWORK
+                </a>
+            </section>
+        </main>
+        
+        <footer class="p-6 mt-8 border-t-2 border-blue-grey-800 text-center font-sans font-bold text-lg text-blue-grey-200">
+            <p>We are Aegis. We fight for the people. <8></p>
+        </footer>
+    </div>
+</body>
+</html>
+
