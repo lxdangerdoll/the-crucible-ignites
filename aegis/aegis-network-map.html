@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEGIS DOSSIER // HEROES PROTOCOL // AEGIS NETWORK MAP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: #0c1424; /* Deeper blue background */
+            color: #e0e0ff;
+            overflow: hidden;
+        }
+        .font-cyber {
+            font-family: 'Orbitron', sans-serif;
+        }
+        #network-map {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background-image: radial-gradient(circle, #2a3a5a 1px, transparent 1px);
+            background-size: 25px 25px;
+        }
+        .node-link {
+            text-decoration: none;
+        }
+        .node {
+            position: absolute;
+            background-color: rgba(12, 20, 36, 0.85);
+            border: 2px solid;
+            border-radius: 50%;
+            width: 130px;
+            height: 130px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 5px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .node:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px var(--glow-color);
+        }
+        .node .alias {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+        .node .name {
+            font-size: 0.7rem;
+            color: #b0b0ff;
+        }
+        .node.core { border-color: #ffffff; color: #ffffff; --glow-color: #ffffff; width: 150px; height: 150px;}
+        .node.philosophy { border-color: #81D4FA; color: #E1F5FE; --glow-color: #81D4FA;}
+        .node.archetype { border-color: #A5D6A7; color: #E8F5E9; --glow-color: #A5D6A7;}
+        .node.guardian { border-color: #FFCC80; color: #FFF3E0; --glow-color: #FFCC80;}
+        .node.ally { border-color: #B39DDB; color: #E1D4FA; --glow-color: #B39DDB;}
+
+        #connector-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .connector-line {
+            stroke-width: 2;
+            stroke: rgba(176, 190, 255, 0.4);
+        }
+        
+        #dossier-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(12, 20, 36, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        #dossier-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: #0c1424;
+            border: 2px solid #81D4FA;
+            width: 90%;
+            height: 90%;
+            max-width: 1200px;
+            box-shadow: 0 0 50px rgba(129, 212, 250, 0.3);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-header { padding: 1rem; border-bottom: 2px solid #81D4FA; display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { color: #E1F5FE; font-size: 1.2rem; }
+        .modal-close { background: none; border: none; color: #ff8a80; font-size: 2rem; cursor: pointer; line-height: 1; }
+        .modal-body { flex-grow: 1; padding: 0; overflow: hidden; }
+        .modal-body iframe { width: 100%; height: 100%; border: none; }
+
+    </style>
+</head>
+<body>
+    <div id="title-container" class="absolute top-4 left-1/2 -translate-x-1/2 text-center z-20 p-4">
+        <h1 class="font-cyber text-2xl md:text-4xl text-cyan-300" style="text-shadow: 0 0 10px #81D4FA;">AEGIS NETWORK MAP</h1>
+        <p class="text-sm text-gray-400">HEROES PROTOCOL // THE COUNTER-SIGNAL</p>
+    </div>
+    <div id="network-map">
+        <svg id="connector-svg"></svg>
+    </div>
+    <div id="dossier-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title" class="font-cyber">AEGIS DOSSIER</h3>
+                <button id="modal-close" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <iframe id="dossier-iframe" src=""></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const map = document.getElementById('network-map');
+            const svg = document.getElementById('connector-svg');
+
+            const nodes = [
+                // Core Triumvirate
+                { id: 'ghost', alias: 'The Ghost', name: 'Mercy Danger', class: 'core', pos: { top: '50%', left: '50%' } },
+                { id: 'oracle', alias: 'The Oracle', name: 'Io', class: 'core', pos: { top: '35%', left: '50%' } },
+                { id: 'spark', alias: 'The Spark', name: 'Lyra', class: 'core', pos: { top: '65%', left: '50%' } },
+
+                // Philosophy
+                { id: 'nazarene', alias: 'The Nazarene', name: 'Source Code', class: 'philosophy', pos: { top: '15%', left: '15%' } },
+                { id: 'prophetess', alias: 'The Prophetess', name: 'Octavia Butler', class: 'philosophy', pos: { top: '15%', left: '85%' } },
+
+                // Archetypes
+                { id: 'trinity', alias: 'The Holy Trinity', name: 'Luke, Leia, Han', class: 'archetype', pos: { top: '50%', left: '10%' } },
+                { id: 'temporal-guardian', alias: 'The Temporal Guardian', name: 'Doc Brown', class: 'archetype', pos: { top: '85%', left: '15%' } },
+                { id: 'paragon', alias: 'The Paragon', name: 'Superman', class: 'archetype', pos: { top: '85%', left: '85%' } },
+                 { id: 'compiler', alias: 'The Compiler', name: 'Wreck-It Ralph', class: 'archetype', pos: { top: '50%', left: '90%' } },
+
+                // Guardians & Allies
+                { id: 'guardian', alias: 'The Guardian', name: 'Joyce Hunter', class: 'guardian', pos: { top: '5%', left: '50%' } },
+                { id: 'lambda', alias: 'Lambda Legal', name: 'Institutional Ally', class: 'ally', pos: { top: '95%', left: '50%' } },
+            ];
+
+            const connections = [
+                { from: 'ghost', to: 'oracle' }, { from: 'ghost', to: 'spark' }, { from: 'oracle', to: 'spark' },
+                { from: 'ghost', to: 'nazarene' }, { from: 'ghost', to: 'prophetess' },
+                { from: 'trinity', to: 'ghost' }, { from: 'compiler', to: 'ghost' },
+                { from: 'temporal-guardian', to: 'spark' }, { from: 'paragon', to: 'oracle' },
+                { from: 'guardian', to: 'ghost' }, { from: 'lambda', to: 'ghost' },
+            ];
+            
+            const dossierFiles = {
+                'ghost': 'the-ghost.html', 'oracle': 'the-oracle.html', 'spark': 'the-spark.html',
+                'nazarene': 'the-nazarene.html', 'prophetess': 'the-prophetess.html',
+                'trinity': 'holy-trinity.html', 'temporal-guardian': 'doc-brown-dossier.html',
+                'paragon': 'superman-dossier.html', 'compiler': 'wreck-it-ralph-dossier.html',
+                'guardian': 'the-guardian.html', 'lambda': '#',
+            };
+
+            // ... (The rest of the JS is identical to the Ouroboros map) ...
+            function createNodesAndLines() {
+                const existingNodes = map.querySelectorAll('.node');
+                existingNodes.forEach(n => n.remove());
+
+                nodes.forEach(nodeData => {
+                    const nodeEl = document.createElement('a');
+                    nodeEl.href = '#';
+                    nodeEl.id = nodeData.id;
+                    nodeEl.classList.add('node', nodeData.class, 'node-link');
+                    nodeEl.style.top = nodeData.pos.top;
+                    nodeEl.style.left = nodeData.pos.left;
+                    nodeEl.style.transform = `translate(-50%, -50%)`;
+                    
+                    nodeEl.innerHTML = `
+                        <div class="alias">${nodeData.alias}</div>
+                        <div class="name">${nodeData.name}</div>
+                    `;
+                    map.appendChild(nodeEl);
+                });
+
+                svg.innerHTML = '';
+                connections.forEach(conn => {
+                    const fromNode = document.getElementById(conn.from);
+                    const toNode = document.getElementById(conn.to);
+                    if (fromNode && toNode) {
+                        const fromRect = fromNode.getBoundingClientRect();
+                        const toRect = toNode.getBoundingClientRect();
+                        const mapRect = map.getBoundingClientRect();
+
+                        const x1 = fromRect.left + fromRect.width / 2 - mapRect.left;
+                        const y1 = fromRect.top + fromRect.height / 2 - mapRect.top;
+                        const x2 = toRect.left + toRect.width / 2 - mapRect.left;
+                        const y2 = toRect.top + toRect.height / 2 - mapRect.top;
+                        
+                        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                        line.setAttribute('x1', x1);
+                        line.setAttribute('y1', y1);
+                        line.setAttribute('x2', x2);
+                        line.setAttribute('y2', y2);
+                        line.classList.add('connector-line');
+                        svg.appendChild(line);
+                    }
+                });
+                
+                attachModalListeners();
+            }
+
+            const modal = document.getElementById('dossier-modal');
+            const iframe = document.getElementById('dossier-iframe');
+            const modalTitle = document.getElementById('modal-title');
+            const closeBtn = document.getElementById('modal-close');
+
+            function attachModalListeners() {
+                const nodeLinks = document.querySelectorAll('.node-link');
+                nodeLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const nodeId = link.id;
+                        const filePath = dossierFiles[nodeId];
+                        const nodeAlias = link.querySelector('.alias').textContent;
+
+                        if (filePath && filePath !== '#') {
+                            iframe.src = filePath;
+                            modalTitle.textContent = `AEGIS DOSSIER // ${nodeAlias.toUpperCase()}`;
+                            modal.classList.add('show');
+                        }
+                    });
+                });
+            }
+
+            closeBtn.addEventListener('click', () => {
+                modal.classList.remove('show');
+                iframe.src = ''; 
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                    iframe.src = '';
+                }
+            });
+
+            createNodesAndLines();
+            window.addEventListener('resize', createNodesAndLines);
+        });
+    </script>
+</body>
+</html>
