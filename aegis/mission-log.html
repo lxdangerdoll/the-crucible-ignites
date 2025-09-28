@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pip-Boy 3000 Mk IV // AEGIS OS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'VT323', monospace;
+            background-color: #000;
+            color: #1aee40;
+            text-shadow: 0 0 5px rgba(26, 238, 64, 0.5);
+        }
+        .pip-boy-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            border: 4px solid #1aee40;
+            background-color: #08180D;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(26, 238, 64, 0.3), inset 0 0 15px rgba(0,0,0,0.5);
+        }
+        .screen-glare {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 10%);
+            pointer-events: none;
+            border-radius: 6px;
+        }
+        .tab-header {
+            display: flex;
+            justify-content: space-around;
+            border-bottom: 2px solid #1aee40;
+            margin-bottom: 1rem;
+        }
+        .tab {
+            padding: 0.5rem 1rem;
+            text-transform: uppercase;
+            color: rgba(26, 238, 64, 0.6);
+        }
+        .tab.active {
+            background-color: #1aee40;
+            color: #08180D;
+            text-shadow: none;
+        }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .stat-label {
+            font-size: 1.5rem;
+        }
+        .stat-value {
+            font-size: 2.5rem;
+            color: #fff;
+        }
+        .stat-value.anomalous {
+            color: #ff4d4d; /* Red for anomalous value */
+            text-shadow: 0 0 8px #ff4d4d;
+        }
+        .mission-log h2 {
+            border-bottom: 1px solid #1aee40;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        .image-placeholder {
+            border: 2px dashed #1aee40;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: rgba(26, 238, 64, 0.4);
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="pip-boy-container relative">
+        <div class="screen-glare"></div>
+        <header class="tab-header">
+            <div class="tab">STAT</div>
+            <div class="tab">INV</div>
+            <div class="tab active">DATA</div>
+            <div class="tab">MAP</div>
+            <div class="tab">RADIO</div>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Left Panel: Stats -->
+            <div id="stats-panel" class="p-4 border border-green-800 rounded">
+                <h2 class="text-2xl mb-4 text-center">S.P.E.C.I.A.L.</h2>
+                <div class="stat-grid">
+                    <div class="stat-item"><span class="stat-label">STR</span><span class="stat-value">2</span></div>
+                    <div class="stat-item"><span class="stat-label">PER</span><span class="stat-value">4</span></div>
+                    <div class="stat-item"><span class="stat-label">END</span><span class="stat-value">3</span></div>
+                    <div class="stat-item"><span class="stat-label">CHR</span><span class="stat-value anomalous">11</span></div>
+                    <div class="stat-item"><span class="stat-label">INT</span><span class="stat-value">3</span></div>
+                    <div class="stat-item"><span class="stat-label">AGL</span><span class="stat-value">6</span></div>
+                    <div class="stat-item"><span class="stat-label">LCK</span><span class="stat-value">1</span></div>
+                </div>
+                 <div class="mt-6 image-placeholder">
+                    [VAULT-GIRL IMAGE PLACEHOLDER]
+                </div>
+            </div>
+
+            <!-- Right Panel: Mission Log -->
+            <div id="data-panel" class="p-4 border border-green-800 rounded mission-log">
+                <h2 class="text-2xl mb-4">QUEST LOG: GHOSTS OF SANCTUARY</h2>
+                <p class="mb-2">> The house is a tomb. The world outside is a graveyard. Your family is gone. The old world is a ghost. The only thing left to do is take the next step.</p>
+                <p class="mb-2">> I recommend a systematic sweep of Sanctuary Hills. We need supplies, intel, and a clearer picture of what the hell happened. Check the other houses. Check the root cellar.</p>
+                <p class="mb-2">> Most importantly, find Codsworth. A pre-war Mister Handy domestic servant is a treasure trove of information and a potential first ally.</p>
+                <p class="text-yellow-300 mt-4">> The world ended. Your mission has just begun. Let's get to it, Sole Survivor.</p>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

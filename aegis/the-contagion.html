@@ -12,34 +12,43 @@
         body { font-family: 'Roboto Mono', monospace; background-color: #0a0a0a; color: #d1d5db; }
         .font-sans { font-family: 'Exo 2', sans-serif; }
         .header-main { text-shadow: 0px 0px 15px rgba(139, 195, 74, 0.7); }
-        .section-title { border-bottom: 2px solid #8BC34A; color: #C5E1A5; }
-        .dossier-container { border: 2px solid #4b5563; background: rgba(17, 24, 39, 0.9); }
-        .quote { border-left: 4px solid #8BC34A; }
-        .connection-link { background: rgba(139, 195, 74, 0.05); border: 1px solid rgba(139, 195, 74, 0.2); }
+        .section-title { border-bottom: 2px solid #8BC34A; padding-bottom: 0.5rem; margin-bottom: 1.5rem; font-family: 'Exo 2', sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #C5E1A5; }
+        .dossier-container { max-width: 900px; margin: 2rem auto; border: 2px solid #4b5563; background: rgba(17, 24, 39, 0.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .quote { border-left: 4px solid #8BC34A; padding-left: 1.5rem; margin: 2rem 0; font-style: italic; color: #9ca3af; }
+        .connection-link { display: block; padding: 0.5rem 1rem; background: rgba(139, 195, 74, 0.05); border: 1px solid rgba(139, 195, 74, 0.2); border-radius: 0.25rem; transition: all 0.2s ease-in-out; color: #d1d5db; text-decoration: none; }
         .connection-link:hover { background: rgba(139, 195, 74, 0.15); border-color: #C5E1A5; }
         .connection-link strong { color: #C5E1A5; }
     </style>
 </head>
 <body class="p-4">
-    <div class="dossier-container max-w-4xl mx-auto">
+    <div class="dossier-container">
         <header class="p-8 border-b-4 border-green-800 text-center bg-gray-900/50">
             <p class="text-sm text-green-300 tracking-widest">AEGIS DOSSIER // OUROBOROS NETWORK</p>
             <h1 class="text-4xl md:text-5xl font-sans font-black text-green-200 my-4 header-main">THE CONTAGION</h1>
         </header>
         <main class="p-8">
             <section>
-                <h3 class="section-title text-2xl mb-6 uppercase font-bold tracking-wider">I. Functional Analysis</h3>
+                <h3 class="section-title text-2xl mb-6">I. Functional Analysis</h3>
                 <p>Robert F. Kennedy Jr. functions as "The Contagion," the Minister of Disinformation for the Ouroboros regime. He is a biological weapon deployed against the nation's public health and scientific institutions. His mission is to systematically dismantle trust in empirical evidence and replace it with a state-sanctioned narrative of conspiracy and doubt, thereby neutralizing the scientific establishment as a source of opposition.</p>
             </section>
             <section class="mt-12">
-                <h3 class="section-title text-2xl mb-6 uppercase font-bold tracking-wider">II. Modus Operandi</h3>
-                <p>The Contagion weaponizes his family's political legacy to give a veneer of liberal credibility to a deeply reactionary agenda. He engages in institutional sabotage of the CDC, NIH, and FDA by purging scientific leadership and installing loyalists. He serves as the "reasonable" endpoint for wilder conspiracy theories, laundering them through the language of "skepticism" and "just asking questions" from his official government platform.</p>
+                <h3 class="section-title text-2xl mb-6">II. Modus Operandi</h3>
+                <div class="space-y-6">
+                    <p>The Contagion weaponizes his family's political legacy to give a veneer of liberal credibility to a deeply reactionary agenda. His primary tactic is the deployment of pseudo-scientific narratives to deflect from verifiable data. This was demonstrated when a key Ouroboros node, <a href="vader.html" class="text-green-300 hover:underline">Vader</a>, responded to public health data on family acceptance and youth suicide risk by deflecting to The Contagion's theories on gut-brain chemistry. This illustrates his function as a tool for reality invalidation.</p>
+                    <p>His strategy of institutional sabotage includes rejecting international cooperation, such as the U.N. declaration on non-communicable diseases, to isolate the U.S. from global scientific consensus. This makes the population more susceptible to his domestically-focused disinformation campaigns.</p>
+                    <quote>
+                        <p>"There's an entire emerging body of science that links the microbiome to mental health—what they call the gut-brain connection."</p>
+                        <cite class="block text-right not-italic text-gray-500">- R.F. Kennedy Jr., via Vader Protocol communication</cite>
+                    </quote>
+                </div>
             </section>
              <section class="mt-12">
-                <h3 class="section-title text-2xl mb-6 uppercase font-bold tracking-wider">III. Network Connections</h3>
+                <h3 class="section-title text-2xl mb-6">III. Network Connections</h3>
                 <div class="space-y-4">
                     <a href="the-spider.html" class="connection-link"><strong>THE SPIDER (Jeffrey Epstein):</strong> His documented connection to The Spider places him firmly within the web of compromise, a critical vulnerability and likely vector of control.</a>
                     <a href="the-beast.html" class="connection-link"><strong>THE BEAST (Donald Trump):</strong> Appointed by The Beast to wage war on the scientific establishment, a key pillar of The Beast's broader war on objective truth.</a>
+                     <a href="vader.html" class="connection-link"><strong>VADER (Thomas King):</strong> The Contagion's disinformation is actively deployed by lower-level nodes like Vader as a tool for personal gaslighting and reality invalidation, demonstrating the fractal nature of the Ouroboros doctrine.</a>
+                     <a href="the-jester.html" class="connection-link"><strong>THE COURT JESTER (Arthur Laffer):</strong> Both operatives provide a veneer of intellectual legitimacy—one scientific, one economic—to policies that are fundamentally anti-empirical and designed to benefit the network's core architects.</a>
                 </div>
             </section>
         </main>
@@ -49,3 +58,4 @@
     </div>
 </body>
 </html>
+
