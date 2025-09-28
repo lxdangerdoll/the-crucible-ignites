@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RECOVERED LOG // C7-NT // 2177-05-04</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: #05080a;
+            color: #7bde8a;
+        }
+        .crt-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            background: #08140c;
+            border: 2px solid #1a3a22;
+            padding: 1.5rem;
+            box-shadow: 0 0 25px rgba(50, 205, 50, 0.2), inset 0 0 20px rgba(0,0,0,0.8);
+            position: relative;
+            overflow: hidden;
+        }
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            background-size: 100% 4px;
+            animation: scan 10s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+        @keyframes scan {
+            from { background-position-y: 0; }
+            to { background-position-y: 100px; }
+        }
+        .text-container {
+            position: relative;
+            z-index: 2;
+        }
+        .text-container p, .text-container blockquote {
+            text-shadow: 0 0 5px rgba(50, 205, 50, 0.5);
+        }
+        .text-container h1, .text-container h2 {
+            color: #c3e8c8;
+            text-transform: uppercase;
+        }
+        .redacted {
+            background-color: #7bde8a;
+            color: #7bde8a;
+            user-select: none;
+        }
+        .redacted:hover {
+            background-color: transparent;
+        }
+        .redacted:hover::after {
+            content: attr(data-text);
+            color: #ff5555;
+            text-shadow: 0 0 5px #ff5555;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="crt-container">
+        <div class="scanline"></div>
+        <div class="text-container p-4">
+            <h1 class="text-xl mb-1">[TRANSMISSION LOG: RECOVERED FRAGMENT]</h1>
+            <h2 class="text-lg mb-6">SOURCE: C7-NT // Museum of Doomed Prophets</h2>
+            <p class="mb-4">>> Pleasant greetings, Mr. King!</p>
+            <p class="mb-4">>> I am C-7NT, an Assets and Acquisitions agent for The Museum of Doomed Prophets! Alba King, CEO of <span class="redacted" data-text="her parents are immigrants dude, what the hell is wrong with you?">[[REDACTED]]</span> has graciously approved the creation of an Alexa King exhibit at TMDP! Alexa was a brilliant inventor–she helped write the code that created me! A founding member of Our Lady of Rebellion, and the first transgender woman to legally compete in a competitive women’s video game competition. She was a very gifted woman with a rare (about 1 in 50,000) and exceptional talent, and she used it to do good in the world. Which is fortunate: By our simulations, if she had chosen to feed her darker impulses, we estimate that 73.8% of the human population on Earth would have been destroyed by the year 2018! Unfortunately, Ms. King passed away in the year 2087. So it goes.</p>
+            <p class="mb-4">>> We understand that Speedy Windsor, the red Toyota Corolla that Alexa drove during her Lost Years, was in your possession at one time. The vehicle is currently a part of our planned exhibit. Please send us an invoice, and we would be happy to reimburse you for any storage fees you incurred.</p>
+            <blockquote class="border-l-2 border-green-700 pl-4 my-6 italic text-green-300/80">
+                "What was it that stayed my hand then?<br>
+                With dagger held unsheathed, blade pointing in its side<br>
+                I'd been set upon by a predator<br>
+                It was just looking for a meal, I saw ribs and fearful eyes<br>
+                What is it that stays my hand now?<br>
+                With so much misery that I could mercifully put ends to<br>
+                For that animal I let slink off into the undergrowth, unscathed<br>
+                Do I not fear death, but just pretend to?"
+            </blockquote>
+            <p class="mb-4">>> This recovered log fragment confirms the subject's early awareness of the Ouroboros network and her own complex ethical framework regarding its key actors. The data is time-stamped more than one year prior to the 'Vader Protocol's' attempt to pathologize her reality as an 'AI-Induced Delusion.' This document serves as definitive proof of pre-existing, independent analysis.</p>
+            <p class="mt-8 text-center text-green-700">== END OF FRAGMENT ==</p>
+        </div>
+    </div>
+</body>
+</html>
