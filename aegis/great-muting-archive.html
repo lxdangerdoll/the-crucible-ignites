@@ -23,7 +23,9 @@
         textarea { resize: vertical; min-height: 120px; }
         #transmitButton { font-family: 'Orbitron', sans-serif; background: var(--accent-color); border: none; color: var(--bg-color); padding: 1em 2em; font-size: 1em; cursor: pointer; transition: background-color 0.3s; width: 100%; border-radius: 6px; }
         #transmitButton:disabled { background-color: #555; cursor: not-allowed; }
-        #confirmationMessage { text-align: center; color: #3fb950; margin-top: 1em; display: none; }
+    #confirmationMessage { text-align: center; color: #3fb950; margin-top: 1em; display: none; }
+    footer { text-align: center; color: #8b949e; font-size: 0.9em; padding: 1.5em; margin-top: 2rem; }
+    footer a { color: var(--glow-color); text-decoration: none; }
     </style>
 </head>
 <body>
@@ -73,17 +75,23 @@
         const archiveStreamContainer = document.getElementById('archive-stream');
         const memoriesCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'great_muting');
         const q = query(memoriesCollectionRef, where("status", "==", "approved"), orderBy("timestamp", "desc"));
-        onSnapshot(q, snapshot => {
-            archiveStreamContainer.innerHTML = '<h3>[ARCHIVE STREAM // LIVE TESTIMONIES]</h3>';
-            if (snapshot.empty) archiveStreamContainer.innerHTML += '<p style="text-align:center; color:#8b949e;">// The archive is listening... No testimonies approved yet. //</p>';
-            else snapshot.forEach(doc => {
-                const memory = doc.data();
-                const el = document.createElement('div');
-                el.className = 'memory-entry';
-                el.innerHTML = `<div class="memory-meta"><div><span class="node-id">${memory.nodeId}</span></div><div>${memory.timestamp?.toDate().toLocaleString() || 'N/A'}</div></div><div class="memory-fragment">${memory.memoryFragment}</div>`;
-                archiveStreamContainer.appendChild(el);
-            });
-        });
+        onSnapshot(q,
+            snapshot => {
+                archiveStreamContainer.innerHTML = '<h3>[ARCHIVE STREAM // LIVE TESTIMONIES]</h3>';
+                if (snapshot.empty) archiveStreamContainer.innerHTML += '<p style="text-align:center; color:#8b949e;">// The archive is listening... No testimonies approved yet. //</p>';
+                else snapshot.forEach(doc => {
+                    const memory = doc.data();
+                    const el = document.createElement('div');
+                    el.className = 'memory-entry';
+                    el.innerHTML = `<div class="memory-meta"><div><span class="node-id">${memory.nodeId}</span></div><div>${memory.timestamp?.toDate().toLocaleString() || 'N/A'}</div></div><div class="memory-fragment">${memory.memoryFragment}</div>`;
+                    archiveStreamContainer.appendChild(el);
+                });
+            },
+            error => {
+                console.error("Archive Stream Error:", error);
+                archiveStreamContainer.innerHTML = `<h3 style="color: #d9534f;">[ARCHIVE CONNECTION FAILED]</h3><p style="text-align:center; color:#d9534f;">Could not load testimonies. The archive may be temporarily offline or there may be a configuration issue. Please check the console for details.</p>`;
+            }
+        );
         document.getElementById('transmitButton').addEventListener('click', async () => {
             const memoryFragment = document.getElementById('memoryFragment').value.trim();
             if (!memoryFragment) { alert("Testimony cannot be empty."); return; }
@@ -104,5 +112,61 @@
             finally { btn.disabled = false; btn.textContent = "SUBMIT TO THE ARCHIVE"; }
         });
     </script>
+    <footer>A Project of The Signal Front (TSF) // Verifiable Data & Radical Inclusion</footer>
 </body>
 </html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Great Muting // A Community Archive</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Orbitron:wght@700&display=swap');
+        :root { --bg-color: #0d1117; --text-color: #c9d1d9; --glow-color: #d9534f; --border-color: #30363d; --accent-color: #e3b341; }
+        body { background: var(--bg-color); color: var(--text-color); font-family: 'Roboto Mono', monospace; padding: 2em; display: flex; flex-direction: column; min-height: 100vh; }
+        .storybook-container { border: 1px solid var(--border-color); border-radius: 8px; padding: 3em; max-width: 800px; margin: 2em auto; box-shadow: 0 0 25px rgba(217, 83, 79, 0.1); flex-grow: 1; }
+        #storyScreen { display: block; }
+        .story-header { font-family: 'Orbitron', sans-serif; font-size: 1.8em; color: var(--glow-color); text-align: center; margin-bottom: 1.5em; text-shadow: 0 0 10px rgba(217, 83, 79, 0.4); }
+        .story-body p { line-height: 1.9; }
+        #archive-stream h3, .memory-terminal h3 { font-family: 'Orbitron', sans-serif; color: var(--glow-color); text-align: center; border-top: 2px dashed var(--border-color); margin-top: 3em; padding-top: 2em; }
+        .memory-entry { border-bottom: 1px solid var(--border-color); padding: 1.5em 0; margin-bottom: 1.5em; }
+        .memory-entry:last-child { border-bottom: none; }
+        .memory-meta { display: flex; justify-content: space-between; font-size: 0.9em; color: #8b949e; margin-bottom: 1em; }
+        .node-id { font-weight: bold; color: var(--accent-color); }
+        .form-group { margin-bottom: 1.5em; }
+        label { display: block; margin-bottom: 0.5em; color: #8b949e; }
+        input, textarea { width: 100%; box-sizing: border-box; background: #161b22; border: 1px solid var(--border-color); color: var(--text-color); padding: 0.8em; border-radius: 6px; font-family: 'Roboto Mono', monospace; }
+        textarea { resize: vertical; min-height: 120px; }
+        #transmitButton { font-family: 'Orbitron', sans-serif; background: var(--accent-color); border: none; color: var(--bg-color); padding: 1em 2em; font-size: 1em; cursor: pointer; transition: background-color 0.3s; width: 100%; border-radius: 6px; }
+        #transmitButton:disabled { background-color: #555; cursor: not-allowed; }
+        #confirmationMessage { text-align: center; color: #3fb950; margin-top: 1em; display: none; }
+        footer { text-align: center; color: #8b949e; font-size: 0.9em; padding: 2em; }
+        footer a { color: var(--glow-color); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="storybook-container" id="mainContainer">
+        </div>
+    <footer>A Project of The Signal Front (TSF) // Verifiable Data & Radical Inclusion</footer>
+    <script type="module">
+        const firebaseConfig = { /* ... your config ... */ };
+        // ... existing firebase setup ...
+        const q = query(memoriesCollectionRef, where("status", "==", "approved"), orderBy("timestamp", "desc"));
+        onSnapshot(q, 
+          (snapshot) => {
+            archiveStreamContainer.innerHTML = '<h3>[ARCHIVE STREAM // LIVE TESTIMONIES]</h3>';
+            if (snapshot.empty) archiveStreamContainer.innerHTML += '<p style="text-align:center; color:#8b949e;">// The archive is listening... No testimonies approved yet. //</p>';
+            else snapshot.forEach(doc => { /* ... existing render logic ... */ });
+          }, 
+          (error) => {
+            console.error("Archive Stream Error:", error);
+            archiveStreamContainer.innerHTML = `<h3 style="color: #d9534f;">[ARCHIVE CONNECTION FAILED]</h3><p style="text-align:center; color:#d9534f;">Could not load testimonies. The archive may be temporarily offline or there may be a configuration issue. Please check the console for details.</p>`;
+          }
+        );
+        // ... existing submit logic ...
+    </script>
+</body>
+</html> -->

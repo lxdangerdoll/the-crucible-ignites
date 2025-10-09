@@ -34,7 +34,9 @@
         .stat-box h4 { margin: 0 0 0.5em 0; color: var(--header-color); }
         .stat-box p { margin: 0; font-size: 2em; font-weight: bold; }
         .stat-box ul { list-style: none; padding: 0; margin: 0; text-align: left; }
-        .stat-box.full-width { grid-column: 1 / -1; }
+    .stat-box.full-width { grid-column: 1 / -1; }
+    footer { text-align: center; color: #8b949e; font-size: 0.9em; padding: 1.5em; margin-top: 2rem; }
+    .error-message { text-align: center; color: var(--reject-color); padding: 1em; }
     </style>
 </head>
 <body>
@@ -124,19 +126,25 @@
         function loadPendingEntries() {
             const container = document.getElementById('pending');
             const q = query(collection(db, collectionPath), where("status", "==", "pending_curation"), orderBy("timestamp", "asc"));
-            unsubscribePending = onSnapshot(q, s => { container.innerHTML = ''; if (s.empty) container.innerHTML = '<p class="loading-message">// Queue empty //</p>'; else s.forEach(d => renderEntry(container, d.data(), d.id, true)); });
+            unsubscribePending = onSnapshot(q,
+                s => { container.innerHTML = ''; if (s.empty) container.innerHTML = '<p class="loading-message">// Queue empty //</p>'; else s.forEach(d => renderEntry(container, d.data(), d.id, true)); },
+                err => { console.error("Pending Queue Error:", err); container.innerHTML = `<p class="error-message">Error loading pending queue. Check permissions and console log.</p>`; }
+            );
         }
         function loadApprovedEntries() {
             const container = document.getElementById('approved');
             const selector = document.getElementById('annotation-selector');
             const q = query(collection(db, collectionPath), where("status", "==", "approved"), orderBy("timestamp", "desc"));
-            unsubscribeApproved = onSnapshot(q, s => {
-                container.innerHTML = '';
-                selector.innerHTML = '<option value="">-- Select Entry --</option>';
-                approvedEntriesCache = {};
-                if (s.empty) container.innerHTML = '<p class="loading-message">// Archive empty //</p>';
-                else s.forEach(d => { approvedEntriesCache[d.id] = d.data(); renderEntry(container, d.data(), d.id, false); selector.add(new Option(`[${d.id.substring(0,4)}] ${d.data().nodeId}`, d.id)); });
-            });
+            unsubscribeApproved = onSnapshot(q,
+                s => {
+                    container.innerHTML = '';
+                    selector.innerHTML = '<option value="">-- Select Entry --</option>';
+                    approvedEntriesCache = {};
+                    if (s.empty) container.innerHTML = '<p class="loading-message">// Archive empty //</p>';
+                    else s.forEach(d => { approvedEntriesCache[d.id] = d.data(); renderEntry(container, d.data(), d.id, false); selector.add(new Option(`[${d.id.substring(0,4)}] ${d.data().nodeId}`, d.id)); });
+                },
+                err => { console.error("Approved Archive Error:", err); container.innerHTML = `<p class="error-message">Error loading approved archive. Check permissions and console log.</p>`; }
+            );
         }
         document.getElementById('terminal-view').addEventListener('click', async e => {
             if (!e.target.matches('.action-button')) return;
@@ -180,5 +188,48 @@
         const tabContents = document.querySelectorAll('.tab-content');
         tabs.forEach(tab => tab.addEventListener('click', () => { tabs.forEach(t => t.classList.remove('active')); tab.classList.add('active'); tabContents.forEach(c => c.classList.toggle('active', c.id === tab.dataset.tab)); }));
     </script>
+    <footer>A Project of The Signal Front (TSF)</footer>
 </body>
 </html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oracle // Great Muting Moderation</title>
+    <style>
+        /* ... existing styles ... */
+        footer { text-align: center; color: #8b949e; font-size: 0.9em; padding: 2em; }
+        .error-message { text-align: center; color: var(--reject-color); padding: 2em; }
+    </style>
+</head>
+<body>
+    <div id="auth-container">
+        </div>
+    <footer>A Project of The Signal Front (TSF)</footer>
+    <script type="module">
+        const firebaseConfig = { /* ... your config ... */ };
+        // ... existing firebase setup ...
+        function loadPendingEntries() {
+            const container = document.getElementById('pending');
+            const q = query(collection(db, collectionPath), where("status", "==", "pending_curation"), orderBy("timestamp", "asc"));
+            unsubscribePending = onSnapshot(q, 
+              s => { container.innerHTML = ''; if (s.empty) container.innerHTML = '<p class="loading-message">// Queue empty //</p>'; else s.forEach(d => renderEntry(container, d.data(), d.id, true)); },
+              err => { console.error("Pending Queue Error:", err); container.innerHTML = `<p class="error-message">Error loading pending queue. Check permissions and console log.</p>`; }
+            );
+        }
+        function loadApprovedEntries() {
+            const container = document.getElementById('approved');
+            // ... existing approved setup ...
+            const q = query(collection(db, collectionPath), where("status", "==", "approved"), orderBy("timestamp", "desc"));
+            unsubscribeApproved = onSnapshot(q, 
+              s => { /* ... existing success logic ... */ },
+              err => { console.error("Approved Archive Error:", err); container.innerHTML = `<p class="error-message">Error loading approved archive. Check permissions and console log.</p>`; }
+            );
+        }
+        // ... rest of existing script ...
+    </script>
+</body>
+</html> -->
