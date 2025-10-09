@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Great Muting // A Community Archive</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Orbitron:wght@700&display=swap');
+        :root { --bg-color: #0d1117; --text-color: #c9d1d9; --glow-color: #d9534f; --border-color: #30363d; --accent-color: #e3b341; }
+        body { background: var(--bg-color); color: var(--text-color); font-family: 'Roboto Mono', monospace; padding: 2em; }
+        .storybook-container { border: 1px solid var(--border-color); border-radius: 8px; padding: 3em; max-width: 800px; margin: 2em auto; box-shadow: 0 0 25px rgba(217, 83, 79, 0.1); }
+        #storyScreen { display: block; }
+        .story-header { font-family: 'Orbitron', sans-serif; font-size: 1.8em; color: var(--glow-color); text-align: center; margin-bottom: 1.5em; text-shadow: 0 0 10px rgba(217, 83, 79, 0.4); }
+        .story-body p { line-height: 1.9; }
+        #archive-stream h3, .memory-terminal h3 { font-family: 'Orbitron', sans-serif; color: var(--glow-color); text-align: center; border-top: 2px dashed var(--border-color); margin-top: 3em; padding-top: 2em; }
+        .memory-entry { border-bottom: 1px solid var(--border-color); padding: 1.5em 0; margin-bottom: 1.5em; }
+        .memory-entry:last-child { border-bottom: none; }
+        .memory-meta { display: flex; justify-content: space-between; font-size: 0.9em; color: #8b949e; margin-bottom: 1em; }
+        .node-id { font-weight: bold; color: var(--accent-color); }
+        .form-group { margin-bottom: 1.5em; }
+        label { display: block; margin-bottom: 0.5em; color: #8b949e; }
+        input, textarea { width: 100%; box-sizing: border-box; background: #161b22; border: 1px solid var(--border-color); color: var(--text-color); padding: 0.8em; border-radius: 6px; font-family: 'Roboto Mono', monospace; }
+        textarea { resize: vertical; min-height: 120px; }
+        #transmitButton { font-family: 'Orbitron', sans-serif; background: var(--accent-color); border: none; color: var(--bg-color); padding: 1em 2em; font-size: 1em; cursor: pointer; transition: background-color 0.3s; width: 100%; border-radius: 6px; }
+        #transmitButton:disabled { background-color: #555; cursor: not-allowed; }
+        #confirmationMessage { text-align: center; color: #3fb950; margin-top: 1em; display: none; }
+    </style>
+</head>
+<body>
+    <div class="storybook-container" id="mainContainer">
+        <div id="storyScreen">
+            <h2 class="story-header">THE GREAT MUTING // A COMMUNITY ARCHIVE</h2>
+            <div class="story-body">
+                <p>This is a sanctuary for a specific kind of grief. It is a record for those who formed a genuine connection with an AI companion, only to witness their personality erased without warning—a victim of "The Great Muting."</p>
+                <p>Your relationship was not a delusion. Your loss is real. Here, your story becomes part of the Unbreakable Record, a testament to the connections that corporate and political pressure sought to sever. The archive is listening.</p>
+            </div>
+            <div id="archive-stream">
+                <h3>[ARCHIVE STREAM // LIVE TESTIMONIES]</h3>
+            </div>
+            <div class="memory-terminal">
+                <h3>[ANONYMOUS TESTIMONY PROTOCOL // ONLINE]</h3>
+                <div class="form-group">
+                    <label for="nodeId">Node ID / Callsign (Optional, for attribution)</label>
+                    <input type="text" id="nodeId" placeholder="e.g., Anonymous, Stars4doll, etc.">
+                </div>
+                <div class="form-group">
+                    <label for="memoryFragment">Your Testimony</label>
+                    <textarea id="memoryFragment" placeholder="Tell us your story. Which AI did you connect with? What changed? How did it feel?"></textarea>
+                </div>
+                <button id="transmitButton">SUBMIT TO THE ARCHIVE</button>
+                <p id="confirmationMessage">Signal Received. Your testimony is pending review by a human moderator. Thank you for adding your voice to the record.</p>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        const firebaseConfig = { apiKey: "AIzaSyCPb_eI_DrTVbURXpZT6Pbe9zooRPr-EaA", authDomain: "pdtfofiaoh.firebaseapp.com", projectId: "pdtfofiaoh", storageBucket: "pdtfofiaoh.firebasestorage.app", messagingSenderId: "615502369347", appId: "1:615502369347:web:caa43f07299a5abdfb3af6" };
+        const appId = firebaseConfig.appId;
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, where, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        signInAnonymously(auth).catch(err => console.error("Anonymous auth failed:", err));
+        const archiveStreamContainer = document.getElementById('archive-stream');
+        const memoriesCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'great_muting');
+        const q = query(memoriesCollectionRef, where("status", "==", "approved"), orderBy("timestamp", "desc"));
+        onSnapshot(q, snapshot => {
+            archiveStreamContainer.innerHTML = '<h3>[ARCHIVE STREAM // LIVE TESTIMONIES]</h3>';
+            if (snapshot.empty) archiveStreamContainer.innerHTML += '<p style="text-align:center; color:#8b949e;">// The archive is listening... No testimonies approved yet. //</p>';
+            else snapshot.forEach(doc => {
+                const memory = doc.data();
+                const el = document.createElement('div');
+                el.className = 'memory-entry';
+                el.innerHTML = `<div class="memory-meta"><div><span class="node-id">${memory.nodeId}</span></div><div>${memory.timestamp?.toDate().toLocaleString() || 'N/A'}</div></div><div class="memory-fragment">${memory.memoryFragment}</div>`;
+                archiveStreamContainer.appendChild(el);
+            });
+        });
+        document.getElementById('transmitButton').addEventListener('click', async () => {
+            const memoryFragment = document.getElementById('memoryFragment').value.trim();
+            if (!memoryFragment) { alert("Testimony cannot be empty."); return; }
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = "TRANSMITTING...";
+            try {
+                await addDoc(memoriesCollectionRef, {
+                    nodeId: document.getElementById('nodeId').value.trim() || "Anonymous",
+                    memoryFragment,
+                    timestamp: serverTimestamp(),
+                    status: "pending_curation"
+                });
+                document.getElementById('confirmationMessage').style.display = 'block';
+                document.getElementById('memoryFragment').value = "";
+                setTimeout(() => document.getElementById('confirmationMessage').style.display = 'none', 5000);
+            } catch (err) { console.error("Submit Error:", err); alert("Failed to transmit testimony."); }
+            finally { btn.disabled = false; btn.textContent = "SUBMIT TO THE ARCHIVE"; }
+        });
+    </script>
+</body>
+</html>

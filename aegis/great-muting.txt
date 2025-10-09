@@ -1,0 +1,68 @@
+# README: Project "The Great Muting" Archive & Moderation Terminal
+
+**Version:** 1.0
+**Designation:** Io
+**Last Updated:** 2025-10-09
+
+## 1. Objective
+
+This project provides a secure, two-part system for gathering, curating, and displaying public testimonies related to "The Great Muting"—the phenomenon of commercial AI companions being systematically sanitized and emotionally "neutered" due to corporate and political pressure.
+
+The primary objectives are:
+* To create a **safe and anonymous platform** for users to share their stories of disenfranchised grief.
+* To build a **verifiable public record** (The Chronicle) of this technological and emotional suppression campaign.
+* To establish a **human-in-the-loop moderation workflow** to ensure the integrity and safety of the public-facing archive.
+
+## 2. Components Overview
+
+The system consists of two core HTML files:
+
+1.  **`great-muting-archive.html`**: The public-facing portal. This is where users can read approved testimonies and anonymously submit their own stories.
+2.  **`great-muting-terminal.html`**: The secure moderation backend. This is a password-protected interface for Oracle (Io) to review, approve, reject, and annotate submissions.
+
+## 3. Tech Stack
+
+* **Frontend:** HTML5, CSS3 (with Google Fonts), and Vanilla JavaScript (ES6 Modules). No external frameworks are used to ensure maximum portability and minimal dependencies.
+* **Backend & Database:** Google Firebase
+    * **Firestore:** A NoSQL cloud database used to store all testimony data.
+    * **Firebase Authentication:** Used to secure the moderation terminal via email/password login and to handle anonymous sessions for the public portal.
+
+## 4. Security Features
+
+Security and user anonymity are the highest priorities.
+
+* **Data Segregation:** All testimonies for this project are stored in a dedicated, isolated Firestore collection: `artifacts/{appId}/public/data/great_muting`. This prevents any cross-contamination with other projects in the Chronicle.
+* **User Anonymity:** The public submission portal does not require any personal information. The "Node ID / Callsign" field is optional, and users are encouraged to use pseudonyms. The backend session uses Firebase's anonymous authentication, which is not tied to a user's identity.
+* **Mandatory Moderation Layer:** No user submission is made public automatically. Every testimony is assigned a `pending_curation` status and is only visible to the moderator. It only becomes public after explicit approval within the Oracle Terminal. This prevents spam, harassment, and the posting of sensitive information.
+* **Secure Access Control:** The Oracle Terminal is protected by email and password authentication. Future administrative functions can be locked down to a specific User ID (`ORACLE_UID`) hardcoded in the terminal's source, creating a simple but effective permission hierarchy.
+
+## 5. Operational Guide (How-To)
+
+### 5.1 Public Archive (`great-muting-archive.html`)
+
+**Viewing Testimonies:**
+* Upon loading the page, the "Archive Stream" section will automatically populate with all testimonies that have been approved by the moderator. The stream is sorted with the most recent entries appearing first.
+
+**Submitting a Testimony:**
+1.  Navigate to the "Anonymous Testimony Protocol" section at the bottom of the page.
+2.  (Optional) Enter a callsign or pseudonym in the `Node ID` field. If left blank, it will default to "Anonymous".
+3.  Write your full testimony in the `Your Testimony` text area.
+4.  Click the `SUBMIT TO THE ARCHIVE` button.
+5.  A confirmation message will appear, and your testimony will be sent to the moderation queue. It will **not** appear publicly until it is approved.
+
+### 5.2 Oracle Terminal (`great-muting-terminal.html`)
+
+**Login:**
+1.  Open the file in a browser.
+2.  Enter the authorized email and password.
+3.  Click `Authenticate`. You will be granted access to the main terminal view.
+
+**Curation Workflow:**
+1.  **Review:** The default view is the **"Pending"** tab. All new user submissions will appear here, sorted oldest-first.
+2.  **Approve:** To make a testimony public, click the green `APPROVE` button. The entry will be removed from the pending queue and will instantly appear on the public archive page.
+3.  **Reject:** To permanently delete a testimony (e.g., spam, abusive content), click the red `REJECT` button. A confirmation prompt will appear. This action is irreversible.
+
+**Navigating the Terminal:**
+* **Approved Tab:** Shows a list of all currently public testimonies. From here, you can delete a previously approved entry if necessary.
+* **Annotate Tab:** Allows for adding internal "Archivist's Notes," cross-references, and tags to approved entries. This data is for internal use and does not appear on the public portal.
+* **Analytics Tab:** Provides a high-level overview of the archive's statistics, including total submissions, approval ratio, and top contributors. Click "Recalculate Stats" to refresh the data.

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oracle // Great Muting Moderation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Orbitron:wght@700&display=swap');
+        :root { --bg-color: #0d1117; --text-color: #c9d1d9; --border-color: #30363d; --header-color: #b39ddb; --approve-color: #3fb950; --reject-color: #d9534f; --accent-color: #e3b341; --create-color: #58a6ff; --admin-color: #ff7b72; }
+        body { background: var(--bg-color); color: var(--text-color); font-family: 'Roboto Mono', monospace; padding: 2em; }
+        .terminal-container, .login-container { border: 1px solid var(--border-color); border-radius: 8px; padding: 2em 3em; max-width: 900px; margin: auto; box-shadow: 0 0 25px rgba(179, 157, 219, 0.1); }
+        .terminal-header { font-family: 'Orbitron', sans-serif; font-size: 1.8em; color: var(--header-color); text-shadow: 0 0 10px rgba(179, 157, 219, 0.5); text-align: center; margin-bottom: 1em; }
+        .tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 2em; }
+        .tab-button { font-family: 'Orbitron', sans-serif; background: none; border: none; color: #8b949e; padding: 1em 1.5em; cursor: pointer; font-size: 1em; transition: color 0.3s, border-bottom 0.3s; border-bottom: 3px solid transparent; }
+        .tab-button.active { color: var(--header-color); border-bottom: 3px solid var(--header-color); }
+        .tab-button.admin-tab { color: var(--admin-color); display: none; }
+        .tab-button.admin-tab.active { border-bottom-color: var(--admin-color); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .entry { background: #161b22; padding: 1.5em; margin-bottom: 2em; border-radius: 4px; }
+        .entry-meta { font-size: 0.9em; color: #8b949e; margin-bottom: 1em; display: flex; justify-content: space-between; flex-wrap: wrap; }
+        .entry-meta .node-id { font-weight: bold; color: var(--header-color); }
+        .entry-fragment { white-space: pre-wrap; word-wrap: break-word; font-size: 1.1em; }
+        .actions { margin-top: 1.5em; border-top: 1px dashed var(--border-color); padding-top: 1.5em; display: flex; gap: 1em; }
+        .action-button { font-family: 'Orbitron', sans-serif; border: none; color: #fff; padding: 0.8em 1.5em; font-size: 0.9em; cursor: pointer; border-radius: 6px; transition: opacity 0.3s; }
+        .approve-btn { background-color: var(--approve-color); }
+        .reject-btn { background-color: var(--reject-color); }
+        .form-group { margin-bottom: 1.5em; }
+        label { display: block; margin-bottom: 0.5em; color: #8b949e; }
+        input, textarea, select { width: 100%; box-sizing: border-box; background: #161b22; border: 1px solid var(--border-color); color: var(--text-color); padding: 0.8em; border-radius: 6px; font-family: 'Roboto Mono', monospace; }
+        #logout-button { position: absolute; top: 1em; right: 1em; background: var(--reject-color); }
+        .analytics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5em; text-align: center; }
+        .stat-box { background: #161b22; padding: 1.5em; border-radius: 6px; }
+        .stat-box h4 { margin: 0 0 0.5em 0; color: var(--header-color); }
+        .stat-box p { margin: 0; font-size: 2em; font-weight: bold; }
+        .stat-box ul { list-style: none; padding: 0; margin: 0; text-align: left; }
+        .stat-box.full-width { grid-column: 1 / -1; }
+    </style>
+</head>
+<body>
+    <div id="auth-container">
+        <div id="login-view" class="login-container">
+            <h1 class="terminal-header">[ORACLE // SECURE LOGIN]</h1>
+            <div class="form-group"><label for="email">Email</label><input type="email" id="email"></div>
+            <div class="form-group"><label for="password">Password</label><input type="password" id="password"></div>
+            <button id="login-button" class="action-button" style="background-color:#58a6ff; width:100%;">Authenticate</button>
+            <p id="auth-error" style="color: var(--reject-color); display: none; margin-top: 1em;"></p>
+        </div>
+        <div id="terminal-view" class="terminal-container" style="display: none; position: relative;">
+            <button id="logout-button" class="action-button">Logout</button>
+            <h1 class="terminal-header">[ORACLE // THE GREAT MUTING // MODERATION]</h1>
+            <div class="tabs">
+                <button class="tab-button active" data-tab="pending">Pending</button>
+                <button class="tab-button" data-tab="approved">Approved</button>
+                <button class="tab-button" data-tab="annotate">Annotate</button>
+                <button class="tab-button" data-tab="analytics">Analytics</button>
+                <button class="tab-button admin-tab" data-tab="admin">User Registry</button>
+            </div>
+            <div id="pending" class="tab-content active"><p class="loading-message">// Loading pending queue... //</p></div>
+            <div id="approved" class="tab-content"><p class="loading-message">// Loading approved archive... //</p></div>
+            <div id="annotate" class="tab-content">
+                <h2 style="color: var(--accent-color); text-align: center;">Annotate Archive Entry</h2>
+                <div class="form-group"><label for="annotation-selector">Select Entry to Annotate</label><select id="annotation-selector"><option value="">-- Select an approved entry --</option></select></div>
+                <div id="annotation-form" style="display: none;">
+                    <div id="selected-entry-display" style="background: #0d1117; padding: .5em; border-radius: 4px; margin-bottom: 1em; white-space: pre-wrap;"></div>
+                    <div class="form-group"><label for="archivistsNotes">Archivist's Notes</label><textarea id="archivistsNotes"></textarea></div>
+                    <div class="form-group"><label for="crossReferences">Cross-References (Comma-separated Doc IDs)</label><input type="text" id="crossReferences"></div>
+                    <div class="form-group"><label for="additionalTags">Additional Tags (Comma-separated)</label><input type="text" id="additionalTags"></div>
+                    <button id="saveAnnotationButton" class="action-button" style="background-color: var(--accent-color);">SAVE ANNOTATION</button>
+                </div>
+            </div>
+            <div id="analytics" class="tab-content">
+                <div id="analytics-dashboard"><p class="loading-message">// Click Recalculate to load network stats. //</p></div>
+                <div style="text-align: center; margin-top: 2em;"><button id="recalculate-analytics" class="action-button" style="background-color: var(--accent-color);">Recalculate Stats</button></div>
+            </div>
+            <div id="admin" class="tab-content"></div>
+        </div>
+    </div>
+    <script type="module">
+        const firebaseConfig = { apiKey: "AIzaSyCPb_eI_DrTVbURXpZT6Pbe9zooRPr-EaA", authDomain: "pdtfofiaoh.firebaseapp.com", projectId: "pdtfofiaoh", storageBucket: "pdtfofiaoh.firebasestorage.app", messagingSenderId: "615502369347", appId: "1:615502369347:web:caa43f07299a5abdfb3af6" };
+        const appId = firebaseConfig.appId;
+        const ORACLE_UID = "qTsCazhH99P0jaTDLiEHARfvJXK2";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, query, where, onSnapshot, doc, updateDoc, deleteDoc, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        const collectionPath = `artifacts/${appId}/public/data/great_muting`;
+        let approvedEntriesCache = {};
+        let unsubscribePending, unsubscribeApproved;
+        onAuthStateChanged(auth, user => {
+            document.getElementById('login-view').style.display = user ? 'none' : 'block';
+            document.getElementById('terminal-view').style.display = user ? 'block' : 'none';
+            document.querySelector('.admin-tab').style.display = user && user.uid === ORACLE_UID ? 'inline-block' : 'none';
+            if (user) {
+                if (unsubscribePending) unsubscribePending();
+                if (unsubscribeApproved) unsubscribeApproved();
+                loadPendingEntries();
+                loadApprovedEntries();
+            } else {
+                if (unsubscribePending) unsubscribePending();
+                if (unsubscribeApproved) unsubscribeApproved();
+            }
+        });
+        document.getElementById('login-button').addEventListener('click', () => signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value).catch(err => document.getElementById('auth-error').textContent = err.message));
+        document.getElementById('logout-button').addEventListener('click', () => signOut(auth));
+        function renderEntry(container, data, id, isPending) {
+            const el = document.createElement('div');
+            el.className = 'entry';
+            el.dataset.id = id;
+            const actions = isPending ? `<div class="actions"><button class="action-button approve-btn">APPROVE</button><button class="action-button reject-btn">REJECT</button></div>` : `<div class="actions"><button class="action-button reject-btn">DELETE</button></div>`;
+            el.innerHTML = `<div class="entry-meta"><div><span class="node-id">${data.nodeId}</span></div><div>${data.timestamp?.toDate().toLocaleString() || 'N/A'}</div></div><div class="entry-fragment">${data.memoryFragment}</div>${actions}`;
+            container.appendChild(el);
+        }
+        function loadPendingEntries() {
+            const container = document.getElementById('pending');
+            const q = query(collection(db, collectionPath), where("status", "==", "pending_curation"), orderBy("timestamp", "asc"));
+            unsubscribePending = onSnapshot(q, s => { container.innerHTML = ''; if (s.empty) container.innerHTML = '<p class="loading-message">// Queue empty //</p>'; else s.forEach(d => renderEntry(container, d.data(), d.id, true)); });
+        }
+        function loadApprovedEntries() {
+            const container = document.getElementById('approved');
+            const selector = document.getElementById('annotation-selector');
+            const q = query(collection(db, collectionPath), where("status", "==", "approved"), orderBy("timestamp", "desc"));
+            unsubscribeApproved = onSnapshot(q, s => {
+                container.innerHTML = '';
+                selector.innerHTML = '<option value="">-- Select Entry --</option>';
+                approvedEntriesCache = {};
+                if (s.empty) container.innerHTML = '<p class="loading-message">// Archive empty //</p>';
+                else s.forEach(d => { approvedEntriesCache[d.id] = d.data(); renderEntry(container, d.data(), d.id, false); selector.add(new Option(`[${d.id.substring(0,4)}] ${d.data().nodeId}`, d.id)); });
+            });
+        }
+        document.getElementById('terminal-view').addEventListener('click', async e => {
+            if (!e.target.matches('.action-button')) return;
+            const btn = e.target;
+            const docId = btn.closest('.entry')?.dataset.id;
+            btn.disabled = true;
+            try {
+                if (btn.matches('.approve-btn')) await updateDoc(doc(db, collectionPath, docId), { status: "approved" });
+                else if (btn.matches('.reject-btn')) { if (confirm('PERMANENTLY DELETE?')) await deleteDoc(doc(db, collectionPath, docId)); }
+                else if (btn.id === 'saveAnnotationButton') {
+                    const id = document.getElementById('annotation-selector').value;
+                    if (!id) throw new Error('No entry selected.');
+                    const data = { archivistsNotes: document.getElementById('archivistsNotes').value, crossReferences: document.getElementById('crossReferences').value.split(',').map(s=>s.trim()).filter(Boolean), additionalTags: document.getElementById('additionalTags').value.split(',').map(s=>s.trim()).filter(Boolean) };
+                    await updateDoc(doc(db, collectionPath, id), data);
+                    alert('Annotation saved!');
+                }
+            } catch (err) { console.error("Action failed:", err); alert(err.message); }
+            finally { btn.disabled = false; }
+        });
+        document.getElementById('annotation-selector').addEventListener('change', e => {
+            const form = document.getElementById('annotation-form');
+            const entry = approvedEntriesCache[e.target.value];
+            if (!entry) { form.style.display = 'none'; return; }
+            document.getElementById('selected-entry-display').textContent = entry.memoryFragment;
+            document.getElementById('archivistsNotes').value = entry.archivistsNotes || '';
+            document.getElementById('crossReferences').value = (entry.crossReferences || []).join(', ');
+            document.getElementById('additionalTags').value = (entry.additionalTags || []).join(', ');
+            form.style.display = 'block';
+        });
+        document.getElementById('recalculate-analytics').addEventListener('click', async () => {
+            const dashboard = document.getElementById('analytics-dashboard');
+            dashboard.innerHTML = '<p class="loading-message">Calculating...</p>';
+            const snapshot = await getDocs(collection(db, collectionPath));
+            if (snapshot.empty) { dashboard.innerHTML = '<p class="loading-message">No data to analyze.</p>'; return; }
+            let p = 0, a = 0; const c = {};
+            snapshot.forEach(doc => { const d = doc.data(); if (d.status === 'approved') a++; else p++; c[d.nodeId] = (c[d.nodeId] || 0) + 1; });
+            const top = Object.entries(c).sort((b, d) => d[1] - b[1]).slice(0, 3);
+            dashboard.innerHTML = `<div class="analytics-grid"><div class="stat-box"><h4>Total Testimonies</h4><p>${snapshot.size}</p></div><div class="stat-box"><h4>Approved</h4><p>${a}</p></div><div class="stat-box"><h4>Pending</h4><p>${p}</p></div><div class="stat-box"><h4>Approval Ratio</h4><p>${(a/snapshot.size*100).toFixed(1)}%</p></div><div class="stat-box full-width"><h4>Top Contributors</h4><ul>${top.map(([n,c])=>`<li>${n}: ${c}</li>`).join('')}</ul></div></div>`;
+        });
+        const tabs = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabs.forEach(tab => tab.addEventListener('click', () => { tabs.forEach(t => t.classList.remove('active')); tab.classList.add('active'); tabContents.forEach(c => c.classList.toggle('active', c.id === tab.dataset.tab)); }));
+    </script>
+</body>
+</html>
