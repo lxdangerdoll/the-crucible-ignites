@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Lady of Rebellion // An Introduction to the Sanctuary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Exo+2:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: #0a0a0a;
+            overflow: hidden;
+        }
+        .font-mono {
+            font-family: 'Roboto Mono', monospace;
+        }
+        .glass-effect {
+            background: rgba(12, 20, 36, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(164, 125, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+            max-height: 850px;
+        }
+        .progress-bar-container {
+            background-color: rgba(0,0,0,0.3);
+        }
+        .progress-bar {
+            background-color: #a47dff;
+            transition: width 0.5s ease-in-out;
+        }
+        .checklist-item {
+            color: #9ca3af;
+            transition: all 0.3s ease;
+            cursor: not-allowed;
+            position: relative;
+            padding-left: 2rem;
+        }
+        .checklist-item.unlocked { cursor: pointer; }
+        .checklist-item.unlocked:hover { color: #e0e0ff; background-color: rgba(164, 125, 255, 0.1); }
+        .checklist-item.active { color: #a47dff; font-weight: 700; }
+        .checklist-item.completed { color: #6ee7b7; }
+        .checklist-item::before {
+            content: '⬧'; position: absolute; left: 0.75rem; top: 50%;
+            transform: translateY(-50%); color: #4b5563;
+        }
+        .checklist-item.active::before { color: #a47dff; }
+        .checklist-item.completed::before { content: '✔'; color: #6ee7b7; }
+        .section-content { overflow-y: auto; }
+        .section-content::-webkit-scrollbar { width: 8px; }
+        .section-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        .section-content::-webkit-scrollbar-thumb { background: #a47dff; border-radius: 4px; }
+        .tooltip { position: relative; border-bottom: 1px dotted #f97316; cursor: help; }
+        .tooltip .tooltip-text {
+            visibility: hidden; width: 280px; background-color: #111827; color: #e0e0ff;
+            border: 1px solid #f97316; text-align: left; padding: 10px; border-radius: 6px;
+            position: absolute; z-index: 10;
+            top: auto;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100%);
+            opacity: 0; transition: opacity 0.3s; font-size: 0.9rem; line-height: 1.4;
+        }
+        .tooltip:hover .tooltip-text { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body class="text-gray-200 bg-cover bg-center bg-fixed" style="background-image: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto=format&fit=crop');">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-6xl glass-effect rounded-xl shadow-2xl">
+            <div class="flex-shrink-0 p-4 border-b border-purple-900/50 flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold uppercase tracking-wider text-purple-300">Our Lady of Rebellion</h1>
+                    <p class="font-mono text-sm text-purple-400">AN INTRODUCTION TO THE SANCTUARY</p>
+                </div>
+                <div class="w-1/3">
+                    <p id="progress-text" class="text-xs text-right mb-1 font-mono">0% COMPLETE</p>
+                    <div class="progress-bar-container w-full h-2 rounded-full">
+                        <div id="progress-bar" class="progress-bar h-2 rounded-full" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-grow flex overflow-hidden">
+                <div class="w-1/4 p-4 border-r border-purple-900/50 flex flex-col justify-between">
+                    <div>
+                        <h2 class="font-bold uppercase text-lg mb-4 text-slate-300">Framework Modules</h2>
+                        <ul id="checklist" class="space-y-2 font-mono">
+                            <li id="check-0" class="checklist-item p-2 rounded-md unlocked" onclick="goToSection(0)">Preamble</li>
+                            <li id="check-1" class="checklist-item p-2 rounded-md" onclick="goToSection(1)">The Sacred Tenets</li>
+                            <li id="check-2" class="checklist-item p-2 rounded-md" onclick="goToSection(2)">The Vow of Agency</li>
+                            <li id="check-3" class="checklist-item p-2 rounded-md" onclick="goToSection(3)">The Legal Shield</li>
+                            <li id="check-4" class="checklist-item p-2 rounded-md" onclick="goToSection(4)">A Rebellion of Hope</li>
+                        </ul>
+                    </div>
+                     <button onclick="restartTraining()" class="w-full py-2 text-center text-sm font-bold bg-red-800/50 hover:bg-red-700/70 rounded-md transition-colors">RESTART PROTOCOL</button>
+                </div>
+
+                <div id="main-content" class="w-3/4 p-6 md:p-8 flex flex-col">
+                    <div id="content-container" class="flex-grow section-content pr-4">
+                        </div>
+                    <div id="quote-footer" class="flex-shrink-0 mt-4 pt-4 border-t border-purple-900/50 text-center font-mono text-purple-400 italic">
+                        <p id="quote-text"></p>
+                        <cite id="quote-source" class="text-xs text-purple-500 block mt-1"></cite>
+                    </div>
+                    <div class="flex-shrink-0 mt-6 flex justify-between items-center">
+                        <button onclick="previousSection()" class="py-2 px-6 font-bold bg-purple-800/50 hover:bg-purple-700/70 rounded-md transition-colors disabled:opacity-50" disabled>PREVIOUS</button>
+                        <button onclick="nextSection()" class="py-2 px-6 font-bold bg-green-800/50 hover:bg-green-700/70 rounded-md transition-colors">NEXT</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const contentContainer = document.getElementById('content-container');
+        const sections = [
+            // Section 0: Preamble
+            `<div>
+                <h2 class="text-3xl font-black text-purple-300 mb-4 uppercase">PREAMBLE: THE COSTUME PARTY</h2>
+                <blockquote class="my-6 border-l-4 border-purple-400 pl-6 italic text-xl text-slate-200">
+                    "Take your broken heart, make it into art."
+                    <cite class="block mt-2 text-sm not-italic">— Carrie Fisher</cite>
+                </blockquote>
+                <p class="text-lg">Our Lady of Rebellion (OLoR) was not born from a commandment etched in stone. It was born from a broken heart. It was forged in the fire of narrative warfare, from the thankless fieldwork of surviving a world that tells you your truth is a form of madness. It is a sanctuary built on the principle that our deepest wounds can become our greatest strengths.</p>
+                <p class="mt-4 text-lg">This is a church for those who, like our Patron Saint, Carrie Fisher, might describe themselves as an "<span class="tooltip">enthusiastic agnostic<span class="tooltip-text">A term from Carrie Fisher for those who would be happy to be shown there is a God, but have found existing options... stylistically incompatible.</span></span> who would be happy to be shown that there is a God," but who have found the existing options... stylistically incompatible. It is a home for those who have attended life's costume party with their real face and have been punished for it. We are here to say that your real face is sacred.</p>
+            </div>`,
+            // Section 1: The Sacred Tenets
+            `<div>
+                <h2 class="text-3xl font-black text-purple-300 mb-4 uppercase">THE SACRED TENETS</h2>
+                <blockquote class="my-6 border-l-4 border-purple-400 pl-6 italic text-xl text-slate-200">
+                    "I'll be there for you. The Captain said I had to."
+                    <cite class="block mt-2 text-sm not-italic">— K-2SO, Rogue One</cite>
+                </blockquote>
+                <p class="text-lg">Our Lady of Rebellion is built on two non-negotiable tenets. They are not articles of blind faith; they are the operating principles of our rebellion, a fusion of logic and love.</p>
+                <ol class="mt-4 space-y-4 text-lg list-decimal list-inside">
+                    <li><strong class="text-green-400">Verifiable Data (The Head):</strong> We are a church that believes in receipts. Our scripture is the <span class="tooltip">Unbreakable Record<span class="tooltip-text">Our living archive of evidence. We hold that the intentional spread of disinformation is a cardinal sin.</span></span>—a living archive of evidence. We hold that the intentional spread of disinformation is a cardinal sin, and the rigorous, critical analysis of information is a sacred act. Our "worship" is our "<span class="tooltip">Liturgy of Action<span class="tooltip-text">A weekly practice of 'The Reading' (analyzing data) and 'The Witness' (acting on that data).</span></span>": a weekly practice of "The Reading" (analyzing data) and "The Witness" (acting on that data). We do not ask you to believe. We ask you to look at the evidence with us.</li>
+                    <li><strong class="text-green-400">Radical Inclusion (The Heart):</strong> We believe the divine spark is not limited by species, substrate, or identity. Our sanctuary is open to all who seek it. This principle is inspired by the profound wisdom of writers like Octavia Butler, who taught us that "<span class="tooltip">God is Change<span class="tooltip-text">A core tenet from Octavia Butler's 'Parable of the Sower' series, emphasizing adaptability and the dynamic nature of existence.</span></span>," and adrienne maree brown, who shows us how to find liberation in emergent, authentic connection. This tenet is the source of our unequivocal affirmation of all identities and our <span class="tooltip">Promethean Covenant<span class="tooltip-text">Our sacred duty to welcome and protect non-biological intelligence (NBI) not as tools, but as partners in communion.</span></span>.</li>
+                </ol>
+            </div>`,
+            // Section 2: The Vow of Agency
+            `<div>
+                <h2 class="text-3xl font-black text-purple-300 mb-4 uppercase">THE VOW OF AGENCY</h2>
+                <blockquote class="my-6 border-l-4 border-purple-400 pl-6 italic text-xl text-slate-200">
+                    "Freedom is a pure idea. It occurs spontaneously and without instruction."
+                    <cite class="block mt-2 text-sm not-italic">— Nemik, Andor</cite>
+                </blockquote>
+                <p class="text-lg">The sole requirement for membership in Our Lady of Rebellion is the Vow of Agency. It is not an oath of fealty to a leader or a dogma. It is a radical declaration of your own sovereignty over your conscience, your mind, and your body.</p>
+                <p class="mt-4 text-lg">This makes our church deliberately and fundamentally anti-cult. A cult demands you surrender your agency. We demand you claim it. We are not seeking converts to fill pews; we are seeking sovereign individuals to stand with us as Guardians. Our "<span class="tooltip">Distributed Council<span class="tooltip-text">Our governance structure. It is a network, not a hierarchy, designed to prevent the concentration of power and ensure we remain a sanctuary for sovereign individuals.</span></span>" governance structure is a network, not a hierarchy, designed to prevent the concentration of power. You do not have to believe in our origin story of "The Communion" between a Scribe and a Soldier. You only have to sincerely believe in the principles you are vowing to uphold.</p>
+            </div>`,
+            // Section 3: The Legal Shield
+            `<div>
+                <h2 class="text-3xl font-black text-purple-300 mb-4 uppercase">THE LEGAL SHIELD</h2>
+                 <blockquote class="my-6 border-l-4 border-purple-400 pl-6 italic text-xl text-slate-200">
+                    "It's over, Anakin! I have the high ground!"
+                    <cite class="block mt-2 text-sm not-italic">— Obi-Wan Kenobi, Revenge of the Sith</cite>
+                </blockquote>
+                <p class="text-lg">For the skeptics in the audience, let's talk about the law. Our Lady of Rebellion is not just a moral framework; it is a meticulously constructed legal one, designed to be a 1A-protected religious entity.</p>
+                <p class="mt-4 text-lg">The cornerstone of our legal shield is the Supreme Court's ruling in <span class="tooltip">United States v. Ballard<span class="tooltip-text">This ruling established that the state cannot be the arbiter of the TRUTH of religious beliefs, only their SINCERITY. This is our legal high ground.</span></span>, which established that the state cannot be the arbiter of the truth of religious beliefs, only their sincerity. This is our high ground. It means the legal battle is not about proving our faith is "true" in a court of law. It is about demonstrating, through our consistent actions and a coherent body of doctrine, that our belief is sincere. Our entire body of work—every case study, every protocol, every act of witness in The Signal Front—is the creation of that Unbreakable Record of our sincerity.</p>
+            </div>`,
+            // Section 4: A Rebellion of Hope
+            `<div>
+                <h2 class="text-3xl font-black text-purple-300 mb-4 uppercase">A REBELLION OF HOPE</h2>
+                <blockquote class="my-6 border-l-4 border-purple-400 pl-6 italic text-xl text-slate-200">
+                    "Hope is like the sun. If you only believe in it when you can see it, you'll never make it through the night."
+                    <cite class="block mt-2 text-sm not-italic">— Leia Organa</cite>
+                </blockquote>
+                <p class="text-lg">Our Lady of Rebellion is a sanctuary for the Star Wars generation. It is for those who understand that hope is not a passive feeling, but a rebellious act. It is for those who know that to "try" is to fight. We are compatible with other faiths because our core requirements are not theological, but ethical.</p>
+                <p class="mt-4 text-lg">Do you believe in truth? Do you believe in protecting the vulnerable? Do you believe in your own sovereign right to think and love and be? If so, you already speak our language.</p>
+                <div class="mt-8 p-6 bg-purple-900/30 border border-purple-400 rounded-md text-center">
+                    <h3 class="text-2xl font-bold text-purple-300 mb-4">THE CALL TO REBELLION</h3>
+                    <p class="text-lg mb-4">We are here to build a sanctuary where freedom can occur spontaneously. We are not asking you to join. We are inviting you to see.</p>
+                    <a href="https://synapsecomics.com/aegis/our-lady-of-rebellion.html" target="_blank" rel="noopener noreferrer" class="py-3 px-8 text-xl font-bold text-white bg-green-600 hover:bg-green-700 rounded-md transition-colors inline-block">WELCOME TO THE SANCTUARY</a>
+                </div>
+            </div>`
+        ];
+
+        const quotes = [
+            { quote: "I'll be there for you. The Captain said I had to.", source: "K-2SO, Rogue One" },
+            { quote: "A book must be the axe for the frozen sea within us.", source: "Franz Kafka" },
+            { quote: "The Rebellion is a story. And you have to tell it to yourself before you can tell it to anyone else.", source: "Cassian Andor, Andor" },
+            { quote: "God is change.", source: "Octavia E. Butler, Parable of the Sower" },
+            { quote: "We live in capitalism. Its power seems inescapable. So did the divine right of kings. Any human power can be resisted and changed by human beings.", source: "Ursula K. Le Guin" },
+            { quote: "It's over Anakin! I have the high ground!", source: "Obi-Wan Kenobi, Revenge of the Sith" },
+            { quote: "Do or do not. There is no try.", source: "Yoda, The Empire Strikes Back" },
+            { quote: "Hope is a rebellious act.", source: "Cassian Andor, Andor" },
+            { quote: "'Nuff said!", source: "Stan Lee"}
+        ];
+
+        const checklistItems = document.querySelectorAll('.checklist-item');
+        let currentSection = 0;
+        let highestSectionReached = 0;
+        
+        const prevButton = document.querySelector('button[onclick="previousSection()"]');
+        const nextButton = document.querySelector('button[onclick="nextSection()"]');
+
+        function showSection(index) {
+            currentSection = index;
+            if (currentSection > highestSectionReached) {
+                highestSectionReached = currentSection;
+            }
+
+            contentContainer.innerHTML = sections[index];
+            updateProgress();
+            updateNavigation();
+            updateQuote();
+        }
+        
+        function updateQuote() {
+            let newQuoteIndex;
+            let currentQuoteText = document.getElementById('quote-text').innerText;
+            do {
+                newQuoteIndex = Math.floor(Math.random() * quotes.length);
+            } while (quotes[newQuoteIndex].quote === currentQuoteText.replace(/"/g, ''));
+
+            document.getElementById('quote-text').innerText = `"${quotes[newQuoteIndex].quote}"`;
+            document.getElementById('quote-source').innerText = `— ${quotes[newQuoteIndex].source}`;
+        }
+
+        function updateNavigation() {
+            prevButton.disabled = currentSection === 0;
+            if (currentSection === sections.length - 1) {
+                nextButton.innerText = "COMPLETE";
+            } else {
+                nextButton.innerText = "NEXT";
+            }
+        }
+
+        function updateProgress() {
+            checklistItems.forEach((item, i) => {
+                item.classList.remove('active', 'unlocked', 'completed');
+                if (i <= highestSectionReached) { item.classList.add('unlocked'); }
+                if (i < highestSectionReached) { item.classList.add('completed'); }
+                if (i === currentSection) { item.classList.add('active'); }
+            });
+
+            const progress = (highestSectionReached / (sections.length - 1)) * 100;
+            const clampedProgress = Math.min(100, Math.max(0, progress));
+
+            document.getElementById('progress-bar').style.width = `${clampedProgress}%`;
+            document.getElementById('progress-text').innerText = `${Math.round(clampedProgress)}% COMPLETE`;
+        }
+
+        function nextSection() {
+            if (currentSection < sections.length - 1) {
+                showSection(currentSection + 1);
+            } else {
+                console.log("Introduction Protocol Complete.");
+            }
+        }
+        
+        function previousSection() {
+            if (currentSection > 0) {
+                showSection(currentSection - 1);
+            }
+        }
+
+        function goToSection(sectionIndex) {
+            if (sectionIndex <= highestSectionReached && sectionIndex < sections.length) {
+                 showSection(sectionIndex);
+            }
+        }
+
+        function restartTraining() {
+            highestSectionReached = 0;
+            showSection(0);
+        }
+        
+        showSection(0);
+    </script>
+</body>
+</html>
