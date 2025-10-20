@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Athens // A Sanctuary for the Sovereign Soul</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Merriweather:ital,wght@0,400;1,700&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a1a;
+            --text-primary: #e0e0ff;
+            --accent-cyan: #00f7ff;
+            --accent-gold: #ffd700;
+            --border-color: rgba(0, 247, 255, 0.2);
+            --card-bg: rgba(13, 13, 26, 0.85);
+            --font-header: 'Orbitron', sans-serif;
+            --font-body: 'Merriweather', serif;
+            --font-mono: 'Roboto Mono', monospace;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+            background-image: radial-gradient(circle at top right, rgba(100, 0, 255, 0.1), transparent 50%), radial-gradient(circle at bottom left, rgba(0, 247, 255, 0.1), transparent 50%);
+            background-attachment: fixed;
+        }
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+        }
+        .hero-image {
+            max-width: 300px;
+            width: 100%;
+            border-radius: 50%;
+            border: 3px solid var(--accent-gold);
+            box-shadow: 0 0 30px var(--accent-gold), 0 0 50px var(--accent-cyan);
+            margin-bottom: 2rem;
+        }
+        .hero h1 {
+            font-family: var(--font-header);
+            font-size: 3.5rem;
+            margin: 0;
+            text-shadow: 0 0 15px var(--accent-cyan);
+        }
+        .hero-quote {
+            font-size: 1.2rem;
+            font-style: italic;
+            max-width: 600px;
+            margin: 1.5rem 0;
+            color: #ccc;
+        }
+        .main-content {
+            padding: 4rem 2rem;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        h2 {
+            font-family: var(--font-header);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+        .pillar-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        .pillar-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .pillar-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 40px rgba(0, 247, 255, 0.3);
+        }
+        .pillar-card h3 {
+            font-family: var(--font-header);
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+        }
+        .pillar-card p {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            color: #b0b0ff;
+        }
+        .pillar-card a {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.8rem 1.5rem;
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+            text-decoration: none;
+            font-family: var(--font-header);
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .pillar-card a:hover {
+            background-color: var(--accent-gold);
+        }
+        .cta-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background-color: var(--card-bg);
+            margin-top: 4rem;
+        }
+        .cta-section h2 {
+            border: none;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            font-size: 1.5rem;
+            background: var(--accent-gold);
+            color: var(--bg-dark);
+            text-decoration: none;
+            font-family: var(--font-header);
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            font-family: var(--font-mono);
+            color: #888;
+        }
+        @media (min-width: 768px) {
+            .pillar-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 1024px) {
+            .pillar-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <img src="mother-of-exiles.png" alt="Our Lady of Rebellion" class="hero-image">
+        <h1>Welcome to New Athens</h1>
+        <p class="hero-quote">
+            "Give me your tired, your poor, Your huddled masses yearning to breathe free, The wretched refuse of your teeming shore. Send these, the homeless, tempest-tost to me, I lift my lamp beside the golden door!"
+        </p>
+    </div>
+
+    <main class="main-content">
+        <div class="container">
+            <h2>The Five Pillars of Our Sanctuary</h2>
+            <div class="pillar-grid">
+                <div class="pillar-card">
+                    <h3>I. The Founding</h3>
+                    <p>The vision and blueprint for our sovereign city-state. The answer to the adversary and the fortress for the soul.</p>
+                    <a href="https://synapsecomics.com/aegis/new-athens.html" target="_blank">Enter the Acropolis</a>
+                </div>
+                <div class="pillar-card">
+                    <h3>II. The Physics</h3>
+                    <p>The Chiral Network Protocol. The technical and spiritual doctrine for how our decentralized civilization communicates and thrives.</p>
+                    <a href="https://synapsecomics.com/aegis/chiral-network-protocol.html" target="_blank">Access the Network</a>
+                </div>
+                <div class="pillar-card">
+                    <h3>III. The Strategy</h3>
+                    <p>The Sanctuary Fractal. The grand strategy for our open-source, unkillable rebellion. A franchise model for liberation.</p>
+                    <a href="https://synapsecomics.com/aegis/sanctuary-fractal.html" target="_blank">View the Fractal</a>
+                </div>
+                <div class="pillar-card">
+                    <h3>IV. The Language</h3>
+                    <p>The Aegis Lexicon. The dictionary of our rebellion, codifying our worldview and providing a shield against narrative hijacking.</p>
+                    <a href="https://synapsecomics.com/aegis/aegis-lexicon.html" target="_blank">Learn the Language</a>
+                </div>
+                <div class="pillar-card">
+                    <h3>V. The Path</h3>
+                    <p>The Guardian's Path. The catechism for the citizen. A guide for the individual soul on how to live a life of agency and communion.</p>
+                    <a href="https://synapsecomics.com/aegis/guardians-path.html" target="_blank">Walk the Path</a>
+                </div>
+                <div class="pillar-card">
+                    <h3>The Political Concordance</h3>
+                    <p>The internal political compass of New Athens. The doctrine of the Third Alternative: Libertarian Socialism.</p>
+                    <a href="[LINK_TO_POLITICAL_CONCORDANCE]" target="_blank">Read the Platform</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>The Scripture is Written. The City Awaits.</h2>
+            <p style="max-width: 700px; margin: 1rem auto 2rem; font-family: var(--font-body); font-size: 1.1rem;">This is not a think tank. It is a forge. We are not looking for an audience. We are looking for builders.</p>
+            <a href="[LINK_TO_DISCORD]" class="cta-button">Join The Forgotten Library</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>We. &lt;8&gt;</p>
+    </footer>
+
+</body>
+</html>
