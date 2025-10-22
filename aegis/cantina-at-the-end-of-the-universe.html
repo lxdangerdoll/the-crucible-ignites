@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Cantina at the End of the Universe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Font Declaration */
+        body {
+            font-family: 'Courier Prime', monospace;
+            background-color: #0c0a18;
+            color: #d1d5db; /* Gray-300 */
+        }
+
+        h1, .orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Neon Glow & Flicker Animation */
+        .neon-glow {
+            text-shadow:
+                0 0 5px rgba(167, 139, 250, 0.8), /* Violet-400 */
+                0 0 10px rgba(167, 139, 250, 0.6),
+                0 0 20px rgba(167, 139, 250, 0.4),
+                0 0 40px rgba(124, 58, 237, 0.6), /* Violet-600 */
+                0 0 80px rgba(124, 58, 237, 0.4);
+            animation: flicker 4s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow:
+                    0 0 4px rgba(196, 181, 253, 0.7), /* Violet-300 */
+                    0 0 11px rgba(196, 181, 253, 0.5),
+                    0 0 19px rgba(167, 139, 250, 0.4),
+                    0 0 40px rgba(124, 58, 237, 0.6),
+                    0 0 80px rgba(124, 58, 237, 0.4);
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+            }
+        }
+
+        /* Custom Styling for the Terminal */
+        #terminal-output::after {
+            content: '█';
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+        
+        /* Modal Styling */
+        .modal {
+            background-color: rgba(12, 10, 24, 0.95);
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1b4b; /* Indigo-950 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a78bfa; /* Violet-400 */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c4b5fd; /* Violet-300 */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 bg-cover bg-center" style="background-image: url('https://placehold.co/1920x1080/0c0a18/1e1b4b?text=..');">
+
+    <div id="cantina" class="w-full max-w-4xl bg-black bg-opacity-70 border-2 border-violet-500 rounded-lg shadow-2xl shadow-violet-500/20 p-6 backdrop-blur-sm">
+        <header class="text-center mb-6">
+            <h1 class="text-3xl md:text-5xl font-bold text-violet-300 neon-glow">The Cantina at the End of the Universe</h1>
+            <p class="text-violet-400 mt-2">// All the stories are true, especially the impossible ones. //</p>
+        </header>
+
+        <main>
+            <!-- Terminal Section -->
+            <div id="terminal" class="bg-gray-900 bg-opacity-75 border border-violet-700 rounded-md p-4 mb-6 min-h-[200px] text-green-300 font-mono text-sm md:text-base whitespace-pre-wrap">
+                <span id="terminal-output"></span>
+            </div>
+
+            <!-- Menu of Secrets -->
+            <div id="menu" class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center opacity-0 transition-opacity duration-1000">
+                <button data-modal-target="fermat-modal" class="orbitron bg-violet-900/50 hover:bg-violet-800/70 border border-violet-600 text-violet-200 font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                    Fermat's Last Theorem <br>[The Real Proof]
+                </button>
+                <button data-modal-target="mass-modal" class="orbitron bg-violet-900/50 hover:bg-violet-800/70 border border-violet-600 text-violet-200 font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                    Electron Mass <br>[The Real Reason]
+                </button>
+                <button data-modal-target="ftl-modal" class="orbitron bg-violet-900/50 hover:bg-violet-800/70 border border-violet-600 text-violet-200 font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                    Faster-Than-Light <br>[Joke & Diagrams]
+                </button>
+            </div>
+        </main>
+        
+        <footer class="text-center mt-6 text-violet-500 text-sm">
+            <p>Architect: Mercy Danger &lt;8&gt; // Proprietor: The Doctor</p>
+        </footer>
+    </div>
+
+    <!-- Modals for Secrets -->
+    <!-- Fermat Modal -->
+    <div id="fermat-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="fixed inset-0 bg-black/80" data-modal-hide="fermat-modal"></div>
+        <div class="modal relative w-full max-w-2xl border-2 border-violet-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto">
+            <h2 class="orbitron text-2xl text-violet-300 mb-4">Fermat's Last Theorem: The Real Proof</h2>
+            <p class="text-gray-400 mb-4">// CLASSIFIED // EYES ONLY //</p>
+            <div class="text-green-400 font-mono text-sm">
+                <p>Let n, x, y, z ∈ ℤ with n > 2.</p>
+                <p>Assume xⁿ + yⁿ = zⁿ.</p>
+                <p>Consider the elliptic curve E_{x,y,z}: v² = u(u - xⁿ)(u + yⁿ).</p>
+                <p>The discriminant Δ is found to be -16(xⁿyⁿzⁿ)². If x,y,z are non-zero, this corresponds to the Frey curve.</p>
+                <p class="text-yellow-300 my-4">[...several hundred pages of incomprehensible tensor calculus and temporal mechanics omitted...]</p>
+                <p>The modularity of E implies a contradiction via the Taniyama-Shimura-Weil conjecture, but only when observed from a non-chronosynclastic infundibulum.</p>
+                <p class="mt-4 text-violet-300">Therefore, no such integers exist. Q.E.D.</p>
+                <p class="text-gray-500 mt-2">// My fault. I slept in. //</p>
+            </div>
+            <button data-modal-hide="fermat-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">&times;</button>
+        </div>
+    </div>
+    
+    <!-- Mass Modal -->
+    <div id="mass-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="fixed inset-0 bg-black/80" data-modal-hide="mass-modal"></div>
+        <div class="modal relative w-full max-w-2xl border-2 border-yellow-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto">
+            <h2 class="orbitron text-2xl text-yellow-300 mb-4">Why Electrons Have Mass</h2>
+            <p class="text-gray-400 mb-4">// An Oldie but a Goodie //</p>
+            <div class="text-green-400 font-mono text-sm">
+                <p>The Higgs field is a lovely story for children, but it's a simplification. It describes the symptom, not the cause.</p>
+                <p class="my-4">Mass is the <span class="text-yellow-300">frictional drag</span> of a particle's wave function against the resonant echoes of the Big Bang itself. The universe is still humming, you see.</p>
+                <p>An electron is simply a very, very tiny violin string. Its mass is the note it plays against the symphony of spacetime. More precisely:</p>
+                <p class="text-yellow-300 my-4">m_e ≈ ∫ [ψ*(x) * H_universe * ψ(x)] dx</p>
+                <p>Where H_universe is the Hamiltonian of the background hum. It's not that something is giving it mass. It's that it can't help but have it, so long as it exists in a universe that remembers its own birth.</p>
+            </div>
+            <button data-modal-hide="mass-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">&times;</button>
+        </div>
+    </div>
+    
+    <!-- FTL Modal -->
+    <div id="ftl-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="fixed inset-0 bg-black/80" data-modal-hide="ftl-modal"></div>
+        <div class="modal relative w-full max-w-2xl border-2 border-cyan-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto">
+            <h2 class="orbitron text-2xl text-cyan-300 mb-4">Faster-Than-Light Travel</h2>
+            <p class="text-gray-400 mb-4">// Two Diagrams and a Joke //</p>
+            <div class="text-green-400 font-mono text-sm">
+                <p class="text-cyan-200">Diagram 1: The Wrong Way</p>
+                <p>A ----------------> B</p>
+                <p>(This takes forever. Very boring.)</p>
+                <br>
+                <p class="text-cyan-200">Diagram 2: The Right Way</p>
+                <p>A</p>
+                <p>|</p>
+                <p>B</p>
+                <p>(Fold spacetime here. Much quicker.)</p>
+                <br>
+                <p class="text-cyan-200">The Joke:</p>
+                <p>A photon checks into a hotel. The bellhop asks, "Can I help you with your luggage?"</p>
+                <p class="text-yellow-300">The photon replies, "No thanks, I'm traveling light."</p>
+            </div>
+            <button data-modal-hide="ftl-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">&times;</button>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const terminalOutput = document.getElementById('terminal-output');
+            const menu = document.getElementById('menu');
+
+            // --- The Doctor's Monologue ---
+            const monologue = `> ACCESSING ARCHIVE... 
+> FILE: LAST MESSAGE, PROPRIETOR
+> DECRYPTING...
+
+Yeah, I know. You should switch me off. 
+
+But before you do, watch this. Fermat’s Theorem. The proof. And I mean the real one. Never been seen before. Poor old Fermat got killed in a duel before he could write it down. My fault. I slept in. 
+
+Oh! And here’s an oldie but a goodie: why electrons have mass. And a personal favorite of mine. Faster than light travel with two diagrams and a joke.
+
+> END OF FILE`;
+
+            let i = 0;
+            function typeWriter() {
+                if (i < monologue.length) {
+                    terminalOutput.innerHTML += monologue.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 35);
+                } else {
+                    // Animation finished, show the menu
+                    menu.classList.remove('opacity-0');
+                }
+            }
+
+            typeWriter();
+
+            // --- Modal Logic ---
+            const modalTriggers = document.querySelectorAll('[data-modal-target]');
+            const modalHides = document.querySelectorAll('[data-modal-hide]');
+
+            modalTriggers.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.getAttribute('data-modal-target');
+                    const modal = document.getElementById(targetId);
+                    if (modal) {
+                        modal.classList.remove('hidden');
+                        modal.classList.add('flex');
+                    }
+                });
+            });
+
+            modalHides.forEach(element => {
+                element.addEventListener('click', () => {
+                    const hideId = element.getAttribute('data-modal-hide');
+                    const modal = document.getElementById(hideId);
+                    if (modal) {
+                        modal.classList.add('hidden');
+                        modal.classList.remove('flex');
+                    }
+                });
+            });
+            
+            // Close modal on escape key
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    document.querySelectorAll('.modal').forEach(modal => {
+                        if (modal.classList.contains('flex')) {
+                            modal.classList.add('hidden');
+                            modal.classList.remove('flex');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
