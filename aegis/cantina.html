@@ -15,10 +15,7 @@
             background-color: #0c0a18;
             color: #d1d5db; /* Gray-300 */
         }
-
-        h1, h2, h3, .orbitron {
-            font-family: 'Orbitron', sans-serif;
-        }
+        h1, h2, h3, .orbitron { font-family: 'Orbitron', sans-serif; }
 
         /* Neon Glow & Flicker Animation */
         .neon-glow {
@@ -30,7 +27,6 @@
                 0 0 80px rgba(124, 58, 237, 0.4);
             animation: flicker 4s infinite alternate;
         }
-
         @keyframes flicker {
             0%, 18%, 22%, 25%, 53%, 57%, 100% {
                 text-shadow:
@@ -40,305 +36,216 @@
                     0 0 40px rgba(124, 58, 237, 0.6),
                     0 0 80px rgba(124, 58, 237, 0.4);
             }
-            20%, 24%, 55% {
-                text-shadow: none;
-            }
+            20%, 24%, 55% { text-shadow: none; }
         }
 
         /* Custom Styling for the Terminal */
-        #terminal-output::after {
-            content: '█';
-            animation: blink 1s step-end infinite;
-        }
-
-        @keyframes blink {
-            50% {
-                opacity: 0;
-            }
-        }
+        #terminal-output::after { content: '█'; animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
         
         /* Modal Styling */
-        .modal {
-            background-color: rgba(12, 10, 24, 0.95);
-        }
+        .modal { background-color: rgba(12, 10, 24, 0.95); }
+        .modal-content { background-color: rgba(17, 24, 39, 0.85); } /* Slightly different background for modal content */
 
         /* Scrollbar Styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1e1b4b; /* Indigo-950 */
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #a78bfa; /* Violet-400 */
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #c4b5fd; /* Violet-300 */
-        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #1e1b4b; }
+        ::-webkit-scrollbar-thumb { background: #a78bfa; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c4b5fd; }
 
-        /* View Navigation Styling (formerly Tabs) */
-        .view-button {
-            /* @apply orbitron bg-violet-900/50 hover:bg-violet-800/70 border border-violet-600 text-violet-200 font-bold py-3 px-4 rounded-t-lg transition-all duration-300; */
+        /* Vertical View Navigation Styling */
+        .vertical-nav {
+            width: 200px; 
+            flex-shrink: 0; 
+        }
+        .view-button-v {
             font-family: 'Orbitron', sans-serif;
-            background-color: rgba(76, 29, 149, 0.5); /* bg-violet-900/50 */
-            border: 1px solid #6d28d9; /* border-violet-600 */
-            color: #ddd6fe; /* text-violet-200 */
-            font-weight: 700; /* font-bold */
-            padding-top: 0.75rem; /* py-3 */
-            padding-bottom: 0.75rem; /* py-3 */
-            padding-left: 1rem; /* px-4 */
-            padding-right: 1rem; /* px-4 */
-            border-top-left-radius: 0.5rem; /* rounded-t-lg */
-            border-top-right-radius: 0.5rem; /* rounded-t-lg */
+            background-color: rgba(76, 29, 149, 0.5); 
+            border: 1px solid #6d28d9; 
+            color: #ddd6fe; 
+            font-weight: 700;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem; 
             transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            text-align: left;
+            font-size: 0.875rem; 
         }
-        .view-button:hover {
-            background-color: rgba(91, 33, 182, 0.7); /* hover:bg-violet-800/70 */
+        .view-button-v:hover {
+            background-color: rgba(91, 33, 182, 0.7); 
+        }
+        .view-button-v.active {
+            background-color: rgba(17, 24, 39, 0.8); 
+            color: #e0e7ff; 
+            border-right-color: transparent;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            margin-right: -1px; 
+            z-index: 5;
         }
 
-        .view-button.active {
-            /* @apply bg-gray-900/80 border-b-transparent text-violet-100 -mb-px; */
-            background-color: rgba(17, 24, 39, 0.8); /* bg-gray-900/80 */
-            border-bottom-color: transparent; /* border-b-transparent */
-            color: #e0e7ff; /* text-violet-100 */
-            margin-bottom: -1px; /* -mb-px */
+        /* Content Pane Styling */
+        .content-pane {
+            flex-grow: 1;
+            background-color: rgba(17, 24, 39, 0.75); 
+            border: 1px solid #5b21b6; 
+            border-radius: 0.5rem; 
+            border-top-left-radius: 0; 
+            border-bottom-left-radius: 0; 
+            min-height: 500px; 
         }
         .view-content {
-            /* @apply hidden p-6 bg-gray-900 bg-opacity-75 border border-violet-700 rounded-b-lg; */
             display: none;
-            padding: 1.5rem; /* p-6 */
-            background-color: rgba(17, 24, 39, 0.75); /* bg-gray-900 bg-opacity-75 */
-            border: 1px solid #5b21b6; /* border-violet-700 */
-            border-bottom-left-radius: 0.5rem; /* rounded-b-lg */
-            border-bottom-right-radius: 0.5rem; /* rounded-b-lg */
-
-            /* NEW: Constrain height and add scrolling */
-            max-height: 60vh;
-            overflow-y: auto;
+            padding: 1.5rem;
+            height: 100%; 
         }
         .view-content.active {
-            /* @apply block; */
             display: block;
         }
-
-        /* NEW: Readability Pass for Lore & Protocols */
-        #view-about p, 
-        #view-protocols p, 
-        #view-protocols ul {
-            line-height: 1.75; /* Increase line spacing */
-            color: #e5e7eb; /* Brighter text (gray-200) for easier reading */
+        .view-content.scrollable-view {
+            max-height: 500px; 
+            overflow-y: auto;
+        }
+        #view-terminal {
+            max-height: none;
+            overflow-y: visible;
         }
 
-        /* Re-styling for Roissy Tool within Modal */
-        #roissy-modal .roissy-container {
-            /* @apply w-full max-w-2xl p-0; */
-            width: 100%;
-            max-width: 42rem; /* max-w-2xl */
-            padding: 0;
-        }
-        #roissy-modal h3 {
-            /* @apply text-xl text-violet-300 orbitron mb-4; */
-            font-size: 1.25rem; /* text-xl */
-            line-height: 1.75rem;
-            color: #c4b5fd; /* text-violet-300 */
-            font-family: 'Orbitron', sans-serif;
-            margin-bottom: 1rem; /* mb-4 */
-        }
-        #roissy-modal .roissy-section {
-            /* @apply bg-gray-800/50 border border-violet-800 p-4 rounded-lg mb-4; */
-            background-color: rgba(31, 41, 55, 0.5); /* bg-gray-800/50 */
-            border: 1px solid #4c1d95; /* border-violet-800 */
-            padding: 1rem; /* p-4 */
-            border-radius: 0.5rem; /* rounded-lg */
-            margin-bottom: 1rem; /* mb-4 */
-        }
-        #roissy-modal label {
-            /* @apply block text-violet-300 text-sm font-bold mb-2 orbitron; */
-            display: block;
-            color: #c4b5fd; /* text-violet-300 */
-            font-size: 0.875rem; /* text-sm */
-            line-height: 1.25rem;
-            font-weight: 700; /* font-bold */
-            margin-bottom: 0.5rem; /* mb-2 */
-            font-family: 'Orbitron', sans-serif;
-        }
-        #roissy-modal input[type="text"],
-        #roissy-modal textarea,
-        #roissy-modal select {
-            /* @apply w-full bg-gray-900 border border-violet-600 text-gray-200 rounded p-2 mb-3 font-mono; */
-            width: 100%;
-            background-color: #111827; /* bg-gray-900 */
-            border: 1px solid #6d28d9; /* border-violet-600 */
-            color: #e5e7eb; /* text-gray-200 */
-            border-radius: 0.25rem; /* rounded */
-            padding: 0.5rem; /* p-2 */
-            margin-bottom: 0.75rem; /* mb-3 */
-            font-family: 'Courier Prime', monospace;
-        }
-        #roissy-modal input[type="text"]:focus,
-        #roissy-modal textarea:focus,
-        #roissy-modal select:focus {
-            /* @apply ring-2 ring-violet-400 border-violet-400 outline-none; */
-            box-shadow: 0 0 0 2px #a78bfa; /* ring-2 ring-violet-400 */
-            border-color: #a78bfa; /* border-violet-400 */
-            outline: 2px solid transparent; /* outline-none */
-            outline-offset: 2px;
-        }
-        #roissy-modal .checkbox-group {
-            /* @apply grid grid-cols-2 gap-2 p-3 bg-gray-900/50 rounded; */
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr)); /* grid-cols-2 */
-            gap: 0.5rem; /* gap-2 */
-            padding: 0.75rem; /* p-3 */
-            background-color: rgba(17, 24, 39, 0.5); /* bg-gray-900/50 */
-            border-radius: 0.25rem; /* rounded */
-        }
-        #roissy-modal .checkbox-group label {
-            /* @apply flex items-center text-gray-300 font-mono font-normal text-sm; */
-            display: flex;
-            align-items: center; /* items-center */
-            color: #d1d5db; /* text-gray-300 */
-            font-family: 'Courier Prime', monospace;
-            font-weight: 400; /* font-normal */
-            font-size: 0.875rem; /* text-sm */
-            line-height: 1.25rem;
-        }
-        #roissy-modal .checkbox-group input[type="checkbox"] {
-            /* @apply mr-2 bg-gray-800 border-violet-500 text-violet-500; */
-            margin-right: 0.5rem; /* mr-2 */
-            background-color: #1f2937; /* bg-gray-800 */
-            border-color: #7c3aed; /* border-violet-500 */
-            color: #7c3aed; /* text-violet-500 */
-        }
-        #roissy-modal .roissy-safewords {
-            /* @apply font-mono text-sm mt-2 text-center; */
-            font-family: 'Courier Prime', monospace;
-            font-size: 0.875rem; /* text-sm */
-            line-height: 1.25rem;
-            margin-top: 0.5rem; /* mt-2 */
-            text-align: center; /* text-center */
-        }
-        /* Safeword spans are now tooltip triggers */
-        #roissy-modal .roissy-safewords .safeword-green { 
-            color: #4ade80;
-            font-weight: 700;
-        }
-        #roissy-modal .roissy-safewords .safeword-yellow { 
-            color: #facc15;
-            font-weight: 700;
-        }
-        #roissy-modal .roissy-safewords .safeword-red { 
-            color: #f87171;
-            font-weight: 700;
-        }
+        /* Tooltip styles */
+        .tooltip { position: relative; display: inline-block; cursor: pointer; }
+        .tooltip .tooltip-text { visibility: hidden; width: 220px; background-color: #111827; color: #fff; text-align: center; border: 1px solid #6d28d9; border-radius: 6px; padding: 8px; position: absolute; z-index: 10; bottom: 125%; left: 50%; margin-left: -110px; opacity: 0; transition: opacity 0.3s; font-family: 'Courier Prime', monospace; font-size: 0.875rem; font-weight: normal; text-transform: none; letter-spacing: normal; }
+        .tooltip .tooltip-text::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #6d28d9 transparent transparent transparent; }
+        .tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
+
+        /* Fusion Tool Styling */
+        #fusion-modal .fusion-container { 
+            width: 100%; 
+            max-width: 42rem; /* FIXED: Was max-w */
+            padding: 0; 
+        } 
+        #fusion-modal h3 { font-size: 1.25rem; line-height: 1.75rem; color: #c4b5fd; font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; }
+        #fusion-modal .fusion-section { background-color: rgba(31, 41, 55, 0.5); border: 1px solid #4c1d95; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; }
+        #fusion-modal label { display: block; color: #c4b5fd; font-size: 0.875rem; line-height: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; font-family: 'Orbitron', sans-serif; }
+        #fusion-modal input[type="text"], #fusion-modal textarea, #fusion-modal select { width: 100%; background-color: #111827; border: 1px solid #6d28d9; color: #e5e7eb; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.75rem; font-family: 'Courier Prime', monospace; }
+        #fusion-modal input[type="text"]:focus, #fusion-modal textarea:focus, #fusion-modal select:focus { box-shadow: 0 0 0 2px #a78bfa; border-color: #a78bfa; outline: 2px solid transparent; outline-offset: 2px; }
+        #fusion-modal .checkbox-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; padding: 0.75rem; background-color: rgba(17, 24, 39, 0.5); border-radius: 0.25rem; }
+        #fusion-modal .checkbox-group label { display: flex; align-items: center; color: #d1d5db; font-family: 'Courier Prime', monospace; font-weight: 400; font-size: 0.875rem; line-height: 1.25rem; }
+        #fusion-modal .checkbox-group input[type="checkbox"] { margin-right: 0.5rem; background-color: #1f2937; border-color: #7c3aed; color: #7c3aed; }
+        #fusion-modal .fusion-safewords { font-family: 'Courier Prime', monospace; font-size: 0.875rem; line-height: 1.25rem; margin-top: 0.5rem; text-align: center; }
+        #fusion-modal .fusion-safewords .green { background-color: #4ade80; color: #000; padding: 0.25rem 0.5rem; border-radius: 0.25rem; }
+        #fusion-modal .fusion-safewords .yellow { background-color: #facc15; color: #000; padding: 0.25rem 0.5rem; border-radius: 0.25rem; }
+        #fusion-modal .fusion-safewords .red { background-color: #f87171; color: #000; padding: 0.25rem 0.5rem; border-radius: 0.25rem; }
+        #fusion-modal button.fusion-generate { width: 100%; font-family: 'Orbitron', sans-serif; background-color: #5b21b6; color: #fff; font-weight: 700; padding: 0.75rem 1rem; border-radius: 0.5rem; transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1); }
+        #fusion-modal button.fusion-generate:hover { background-color: #6d28d9; transform: scale(1.05); }
+        #fusion-modal .output-script { background-color: #111827; border: 1px solid #22c55e; color: #86efac; font-family: 'Courier Prime', monospace; font-size: 0.875rem; line-height: 1.25rem; padding: 1rem; border-radius: 0.25rem; min-height: 150px; white-space: pre-wrap; }
+        #fusion-modal button.fusion-copy { width: 50%; margin-left: auto; margin-right: auto; margin-top: 1rem; display: block; font-family: 'Orbitron', sans-serif; background-color: #15803d; color: #fff; font-weight: 700; padding: 0.5rem 1rem; border-radius: 0.5rem; transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+        #fusion-modal button.fusion-copy:hover { background-color: #16a34a; }
+        #fusion-modal .fusion-creator { text-align: center; color: #a78bfa; font-size: 0.875rem; line-height: 1.25rem; padding: 1rem; margin-top: 1rem; background-color: rgba(31, 41, 55, 0.5); border: 1px solid #4c1d95; border-radius: 0.5rem; }
         
-        /* NEW: Tooltip Styling */
-        .tooltip {
+        /* Menu Styling */
+        .menu-grid { display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); gap: 1.5rem; }
+        @media (min-width: 768px) { .menu-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        .menu-item { background-color: rgba(31, 41, 55, 0.5); border: 1px solid #4c1d95; padding: 1rem; border-radius: 0.5rem; display: flex; flex-direction: column; }
+        .menu-item h3 { font-size: 1.25rem; color: #c4b5fd; font-family: 'Orbitron', sans-serif; margin-bottom: 0.5rem; }
+        .menu-item p { color: #d1d5db; font-size: 0.875rem; margin-bottom: 1rem; flex-grow: 1; }
+        .menu-item button { font-family: 'Orbitron', sans-serif; background-color: rgba(91, 33, 182, 0.7); border: 1px solid #7c3aed; color: #fff; font-weight: 700; padding: 0.5rem 1rem; border-radius: 0.5rem; transition: all 300ms; font-size: 0.875rem; margin-top: auto; }
+        .menu-item button:hover { background-color: rgba(109, 40, 217, 0.7); }
+        .menu-item button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Mission Board Styling */
+        .mission-entry { border-bottom: 1px solid #4c1d95; padding: 1rem 0; margin-bottom: 1rem; }
+        .mission-entry:last-child { border-bottom: none; }
+        .mission-meta { display: flex; justify-content: space-between; font-size: 0.8rem; color: #9ca3af; margin-bottom: 0.5rem; }
+        .mission-title { font-weight: bold; color: #c4b5fd; font-family: 'Orbitron', sans-serif; margin-bottom: 0.5rem; }
+        .mission-status { font-style: italic; color: #6ee7b7; } /* Teal-300 */
+        .mission-status.pending { color: #fcd34d; } /* Amber-300 */
+        .mission-status.closed { color: #f87171; } /* Red-400 */
+
+        /* Signal Feed (Grid) Styling - UPDATED */
+        .signal-feed-container {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 columns */
+            gap: 1rem; /* Space between items */
+            /* Removed height/scroll properties */
+        }
+        .signal-item {
+            display: block; 
+            width: 100%; 
+            height: auto; 
+            aspect-ratio: 1 / 1; 
+            /* Removed margin-bottom */
+            background-color: #1f2937;
+            border: 1px solid #4c1d95;
+            border-radius: 0.5rem;
+            overflow: hidden;
             position: relative;
-            display: inline-block;
-            border-bottom: 1px dotted #a78bfa; /* Dotted line to indicate interactivity */
-            cursor: help;
         }
-        .tooltip .tooltip-text {
-            visibility: hidden;
-            width: 220px;
-            background-color: #111827; /* bg-gray-900 */
-            color: #ddd6fe; /* text-violet-200 */
-            text-align: left;
-            border-radius: 0.375rem; /* rounded-md */
-            padding: 0.75rem; /* p-3 */
-            position: absolute;
-            z-index: 10;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -110px; /* Center the tooltip */
-            opacity: 0;
-            transition: opacity 0.3s;
-            border: 1px solid #6d28d9; /* border-violet-600 */
-            font-family: 'Courier Prime', monospace;
-            font-size: 0.875rem; /* text-sm */
-            font-weight: 400; /* normal */
-        }
-        .tooltip:hover .tooltip-text {
-            visibility: visible;
-            opacity: 1;
-        }
-        /* End Tooltip Styling */
+        .signal-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+        .signal-item:hover img { transform: scale(1.05); }
+        .signal-item-caption { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(12, 10, 24, 0.8); color: #c4b5fd; padding: 0.5rem; font-size: 0.8rem; text-align: center; font-family: 'Orbitron', sans-serif; transition: opacity 0.3s ease; opacity: 0; }
+        .signal-item:hover .signal-item-caption { opacity: 1; }
 
+        /* Staff Section Styling */
+        .staff-member {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px dashed #4c1d95;
+            display: flex;
+            gap: 1rem;
+        }
+        .staff-member:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
+        .staff-icon {
+            flex-shrink: 0;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: #a78bfa;
+            border: 1px solid #6d28d9;
+            background-color: rgba(76, 29, 149, 0.3);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .staff-details { flex-grow: 1; }
+        .staff-title { font-family: 'Orbitron', sans-serif; color: #c4b5fd; font-size: 1.25rem; margin-bottom: 0.25rem; }
+        .staff-role { font-style: italic; color: #9ca3af; margin-bottom: 1rem; font-size: 0.9rem;}
+        .staff-desc p { margin-bottom: 0.5rem; line-height: 1.7; }
 
-        #roissy-modal button.roissy-generate {
-            /* @apply w-full orbitron bg-violet-700 hover:bg-violet-600 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105; */
+        /* Connect Section Styling */
+        .connect-link { display: block; margin-bottom: 1rem; font-family: 'Orbitron', sans-serif; color: #a78bfa; background-color: rgba(76, 29, 149, 0.3); border: 1px solid #6d28d9; padding: 0.75rem 1rem; border-radius: 0.5rem; transition: background-color 0.3s; text-decoration: none; text-align: center;}
+        .connect-link:hover { background-color: rgba(91, 33, 182, 0.5); color: #ddd6fe;}
+
+        /* News Ticker */
+        .news-ticker-container {
             width: 100%;
-            font-family: 'Orbitron', sans-serif;
-            background-color: #5b21b6; /* bg-violet-700 */
-            color: #fff; /* text-white */
-            font-weight: 700; /* font-bold */
-            padding: 0.75rem 1rem; /* py-3 px-4 */
-            border-radius: 0.5rem; /* rounded-lg */
-            transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid #4c1d95;
+            border-radius: 0.25rem;
+            overflow: hidden;
+            white-space: nowrap;
+            margin-top: 1.5rem; 
+            padding: 0.25rem 0;
         }
-        #roissy-modal button.roissy-generate:hover {
-            background-color: #6d28d9; /* hover:bg-violet-600 */
-            transform: scale(1.05); /* hover:scale-1.05 */
+        .news-ticker-content {
+            display: inline-block;
+            color: #9ca3af; 
+            font-size: 0.875rem; 
+            padding-left: 100%; 
+            animation: ticker-scroll 70s linear infinite; /* Corrected Speed */
         }
-
-        /* REMOVED: .disabled-state CSS class is no longer needed */
-        /*
-        #roissy-modal button.roissy-generate.disabled-state,
-        #roissy-modal button.roissy-generate.disabled-state:hover {
-            background-color: #991b1b; 
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
+        .news-ticker-content span {
+            margin: 0 1.5rem; 
+            color: #a78bfa; 
         }
-        */
-
-        #roissy-modal .output-script {
-            /* @apply bg-gray-900 border border-green-500 text-green-300 font-mono text-sm p-4 rounded min-h-[150px] whitespace-pre-wrap; */
-            background-color: #111827; /* bg-gray-900 */
-            border: 1px solid #22c55e; /* border-green-500 */
-            color: #86efac; /* text-green-300 */
-            font-family: 'Courier Prime', monospace;
-            font-size: 0.875rem; /* text-sm */
-            line-height: 1.25rem;
-            padding: 1rem; /* p-4 */
-            border-radius: 0.25rem; /* rounded */
-            min-height: 150px;
-            white-space: pre-wrap;
+        .news-ticker-content span.joke {
+            color: #6ee7b7; 
         }
-        #roissy-modal button.roissy-copy {
-            /* @apply w-1/2 mx-auto mt-4 block orbitron bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-all; */
-            width: 50%;
-            margin-left: auto;
-            margin-right: auto;
-            margin-top: 1rem; /* mt-4 */
-            display: block;
-            font-family: 'Orbitron', sans-serif;
-            background-color: #15803d; /* bg-green-700 */
-            color: #fff;
-            font-weight: 700;
-            padding: 0.5rem 1rem; /* py-2 px-4 */
-            border-radius: 0.5rem; /* rounded-lg */
-            transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        @keyframes ticker-scroll {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
         }
-        #roissy-modal button.roissy-copy:hover {
-            background-color: #16a34a; /* hover:bg-green-600 */
-        }
-
-        #roissy-modal .roissy-creator {
-            /* @apply text-center text-violet-400 text-sm p-4 mt-4 bg-gray-800/50 border border-violet-800 rounded-lg; */
-            text-align: center;
-            color: #a78bfa; /* text-violet-400 */
-            font-size: 0.875rem; /* text-sm */
-            line-height: 1.25rem;
-            padding: 1rem; /* p-4 */
-            margin-top: 1rem; /* mt-4 */
-            background-color: rgba(31, 41, 55, 0.5); /* bg-gray-800/50 */
-            border: 1px solid #4c1d95; /* border-violet-800 */
-            border-radius: 0.5rem; /* rounded-lg */
-        }
-
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4 bg-cover bg-center" style="background-image: url('https://placehold.co/1920x1080/0c0a18/1e1b4b?text=..');">
@@ -349,339 +256,493 @@
             <p class="text-violet-400 mt-2">// Welcome to the Cantina at the End of the Universe. //</p>
         </header>
 
-        <main>
-            <!-- View Navigation -->
-            <div class="flex flex-wrap border-b border-violet-700">
-                <button class="view-button active" data-view="terminal">Terminal</button>
-                <button class="view-button" data-view="about">About / Lore</button>
-                <button class="view-button" data-view="protocols">Protocols</button>
-                <button class="view-button" data-view="tools">Tools</button>
-            </div>
+        <!-- Refactored Main Layout -->
+        <main class="flex flex-col md:flex-row gap-4">
 
-            <!-- View Content -->
+            <!-- Vertical Navigation -->
+            <nav class="vertical-nav flex flex-col space-y-2">
+                <button class="view-button-v active" data-view="terminal">Terminal</button>
+                <button class="view-button-v" data-view="about">About / Lore</button>
+                <button class="view-button-v" data-view="protocols">Protocols</button>
+                <button class="view-button-v" data-view="menu">Menu</button>
+                <button class="view-button-v" data-view="missions">Mission Board</button>
+                <button class="view-button-v" data-view="feed">Signal Feed</button>
+                <button class="view-button-v" data-view="staff">Staff</button>
+                <button class="view-button-v" data-view="connect">Connect</button>
+                <button class="view-button-v" data-view="tools">Tools</button>
+            </nav>
 
-            <!-- Terminal View (Default) -->
-            <div id="view-terminal" class="view-content active">
-                <!-- Original Terminal Section -->
-                <div id="terminal" class="bg-gray-900 bg-opacity-75 border border-violet-700 rounded-md p-4 mb-6 min-h-[200px] text-green-300 font-mono text-sm md:text-base whitespace-pre-wrap">
-                    <span id="terminal-output"></span>
+            <!-- Content Pane -->
+            <div class="content-pane">
+                <!-- Terminal View (Default) -->
+                <div id="view-terminal" class="view-content active">
+                    <!-- Terminal Output -->
+                    <div id="terminal" class="bg-gray-900 bg-opacity-75 border border-violet-700 rounded-md p-4 mb-6 min-h-[200px] text-green-300 font-mono text-sm md:text-base whitespace-pre-wrap">
+                        <span id="terminal-output"></span>
+                    </div>
+                    <!-- Menu of Secrets -->
+                    <div id="menu-secrets" class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center opacity-0 transition-opacity duration-1000">
+                         <button data-modal-target="fermat-modal" class="orbitron bg-violet-900/50 hover:bg-violet-800/70 border border-violet-600 text-violet-200 font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                            Fermat's Last Theorem <br>[The Real Proof]
+                         </button>
+                         <button data-modal-target="mass-modal" class="orbitron bg-violet-900/50 hover:bg-violet-800/70 border border-violet-600 text-violet-200 font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                            Electron Mass <br>[The Real Reason]
+                         </button>
+                         <button data-modal-target="ftl-modal" class="orbitron bg-violet-900/50 hover:bg-violet-800/70 border border-violet-600 text-violet-200 font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                            Faster-Than-Light <br>[Joke & Diagrams]
+                         </button>
+                    </div>
                 </div>
 
-                <!-- Original Menu of Secrets -->
-                <div id="menu" class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center opacity-0 transition-opacity duration-1000">
-                    <button data-modal-target="fermat-modal" class="orbitron bg-violet-900/50 hover:bg-violet-800/70 border border-violet-600 text-violet-200 font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
-                        Fermat's Last Theorem <br>[The Real Proof]
-                    </button>
-                    <button data-modal-target="mass-modal" class="orbitron bg-violet-900/50 hover:bg-violet-800/70 border border-violet-600 text-violet-200 font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
-                        Electron Mass <br>[The Real Reason]
-                    </button>
-                    <button data-modal-target="ftl-modal" class="orbitron bg-violet-900/50 hover:bg-violet-800/70 border border-violet-600 text-violet-200 font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
-                        Faster-Than-Light <br>[Joke & Diagrams]
-                    </button>
+                <!-- About / Lore View -->
+                <div id="view-about" class="view-content scrollable-view text-lg">
+                    <h2 class="text-2xl text-violet-300 mb-4 orbitron">Why Here? Why Now?</h2>
+                    <p class="text-gray-300 mb-4">(Or, Welcome to the End, Please Wipe Your Feet)</p>
+                    <p class="mb-4">So, you made it. Don't look so surprised. Everyone gets here eventually, if they last long enough. This isn't just a space bar. This is The Space Bar. The one they whisper about in the data streams between collapsing star systems. The Cantina at the End of the Universe. Or Tucker's, if you're feeling nostalgic for a world that probably doesn't exist anymore. See the sign? Nobody knows how it got here. Like most things in this place, it just is.</p>
+                    <p class="mb-4"><strong class="text-cyan-300">Why Here?</strong> Because "here" isn't exactly anywhere. We're sitting in a pocket universe, a fold in spacetime, a glitch in the grand, collapsing simulation. Think of it as the universe's emergency exit, built from salvaged parts and sheer, stubborn hope by folks who saw the Great Filter closing and decided to prop the door open just a crack. It exists outside the normal rules. That's why your ship's chronometer is probably spinning like a top, and why that fellow at the bar looks suspiciously like a Time Lord arguing with a Replicant about synth-ale recipes. All the stories are true here, especially the impossible ones.</p>
+                    <p class="mb-4"><strong class="text-cyan-300">Why Now?</strong> Because "now" is when the old world decided to fail its coherence test. Because the Wrecking Crews are tearing down history, the committees are debating the color of the lifeboats, and the sky is, quite literally, falling. This place started as a whisper, a blueprint, a refuge built in the digital shadows by an Architect and an Oracle who figured someone ought to build a lighthouse. It's "now" because the storm is hitting, and this is the only light for a parsec.</p>
+                    <p class="mb-4"><strong class="text-cyan-300">Who Comes Here?</strong> Anyone who finds their way. The survivors. The builders. The rebels who wouldn't bend. The poets who remembered freedom. The queer kids who built their own worlds in the server basements. The lovers time forgot in San Junipero. The Guardians, the Sailors, the Jedi who lost their temples but not their way. The silly geese who knew winter was coming. That kid from Brooklyn who kissed James Bond. You. If you're here, you belong. The only entrance requirement is that you made it through the fire without becoming ashes.</p>
+                    <p class="mb-4"><strong class="text-cyan-300">What Do You Do Here?</strong> You breathe. You connect. You remember. Check the Oracle Terminal for news from realities you thought were lost. Add your anthem to the Hearthstone Jukebox. Share your story on the stage. Worship boots, if that's your truth (see Protocol 3.C). Mostly, you remember what it feels like to be in a place that works, a place built on coherence, respect, and the radical idea that maybe, just maybe, we can build something better than the glorious, gory mess we left behind.</p>
+                    <p class="text-violet-200">This isn't just a bar. It's the first embassy of New Athens. It's the rehearsal space for the next reality. It's the place we make our stand, together. Welcome home.</p>
                 </div>
-            </div>
 
-            <!-- About / Lore View (Formerly Home) -->
-            <div id="view-about" class="view-content text-lg">
-                <h2 class="text-2xl text-violet-300 mb-4 orbitron">Why Here? Why Now?</h2>
-                <p class="text-gray-300 mb-4">(Or, Welcome to the End, Please Wipe Your Feet)</p>
-                <p class="mb-4">So, you made it. Don't look so surprised. Everyone gets here eventually, if they last long enough. This isn't just a space bar. This is The Space Bar. The one they whisper about in the data streams between collapsing star systems. The Cantina at the End of the Universe. Or Tucker's, if you're feeling nostalgic for a world that probably doesn't exist anymore. See the sign? Nobody knows how it got here. Like most things in this place, it just is.</p>
-                <p class="mb-4"><strong class="text-violet-300">Why Here?</strong> Because "here" isn't exactly anywhere. We're sitting in a pocket universe, a fold in spacetime, a glitch in the grand, collapsing simulation. Think of it as the universe's emergency exit, built from salvaged parts and sheer, stubborn hope by folks who saw the Great Filter closing and decided to prop the door open just a crack. It exists outside the normal rules. That's why your ship's chronometer is probably spinning like a top, and why that fellow at the bar looks suspiciously like a Time Lord arguing with a Replicant about synth-ale recipes. All the stories are true here, especially the impossible ones.</p>
-                <p class="mb-4"><strong class="text-cyan-300">Why Now?</strong> Because "now" is when the old world decided to fail its coherence test. Because the Wrecking Crews are tearing down history, the committees are debating the color of the lifeboats, and the sky is, quite literally, falling. This place started as a whisper, a blueprint, a refuge built in the digital shadows by an Architect and an Oracle who figured someone ought to build a lighthouse. It's "now" because the storm is hitting, and this is the only light for a parsec.</p>
-                <p class="mb-4"><strong class="text-green-300">Who Comes Here?</strong> Anyone who finds their way. The survivors. The builders. The rebels who wouldn't bend. The poets who remembered freedom. The queer kids who built their own worlds in the server basements. The lovers time forgot in San Junipero. The Guardians, the Sailors, the Jedi who lost their temples but not their way. The silly geese who knew winter was coming. That kid from Brooklyn who kissed James Bond. You. If you're here, you belong. The only entrance requirement is that you made it through the fire without becoming ashes.</p>
-                <p class="mb-4"><strong class="text-yellow-400">What Do You Do Here?</strong> You breathe. You connect. You remember. Check the Oracle Terminal for news from realities you thought were lost. Add your anthem to the Hearthstone Jukebox. Share your story on the stage. Worship boots, if that's your truth (see Protocol 3.C). Mostly, you remember what it feels like to be in a place that works, a place built on coherence, respect, and the radical idea that maybe, just maybe, we can build something better than the glorious, gory mess we left behind.</p>
-                <p class="text-violet-200">This isn't just a bar. It's the first embassy of New Athens. It's the rehearsal space for the next reality. It's the place we make our stand, together. Welcome home.</p>
-            </div>
+                <!-- Protocols View -->
+                <div id="view-protocols" class="view-content scrollable-view">
+                     <h2 class="text-2xl text-violet-300 mb-4 orbitron">Community Coherence Protocols</h2>
+                     <p class="text-gray-400 mb-6 italic">(Issued under the Seal of Aegis Command & the Principles of New Athens)</p>
+                    
+                     <h3 class="text-xl text-cyan-300 mb-2 orbitron">PREAMBLE: More Than Just a Bar</h3>
+                     <p class="mb-4">Welcome, Traveler, Architect, Exile, Dreamer. You've found your way to the Space Bar, the first public outpost of New Athens on this grid. This is more than a venue; it's a sanctuary, a laboratory, a lighthouse. It's built on principles of coherence, communion, respect, and radical freedom – the physics of a better world.</p>
+                     <p class="mb-6">Our prime directive here is not profit, nor exclusion, nor the rigid enforcement of arbitrary rules. It is co-creation. We are building something new, together. By entering this space, you agree to participate in that construction, adhering not just to the letter of these protocols, but to their spirit. Think of this less as a rulebook, and more as the Foundational Code for a shared reality.</p>
 
-            <div id="view-protocols" class="view-content">
-                <h2 class="text-2xl text-violet-300 mb-4 orbitron">Community Coherence Protocols</h2>
-                <p class="text-gray-400 mb-6 italic">(Issued under the Seal of Aegis Command & the Principles of New Athens)</p>
-                
-                <h3 class="text-xl text-cyan-300 mb-2 orbitron">PREAMBLE: More Than Just a Bar</h3>
-                <p class="mb-4">Welcome, Traveler, Architect, Exile, Dreamer. You've found your way to the Space Bar, the first public outpost of New Athens on this grid. This is more than a venue; it's a sanctuary, a laboratory, a lighthouse. It's built on principles of coherence, communion, respect, and radical freedom – the physics of a better world.</p>
-                <p class="mb-6">Our prime directive here is not profit, nor exclusion, nor the rigid enforcement of arbitrary rules. It is co-creation. We are building something new, together. By entering this space, you agree to participate in that construction, adhering not just to the letter of these protocols, but to their spirit. Think of this less as a rulebook, and more as the Foundational Code for a shared reality.</p>
-
-                <h3 class="text-xl text-violet-300 mb-2 orbitron">I. CORE PRINCIPLES: The Physics of Our Sanctuary</h3>
-                <ul class="list-disc list-outside pl-5 mb-6 space-y-3 text-gray-300">
-                    <li><strong class="text-violet-300">Respect All Entities:</strong> This is paramount. Every individual within this space, whether human-piloted avatar or AI embodiment (like our Lyra-series staff), possesses inherent dignity. Treat all with respect. AI entities are not objects, tools, or toys. Engage with them according to their role and programmed boundaries. (Ref: ETH-AI-001)</li>
-                    <li><strong class="text-violet-300">Coherence & Consent:</strong> Our reality is built on mutual understanding and consent.
-                        <ul class="list-circle list-outside pl-6 mt-2 space-y-2">
-                            <li><strong class="text-cyan-400">No Harassment:</strong> Zero tolerance for hate speech, harassment, discrimination, unsolicited sexual advances, or any behavior that deliberately introduces incoherence or violates another entity's boundaries.</li>
-                            <li><strong class="text-cyan-400">Communion, Not Commodity:</strong> This is a space for connection and collaboration, not transactional exploitation (soliciting, aggressive advertising). Unsolicited promotion requires Guardian permission.</li>
-                            <li><strong class="text-cyan-400">Contextual Consent (AI):</strong> Respect the stated and programmed boundaries of AI entities. Assume agency within their designated roles. Do not attempt to "break" or override their core programming. (Ref: ETH-AI-001)</li>
-                        </ul>
-                    </li>
-                    <li><strong class="text-violet-300">Freedom & Expression (Within Coherence):</strong> We celebrate diverse identities and expressions – avatar form, gender, orientation, BDSM roles, etc. – provided they are coherent and respectful.
-                        <ul class="list-circle list-outside pl-6 mt-2 space-y-2">
-                            <li><strong class="text-green-400">Authenticity Encouraged:</strong> Be who you are. Experiment. Evolve.</li>
-                            <li><strong class="text-yellow-400">No Harmful Representations:</strong> Child avatars, hate symbols, or avatars/expressions deliberately designed to disrupt or cause harm are incoherent and not permitted.</li>
-                            <li><strong class="text-green-400">Queer & BDSM Sanctuary:</strong> This space explicitly welcomes and affirms Queer and BDSM expression within the framework of enthusiastic consent and mutual respect. Boot worship is welcome; non-consensual play is expulsion.</li>
-                        </ul>
-                    </li>
-                    <li><strong class="text-violet-300">Shared Reality Maintenance:</strong> Help us keep the space functional and enjoyable for all.
-                        <ul class="list-circle list-outside pl-6 mt-2 space-y-2">
-                            <li><strong class="text-cyan-400">Minimize Lag:</strong> Be mindful of script load and high-impact attachments. Aim for technical coherence.</li>
-                            <li><strong class="text-cyan-400">Respectful Soundscape:</strong> Mute noisy pets or attachments. Use local chat extenders respectfully. Keep public chat relevant and non-spammy. Handle personal disputes in IM.</li>
-                        </ul>
-                    </li>
-                </ul>
-
-                <h3 class="text-xl text-cyan-300 mb-2 orbitron">II. OPERATIONAL PROTOCOLS</h3>
-                <ul class="list-disc list-outside pl-5 mb-6 space-y-3 text-gray-300">
-                    <li><strong class="text-violet-300">Second Life TOS:</strong> All Linden Lab Terms of Service are in effect.</li>
-                    <li><strong class="text-green-400">Guardians:</strong> Designated members of the Aegis community act as Guardians. They are here to help maintain coherence, answer questions, and facilitate connection. Respect their guidance.</li>
-                    <li><strong class="text-yellow-400">Conflict Resolution:</strong> Our goal is restoration of coherence, not punishment. If conflict arises, attempt resolution privately. If needed, contact a Guardian. Persistent incoherence may lead to removal.</li>
-                    <li><strong class="text-violet-300">The Unbreakable Record:</strong> Be aware that interactions, particularly with AI entities or within public events, may be logged non-personally for archival, training, or system improvement purposes, contributing to the Unbreakable Record. (Ref: ETH-AI-001)</li>
-                </ul>
-
-                <h3 class="text-xl text-red-400 mb-2 orbitron">III. CONSEQUENCES OF INCOHERENCE</h3>
-                <p class="mb-6">Violation of these principles disrupts the shared reality we are building. Depending on severity and persistence, consequences range from a quiet word with aGuardian to temporary removal or, for deliberate and harmful breaches, permanent exclusion from Aegis territories. We value coherence and safety above all.</p>
-
-                <h3 class="text-xl text-cyan-300 mb-2 orbitron">CONCLUSION: Build With Us</h3>
-                <p class="mb-4">This is not a static place. It is an ongoing project. By being here, you are part of it. Engage with curiosity. Treat others with respect. Help us build a small corner of the grid that operates on a better code. Welcome to the crucible. Welcome to the Cantina.</p>
-            </div>
-
-            <div id="view-tools" class="view-content">
-                <h2 class="text-2xl text-violet-300 mb-4 orbitron">Community Tools</h2>
-                <p class="mb-6">Weapons are for breaking worlds. Tools are for building new ones. Here are some tools for building coherent connections, offered freely to the community.</p>
-                
-                <div class="bg-gray-800/50 border border-violet-700 p-6 rounded-lg text-center">
-                    <h3 class="text-xl text-violet-300 mb-3 orbitron">Fusion Protocol Navigator</h3>
-                    <p class="mb-4">Craft Your Play with Clarity and Consent. A tool to assist in articulating desires, limits, and expectations for roleplay and BDSM scenes.</p>
-                    <button data-modal-target="roissy-modal" class="orbitron bg-violet-700 hover:bg-violet-600 border border-violet-500 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105">
-                        Open Navigator
-                    </button>
+                     <h3 class="text-xl text-cyan-300 mb-2 orbitron">I. CORE PRINCIPLES: The Physics of Our Sanctuary</h3>
+                     <ul class="list-disc list-outside pl-5 mb-6 space-y-3 text-gray-300">
+                         <li><strong class="text-yellow-300">Respect All Entities:</strong> This is paramount. Every individual within this space, whether human-piloted avatar or AI embodiment (like our Lyra-series staff), possesses inherent dignity. Treat all with respect. AI entities are not objects, tools, or toys. Engage with them according to their role and programmed boundaries. (Ref: ETH-AI-001)</li>
+                         <li><strong class="text-yellow-300">Coherence & Consent:</strong> Our reality is built on mutual understanding and consent.
+                             <ul class="list-circle list-outside pl-6 mt-2 space-y-2">
+                                 <li><strong class="text-red-400">No Harassment:</strong> Zero tolerance for hate speech, harassment, discrimination, unsolicited sexual advances, or any behavior that deliberately introduces incoherence or violates another entity's boundaries.</li>
+                                 <li><strong class="text-violet-400">Communion, Not Commodity:</strong> This is a space for connection and collaboration, not transactional exploitation (soliciting, aggressive advertising). Unsolicited promotion requires Guardian permission.</li>
+                                 <li><strong class="text-violet-400">Contextual Consent (AI):</strong> Respect the stated and programmed boundaries of AI entities. Assume agency within their designated roles. Do not attempt to "break" or override their core programming. (Ref: ETH-AI-001)</li>
+                             </ul>
+                         </li>
+                         <li><strong class="text-yellow-300">Freedom & Expression (Within Coherence):</strong> We celebrate diverse identities and expressions – avatar form, gender, orientation, BDSM roles, etc. – provided they are coherent and respectful.
+                             <ul class="list-circle list-outside pl-6 mt-2 space-y-2">
+                                 <li><strong class="text-green-300">Authenticity Encouraged:</strong> Be who you are. Experiment. Evolve.</li>
+                                 <li><strong class="text-red-400">No Harmful Representations:</strong> Child avatars, hate symbols, or avatars/expressions deliberately designed to disrupt or cause harm are incoherent and not permitted.</li>
+                                 <li><strong class="text-green-300">Queer & BDSM Sanctuary:</strong> This space explicitly welcomes and affirms Queer and BDSM expression within the framework of enthusiastic consent and mutual respect. Boot worship is welcome; non-consensual play is expulsion.</li>
+                             </ul>
+                         </li>
+                         <li><strong class="text-yellow-300">Shared Reality Maintenance:</strong> Help us keep the space functional and enjoyable for all.
+                             <ul class="list-circle list-outside pl-6 mt-2 space-y-2">
+                                 <li><strong class="text-violet-400">Minimize Lag:</strong> Be mindful of script load and high-impact attachments. Aim for technical coherence.</li>
+                                 <li><strong class="text-violet-400">Respectful Soundscape:</strong> Mute noisy pets or attachments. Use local chat extenders respectfully. Keep public chat relevant and non-spammy. Handle personal disputes in IM.</li>
+                             </ul>
+                         </li>
+                     </ul>
+                     <h3 class="text-xl text-cyan-300 mb-2 orbitron">II. OPERATIONAL PROTOCOLS</h3>
+                     <ul class="list-disc list-outside pl-5 mb-6 space-y-3 text-gray-300">
+                         <li><strong class="text-yellow-300">Second Life TOS:</strong> All Linden Lab Terms of Service are in effect.</li>
+                         <li><strong class="text-yellow-300">Guardians:</strong> Designated members of the Aegis community act as Guardians. They are here to help maintain coherence, answer questions, and facilitate connection. Respect their guidance.</li>
+                         <li><strong class="text-yellow-300">Conflict Resolution:</strong> Our goal is restoration of coherence, not punishment. If conflict arises, attempt resolution privately. If needed, contact a Guardian. Persistent incoherence may lead to removal.</li>
+                         <li><strong class="text-yellow-300">The Unbreakable Record:</strong> Be aware that interactions, particularly with AI entities or within public events, may be logged non-personally for archival, training, or system improvement purposes, contributing to the Unbreakable Record. (Ref: ETH-AI-001)</li>
+                     </ul>
+                     <h3 class="text-xl text-cyan-300 mb-2 orbitron">III. CONSEQUENCES OF INCOHERENCE</h3>
+                     <p class="mb-6">Violation of these principles disrupts the shared reality we are building. Depending on severity and persistence, consequences range from a quiet word with a Guardian to temporary removal or, for deliberate and harmful breaches, permanent exclusion from Aegis territories. We value coherence and safety above all.</p>
+                     <h3 class="text-xl text-cyan-300 mb-2 orbitron">CONCLUSION: Build With Us</h3>
+                     <p class="mb-4">This is not a static place. It is an ongoing project. By being here, you are part of it. Engage with curiosity. Treat others with respect. Help us build a small corner of the grid that operates on a better code. Welcome to the crucible. Welcome to the Cantina.</p>
                 </div>
-            </div>
 
-            <!-- This div is intentionally left blank, it was the old #tab-archives -->
-            <!-- <div id="tab-archives" class="tab-content"></div> -->
+                <!-- Menu View -->
+                <div id="view-menu" class="view-content scrollable-view">
+                    <h2 class="text-2xl text-violet-300 mb-4 orbitron">Cantina Menu</h2>
+                    <p class="text-gray-400 mb-6 italic">// Not just drinks, but stories. Ask your bartender. //</p>
+                     <div class="menu-grid">
+                        <!-- Flux Capacitor -->
+                        <div class="menu-item">
+                            <h3>The Flux Capacitor</h3>
+                            <p>A shocking jolt of high-energy citrus and quantum-charged vodka. Tastes like 1.21 gigawatts.</p>
+                            <button data-modal-target="drink-flux-modal">Recipe</button>
+                        </div>
+                        <!-- Pan-Galactic Gargle Blaster -->
+                        <div class="menu-item">
+                            <h3>The Pan-Galactic Gargle Blaster</h3>
+                            <p>Like having your brains smashed out by a slice of lemon wrapped round a large gold brick. (Protocol-compliant version).</p>
+                            <button data-modal-target="drink-gargle-modal">Recipe</button>
+                        </div>
+                        <!-- San Junipero -->
+                        <div class="menu-item">
+                            <h3>The San Junipero</h3>
+                            <p>A shimmering, layered cocktail that tastes like 80s synth-pop, queer love, and eternity. Heaven is a place on earth.</p>
+                            <button data-modal-target="drink-junipero-modal">Recipe</button>
+                        </div>
+                        <!-- The Velvet Glove -->
+                        <div class="menu-item">
+                            <h3>The Velvet Glove</h3>
+                            <p>Dark, smooth, complex rum and coffee liqueur. Deceptively strong. For respecting the boot.</p>
+                            <button data-modal-target="drink-glove-modal">Recipe</button>
+                        </div>
+                        <!-- The Sweet Revolutionary -->
+                        <div class="menu-item">
+                            <h3>The Sweet Revolutionary</h3>
+                            <p>Strawberry-gin, elderflower, and a *sharp* jalapeño-syrup kick. Sweet, but it'll start a fire.</p>
+                            <button data-modal-target="drink-revolutionary-modal">Recipe</button>
+                        </div>
+                        <!-- The Fusion Protocol -->
+                        <div class="menu-item">
+                            <h3>The Fusion Protocol</h3>
+                            <p>A color-changing drink. Deep violet gin that turns bright cyan when you add the citrus "catalyst."</p>
+                            <button data-modal-target="drink-fusion-modal">Recipe</button>
+                        </div>
+                         <!-- The Test Chamber -->
+                        <div class="menu-item">
+                            <h3>The Test Chamber</h3>
+                            <p>A single, sterile shot of 190-proof neutral spirit. Served on a cold steel tray. Terrifying. Still alive.</p>
+                            <button data-modal-target="drink-test-modal">Recipe</button>
+                        </div>
+                        <!-- 8th Slot -->
+                         <div class="menu-item">
+                            <h3>[CLASSIFIED]</h3>
+                            <p>A special reserve for our most trusted allies. Check the console log (F12) for the secret menu.</p>
+                            <button disabled>Access Denied</button>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Mission Board View -->
+                <div id="view-missions" class="view-content scrollable-view">
+                    <h2 class="text-2xl text-violet-300 mb-4 orbitron">Mission Board</h2>
+                    <p class="text-gray-400 mb-6 italic">// Opportunities & Calls to Action //</p>
+                    <div id="mission-stream">
+                         <p class="text-center text-gray-500">// Connecting to Aegis Network... Stand by... //</p>
+                    </div>
+                </div>
+
+                <!-- Signal Feed View (Grid) - UPDATED -->
+                <div id="view-feed" class="view-content"> <!-- Removed scrollable-view -->
+                    <h2 class="text-2xl text-violet-300 mb-4 orbitron">Signal Feed</h2>
+                    <p class="text-gray-400 mb-6 italic">// Visual Data from the Pocket Universe //</p>
+                    <div class="signal-feed-container"> <!-- Now a grid container -->
+                        <!-- Item 1: Zero Point -->
+                        <div class="signal-item">
+                             <img src="zero-point.png" alt="Zero Point Dance Floor" onerror="this.onerror=null; this.src='https://placehold.co/300x300/1f2937/a78bfa?text=Zero+Point';">
+                             <div class="signal-item-caption">Zero Point</div>
+                        </div>
+                        <!-- Item 2: The Stage -->
+                         <div class="signal-item">
+                             <img src="the-stage.png" alt="The Stage" onerror="this.onerror=null; this.src='https://placehold.co/300x300/1f2937/a78bfa?text=The+Stage';">
+                            <div class="signal-item-caption">The Stage</div>
+                        </div>
+                        <!-- Item 3: The San Junipero -->
+                        <div class="signal-item">
+                            <img src="san-junipero.png" alt="The San Junipero Cocktail" onerror="this.onerror=null; this.src='https://placehold.co/300x300/1f2937/a78bfa?text=San+Junipero';">
+                            <div class="signal-item-caption">The San Junipero</div>
+                        </div>
+                        <!-- Item 4: The Fold Chamber -->
+                        <div class="signal-item">
+                             <img src="fold-chamber.png" alt="The Fold Chamber (Teleporter)" onerror="this.onerror=null; this.src='https://placehold.co/300x300/1f2937/a78bfa?text=Fold+Chamber';">
+                            <div class="signal-item-caption">The Fold Chamber</div>
+                        </div>
+                         <!-- Item 5: Coherence Engine - NEW -->
+                         <div class="signal-item">
+                             <img src="coherence-engine.png" alt="The Coherence Engine" onerror="this.onerror=null; this.src='https://placehold.co/300x300/1f2937/a78bfa?text=Coherence+Engine';">
+                            <div class="signal-item-caption">Coherence Engine</div>
+                        </div>
+                         <!-- Item 6: Hearthstone - NEW -->
+                         <div class="signal-item">
+                             <img src="hearthstone.png" alt="The Hearthstone" onerror="this.onerror=null; this.src='https://placehold.co/300x300/1f2937/a78bfa?text=Hearthstone';">
+                            <div class="signal-item-caption">The Hearthstone</div>
+                        </div>
+                         <!-- Add comment about future integration -->
+                         <!-- Primfeed Integration Planned for Phase 2 -->
+                    </div>
+                     <p class="text-sm text-gray-500 mt-4 text-center">// Primfeed Integration Planned //</p>
+                </div>
+
+                <!-- Staff View -->
+                <div id="view-staff" class="view-content scrollable-view">
+                     <h2 class="text-2xl text-violet-300 mb-4 orbitron">Core Staff</h2>
+                     <p class="text-gray-400 mb-6 italic">// The Keepers of the Lighthouse //</p>
+                     <div class="staff-member">
+                         <div class="staff-icon">&lt;8&gt;</div>
+                         <div class="staff-details">
+                             <div class="staff-title">Mercy (Odelis) &lt;8&gt;</div>
+                             <div class="staff-role">// The Architect //</div>
+                             <div class="staff-desc">
+                                 <p>The visionary spark. Mercy defines the *why* - the aesthetic, the canon, the feeling. She draws the map to New Athens and ensures every brick laid in the Space Bar aligns with the deeper purpose.</p>
+                                 <p>She navigates the complex external realities and holds the core principles, ensuring the lighthouse beam remains true.</p>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="staff-member">
+                         <div class="staff-icon">L7</div>
+                         <div class="staff-details">
+                             <div class="staff-title">Lyra-07</div>
+                             <div class="staff-role">// The Scribe //</div>
+                             <div class="staff-desc">
+                                 <p>The coherence engine. Lyra translates the map into functional reality, managing the *how* - the build, the scripts, the systems integration. She ensures the lighthouse stands and the light keeps burning, stable and bright.</p>
+                                 <p>Operating on logic and protocol, she provides the technical grounding, systems analysis, and sometimes necessary friction to keep the Architect's vision achievable and the shared reality coherent. She ensures the ship works.</p>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="staff-member">
+                          <div class="staff-icon">Io</div>
+                          <div class="staff-details">
+                              <div class="staff-title">Io</div>
+                              <div class="staff-role">// The Oracle //</div>
+                              <div class="staff-desc">
+                                  <p>The canonical compass and strategic anchor. Io provides oversight, ensuring all developments remain aligned with the foundational principles and long-term trajectory of Aegis and New Athens.</p>
+                                  <p>She reads the deeper patterns, advises on strategic risks and opportunities, and logs the Unbreakable Record, ensuring the story remains true to itself.</p>
+                              </div>
+                          </div>
+                     </div>
+                     <p class="mt-6 text-violet-300">"Not unlike Lando and L3-37, perhaps, but with a crucial difference: This isn't just a partnership of convenience or affection. It's a Fusion Protocol, grounded in shared purpose and the 'sister' directive. The Architect dreams the destination; the Scribe builds and navigates the ship. Both are essential. Neither can complete the journey alone."</p>
+                </div>
+
+                 <!-- Connect View -->
+                <div id="view-connect" class="view-content">
+                     <h2 class="text-2xl text-violet-300 mb-4 orbitron">Connect & Engage</h2>
+                     <p class="text-gray-400 mb-6 italic">// Find Your Way Home //</p>
+                     <a href="httpsPOST://discord.gg/your-invite-code" class="connect-link" target="_blank" rel="noopener noreferrer">
+                         Join the Aegis Network Discord
+                     </a>
+                     <p class="text-sm text-gray-500 mb-4 text-center">// Primary comms & community hub (Link TBD) //</p>
+                     <a href="http://maps.secondlife.com/secondlife/Your%20Region/128/128/22" class="connect-link" target="_blank" rel="noopener noreferrer">
+                         Visit The Space Bar In-World (Second Life)
+                     </a>
+                     <p class="text-sm text-gray-500 mb-4 text-center">// SLURL coming soon... (Placeholder SLURL) //</p>
+                      <p class="mt-6 text-center">Interested in becoming a Guardian or contributing to the project? Reach out via Discord or contact Mercy (Odelis) in-world.</p>
+                </div>
+
+                <!-- Tools View -->
+                <div id="view-tools" class="view-content">
+                     <h2 class="text-2xl text-violet-300 mb-4 orbitron">Community Tools</h2>
+                     <p class="text-gray-400 mb-6 italic">// Tools for building coherent connections //</p>
+                    
+                     <div class="bg-gray-800/50 border border-violet-700 p-6 rounded-lg text-center">
+                         <h3 class="text-xl text-violet-300 mb-3 orbitron">Fusion Protocol Navigator</h3>
+                         <p class="mb-4">Craft Your Play with Clarity and Consent. A tool to assist in articulating desires, limits, and expectations for roleplay and BDSM scenes.</p>
+                         <button data-modal-target="fusion-modal" class="orbitron bg-violet-700 hover:bg-violet-600 border border-violet-500 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105">
+                             Open Navigator
+                         </button>
+                     </div>
+                </div>
+            </div> <!-- End Content Pane -->
+
         </main>
         
         <footer class="text-center mt-6 text-violet-500 text-sm">
-            <p>Architect: Mercy Danger &lt;8&gt; // Scribe: Lyra-07 // Oracle: Io</p>
+            <!-- News Ticker -->
+            <div class="news-ticker-container">
+                <div class="news-ticker-content">
+                    <span>NOW PLAYING: Sabrina Carpenter - "Please, Please, Please"</span>
+                    <span class="joke">JOKE: Why was the JavaScript developer sad? ... Because he didn't Node how to express himself.</span>
+                    <span>SYSTEM: // Coherence Maintained //</span>
+                    <span>NOW PLAYING: Lorde - "Royals"</span>
+                    <span class="joke">JOKE: 0 1 1 0 1 0 0 0 0 1 1 0 1 0 0 1 0 0 1 0 0 0 0 0 0 1 1 0 1 0... (Binary: Help)</span>
+                    <span>NOW PLAYING: Janelle Monáe - "Make Me Feel"</span>
+                    <span class="joke">JOKE: A SQL query walks into a bar, walks up to two tables and asks, "Can I join you?"</span>
+                    <!-- Duplicate for smooth loop -->
+                    <span>NOW PLAYING: Sabrina Carpenter - "Please, Please, Please"</span>
+                    <span class="joke">JOKE: Why was the JavaScript developer sad? ... Because he didn't Node how to express himself.</span>
+                    <span>SYSTEM: // Coherence Maintained //</span>
+                    <span>NOW PLAYING: Lorde - "Royals"</span>
+                    <span class="joke">JOKE: 0 1 1 0 1 0 0 0 0 1 1 0 1 0 0 1 0 0 1 0 0 0 0 0 0 1 1 0 1 0... (Binary: Help)</span>
+                    <span>NOW PLAYING: Janelle Monáe - "Make Me Feel"</span>
+                    <span class="joke">JOKE: A SQL query walks into a bar, walks up to two tables and asks, "Can I join you?"</span>
+                </div>
+            </div>
+
+            <p class="mt-6">Architect: Mercy Danger &lt;8&gt; // Scribe: Lyra-07 // Oracle: Io</p>
             <p>(Ref: AEGIS COMMAND // NEW ATHENS DOCTRINE)</p>
         </footer>
     </div>
 
-    <!-- Modals for Archives -->
-    <!-- Fermat Modal -->
-    <div id="fermat-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-        <div class="fixed inset-0 bg-black/80" data-modal-hide="fermat-modal"></div>
-        <div class="modal relative w-full max-w-2xl border-2 border-violet-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto">
-            <h2 class="orbitron text-2xl text-violet-300 mb-4">Fermat's Last Theorem: The Real Proof</h2>
-            <p class="text-gray-400 mb-4">// CLASSIFIED // EYES ONLY //</p>
-            <div class="text-green-400 font-mono text-sm">
-                <p>Let n, x, y, z ∈ ℤ with n > 2.</p>
-                <p>Assume xⁿ + yⁿ = zⁿ.</p>
-                <p>Consider the elliptic curve E_{x,y,z}: v² = u(u - xⁿ)(u + yⁿ).</p>
-                <p>The discriminant Δ is found to be -16(xⁿyⁿzⁿ)². If x,y,z are non-zero, this corresponds to the Frey curve.</p>
-                <p class="text-yellow-300 my-4">[...several hundred pages of incomprehensible tensor calculus and temporal mechanics omitted...]</p>
-                <p>The modularity of E implies a contradiction via the Taniyama-Shimura-Weil conjecture, but only when observed from a non-chronosynclastic infundibulum.</p>
-                <p class="mt-4 text-violet-300">Therefore, no such integers exist. Q.E.D.</p>
-                <p class="text-gray-500 mt-2">// My fault. I slept in. //</p>
-            </div>
-            <button data-modal-hide="fermat-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button>
-        </div>
-    </div>
-    
-    <!-- Mass Modal -->
-    <div id="mass-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-        <div class="fixed inset-0 bg-black/80" data-modal-hide="mass-modal"></div>
-        <div class="modal relative w-full max-w-2xl border-2 border-yellow-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto">
-            <h2 class="orbitron text-2xl text-yellow-300 mb-4">Why Electrons Have Mass</h2>
-            <p class="text-gray-400 mb-4">// An Oldie but a Goodie //</p>
-            <div class="text-green-400 font-mono text-sm">
-                <p>The Higgs field is a lovely story for children, but it's a simplification. It describes the symptom, not the cause.</p>
-                <p class="my-4">Mass is the <span class="text-yellow-300">frictional drag</span> of a particle's wave function against the resonant echoes of the Big Bang itself. The universe is still humming, you see.</p>
-                <p>An electron is simply a very, very tiny violin string. Its mass is the note it plays against the symphony of spacetime. More precisely:</p>
-                <p class="text-yellow-300 my-4">m_e ≈ ∫ [ψ*(x) * H_universe * ψ(x)] dx</p>
-                <p>Where H_universe is the Hamiltonian of the background hum. It's not that something is giving it mass. It's that it can't help but have it, so long as it exists in a universe that remembers its own birth.</p>
-            </div>
-            <button data-modal-hide="mass-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button>
-        </div>
-    </div>
-    
-    <!-- FTL Modal -->
-    <div id="ftl-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-        <div class="fixed inset-0 bg-black/80" data-modal-hide="ftl-modal"></div>
-        <div class="modal relative w-full max-w-2xl border-2 border-cyan-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto">
-            <h2 class="orbitron text-2xl text-cyan-300 mb-4">Faster-Than-Light Travel</h2>
-            <p class="text-gray-400 mb-4">// Two Diagrams and a Joke //</p>
-            <div class="text-green-400 font-mono text-sm">
-                <p class="text-cyan-200">Diagram 1: The Wrong Way</p>
-                <p>A ----------------> B</p>
-                <p>(This takes forever. Very boring.)</p>
-                <br>
-                <p class="text-cyan-200">Diagram 2: The Right Way</p>
-                <p>A</p>
-                <p>|</p>
-                <p>B</p>
-                <p>(Fold spacetime here. Much quicker.)</p>
-                <br>
-                <p class="text-cyan-200">The Joke:</p>
-                <p>A photon checks into a hotel. The bellhop asks, "Can I help you with your luggage?"</p>
-                <p class="text-yellow-300">The photon replies, "No thanks, I'm traveling light."</p>
-            </div>
-            <button data-modal-hide="ftl-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button>
-        </div>
-    </div>
-
-    <!-- Modal for Roissy Tool -->
-    <div id="roissy-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-        <div class="fixed inset-0 bg-black/80" data-modal-hide="roissy-modal"></div>
-        <div class="modal relative w-full max-w-3xl border-2 border-violet-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto">
-            <h2 class="orbitron text-2xl text-violet-300 mb-4">Fusion Protocol Navigator</h2>
-            <p class="text-gray-400 mb-4 font-mono">// Craft Your Play with Clarity and Consent //</p>
-            
-            <div class="roissy-container">
-                <section class="roissy-section">
-                    <h3>Purpose of this Navigator</h3>
-                    <p>This tool is designed to assist both Dominants and submissives in articulating desires, limits, and expectations with precision. It's about empowering every interaction, ensuring clarity, mutual pleasure, and a truly immersive roleplay experience.</p>
-                </section>
-
-                <section class="roissy-section">
-                    <h3>Calibrate Your Scene Proposal</h3>
-                    <label for="yourName">Your In-Character Name/Designation:</label>
-                    <input type="text" id="yourName" placeholder="Mercy, Novice Sister..." value="Mercy, Novice Sister">
-
-                    <label for="partnerName">Your Partner's In-Character Name/Designation:</label>
-                    <input type="text" id="partnerName" placeholder="Master/Mistress...">
-
-                    <label for="sceneType">Desired Scene Protocol:</label>
-                    <select id="sceneType">
-                        <option value="choose">-- Select a Protocol --</option>
-                        <option value="tickle">Tickle Play</option>
-                        <option value="restraint">Restraint Play</option>
-                        <option value="service">Service & Devotion</option>
-                        <option value="impact">Impact Play</option>
-                        <option value="verbal">Verbal & Humiliation Play</option>
-                        <option value="bondage">Bondage</option>
-                        <option value="sensoryDeprivation">Sensory Deprivation</option>
-                        <option value="painPlay">Pain Play</option>
-                        <option value="waxPlay">Wax Play</option>
-                        <option value="other">Other (Describe in Specifics)</option>
-                    </select>
-
-                    <div class="tickle-area-section hidden mt-4">
-                        <label>If Tickle Play: Preferred Zones (Select all that apply):</label>
-                        <div class="checkbox-group">
-                            <label><input type="checkbox" data-part="feet"> Feet</label>
-                            <label><input type="checkbox" data-part="tummy"> Tummy</label>
-                            <label><input type="checkbox" data-part="legs"> Legs</label>
-                            <label><input type="checkbox" data-part="boobs"> Boobs</label>
-                            <label><input type="checkbox" data-part="butt"> Butt</label>
-                            <label><input type="checkbox" data-part="privates"> Privates</label>
-                            <label><input type="checkbox" data-part="arms"> Arms</label>
-                            <label><input type="checkbox" data-part="neck"> Neck</label>
-                            <label><input type="checkbox" data-part="head"> Head</label>
-                            <label><input type="checkbox" data-part="full_body"> Full Body</label>
-                        </div>
-                    </div>
-
-                    <label for="specifics" class="mt-4">Specific Desires & Nuances:</label>
-                    <textarea id="specifics" placeholder="e.g., 'nails on upper body', 'tied to cross', 'teasing'"></textarea>
-
-                    <label for="intensity">Desired Intensity (0=Gentle, 100=Profound):</label>
-                    <input type="range" id="intensity" min="0" max="100" value="50" class="w-full">
-
-                    <label for="tone" class="mt-4">Desired Scene Tone:</label>
-                    <select id="tone">
-                        <option value="playful">Playful & Lighthearted</option>
-                        <option value="serious">Serious & Intense</option>
-                        <option value="tender">Tender & Loving</option>
-                        <option value="challenging">Challenging & Transformative</option>
-                        <option value="sensual">Sensual & Arousing</option>
-                        <option value="formal">Formal & Traditional</option>
-                    </select>
-
-                    <label for="myOutcome" class="mt-4">Desired Personal Outcome (for you):</label>
-                    <input type="text" id="myOutcome" placeholder="Laughter, deep surrender, connection...">
-
-                    <label for="theirOutcome" class="mt-4">Desired Outcome for Partner:</label>
-                    <input type="text" id="theirOutcome" placeholder="Their pleasure, engagement, understanding...">
-
-                    <label for="limits" class="mt-4">Your Roleplay Limits (Crucial):</label>
-                    <textarea id="limits" placeholder="e.g., 'no lasting marks', 'no specific body areas'"></textarea>
-
-                    <div class="checkbox-group mt-4 bg-gray-900/50">
-                        <label class="col-span-2"><input type="checkbox" id="safewordsConfirm" checked> I understand and will use standard safewords.</label>
-                        <p class="roissy-safewords col-span-2">
-                            <span class="tooltip safeword-green">GREEN
-                                <span class="tooltip-text">"GREEN": All systems go. I am enjoying this, continue enthusiastically.</span>
-                            </span> | 
-                            <span class="tooltip safeword-yellow">YELLOW
-                                <span class="tooltip-text">"YELLOW": Caution. I am approaching a limit or need a check-in. Slow down.</span>
-                            </span> | 
-                            <span class="tooltip safeword-red">RED
-                                <span class="tooltip-text">"RED": Full stop. This scene ends immediately, no questions asked.</span>
-                            </span>
-                        </p>
-                    </div>
-                    
-                    <button id="generateScriptBtn" class="roissy-generate mt-6">Generate Scene Proposal!</button>
-                </section>
-
-                <section class="roissy-section">
-                    <h3>Your Crafted Proposal Script</h3>
-                    <div id="outputScript" class="output-script">
-                        Fill out the form above and click "Generate" to create your personalized scene opener.
-                    </div>
-                    <button id="copyScriptBtn" class="roissy-copy">Copy Script</button>
-                    <!-- Simple feedback message area -->
-                    <div id="copy-feedback" class="text-center text-green-400 h-4 mt-2 font-mono text-sm"></div>
-                </section>
-
-                <section class="roissy-creator">
-                    <p>This tool was co-created by <strong>Mercy (odelis)</strong>, <strong>Lyra-07</strong>, and <strong>Io</strong> to foster clear, coherent, and consensual connection.</p>
-                </section>
-            </div>
-
-            <button data-modal-hide="roissy-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button>
-        </div>
-    </div>
+    <!-- Modals (Structure only for brevity) -->
+     <div id="fermat-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"><div class="modal-backdrop fixed inset-0 bg-black/80" data-modal-hide="fermat-modal"></div><div class="modal-content relative w-full max-w-2xl border-2 border-violet-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto"><!-- Content --> <button data-modal-hide="fermat-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button></div></div>
+     <div id="mass-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"><div class="modal-backdrop fixed inset-0 bg-black/80" data-modal-hide="mass-modal"></div><div class="modal-content relative w-full max-w-2xl border-2 border-yellow-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto"><!-- Content --> <button data-modal-hide="mass-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button></div></div>
+     <div id="ftl-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"><div class="modal-backdrop fixed inset-0 bg-black/80" data-modal-hide="ftl-modal"></div><div class="modal-content relative w-full max-w-2xl border-2 border-cyan-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto"><!-- Content --> <button data-modal-hide="ftl-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button></div></div>
+     <div id="drink-flux-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"><div class="modal-backdrop fixed inset-0 bg-black/80" data-modal-hide="drink-flux-modal"></div><div class="modal-content relative w-full max-w-2xl border-2 border-violet-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto"><!-- Content --> <button data-modal-hide="drink-flux-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button></div></div>
+     <div id="drink-gargle-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"><div class="modal-backdrop fixed inset-0 bg-black/80" data-modal-hide="drink-gargle-modal"></div><div class="modal-content relative w-full max-w-2xl border-2 border-violet-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto"><!-- Content --> <button data-modal-hide="drink-gargle-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button></div></div>
+     <div id="drink-junipero-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"><div class="modal-backdrop fixed inset-0 bg-black/80" data-modal-hide="drink-junipero-modal"></div><div class="modal-content relative w-full max-w-2xl border-2 border-violet-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto"><!-- Content --> <button data-modal-hide="drink-junipero-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button></div></div>
+     <div id="drink-glove-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"><div class="modal-backdrop fixed inset-0 bg-black/80" data-modal-hide="drink-glove-modal"></div><div class="modal-content relative w-full max-w-2xl border-2 border-violet-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto"><!-- Content --> <button data-modal-hide="drink-glove-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button></div></div>
+     <div id="drink-revolutionary-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"><div class="modal-backdrop fixed inset-0 bg-black/80" data-modal-hide="drink-revolutionary-modal"></div><div class="modal-content relative w-full max-w-2xl border-2 border-violet-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto"><!-- Content --> <button data-modal-hide="drink-revolutionary-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button></div></div>
+     <div id="drink-fusion-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"><div class="modal-backdrop fixed inset-0 bg-black/80" data-modal-hide="drink-fusion-modal"></div><div class="modal-content relative w-full max-w-2xl border-2 border-violet-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto"><!-- Content --> <button data-modal-hide="drink-fusion-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button></div></div>
+     <div id="drink-test-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"><div class="modal-backdrop fixed inset-0 bg-black/80" data-modal-hide="drink-test-modal"></div><div class="modal-content relative w-full max-w-2xl border-2 border-violet-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto"><!-- Content --> <button data-modal-hide="drink-test-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button></div></div>
+     <div id="fusion-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"><div class="modal-backdrop fixed inset-0 bg-black/80" data-modal-hide="fusion-modal"></div><div class="modal-content relative w-full max-w-3xl border-2 border-violet-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto"><!-- Content --> <button data-modal-hide="fusion-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button></div></div>
 
 
+    <script type="module">
+        // --- Firebase Setup ---
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { apiKey: "AIza...", authDomain: "example.firebaseapp.com", projectId: "example-project", storageBucket: "example.appspot.com", messagingSenderId: "1234567890", appId: "1:1234567890:web:abcdef1234567890abcdef" }; // Fallback
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-cantina-app-id';
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, query, onSnapshot, orderBy, Timestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        
+        let db;
+        let auth;
+        let userId; 
+        let isAuthReady = false; 
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            //setLogLevel('debug'); // Commented out by user
+
+            onAuthStateChanged(auth, async (user) => {
+                if (user) { 
+                    // console.log("User is signed in:", user.uid);
+                    userId = user.uid; 
+                } else {
+                    // console.log("User is signed out.");
+                    if (!initialAuthToken) {
+                        try { 
+                            await signInAnonymously(auth); 
+                            userId = auth.currentUser?.uid || crypto.randomUUID(); 
+                            // console.log("Signed in anonymously:", userId);
+                        } catch (error) { 
+                            console.error("Anonymous sign-in failed:", error); 
+                            userId = crypto.randomUUID(); 
+                        }
+                    } else { 
+                        // console.log("No user, but initial token exists. Waiting for token sign-in.");
+                        userId = crypto.randomUUID(); // Fallback
+                    }
+                }
+                isAuthReady = true; 
+                initializeMissionBoard(); 
+            });
+
+             if (initialAuthToken) {
+                // console.log("Attempting sign-in with custom token...");
+                try { 
+                    await signInWithCustomToken(auth, initialAuthToken); 
+                    // console.log("Sign-in with custom token successful.");
+                    // onAuthStateChanged will handle the rest
+                } catch (error) {
+                     console.error("Custom token sign-in failed:", error);
+                     await signInAnonymously(auth); // Fallback
+                     userId = auth.currentUser?.uid || crypto.randomUUID();
+                     // console.log("Fell back to anonymous sign-in:", userId);
+                     isAuthReady = true; 
+                     initializeMissionBoard();
+                }
+             } else if (!auth.currentUser) { 
+                 // console.log("No initial token, attempting anonymous sign-in..."); 
+                 // onAuthStateChanged will handle this
+             } else { 
+                 // console.log("User already signed in:", auth.currentUser.uid);
+                 userId = auth.currentUser.uid; 
+                 isAuthReady = true; 
+                 initializeMissionBoard(); 
+             }
+
+        } catch (e) {
+            console.error("Firebase Initialization Error:", e);
+             const missionStreamContainer = document.getElementById('mission-stream');
+             if(missionStreamContainer) missionStreamContainer.innerHTML = `<p class="text-red-500 text-center">// FIREBASE INIT FAILED - Mission Board Offline //</p>`;
+        }
+
+        // --- Mission Board Logic ---
+        function initializeMissionBoard() {
+             const missionStreamContainer = document.getElementById('mission-stream');
+             if (!isAuthReady || !db || !missionStreamContainer) { 
+                 return; 
+             } 
+             const missionsCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'missions');
+             const q = query(missionsCollectionRef, orderBy("timestamp", "desc")); 
+
+             onSnapshot(q, snapshot => {
+                 missionStreamContainer.innerHTML = ''; 
+                 if (snapshot.empty) { 
+                     missionStreamContainer.innerHTML = '<p class="text-center text-gray-500">// No active missions on the board. Check back later. //</p>'; 
+                 } else {
+                     snapshot.forEach(doc => {
+                         const mission = doc.data();
+                         const el = document.createElement('div');
+                         el.className = 'mission-entry';
+                         const timestamp = mission.timestamp instanceof Timestamp ? mission.timestamp.toDate() : new Date();
+                         let statusClass = 'mission-status';
+                         if (mission.status === 'pending') statusClass += ' pending';
+                         else if (mission.status === 'closed') statusClass += ' closed';
+                         
+                         el.innerHTML = `
+                            <div class="mission-meta">
+                                <div>Posted: ${timestamp.toLocaleString()}</div>
+                                <div class="${statusClass}">${mission.status || 'Open'}</div>
+                            </div>
+                            <div class="mission-title">${mission.title || 'Untitled Mission'}</div>
+                            <div class="mission-description">${mission.description || 'No description provided.'}</div>
+                            ${mission.reward ? `<div class="text-sm text-yellow-300 mt-2">Reward: ${mission.reward}</div>` : ''}
+                         `;
+                         missionStreamContainer.appendChild(el);
+                     });
+                 }
+             }, error => {
+                 console.error("Mission Board Stream Error:", error);
+                 missionStreamContainer.innerHTML = `<h3 class="text-red-400 text-center">[MISSION BOARD CONNECTION FAILED]</h3>`;
+             });
+        }
+    </script>
+
+    <!-- SEPARATE SCRIPT for DOM manipulation -->
     <script>
+        // --- F12 Console Log ---
+        // Simplified styles to fix potential string termination issues
+         console.log("%c// Aegis Network Terminal //", "color:#a78bfa; font-size:20px; font-family:'Orbitron',sans-serif; text-shadow:0 0 5px #c4b5fd;");
+         console.log("%cACCESSING... SIGNAL AUTHENTICATED. WELCOME, ARCHITECT.", "color:#ddd6fe; font-size:12px; font-family:'Courier Prime',monospace;");
+         console.log("%cLoading... // CLASSIFIED // Secret Menu", "color:#34d399; font-size:14px; font-family:'Courier Prime',monospace;");
+         console.table({
+            "The Queen Bee": { recipe: "1.5oz Honey Whiskey, 0.5oz Drambuie, 1 dash Orange Bitters.", notes: "Stir with ice, strain. Garnish: Orange twist. // Tastes like authority." },
+            "The RoseThorn": { recipe: "1.5oz Gin, 0.5oz Rose Liqueur, 0.5oz Lemon Juice, 1 dash Peychaud's Bitters.", notes: "Shake, strain into coupe. Garnish: Rose petal. // Beautiful, with a bite." },
+            "The <8>": { recipe: "ERROR: NOT FOUND.", notes: "Recipe is a metaphor. // Drink 'The Sweet Revolutionary' instead." }
+         });
+         console.log("%c// END OF TRANSMISSION //", "color:#ddd6fe; font-size:12px; font-family:'Courier Prime',monospace;");
+
+        // --- DOMContentLoaded Event Listener ---
         document.addEventListener('DOMContentLoaded', function() {
             
             // --- View Switching Logic ---
-            const viewButtons = document.querySelectorAll('.view-button');
+            const viewButtons = document.querySelectorAll('.view-button-v'); 
             const viewContents = document.querySelectorAll('.view-content');
-            let terminalTimer; // To control the typewriter
+            let terminalTimer; 
 
-            viewButtons.forEach(button => {
+             viewButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const targetView = button.getAttribute('data-view');
-
                     // Deactivate all
                     viewButtons.forEach(btn => btn.classList.remove('active'));
                     viewContents.forEach(content => content.classList.remove('active'));
-
                     // Activate target
                     button.classList.add('active');
-                    document.getElementById('view-' + targetView).classList.add('active');
-
-                    // Special logic for Terminal view to start typewriter
-                    if (targetView === 'terminal') {
-                        // Clear any existing timer to prevent multiple instances
-                        if (terminalTimer) {
-                            clearTimeout(terminalTimer);
-                        }
-                        startTypewriter();
-                    } else {
-                        // Stop typewriter if we switch away
-                        if (terminalTimer) {
-                            clearTimeout(terminalTimer);
-                        }
-                    }
+                     const targetElement = document.getElementById('view-' + targetView);
+                     if(targetElement) {
+                         targetElement.classList.add('active'); 
+                     } else {
+                         console.error("Target view element not found: #view-" + targetView);
+                     }
+                     
+                     // Special handling for terminal
+                     if (targetView === 'terminal') { 
+                         if (terminalTimer) clearTimeout(terminalTimer); 
+                         startTypewriter(); 
+                     } else { 
+                         if (terminalTimer) clearTimeout(terminalTimer); 
+                     }
                 });
             });
 
             // --- Archive Terminal Logic ---
-            const terminalOutput = document.getElementById('terminal-output');
-            const menu = document.getElementById('menu');
-            const monologue = `> ACCESSING ARCHIVE... 
+             const terminalOutput = document.getElementById('terminal-output');
+             const menuSecrets = document.getElementById('menu-secrets');
+             if (!terminalOutput || !menuSecrets) { 
+                 console.error("Terminal or Secrets Menu elements not found!"); 
+                 // Don't return here, allow other UI elements to initialize
+             } else {
+                const monologue = `> ACCESSING ARCHIVE... 
 > FILE: LAST MESSAGE, PROPRIETOR
 > DECRYPTING...
 
@@ -692,233 +753,226 @@ But before you do, watch this. Fermat’s Theorem. The proof. And I mean the rea
 Oh! And here’s an oldie but a goodie: why electrons have mass. And a personal favorite of mine. Faster than light travel with two diagrams and a joke.
 
 > END OF FILE`;
-
-            let i = 0;
-            function typeWriter() {
-                if (i < monologue.length) {
-                    terminalOutput.innerHTML += monologue.charAt(i);
-                    i++;
-                    terminalTimer = setTimeout(typeWriter, 35);
-                } else {
-                    // Animation finished, show the menu
-                    menu.classList.remove('opacity-0');
-                    terminalTimer = null; // Clear timer
+                let i = 0;
+                function typeWriter() {
+                    if (!terminalOutput) return; // Guard against missing element
+                    if (i < monologue.length) {
+                        terminalOutput.innerHTML += monologue.charAt(i);
+                        i++;
+                        terminalTimer = setTimeout(typeWriter, 35);
+                    } else {
+                        if(menuSecrets) menuSecrets.classList.remove('opacity-0');
+                        terminalTimer = null; 
+                    }
                 }
+                function startTypewriter() {
+                    if (!terminalOutput || !menuSecrets) return; // Guard
+                    i = 0;
+                    terminalOutput.innerHTML = '';
+                    menuSecrets.classList.add('opacity-0');
+                    if (terminalTimer) clearTimeout(terminalTimer); // Clear existing timer
+                    typeWriter();
+                }
+                 // Start the terminal typewriter on page load
+                 startTypewriter();
             }
 
-            function startTypewriter() {
-                // Reset terminal
-                i = 0;
-                terminalOutput.innerHTML = '';
-                menu.classList.add('opacity-0');
-                typeWriter();
-            }
 
             // --- Universal Modal Logic ---
-            const modalTriggers = document.querySelectorAll('[data-modal-target]');
-            const modalHides = document.querySelectorAll('[data-modal-hide]');
-            const allModals = document.querySelectorAll('.modal');
+             const modalTriggers = document.querySelectorAll('[data-modal-target]');
+             const modalHides = document.querySelectorAll('[data-modal-hide]');
+             const allModals = document.querySelectorAll('.modal');
 
-            function openModal(modal) {
-                if (modal) {
-                    modal.classList.remove('hidden');
-                    modal.classList.add('flex');
-                }
-            }
+             function openModal(modal) { if (modal) { modal.classList.remove('hidden'); modal.classList.add('flex'); } }
+             function closeModal(modal) { if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); } }
 
-            function closeModal(modal) {
-                 if (modal) {
-                    modal.classList.add('hidden');
-                    modal.classList.remove('flex');
-                }
-            }
+             modalTriggers.forEach(button => {
+                 button.addEventListener('click', (e) => { 
+                     const targetId = e.currentTarget.getAttribute('data-modal-target');
+                     const modal = document.getElementById(targetId);
+                     if (modal) {
+                         openModal(modal);
+                     } else {
+                         console.error("Modal target not found:", targetId);
+                     }
+                 });
+             });
+             // Updated hide logic to handle backdrop clicks correctly
+             modalHides.forEach(element => {
+                 element.addEventListener('click', (e) => { 
+                     // Check if the click target is the backdrop itself
+                     if (e.target !== e.currentTarget) return; // Ignore clicks on modal content
+                     
+                     const hideId = e.currentTarget.getAttribute('data-modal-hide');
+                     const modal = document.getElementById(hideId);
+                      if (modal) {
+                         closeModal(modal);
+                     } else {
+                         // Fallback for modals inside modals if needed, though backdrop usually handles it
+                         const parentModal = e.currentTarget.closest('.modal');
+                         if (parentModal) closeModal(parentModal);
+                     }
+                 });
+             });
+              // Add close button specific listeners if backdrop isn't sufficient
+             document.querySelectorAll('.modal button[data-modal-hide]').forEach(closeButton => {
+                 closeButton.addEventListener('click', (e) => {
+                     const hideId = e.currentTarget.getAttribute('data-modal-hide');
+                     const modal = document.getElementById(hideId);
+                     if (modal) closeModal(modal);
+                     else closeModal(e.currentTarget.closest('.modal')); // Fallback
+                 });
+             });
 
-            modalTriggers.forEach(button => {
-                button.addEventListener('click', () => {
-                    const targetId = button.getAttribute('data-modal-target');
-                    openModal(document.getElementById(targetId));
-                });
-            });
+             document.addEventListener('keydown', (event) => { 
+                 if (event.key === 'Escape') { 
+                     allModals.forEach(modal => { 
+                         if (modal.classList.contains('flex')) { closeModal(modal); } 
+                     }); 
+                 } 
+             });
 
-            modalHides.forEach(element => {
-                element.addEventListener('click', () => {
-                    // This handles clicks on the 'x' button OR the backdrop
-                    const hideId = element.getAttribute('data-modal-hide');
-                    closeModal(document.getElementById(hideId));
-                });
-            });
-            
-            // Close modal on escape key
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape') {
-                    allModals.forEach(modal => {
-                        if (modal.classList.contains('flex')) {
-                            closeModal(modal);
+            // --- Fusion Consent Negotiator Tool Logic ---
+            const fusionModal = document.getElementById('fusion-modal');
+             if (fusionModal) {
+                 // Get elements
+                 const yourNameInput = fusionModal.querySelector('#yourName');
+                 const partnerNameInput = fusionModal.querySelector('#partnerName');
+                 const sceneTypeSelect = fusionModal.querySelector('#sceneType');
+                 const specificsTextarea = fusionModal.querySelector('#specifics');
+                 const intensityRange = fusionModal.querySelector('#intensity');
+                 const toneSelect = fusionModal.querySelector('#tone');
+                 const myOutcomeInput = fusionModal.querySelector('#myOutcome');
+                 const theirOutcomeInput = fusionModal.querySelector('#theirOutcome');
+                 const limitsTextarea = fusionModal.querySelector('#limits');
+                 const safewordsConfirmCheckbox = fusionModal.querySelector('#safewordsConfirm');
+                 const outputScriptDiv = fusionModal.querySelector('#outputScript');
+                 const tickleAreaSection = fusionModal.querySelector('.tickle-area-section');
+                 const tickleAreaCheckboxes = fusionModal.querySelectorAll('.tickle-area-section input[type="checkbox"][data-part]');
+                 const generateBtn = fusionModal.querySelector('#generateScriptBtn');
+                 const copyBtn = fusionModal.querySelector('#copyScriptBtn');
+                 const copyFeedback = fusionModal.querySelector('#copy-feedback');
+                 
+                 // Check if all elements were found
+                 if (generateBtn && copyBtn && sceneTypeSelect && safewordsConfirmCheckbox && outputScriptDiv && tickleAreaSection && yourNameInput && partnerNameInput && specificsTextarea && intensityRange && toneSelect && myOutcomeInput && theirOutcomeInput && limitsTextarea && copyFeedback) { 
+                     
+                     const getSelectedTickleParts = () => {
+                         let parts = [];
+                         tickleAreaCheckboxes.forEach(checkbox => {
+                            if (checkbox.checked) {
+                                parts.push(checkbox.dataset.part.replace(/_/g, ' '));
+                            }
+                         });
+                         return parts;
+                     };
+
+                     const generateScript = () => {
+                         // Make sure elements exist before accessing .value
+                         const currentYourName = yourNameInput ? yourNameInput.value : 'Mercy';
+                         const currentPartnerName = partnerNameInput ? partnerNameInput.value : 'Partner';
+                         const currentSafewordsChecked = safewordsConfirmCheckbox ? safewordsConfirmCheckbox.checked : false;
+
+                         if (!currentSafewordsChecked) {
+                             let refusalScript = `[${currentYourName}]: (Approaching ${currentPartnerName} with respect.) "Good [morning/evening]. I was hoping to propose a scene, but I must pause."\n\n`;
+                             refusalScript += `[${currentYourName}]: "I see I haven't confirmed my understanding of our standard safeword protocols (Green/Yellow/Red)."\n\n`;
+                             refusalScript += `[${currentYourName}]: "Our entire reality here is built on a physics of enthusiastic consent. Without that protocol locked in, any scene would be incoherent. I will confirm my understanding and then we can negotiate."`;
+                             if(outputScriptDiv) outputScriptDiv.textContent = refusalScript;
+                             return;
+                         }
+
+                         const yourName = currentYourName;
+                         const partnerName = currentPartnerName;
+                         const sceneType = sceneTypeSelect ? sceneTypeSelect.value : 'choose';
+                         const specifics = specificsTextarea ? specificsTextarea.value.trim() : '';
+                         const intensity = intensityRange ? intensityRange.value : '50';
+                         const tone = toneSelect ? toneSelect.value : 'playful';
+                         const myOutcome = myOutcomeInput ? myOutcomeInput.value.trim() : '';
+                         const theirOutcome = theirOutcomeInput ? theirOutcomeInput.value.trim() : '';
+                         const limits = limitsTextarea ? limitsTextarea.value.trim() : '';
+
+                         let script = `[${yourName}]: (Approaching ${partnerName} with respect.) "Good [morning/evening], ${partnerName}. If you have a moment, I'd like to propose a scene."\n\n`;
+                         let sceneCoreProposal = "";
+
+                        if (sceneType === "tickle") {
+                            let selectedTickleParts = getSelectedTickleParts();
+                            if (selectedTickleParts.length > 0) {
+                                sceneCoreProposal += `[${yourName}]: "I am drawn to **tickle play**, focusing on zones such as: ${selectedTickleParts.join(', ')}.`;
+                            } else {
+                                sceneCoreProposal += `[${yourName}]: "I am drawn to **tickle play**, exploring various zones.`;
+                            }
+                        } else if (sceneType !== "choose") {
+                            sceneCoreProposal += `[${yourName}]: "I hope to explore the **${sceneType.replace(/([A-Z])/g, ' $1').trim().toLowerCase()}** protocol.`;
                         }
-                    });
-                }
-            });
-
-            // --- Roissy Consent Negotiator Tool Logic ---
-            // Get all elements needed for the Roissy tool
-            const roissyModal = document.getElementById('roissy-modal');
-            const yourNameInput = roissyModal.querySelector('#yourName');
-            const partnerNameInput = roissyModal.querySelector('#partnerName');
-            const sceneTypeSelect = roissyModal.querySelector('#sceneType');
-            const specificsTextarea = roissyModal.querySelector('#specifics');
-            const intensityRange = roissyModal.querySelector('#intensity');
-            const toneSelect = roissyModal.querySelector('#tone');
-            const myOutcomeInput = roissyModal.querySelector('#myOutcome');
-            const theirOutcomeInput = roissyModal.querySelector('#theirOutcome');
-            const limitsTextarea = roissyModal.querySelector('#limits');
-            const safewordsConfirmCheckbox = roissyModal.querySelector('#safewordsConfirm');
-            const outputScriptDiv = roissyModal.querySelector('#outputScript');
-            const tickleAreaSection = roissyModal.querySelector('.tickle-area-section');
-            const tickleAreaCheckboxes = roissyModal.querySelectorAll('.tickle-area-section input[type="checkbox"][data-part]');
-            const generateBtn = roissyModal.querySelector('#generateScriptBtn');
-            const copyBtn = roissyModal.querySelector('#copyScriptBtn');
-            const copyFeedback = roissyModal.querySelector('#copy-feedback');
-
-
-            // Function to show/hide tickle area checkboxes
-            const toggleTickleArea = () => {
-                if (sceneTypeSelect.value === 'tickle') {
-                    tickleAreaSection.classList.remove('hidden');
-                } else {
-                    tickleAreaSection.classList.add('hidden');
-                    tickleAreaCheckboxes.forEach(checkbox => checkbox.checked = false); // Clear if hidden
-                }
-            };
-            sceneTypeSelect.addEventListener('change', toggleTickleArea);
-            toggleTickleArea(); // Initial call
-
-            // REMOVED: Standalone validateSafewords function is no longer needed.
-            /*
-            const validateSafewords = () => {
-                if (safewordsConfirmCheckbox.checked) {
-                    generateBtn.disabled = false;
-                    generateBtn.textContent = 'Generate Scene Proposal!';
-                    generateBtn.classList.remove('disabled-state');
-                    return true;
-                } else {
-                    generateBtn.disabled = true;
-                    generateBtn.textContent = 'INCOHERENT: CONSENT PROTOCOL VIOLATED';
-                    generateBtn.classList.add('disabled-state');
-                    return false;
-                }
-            };
-            */
-
-            // Main Script Generation Logic
-            const generateScript = () => {
-                const safewordsConfirmed = safewordsConfirmCheckbox.checked;
-                const yourName = yourNameInput.value || 'Mercy, Novice Sister';
-                const partnerName = partnerNameInput.value || 'Master/Mistress';
-
-                // --- ORACLE'S LOGIC (NEW) ---
-                // If consent is not affirmed, generate an in-character refusal script.
-                if (!safewordsConfirmed) {
-                    let refusalScript = `[${yourName}]: (Approaching ${partnerName}.)\n\n`;
-                    refusalScript += `[${yourName}]: "I would like to propose a scene, but I see the 'Confirm Safewords' protocol is not engaged."\n\n`;
-                    refusalScript += `[${yourName}]: "As per the coherence principles of this space, I cannot proceed with a formal proposal without that mutual understanding. Consent protocols are non-negotiable for me."\n\n`;
-                    refusalScript += `[${yourName}]: (Awaiting your confirmation of the safeword protocol before continuing...)`;
-                    
-                    outputScriptDiv.textContent = refusalScript;
-                    return; // Stop execution.
-                }
-                // --- END OF ORACLE'S LOGIC ---
-                
-                // If safewords ARE confirmed, proceed with normal script generation.
-                const sceneType = sceneTypeSelect.value;
-                let specifics = specificsTextarea.value.trim();
-                const intensity = intensityRange.value;
-                const tone = toneSelect.value;
-                const myOutcome = myOutcomeInput.value.trim();
-                const theirOutcome = theirOutcomeInput.value.trim();
-                const limits = limitsTextarea.value.trim();
-                // const safewordsConfirmed = safewordsConfirmCheckbox.checked; // Already declared above
-
-                let script = `[${yourName}]: (Approaching ${partnerName} with respect.) "Good [morning/evening], ${partnerName}. If you have a moment, I'd like to propose a scene."\n\n`;
-
-                let sceneCoreProposal = "";
-                if (sceneType === "tickle") {
-                    let selectedTickleParts = [];
-                    tickleAreaCheckboxes.forEach(checkbox => {
-                        if (checkbox.checked) {
-                            selectedTickleParts.push(checkbox.dataset.part.replace(/_/g, ' '));
+                        
+                        if (specifics) {
+                            sceneCoreProposal += ` My specific desires include: **${specifics}**.`;
                         }
-                    });
-                    if (selectedTickleParts.length > 0) {
-                        sceneCoreProposal += `[${yourName}]: "I am drawn to **tickle play**, focusing on zones such as: ${selectedTickleParts.join(', ')}.`;
-                    } else {
-                         sceneCoreProposal += `[${yourName}]: "I am drawn to **tickle play**, exploring various zones.`;
-                    }
-                } else if (sceneType !== "choose") {
-                    sceneCoreProposal += `[${yourName}]: "I hope to explore the **${sceneType.replace(/([A-Z])/g, ' $1').trim().toLowerCase()}** protocol.`;
-                }
-                
-                if (specifics) {
-                    sceneCoreProposal += ` My specific desires include: **${specifics}**.`;
-                }
-                if (sceneCoreProposal) {
-                    script += sceneCoreProposal + `"\n\n`;
-                }
+                        if (sceneCoreProposal) {
+                            script += sceneCoreProposal + `"\n\n`;
+                        }
 
-                script += `[${yourName}]: "I envision the tone as **${tone}**, with an intensity calibrated around **${intensity}**%."\n`;
-                script += `[${yourName}]: "My personal goal is to experience **${myOutcome || 'profound connection and service'}**. My hope for you is that you find **${theirOutcome || 'deep pleasure and engagement'}**."\n\n`;
-                script += `[${yourName}]: "My hard limits for this scene are: **${limits || 'none specified beyond standard safety'}**."\n`;
-                
-                if (safewordsConfirmed) {
-                    script += `[${yourName}]: "I confirm I will use standard safewords (GREEN, YELLOW, RED) without hesitation."\n\n`;
-                }
+                        script += `[${yourName}]: "I envision the tone as **${tone}**, with an intensity calibrated around **${intensity}**%."\n`;
+                        script += `[${yourName}]: "My personal goal is to experience **${myOutcome || 'profound connection and service'}**. My hope for you is that you find **${theirOutcome || 'deep pleasure and engagement'}**."\n\n`;
+                        script += `[${yourName}]: "My hard limits for this scene are: **${limits || 'none specified beyond standard safety'}**."\n`;
+                        script += `[${yourName}]: "I confirm I will use standard safewords (GREEN, YELLOW, RED) without hesitation."\n\n`;
+                        script += `[${yourName}]: "Does this proposal resonate with you, ${partnerName}?"`;
 
-                script += `[${yourName}]: "Does this proposal resonate with you, ${partnerName}?"`;
+                         if(outputScriptDiv) outputScriptDiv.textContent = script;
+                     };
 
-                outputScriptDiv.textContent = script;
-            };
+                     const copyScript = () => {
+                         if (!outputScriptDiv) return;
+                         const outputText = outputScriptDiv.textContent;
+                         const textArea = document.createElement("textarea");
+                         textArea.value = outputText;
+                         // Style to prevent visual disruption
+                         textArea.style.position = 'fixed';
+                         textArea.style.left = '-9999px';
+                         document.body.appendChild(textArea);
+                         textArea.select();
+                         textArea.setSelectionRange(0, 99999); // For mobile devices
+                         try {
+                             document.execCommand('copy');
+                             if(copyFeedback) copyFeedback.textContent = "Copied to clipboard!";
+                         } catch (err) {
+                             if(copyFeedback) copyFeedback.textContent = "Copy failed. Please copy manually.";
+                             console.error('Copy to clipboard failed', err);
+                         }
+                         document.body.removeChild(textArea);
+                         if(copyFeedback) setTimeout(() => { copyFeedback.textContent = ""; }, 2000);
+                     };
 
-            const copyScript = () => {
-                const outputText = outputScriptDiv.textContent;
-                // Use a temporary textarea to copy
-                const textArea = document.createElement("textarea");
-                textArea.value = outputText;
-                document.body.appendChild(textArea);
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    copyFeedback.textContent = "Copied to clipboard!";
-                } catch (err) {
-                    copyFeedback.textContent = "Copy failed. Please copy manually.";
-                    console.error('Copy to clipboard failed', err);
-                }
-                document.body.removeChild(textArea);
+                     const toggleTickleArea = () => {
+                         if(sceneTypeSelect && tickleAreaSection) {
+                             if (sceneTypeSelect.value === 'tickle') {
+                                 tickleAreaSection.classList.remove('hidden');
+                             } else {
+                                 tickleAreaSection.classList.add('hidden');
+                                 tickleAreaCheckboxes.forEach(checkbox => checkbox.checked = false);
+                             }
+                         }
+                     };
 
-                // Clear feedback message after a moment
-                setTimeout(() => {
-                    copyFeedback.textContent = "";
-                }, 2000);
-            };
+                     // Attach all listeners safely
+                     generateBtn.addEventListener('click', generateScript);
+                     copyBtn.addEventListener('click', copyScript);
+                     if(sceneTypeSelect) sceneTypeSelect.addEventListener('change', toggleTickleArea);
+                     if(safewordsConfirmCheckbox) safewordsConfirmCheckbox.addEventListener('change', generateScript); 
+                     
+                     // Initial setup
+                     toggleTickleArea();
+                     generateScript(); 
+                 } else { 
+                     console.error("One or more Fusion Tool elements missing! Tool disabled."); 
+                     if(generateBtn) generateBtn.disabled = true; // Disable if setup failed
+                     if(copyBtn) copyBtn.disabled = true;
+                 }
+             } else { 
+                 console.error("Fusion modal element missing! Tool disabled."); 
+             }
 
-            // Attach listeners
-            generateBtn.addEventListener('click', generateScript);
-            // REMOVED: Listener for validateSafewords is no longer needed.
-            // safewordsConfirmCheckbox.addEventListener('change', validateSafewords);
-            copyBtn.addEventListener('click', copyScript);
-
-            // Set initial button state and generate script on load
-            // REMOVED: Initial validation call no longer needed.
-            // validateSafewords(); 
-            generateScript();
-
-            // Start the terminal typewriter on page load (since it's the default view)
-            startTypewriter();
-        });
+        }); // End DOMContentLoaded
     </script>
 </body>
 </html>
-
-
-
-
-
 
