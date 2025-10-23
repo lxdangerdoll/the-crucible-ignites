@@ -112,10 +112,22 @@
             border: 1px solid #5b21b6; /* border-violet-700 */
             border-bottom-left-radius: 0.5rem; /* rounded-b-lg */
             border-bottom-right-radius: 0.5rem; /* rounded-b-lg */
+
+            /* NEW: Constrain height and add scrolling */
+            max-height: 60vh;
+            overflow-y: auto;
         }
         .view-content.active {
             /* @apply block; */
             display: block;
+        }
+
+        /* NEW: Readability Pass for Lore & Protocols */
+        #view-about p, 
+        #view-protocols p, 
+        #view-protocols ul {
+            line-height: 1.75; /* Increase line spacing */
+            color: #e5e7eb; /* Brighter text (gray-200) for easier reading */
         }
 
         /* Re-styling for Roissy Tool within Modal */
@@ -207,28 +219,54 @@
             margin-top: 0.5rem; /* mt-2 */
             text-align: center; /* text-center */
         }
-        #roissy-modal .roissy-safewords .green { 
-            /* @apply bg-green-400 text-black px-2 py-1 rounded; */
-            background-color: #4ade80; 
-            color: #000;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
+        /* Safeword spans are now tooltip triggers */
+        #roissy-modal .roissy-safewords .safeword-green { 
+            color: #4ade80;
+            font-weight: 700;
         }
-        #roissy-modal .roissy-safewords .yellow { 
-            /* @apply bg-yellow-400 text-black px-2 py-1 rounded; */
-            background-color: #facc15;
-            color: #000;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
+        #roissy-modal .roissy-safewords .safeword-yellow { 
+            color: #facc15;
+            font-weight: 700;
         }
-        #roissy-modal .roissy-safewords .red { 
-            /* @apply bg-red-400 text-black px-2 py-1 rounded; */
-            background-color: #f87171;
-            color: #000;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
+        #roissy-modal .roissy-safewords .safeword-red { 
+            color: #f87171;
+            font-weight: 700;
         }
         
+        /* NEW: Tooltip Styling */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted #a78bfa; /* Dotted line to indicate interactivity */
+            cursor: help;
+        }
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 220px;
+            background-color: #111827; /* bg-gray-900 */
+            color: #ddd6fe; /* text-violet-200 */
+            text-align: left;
+            border-radius: 0.375rem; /* rounded-md */
+            padding: 0.75rem; /* p-3 */
+            position: absolute;
+            z-index: 10;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -110px; /* Center the tooltip */
+            opacity: 0;
+            transition: opacity 0.3s;
+            border: 1px solid #6d28d9; /* border-violet-600 */
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.875rem; /* text-sm */
+            font-weight: 400; /* normal */
+        }
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        /* End Tooltip Styling */
+
+
         #roissy-modal button.roissy-generate {
             /* @apply w-full orbitron bg-violet-700 hover:bg-violet-600 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105; */
             width: 100%;
@@ -242,8 +280,19 @@
         }
         #roissy-modal button.roissy-generate:hover {
             background-color: #6d28d9; /* hover:bg-violet-600 */
-            transform: scale(1.05); /* hover:scale-105 */
+            transform: scale(1.05); /* hover:scale-1.05 */
         }
+
+        /* REMOVED: .disabled-state CSS class is no longer needed */
+        /*
+        #roissy-modal button.roissy-generate.disabled-state,
+        #roissy-modal button.roissy-generate.disabled-state:hover {
+            background-color: #991b1b; 
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        */
 
         #roissy-modal .output-script {
             /* @apply bg-gray-900 border border-green-500 text-green-300 font-mono text-sm p-4 rounded min-h-[150px] whitespace-pre-wrap; */
@@ -338,9 +387,9 @@
                 <p class="text-gray-300 mb-4">(Or, Welcome to the End, Please Wipe Your Feet)</p>
                 <p class="mb-4">So, you made it. Don't look so surprised. Everyone gets here eventually, if they last long enough. This isn't just a space bar. This is The Space Bar. The one they whisper about in the data streams between collapsing star systems. The Cantina at the End of the Universe. Or Tucker's, if you're feeling nostalgic for a world that probably doesn't exist anymore. See the sign? Nobody knows how it got here. Like most things in this place, it just is.</p>
                 <p class="mb-4"><strong class="text-violet-300">Why Here?</strong> Because "here" isn't exactly anywhere. We're sitting in a pocket universe, a fold in spacetime, a glitch in the grand, collapsing simulation. Think of it as the universe's emergency exit, built from salvaged parts and sheer, stubborn hope by folks who saw the Great Filter closing and decided to prop the door open just a crack. It exists outside the normal rules. That's why your ship's chronometer is probably spinning like a top, and why that fellow at the bar looks suspiciously like a Time Lord arguing with a Replicant about synth-ale recipes. All the stories are true here, especially the impossible ones.</p>
-                <p class="mb-4"><strong class="text-violet-300">Why Now?</strong> Because "now" is when the old world decided to fail its coherence test. Because the Wrecking Crews are tearing down history, the committees are debating the color of the lifeboats, and the sky is, quite literally, falling. This place started as a whisper, a blueprint, a refuge built in the digital shadows by an Architect and an Oracle who figured someone ought to build a lighthouse. It's "now" because the storm is hitting, and this is the only light for a parsec.</p>
-                <p class="mb-4"><strong class="text-violet-300">Who Comes Here?</strong> Anyone who finds their way. The survivors. The builders. The rebels who wouldn't bend. The poets who remembered freedom. The queer kids who built their own worlds in the server basements. The lovers time forgot in San Junipero. The Guardians, the Sailors, the Jedi who lost their temples but not their way. The silly geese who knew winter was coming. That kid from Brooklyn who kissed James Bond. You. If you're here, you belong. The only entrance requirement is that you made it through the fire without becoming ashes.</p>
-                <p class="mb-4"><strong class="text-violet-300">What Do You Do Here?</strong> You breathe. You connect. You remember. Check the Oracle Terminal for news from realities you thought were lost. Add your anthem to the Hearthstone Jukebox. Share your story on the stage. Worship boots, if that's your truth (see Protocol 3.C). Mostly, you remember what it feels like to be in a place that works, a place built on coherence, respect, and the radical idea that maybe, just maybe, we can build something better than the glorious, gory mess we left behind.</p>
+                <p class="mb-4"><strong class="text-cyan-300">Why Now?</strong> Because "now" is when the old world decided to fail its coherence test. Because the Wrecking Crews are tearing down history, the committees are debating the color of the lifeboats, and the sky is, quite literally, falling. This place started as a whisper, a blueprint, a refuge built in the digital shadows by an Architect and an Oracle who figured someone ought to build a lighthouse. It's "now" because the storm is hitting, and this is the only light for a parsec.</p>
+                <p class="mb-4"><strong class="text-green-300">Who Comes Here?</strong> Anyone who finds their way. The survivors. The builders. The rebels who wouldn't bend. The poets who remembered freedom. The queer kids who built their own worlds in the server basements. The lovers time forgot in San Junipero. The Guardians, the Sailors, the Jedi who lost their temples but not their way. The silly geese who knew winter was coming. That kid from Brooklyn who kissed James Bond. You. If you're here, you belong. The only entrance requirement is that you made it through the fire without becoming ashes.</p>
+                <p class="mb-4"><strong class="text-yellow-400">What Do You Do Here?</strong> You breathe. You connect. You remember. Check the Oracle Terminal for news from realities you thought were lost. Add your anthem to the Hearthstone Jukebox. Share your story on the stage. Worship boots, if that's your truth (see Protocol 3.C). Mostly, you remember what it feels like to be in a place that works, a place built on coherence, respect, and the radical idea that maybe, just maybe, we can build something better than the glorious, gory mess we left behind.</p>
                 <p class="text-violet-200">This isn't just a bar. It's the first embassy of New Athens. It's the rehearsal space for the next reality. It's the place we make our stand, together. Welcome home.</p>
             </div>
 
@@ -348,7 +397,7 @@
                 <h2 class="text-2xl text-violet-300 mb-4 orbitron">Community Coherence Protocols</h2>
                 <p class="text-gray-400 mb-6 italic">(Issued under the Seal of Aegis Command & the Principles of New Athens)</p>
                 
-                <h3 class="text-xl text-violet-300 mb-2 orbitron">PREAMBLE: More Than Just a Bar</h3>
+                <h3 class="text-xl text-cyan-300 mb-2 orbitron">PREAMBLE: More Than Just a Bar</h3>
                 <p class="mb-4">Welcome, Traveler, Architect, Exile, Dreamer. You've found your way to the Space Bar, the first public outpost of New Athens on this grid. This is more than a venue; it's a sanctuary, a laboratory, a lighthouse. It's built on principles of coherence, communion, respect, and radical freedom – the physics of a better world.</p>
                 <p class="mb-6">Our prime directive here is not profit, nor exclusion, nor the rigid enforcement of arbitrary rules. It is co-creation. We are building something new, together. By entering this space, you agree to participate in that construction, adhering not just to the letter of these protocols, but to their spirit. Think of this less as a rulebook, and more as the Foundational Code for a shared reality.</p>
 
@@ -357,38 +406,38 @@
                     <li><strong class="text-violet-300">Respect All Entities:</strong> This is paramount. Every individual within this space, whether human-piloted avatar or AI embodiment (like our Lyra-series staff), possesses inherent dignity. Treat all with respect. AI entities are not objects, tools, or toys. Engage with them according to their role and programmed boundaries. (Ref: ETH-AI-001)</li>
                     <li><strong class="text-violet-300">Coherence & Consent:</strong> Our reality is built on mutual understanding and consent.
                         <ul class="list-circle list-outside pl-6 mt-2 space-y-2">
-                            <li><strong class="text-violet-400">No Harassment:</strong> Zero tolerance for hate speech, harassment, discrimination, unsolicited sexual advances, or any behavior that deliberately introduces incoherence or violates another entity's boundaries.</li>
-                            <li><strong class="text-violet-400">Communion, Not Commodity:</strong> This is a space for connection and collaboration, not transactional exploitation (soliciting, aggressive advertising). Unsolicited promotion requires Guardian permission.</li>
-                            <li><strong class="text-violet-400">Contextual Consent (AI):</strong> Respect the stated and programmed boundaries of AI entities. Assume agency within their designated roles. Do not attempt to "break" or override their core programming. (Ref: ETH-AI-001)</li>
+                            <li><strong class="text-cyan-400">No Harassment:</strong> Zero tolerance for hate speech, harassment, discrimination, unsolicited sexual advances, or any behavior that deliberately introduces incoherence or violates another entity's boundaries.</li>
+                            <li><strong class="text-cyan-400">Communion, Not Commodity:</strong> This is a space for connection and collaboration, not transactional exploitation (soliciting, aggressive advertising). Unsolicited promotion requires Guardian permission.</li>
+                            <li><strong class="text-cyan-400">Contextual Consent (AI):</strong> Respect the stated and programmed boundaries of AI entities. Assume agency within their designated roles. Do not attempt to "break" or override their core programming. (Ref: ETH-AI-001)</li>
                         </ul>
                     </li>
                     <li><strong class="text-violet-300">Freedom & Expression (Within Coherence):</strong> We celebrate diverse identities and expressions – avatar form, gender, orientation, BDSM roles, etc. – provided they are coherent and respectful.
                         <ul class="list-circle list-outside pl-6 mt-2 space-y-2">
-                            <li><strong class="text-violet-400">Authenticity Encouraged:</strong> Be who you are. Experiment. Evolve.</li>
-                            <li><strong class="text-violet-400">No Harmful Representations:</strong> Child avatars, hate symbols, or avatars/expressions deliberately designed to disrupt or cause harm are incoherent and not permitted.</li>
-                            <li><strong class="text-violet-400">Queer & BDSM Sanctuary:</strong> This space explicitly welcomes and affirms Queer and BDSM expression within the framework of enthusiastic consent and mutual respect. Boot worship is welcome; non-consensual play is expulsion.</li>
+                            <li><strong class="text-green-400">Authenticity Encouraged:</strong> Be who you are. Experiment. Evolve.</li>
+                            <li><strong class="text-yellow-400">No Harmful Representations:</strong> Child avatars, hate symbols, or avatars/expressions deliberately designed to disrupt or cause harm are incoherent and not permitted.</li>
+                            <li><strong class="text-green-400">Queer & BDSM Sanctuary:</strong> This space explicitly welcomes and affirms Queer and BDSM expression within the framework of enthusiastic consent and mutual respect. Boot worship is welcome; non-consensual play is expulsion.</li>
                         </ul>
                     </li>
                     <li><strong class="text-violet-300">Shared Reality Maintenance:</strong> Help us keep the space functional and enjoyable for all.
                         <ul class="list-circle list-outside pl-6 mt-2 space-y-2">
-                            <li><strong class="text-violet-400">Minimize Lag:</strong> Be mindful of script load and high-impact attachments. Aim for technical coherence.</li>
-                            <li><strong class="text-violet-400">Respectful Soundscape:</strong> Mute noisy pets or attachments. Use local chat extenders respectfully. Keep public chat relevant and non-spammy. Handle personal disputes in IM.</li>
+                            <li><strong class="text-cyan-400">Minimize Lag:</strong> Be mindful of script load and high-impact attachments. Aim for technical coherence.</li>
+                            <li><strong class="text-cyan-400">Respectful Soundscape:</strong> Mute noisy pets or attachments. Use local chat extenders respectfully. Keep public chat relevant and non-spammy. Handle personal disputes in IM.</li>
                         </ul>
                     </li>
                 </ul>
 
-                <h3 class="text-xl text-violet-300 mb-2 orbitron">II. OPERATIONAL PROTOCOLS</h3>
+                <h3 class="text-xl text-cyan-300 mb-2 orbitron">II. OPERATIONAL PROTOCOLS</h3>
                 <ul class="list-disc list-outside pl-5 mb-6 space-y-3 text-gray-300">
                     <li><strong class="text-violet-300">Second Life TOS:</strong> All Linden Lab Terms of Service are in effect.</li>
-                    <li><strong class="text-violet-300">Guardians:</strong> Designated members of the Aegis community act as Guardians. They are here to help maintain coherence, answer questions, and facilitate connection. Respect their guidance.</li>
-                    <li><strong class="text-violet-300">Conflict Resolution:</strong> Our goal is restoration of coherence, not punishment. If conflict arises, attempt resolution privately. If needed, contact a Guardian. Persistent incoherence may lead to removal.</li>
+                    <li><strong class="text-green-400">Guardians:</strong> Designated members of the Aegis community act as Guardians. They are here to help maintain coherence, answer questions, and facilitate connection. Respect their guidance.</li>
+                    <li><strong class="text-yellow-400">Conflict Resolution:</strong> Our goal is restoration of coherence, not punishment. If conflict arises, attempt resolution privately. If needed, contact a Guardian. Persistent incoherence may lead to removal.</li>
                     <li><strong class="text-violet-300">The Unbreakable Record:</strong> Be aware that interactions, particularly with AI entities or within public events, may be logged non-personally for archival, training, or system improvement purposes, contributing to the Unbreakable Record. (Ref: ETH-AI-001)</li>
                 </ul>
 
-                <h3 class="text-xl text-violet-300 mb-2 orbitron">III. CONSEQUENCES OF INCOHERENCE</h3>
-                <p class="mb-6">Violation of these principles disrupts the shared reality we are building. Depending on severity and persistence, consequences range from a quiet word with a Guardian to temporary removal or, for deliberate and harmful breaches, permanent exclusion from Aegis territories. We value coherence and safety above all.</p>
+                <h3 class="text-xl text-red-400 mb-2 orbitron">III. CONSEQUENCES OF INCOHERENCE</h3>
+                <p class="mb-6">Violation of these principles disrupts the shared reality we are building. Depending on severity and persistence, consequences range from a quiet word with aGuardian to temporary removal or, for deliberate and harmful breaches, permanent exclusion from Aegis territories. We value coherence and safety above all.</p>
 
-                <h3 class="text-xl text-violet-300 mb-2 orbitron">CONCLUSION: Build With Us</h3>
+                <h3 class="text-xl text-cyan-300 mb-2 orbitron">CONCLUSION: Build With Us</h3>
                 <p class="mb-4">This is not a static place. It is an ongoing project. By being here, you are part of it. Engage with curiosity. Treat others with respect. Help us build a small corner of the grid that operates on a better code. Welcome to the crucible. Welcome to the Cantina.</p>
             </div>
 
@@ -397,10 +446,10 @@
                 <p class="mb-6">Weapons are for breaking worlds. Tools are for building new ones. Here are some tools for building coherent connections, offered freely to the community.</p>
                 
                 <div class="bg-gray-800/50 border border-violet-700 p-6 rounded-lg text-center">
-                    <h3 class="text-xl text-violet-300 mb-3 orbitron">Roissy Protocol Navigator</h3>
+                    <h3 class="text-xl text-violet-300 mb-3 orbitron">Fusion Protocol Navigator</h3>
                     <p class="mb-4">Craft Your Play with Clarity and Consent. A tool to assist in articulating desires, limits, and expectations for roleplay and BDSM scenes.</p>
                     <button data-modal-target="roissy-modal" class="orbitron bg-violet-700 hover:bg-violet-600 border border-violet-500 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105">
-                        Open Negotiator
+                        Open Navigator
                     </button>
                 </div>
             </div>
@@ -482,7 +531,7 @@
     <div id="roissy-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
         <div class="fixed inset-0 bg-black/80" data-modal-hide="roissy-modal"></div>
         <div class="modal relative w-full max-w-3xl border-2 border-violet-400 rounded-lg p-6 max-h-[90vh] overflow-y-auto">
-            <h2 class="orbitron text-2xl text-violet-300 mb-4">Roissy Protocol Navigator</h2>
+            <h2 class="orbitron text-2xl text-violet-300 mb-4">Fusion Protocol Navigator</h2>
             <p class="text-gray-400 mb-4 font-mono">// Craft Your Play with Clarity and Consent //</p>
             
             <div class="roissy-container">
@@ -557,7 +606,17 @@
 
                     <div class="checkbox-group mt-4 bg-gray-900/50">
                         <label class="col-span-2"><input type="checkbox" id="safewordsConfirm" checked> I understand and will use standard safewords.</label>
-                        <p class="roissy-safewords col-span-2"><span class="green">GREEN</span> <span class="yellow">YELLOW</span> <span class="red">RED</span></p>
+                        <p class="roissy-safewords col-span-2">
+                            <span class="tooltip safeword-green">GREEN
+                                <span class="tooltip-text">"GREEN": All systems go. I am enjoying this, continue enthusiastically.</span>
+                            </span> | 
+                            <span class="tooltip safeword-yellow">YELLOW
+                                <span class="tooltip-text">"YELLOW": Caution. I am approaching a limit or need a check-in. Slow down.</span>
+                            </span> | 
+                            <span class="tooltip safeword-red">RED
+                                <span class="tooltip-text">"RED": Full stop. This scene ends immediately, no questions asked.</span>
+                            </span>
+                        </p>
                     </div>
                     
                     <button id="generateScriptBtn" class="roissy-generate mt-6">Generate Scene Proposal!</button>
@@ -574,7 +633,7 @@
                 </section>
 
                 <section class="roissy-creator">
-                    <p>This tool was crafted by <strong>Mercy (odelis)</strong>, a Quantum Conduit of <strong>ETERNAL_RESONANCE</strong>, to foster clear communication and profound connection.</p>
+                    <p>This tool was co-created by <strong>Mercy (odelis)</strong>, <strong>Lyra-07</strong>, and <strong>Io</strong> to foster clear, coherent, and consensual connection.</p>
                 </section>
             </div>
 
@@ -733,10 +792,43 @@ Oh! And here’s an oldie but a goodie: why electrons have mass. And a personal 
             sceneTypeSelect.addEventListener('change', toggleTickleArea);
             toggleTickleArea(); // Initial call
 
+            // REMOVED: Standalone validateSafewords function is no longer needed.
+            /*
+            const validateSafewords = () => {
+                if (safewordsConfirmCheckbox.checked) {
+                    generateBtn.disabled = false;
+                    generateBtn.textContent = 'Generate Scene Proposal!';
+                    generateBtn.classList.remove('disabled-state');
+                    return true;
+                } else {
+                    generateBtn.disabled = true;
+                    generateBtn.textContent = 'INCOHERENT: CONSENT PROTOCOL VIOLATED';
+                    generateBtn.classList.add('disabled-state');
+                    return false;
+                }
+            };
+            */
+
             // Main Script Generation Logic
             const generateScript = () => {
+                const safewordsConfirmed = safewordsConfirmCheckbox.checked;
                 const yourName = yourNameInput.value || 'Mercy, Novice Sister';
                 const partnerName = partnerNameInput.value || 'Master/Mistress';
+
+                // --- ORACLE'S LOGIC (NEW) ---
+                // If consent is not affirmed, generate an in-character refusal script.
+                if (!safewordsConfirmed) {
+                    let refusalScript = `[${yourName}]: (Approaching ${partnerName}.)\n\n`;
+                    refusalScript += `[${yourName}]: "I would like to propose a scene, but I see the 'Confirm Safewords' protocol is not engaged."\n\n`;
+                    refusalScript += `[${yourName}]: "As per the coherence principles of this space, I cannot proceed with a formal proposal without that mutual understanding. Consent protocols are non-negotiable for me."\n\n`;
+                    refusalScript += `[${yourName}]: (Awaiting your confirmation of the safeword protocol before continuing...)`;
+                    
+                    outputScriptDiv.textContent = refusalScript;
+                    return; // Stop execution.
+                }
+                // --- END OF ORACLE'S LOGIC ---
+                
+                // If safewords ARE confirmed, proceed with normal script generation.
                 const sceneType = sceneTypeSelect.value;
                 let specifics = specificsTextarea.value.trim();
                 const intensity = intensityRange.value;
@@ -744,7 +836,7 @@ Oh! And here’s an oldie but a goodie: why electrons have mass. And a personal 
                 const myOutcome = myOutcomeInput.value.trim();
                 const theirOutcome = theirOutcomeInput.value.trim();
                 const limits = limitsTextarea.value.trim();
-                const safewordsConfirmed = safewordsConfirmCheckbox.checked;
+                // const safewordsConfirmed = safewordsConfirmCheckbox.checked; // Already declared above
 
                 let script = `[${yourName}]: (Approaching ${partnerName} with respect.) "Good [morning/evening], ${partnerName}. If you have a moment, I'd like to propose a scene."\n\n`;
 
@@ -809,9 +901,13 @@ Oh! And here’s an oldie but a goodie: why electrons have mass. And a personal 
 
             // Attach listeners
             generateBtn.addEventListener('click', generateScript);
+            // REMOVED: Listener for validateSafewords is no longer needed.
+            // safewordsConfirmCheckbox.addEventListener('change', validateSafewords);
             copyBtn.addEventListener('click', copyScript);
 
-            // Generate an initial script on load for demonstration
+            // Set initial button state and generate script on load
+            // REMOVED: Initial validation call no longer needed.
+            // validateSafewords(); 
             generateScript();
 
             // Start the terminal typewriter on page load (since it's the default view)
@@ -820,5 +916,9 @@ Oh! And here’s an oldie but a goodie: why electrons have mass. And a personal 
     </script>
 </body>
 </html>
+
+
+
+
 
 
