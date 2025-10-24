@@ -473,10 +473,9 @@
                           Join the Aegis Network Discord
                       </a>
                       <p class="text-sm text-gray-500 mb-4 text-center">// Primary comms & community hub (Link TBD) //</p>
-                      <a href="http://maps.secondlife.com/secondlife/Your%20Region/128/128/22" class="connect-link" target="_blank" rel="noopener noreferrer">
+                      <a href="http://maps.secondlife.com/secondlife/Sandwich/104/238/777" class="connect-link" target="_blank" rel="noopener noreferrer">
                           Visit The Space Bar In-World (Second Life)
                       </a>
-                      <p class="text-sm text-gray-500 mb-4 text-center">// SLURL coming soon... (Placeholder SLURL) //</p>
                        <p class="mt-6 text-center">Interested in becoming a Guardian or contributing to the project? Reach out via Discord or contact Mercy (Odelis) in-world.</p>
                 </div>
 
@@ -770,18 +769,15 @@
         // This replacement should happen SERVER-SIDE (e.g., via PHP, Node.js, etc.) 
         // by dynamically injecting the correct config into the '__firebase_config' JS variable.
         // DO NOT paste your real API keys directly into this HTML file if it's public.
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config) 
-            : { 
-                // --- V V V SERVER MUST REPLACE THIS WITH ACTUAL CONFIG V V V ---
-                apiKey: "AIza...", // THIS IS A PLACEHOLDER - WILL FAIL
-                authDomain: "example-project.firebaseapp.com", // PLACEHOLDER
-                projectId: "example-project", // PLACEHOLDER - WILL FAIL
-                storageBucket: "example-project.appspot.com", // PLACEHOLDER
-                messagingSenderId: "1234567890", // PLACEHOLDER
-                appId: "1:1234567890:web:abcdef1234567890abcdef" // PLACEHOLDER
-                // --- ^ ^ ^ SERVER MUST REPLACE THIS WITH ACTUAL CONFIG ^ ^ ^ ---
-              }; 
+const firebaseConfig = {
+  apiKey: "AIzaSyCPb_eI_DrTVbURXpZT6Pbe9zooRPr-EaA",
+  authDomain: "pdtfofiaoh.firebaseapp.com",
+  projectId: "pdtfofiaoh",
+  storageBucket: "pdtfofiaoh.firebasestorage.app",
+  messagingSenderId: "615502369347",
+  appId: "1:615502369347:web:b89130343521b964fb3af6",
+  measurementId: "G-SVD14FJ7JF"
+};
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-cantina-app-id'; // App ID from environment or default
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null; // Auth token from environment
 
