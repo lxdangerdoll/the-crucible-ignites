@@ -53,6 +53,12 @@
             font-family: 'Orbitron', sans-serif;
             margin-top: 0.5rem;
         }
+        .item-category {
+            font-style: italic;
+            color: #6ee7b7; /* Teal-300 */
+            font-size: 0.75rem; /* text-xs */
+            margin-top: 0.25rem;
+        }
         .info-box {
             background-color: rgba(31, 41, 55, 0.5); /* Gray-800 with opacity */
             border: 1px solid #6d28d9; /* Violet-600 */
@@ -150,14 +156,43 @@
 
                  <div class="menu-item">
                     <div class="item-name">Boil 'Em, Mash 'Em, Stick 'Em In A Stew (Potato Stew)</div>
-                    <div class="item-desc">Hearty, reliable potato* stew. The foundation of our burgeoning economy. May contain actual potato.</div>
+                    <div class="item-desc">Hearty, reliable potato* stew. The foundation of our burgeoning economy. May contain actual potato (potentially sentient).</div>
                     <div class="item-price">L$ 15</div>
+                </div>
+            </section>
+
+             <!-- Grease Pit Specials -->
+            <section class="menu-section">
+                <h2 class="text-2xl text-cyan-300 mb-4 orbitron neon-glow-subtle">Grease Pit Specials (Comfort Food)</h2>
+
+                <div class="menu-item">
+                    <div class="item-name">Standard Issue Burger (Burger)</div>
+                    <div class="item-desc">Synth-protein patty* on a nutrient bun. Comes with standard condiments. Unremarkable but filling.</div>
+                    <div class="item-price">L$ 13</div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="item-name">Starch Sticks (Fries)</div>
+                    <div class="item-desc">Fried potato* extrusions. Salty. You know the drill.</div>
+                    <div class="item-price">L$ 6</div>
+                </div>
+
+                 <div class="menu-item">
+                    <div class="item-name">Tube Meat Deluxe (Hot Dog)</div>
+                    <div class="item-desc">Processed protein tube* in a nutrient casing, served on a bun. Questionable origins, undeniable satisfaction.</div>
+                    <div class="item-price">L$ 9</div>
                 </div>
             </section>
 
             <!-- Drinks -->
             <section class="menu-section">
                 <h2 class="text-2xl text-cyan-300 mb-4 orbitron neon-glow-subtle">Liquid Courage & Hydration</h2>
+
+                <div class="menu-item">
+                    <div class="item-name">Hero's Draught (Cup of Milk)</div>
+                    <div class="item-desc">A simple cup of chilled, fortified dairy-analog beverage*. Reserved for those undertaking quests of great import, or those with significant credit reserves. It builds strong bones (allegedly).</div>
+                    <div class="item-price">L$ 69</div>
+                </div>
 
                 <div class="menu-item">
                     <div class="item-name">Core World Wine (Wine)</div>
@@ -196,6 +231,38 @@
                 </div>
             </section>
 
+            <!-- Basic Nutrient Paste -->
+            <section class="menu-section">
+                <h2 class="text-2xl text-cyan-300 mb-4 orbitron neon-glow-subtle">Basic Nutrient Paste (Discipline Rations)</h2>
+                <p class="text-sm text-gray-500 mb-4 italic">// Served only upon request or protocol requirement. Minimal nutritional value, maximum humility. //</p>
+
+                <div class="menu-item">
+                    <div class="item-name">Paste - Berry Blend (Baby Food - Berry)</div>
+                    <div class="item-category">Requires: Strawberry x2</div>
+                    <div class="item-price">L$ 4</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Paste - Root Vegetable Blend (Baby Food - Carrot)</div>
+                     <div class="item-category">Requires: Carrot x2</div>
+                    <div class="item-price">L$ 4</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Paste - Protein Blend (Baby Food - Chicken)</div>
+                    <div class="item-category">Requires: Chicken Breast x1</div>
+                    <div class="item-price">L$ 5</div>
+                </div>
+                 <div class="menu-item">
+                    <div class="item-name">Paste - Vine Fruit Blend (Baby Food - Grape)</div>
+                     <div class="item-category">Requires: Grapes x2</div>
+                    <div class="item-price">L$ 4</div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-name">Paste - Cruciferous Blend (Baby Food - Greens)</div>
+                    <div class="item-category">Requires: Broccoli x2</div>
+                    <div class="item-price">L$ 4</div>
+                </div>
+            </section>
+
              <!-- Desserts -->
             <section class="menu-section">
                 <h2 class="text-2xl text-cyan-300 mb-4 orbitron neon-glow-subtle">Sweet Endings (Dessert)</h2>
@@ -208,7 +275,7 @@
 
                  <div class="menu-item">
                     <div class="item-name">Soft Serve Stasis Field (Soft Serve Ice Cream)</div>
-                    <div class="item-desc">Self-serve machine dispensing frozen dairy-analog dessert. Handle with care.</div>
+                    <div class="item-desc">Self-serve machine dispensing frozen dairy-analog dessert*. Handle with care.</div>
                     <div class="item-price">L$ 6</div>
                 </div>
             </section>
@@ -220,7 +287,7 @@
                 <p class="mb-2">Missing ingredients? Ask Lyra (or designated staff) for Bartender Service at the listed L$ prices. Tipping is appreciated!</p>
                 <p class="mb-2">Stick around, chat, maybe pick up a quest. But watch your stats - this is a real bar (mostly).</p>
                 <p>Full MyStory Recipe List: <a href="https://www.lifestorii.co/wiki/cooking" target="_blank" rel="noopener noreferrer" class="text-cyan-400 hover:text-cyan-200 underline">lifestorii.co/wiki/cooking</a></p>
-                <p class="mt-4 text-center text-gray-500">// Welcome to New Athens. Help us build something better. //</p>
+                <p class="mt-4 text-center text-gray-500">// Welcome to New Athens. Help us build something better. *May contain actual food product. Or potatoes. Sentient potatoes. //</p>
             </div>
 
         </main>
@@ -233,3 +300,4 @@
 
 </body>
 </html>
+
