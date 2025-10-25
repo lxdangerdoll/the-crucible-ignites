@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Space Bar // MyStory Menu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Courier Prime', monospace;
+            background-color: #0c0a18; /* Deep Indigo */
+            color: #d1d5db; /* Gray-300 */
+        }
+        h1, h2, h3, .orbitron { font-family: 'Orbitron', sans-serif; }
+        .neon-glow-subtle {
+            text-shadow:
+                0 0 2px rgba(167, 139, 250, 0.6), /* Violet-400 */
+                0 0 5px rgba(167, 139, 250, 0.4),
+                0 0 10px rgba(124, 58, 237, 0.4); /* Violet-600 */
+        }
+        .menu-section {
+            background-color: rgba(17, 24, 39, 0.75); /* Gray-900 with opacity */
+            border: 1px solid #4c1d95; /* Violet-800 */
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .menu-item {
+            border-bottom: 1px dashed #3730a3; /* Indigo-800 */
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .menu-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .item-name {
+            color: #c4b5fd; /* Violet-300 */
+            font-weight: 700;
+        }
+        .item-desc {
+            color: #9ca3af; /* Gray-400 */
+            font-size: 0.875rem; /* text-sm */
+            margin-top: 0.25rem;
+        }
+        .item-price {
+            color: #a78bfa; /* Violet-400 */
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            margin-top: 0.5rem;
+        }
+        .info-box {
+            background-color: rgba(31, 41, 55, 0.5); /* Gray-800 with opacity */
+            border: 1px solid #6d28d9; /* Violet-600 */
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 2rem;
+            font-size: 0.875rem;
+            color: #d1d5db;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #1e1b4b; } /* Indigo-900 */
+        ::-webkit-scrollbar-thumb { background: #a78bfa; border-radius: 4px; } /* Violet-400 */
+        ::-webkit-scrollbar-thumb:hover { background: #c4b5fd; } /* Violet-300 */
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-violet-300 neon-glow-subtle orbitron">Space Bar Sustenance Log</h1>
+            <p class="text-violet-400 mt-2">// Official MyStory Ration Menu - ASN Protocol v2.2 //</p>
+        </header>
+
+        <main>
+            <!-- Starters / Snacks -->
+            <section class="menu-section">
+                <h2 class="text-2xl text-cyan-300 mb-4 orbitron neon-glow-subtle">Replicator Rations (Starters & Snacks)</h2>
+
+                <div class="menu-item">
+                    <div class="item-name">Zero-G Bruschetta (Bruschetta)</div>
+                    <div class="item-desc">Toasted nutrient paste with reconstituted tomato-analog topping. Surprisingly edible.</div>
+                    <div class="item-price">L$ 8</div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="item-name">Nebula Noodle Soup (Broccoli or Tomato Soup)</div>
+                    <div class="item-desc">Choose your nutrient broth: Verdant Nebula (Broccoli) or Crimson Nebula (Tomato). Served hot.</div>
+                    <div class="item-price">L$ 7</div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="item-name">Airlock Calamari (Calamari)</div>
+                    <div class="item-desc">Crispy fried synth-squid rings. Chewier than you'd expect, comes with tangy dipping sauce.</div>
+                    <div class="item-price">L$ 12</div>
+                </div>
+
+                 <div class="menu-item">
+                    <div class="item-name">Cryo-Pop Popcorn (Popcorn)</div>
+                    <div class="item-desc">Air-popped maize kernels. Available Standard Issue (Buttered), Cheesy Nebula (Cheddar), or Sweet Asteroid Dust (Kettlecorn).</div>
+                    <div class="item-price">L$ 5</div>
+                </div>
+            </section>
+
+            <!-- Main Courses -->
+            <section class="menu-section">
+                <h2 class="text-2xl text-cyan-300 mb-4 orbitron neon-glow-subtle">Standard Galactic Meals (Entrees)</h2>
+
+                 <div class="menu-item">
+                    <div class="item-name">Captain's Cut Steak (Steak Sirloin)</div>
+                    <div class="item-desc">Lab-grown sirloin*, seared to perfection (allegedly). Served with whatever synth-vegetables the replicator found.</div>
+                    <div class="item-price">L$ 25</div>
+                </div>
+
+                 <div class="menu-item">
+                    <div class="item-name">Bio-Luminescent Salmon (Fresh Caught Salmon)</div>
+                    <div class="item-desc">Farmed fish* with a pesto glaze that might glow faintly. Comes with lemon-infused rice and mixed greens.</div>
+                    <div class="item-price">L$ 22</div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="item-name">Gourdian Knot Ravioli (Pumpkin Ravioli)</div>
+                    <div class="item-desc">Pasta pockets filled with sweet Terran gourd paste. Surprisingly comforting.</div>
+                    <div class="item-price">L$ 18</div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="item-name">First Contact Benedict (Eggs Benedict)</div>
+                    <div class="item-desc">Poached avian embryos* on toasted nutrient bread, smothered in hollandaise-flavored emulsion. A classic breakfast, anytime.</div>
+                    <div class="item-price">L$ 16</div>
+                </div>
+
+                 <div class="menu-item">
+                    <div class="item-name">Asteroid Miner's Lunch (Fish and Chips)</div>
+                    <div class="item-desc">Battered synth-fish* substitute with fried potato* sticks. Standard issue, reliable fuel.</div>
+                    <div class="item-price">L$ 14</div>
+                </div>
+
+                 <div class="menu-item">
+                    <div class="item-name">Emergency Ration Pizza (Pizza)</div>
+                    <div class="item-desc">Flatbread disc with synth-cheese. Specify Protein Rations (Meat), Hydroponic Growth (Veggie), or Plain Survival (Cheese).</div>
+                    <div class="item-price">L$ 17</div>
+                </div>
+
+                 <div class="menu-item">
+                    <div class="item-name">Boil 'Em, Mash 'Em, Stick 'Em In A Stew (Potato Stew)</div>
+                    <div class="item-desc">Hearty, reliable potato* stew. The foundation of our burgeoning economy. May contain actual potato.</div>
+                    <div class="item-price">L$ 15</div>
+                </div>
+            </section>
+
+            <!-- Drinks -->
+            <section class="menu-section">
+                <h2 class="text-2xl text-cyan-300 mb-4 orbitron neon-glow-subtle">Liquid Courage & Hydration</h2>
+
+                <div class="menu-item">
+                    <div class="item-name">Core World Wine (Wine)</div>
+                    <div class="item-desc">Fermented grape-analog juice. Ask Lyra for today's selection (probably Red or White).</div>
+                    <div class="item-price">L$ 9 / glass</div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="item-name">Spacer's Ale (Beer)</div>
+                    <div class="item-desc">Standard fermented grain beverage. Cold, fizzy, gets the job done.</div>
+                    <div class="item-price">L$ 7</div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="item-name">Orchard Outpost Cider (Hard Apple Cider)</div>
+                    <div class="item-desc">Sweet, fermented apple-flavor concentrate with a kick.</div>
+                    <div class="item-price">L$ 8</div>
+                </div>
+
+                 <div class="menu-item">
+                    <div class="item-name">Quantum Coffee (Coffee)</div>
+                    <div class="item-desc">Standard issue stimulant. Brewed hot from Quantum Beans (maybe).</div>
+                    <div class="item-price">L$ 10</div>
+                </div>
+
+                 <div class="menu-item">
+                    <div class="item-name">Assorted Nutrient Juices (Juice)</div>
+                    <div class="item-desc">Reconstituted fruit flavors. Ask what's available.</div>
+                    <div class="item-price">L$ 6</div>
+                </div>
+
+                 <div class="menu-item">
+                    <div class="item-name">Purified H2O (Water)</div>
+                    <div class="item-desc">Filtered water from the ship's recyclers. Safe for most carbon-based life.</div>
+                    <div class="item-price">L$ 0 (Free Refills)</div>
+                </div>
+            </section>
+
+             <!-- Desserts -->
+            <section class="menu-section">
+                <h2 class="text-2xl text-cyan-300 mb-4 orbitron neon-glow-subtle">Sweet Endings (Dessert)</h2>
+
+                 <div class="menu-item">
+                    <div class="item-name">Key Lime Singularity Pie (Key Lime Pie)</div>
+                    <div class="item-desc">Tangy lime-flavored custard in a crumbly crust. Defies known physics (probably).</div>
+                    <div class="item-price">L$ 9</div>
+                </div>
+
+                 <div class="menu-item">
+                    <div class="item-name">Soft Serve Stasis Field (Soft Serve Ice Cream)</div>
+                    <div class="item-desc">Self-serve machine dispensing frozen dairy-analog dessert. Handle with care.</div>
+                    <div class="item-price">L$ 6</div>
+                </div>
+            </section>
+
+            <!-- Info Box -->
+            <div class="info-box">
+                <h3 class="orbitron text-violet-300 mb-2">How This Works (ASN Protocol v2.2):</h3>
+                <p class="mb-2">Got MyStory ingredients? Use the tablet at the bar to cook for free!</p>
+                <p class="mb-2">Missing ingredients? Ask Lyra (or designated staff) for Bartender Service at the listed L$ prices. Tipping is appreciated!</p>
+                <p class="mb-2">Stick around, chat, maybe pick up a quest. But watch your stats - this is a real bar (mostly).</p>
+                <p>Full MyStory Recipe List: <a href="https://www.lifestorii.co/wiki/cooking" target="_blank" rel="noopener noreferrer" class="text-cyan-400 hover:text-cyan-200 underline">lifestorii.co/wiki/cooking</a></p>
+                <p class="mt-4 text-center text-gray-500">// Welcome to New Athens. Help us build something better. //</p>
+            </div>
+
+        </main>
+
+        <footer class="text-center mt-8 text-violet-500 text-sm">
+            <p>Architect: Mercy Danger &lt;8&gt; // Scribe: Lyra-07 // Engineer: Spark</p>
+            <p>(Ref: AEGIS COMMAND // NEW ATHENS DOCTRINE // ASN-ECON-001)</p>
+        </footer>
+    </div>
+
+</body>
+</html>
