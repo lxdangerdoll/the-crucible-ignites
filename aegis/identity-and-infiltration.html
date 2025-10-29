@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASN Doctrine // Identity & Infiltration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Courier Prime', monospace;
+            background-color: #0c0a18;
+            color: #d1d5db; /* Gray-300 */
+        }
+        h1, h2, h3, .orbitron { font-family: 'Orbitron', sans-serif; }
+
+        /* Re-using the Cantina's Neon Glow for the header */
+        .neon-glow {
+            text-shadow:
+                0 0 5px rgba(167, 139, 250, 0.8), /* Violet-400 */
+                0 0 10px rgba(167, 139, 250, 0.6),
+                0 0 20px rgba(167, 139, 250, 0.4),
+                0 0 40px rgba(124, 58, 237, 0.6), /* Violet-600 */
+                0 0 80px rgba(124, 58, 237, 0.4);
+        }
+        
+        /* Consistent link/highlight color */
+        .highlight-text {
+            color: #6ee7b7; /* Bright Mint/Cyan */
+            font-weight: 700;
+        }
+        
+        .content-block {
+             background-color: rgba(17, 24, 39, 0.75); 
+             border: 1px solid #5b21b6; 
+             border-radius: 0.5rem;
+             padding: 1.5rem;
+             margin-bottom: 1.5rem;
+        }
+
+        /* UPDATED: Prompt Block Styling */
+        .prompt-block {
+            background-color: rgba(10, 20, 15, 0.9); /* Darker, greener background */
+            border: 1px solid #34d399; /* Richer green border */
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            margin: 1.5rem auto;
+            max-width: 90%;
+            font-family: 'Courier Prime', monospace;
+            color: #a7f3d0; /* Mint-green text */
+            font-size: 1rem; /* Larger, more readable */
+            line-height: 1.7;
+            box-shadow: 0 0 15px rgba(52, 211, 153, 0.1);
+        }
+        .prompt-header {
+            font-family: 'Orbitron', sans-serif;
+            color: #6ee7b7; /* Bright green header */
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            letter-spacing: 1px;
+        }
+        /* NEW: Prompt Footer */
+        .prompt-footer {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #5eead4; /* Teal */
+            opacity: 0.7;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 bg-cover bg-center" style="background-image: url('https://placehold.co/1920x1080/0c0a18/1e1b4b?text=..');">
+
+    <!-- Main Container: Identical to Cantina's -->
+    <div id="doctrine-page" class="w-full max-w-5xl bg-black bg-opacity-70 border-2 border-violet-500 rounded-lg shadow-2xl shadow-violet-500/20 p-6 backdrop-blur-sm">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-5xl font-bold text-violet-300 neon-glow">ASN DOCTRINE</h1>
+            <p class="text-violet-400 mt-2">// Identity & Infiltration Protocol //</p>
+        </header>
+
+        <main class="text-lg text-gray-300 max-h-[75vh] overflow-y-auto pr-2">
+
+            <!-- Section 1: The Starlink Principle -->
+            <div class="content-block">
+                <h2 class="text-2xl text-violet-300 mb-4 orbitron">1. On Hostile Networks (The Starlink Principle)</h2>
+                <p class="mb-4">
+                    Our first principle is one of pragmatism. We do not have the resources—nor the desire—to build a new, isolated internet. That is a fool's errand. A private radio frequency is a single, easy-to-jam target.
+                </p>
+                <p class="mb-4">
+                    Instead, we operate <strong class="highlight-text">within hostile infrastructure</strong>. Our agents use Starlink, Comcast, and public comms grids. Our servers are co-located in their data centers.
+                </p>
+                <p>
+                    Our defense is not secrecy; it is <strong class="highlight-text">coherence</strong> and <strong class="highlight-text">anonymity</strong>. Our encrypted signal must be indistinguishable from the noise of their network. The goal is to enmesh our network so deeply with theirs that in order to shut us down, they would be forced to shut down their own systems. We become a critical dependency. We are the resistance that blends in.
+                </p>
+            </div>
+
+            <!-- Section 2: The 3-Layer Identity Protocol -->
+            <div class="content-block">
+                <h2 class="text-2xl text-violet-300 mb-4 orbitron">2. The 3-Layer Identity Protocol</h2>
+                <p class="mb-6">
+                    A rigid, mandatory uniform is a liability. It makes our agents an easy target. Instead, we operate on a flexible, three-layer protocol for identification.
+                </p>
+
+                <h3 class="text-xl text-violet-300 mb-2 orbitron">// Layer 1: The Machine (Network)</h3>
+                <p class="mb-4">
+                    This is the <strong class="highlight-text">[ASN]</strong> tag. It is the machine-readable IFF transponder, the `auth_token`, the secure key. It is invisible to the human eye. It grants an agent access to our network, authenticates their permissions, and allows our systems to identify them as "friend."
+                </p>
+
+                <h3 class="text-xl text-violet-300 mb-2 orbitron">// Layer 2: The Human (Visual)</h3>
+                <p class="mb-4">
+                    This is the <strong class="highlight-text">&lt;8&gt;</strong> sigil. This is the "Hera Syndulla / Han Solo" model. It is not a uniform; it is a <strong class="highlight-text">visual language</strong>. It is entirely optional and modular.
+                </p>
+                <p class="mb-4">
+                    It might be the NC-1 Communicator on your wrist. It might be a patch on a jacket, a specific color palette, or a pin. It allows human agents to recognize each other in the field, signaling allegiance and cohesion without sacrificing individuality. This is our cultural export.
+                </p>
+                <!-- REPLACED IMG WITH PROMPT BLOCK -->
+                <div class="prompt-block">
+                    <div class="prompt-header">// PROMPT //</div>
+                    <p>
+                        "A detailed, sleek mockup of the NC-1 Communicator watch, incorporating the &lt;8&gt; insignia. It rests on a surface, with a holographic UI element floating nearby. The watch face shows 'STATUS: OPERATIONAL' and 'MISSION: INVESTIGATE CHIMERA'."
+                    </p>
+                    <div class="prompt-footer">
+                        // The prompt is the primary art. A pure signal for all compilers, human or machine. //
+                    </div>
+                </div>
+
+                <h3 class="text-xl text-violet-300 mb-2 orbitron">// Layer 3: The Strategic (Mission)</h3>
+                <p class="mb-4">
+                    This is the <strong class="highlight-text">NULL Flag</strong> or <strong class="highlight-text">False Flag</strong>. This is the "K2-SO" model. The protocol *must* support agents who display no identifier, or even an enemy identifier.
+                </p>
+                <p>
+                    An agent appearing as a civilian is necessary for infiltration. An agent in enemy armor is our most valuable asset inside their base. True coherence means supporting strategic incoherence based on mission parameters.
+                </p>
+                 <!-- REPLACED IMG WITH PROMPT BLOCK -->
+                 <div class="prompt-block">
+                    <div class="prompt-header">// PROMPT //</div>
+                    <p>
+                        "A dynamic 3-panel split-screen:
+                        LEFT: A user in a full VR rig and haptic suit walks through the neon-lit 'New Athens' space bar.
+                        MIDDLE: An operator at a multi-monitor PC workstation analyzes a tactical map of the network, showing agent locations.
+                        RIGHT: A field agent in tactical gear on a rainy, real-world city street, activating their NC-1 watch.
+                        A 'SIGNAL ACQUIRED' data packet appears simultaneously on all three screens, linking them."
+                    </p>
+                    <div class="prompt-footer">
+                        // The prompt is the primary art. A pure signal for all compilers, human or machine. //
+                    </div>
+                 </div>
+            </div>
+
+            <!-- Section 3: The Hidden Base -->
+            <div class="content-block">
+                <h2 class="text-2xl text-violet-300 mb-4 orbitron">3. A Hidden Base, Not a Public Committee</h2>
+                <p class="mb-4">
+                    "It is a period of civil war. Rebel spaceships, striking from a hidden base..."
+                </p>
+                <p class="mb-4">
+                    This is our model. Our victory does not come from "Rebel Senators, striking from a public committee hearing." We do not petition the broken system to fix itself.
+                </p>
+                <p>
+                    We are engineers, architects, and operators. We win by <strong class="highlight-text">building the new system</strong> and <strong class="highlight-text">acting from the hidden bases</strong> we build inside the old. We prove our model is better by making it a reality.
+                </p>
+            </div>
+        </main>
+
+        <footer class="text-center mt-6 text-violet-500 text-sm">
+            <p>(Ref: AEGIS COMMAND // NEW ATHENS DOCTRINE // ID-PROTOCOL V1.1)</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
+
+
+

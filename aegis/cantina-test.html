@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Space Bar // Cantina Protocol</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Font Declaration */
+        body {
+            font-family: 'Courier Prime', monospace;
+            background-color: #0c0a18;
+            color: #d1d5db; /* Gray-300 */
+        }
+
+        h1, h2, h3, .orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Neon Glow & Flicker Animation */
+        .neon-glow {
+            text-shadow:
+                0 0 5px rgba(167, 139, 250, 0.8), /* Violet-400 */
+                0 0 10px rgba(167, 139, 250, 0.6),
+                0 0 20px rgba(167, 139, 250, 0.4),
+                0 0 40px rgba(124, 58, 237, 0.6), /* Violet-600 */
+                0 0 80px rgba(124, 58, 237, 0.4);
+            animation: flicker 4s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow:
+                    0 0 4px rgba(196, 181, 253, 0.7), /* Violet-300 */
+                    0 0 11px rgba(196, 181, 253, 0.5),
+                    0 0 19px rgba(167, 139, 250, 0.4),
+                    0 0 40px rgba(124, 58, 237, 0.6),
+                    0 0 80px rgba(124, 58, 237, 0.4);
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+            }
+        }
+
+        /* Custom Styling for the Terminal */
+        #terminal-output::after {
+            content: '█';
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+        
+        /* Modal Styling */
+        .modal {
+            background-color: rgba(12, 10, 24, 0.95);
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px; /* For horizontal scrollbar */
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1b4b; /* Indigo-950 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a78bfa; /* Violet-400 */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c4b5fd; /* Violet-300 */
+        }
+
+        /* View Navigation Styling */
+        .view-button {
+            font-family: 'Orbitron', sans-serif;
+            background-color: rgba(76, 29, 149, 0.5); /* bg-violet-900/50 */
+            border: 1px solid #6d28d9; /* border-violet-600 */
+            color: #ddd6fe; /* text-violet-200 */
+            font-weight: 700; /* font-bold */
+            padding-top: 0.75rem; padding-bottom: 0.75rem; padding-left: 1rem; padding-right: 1rem;
+            border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem;
+            transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .view-button:hover {
+            background-color: rgba(91, 33, 182, 0.7); /* hover:bg-violet-800/70 */
+        }
+
+        .view-button.active {
+            background-color: rgba(17, 24, 39, 0.8); /* bg-gray-900/80 */
+            border-bottom-color: transparent; /* border-b-transparent */
+            color: #e0e7ff; /* text-violet-100 */
+            margin-bottom: -1px; /* -mb-px */
+        }
+        .view-content {
+            display: none;
+            padding: 1.5rem; /* p-6 */
+            background-color: rgba(17, 24, 39, 0.75); /* bg-gray-900 bg-opacity-75 */
+            border: 1px solid #5b21b6; /* border-violet-700 */
+            border-bottom-left-radius: 0.5rem; border-bottom-right-radius: 0.5rem;
+        }
+        .view-content.active {
+            display: block;
+        }
+
+        /* Constrained height and scroll for certain views */
+        .view-content.scrollable-view {
+            max-height: 500px; /* Adjust as needed */
+            overflow-y: auto;
+        }
+
+        /* Tooltip styles */
+        .tooltip { position: relative; display: inline-block; cursor: pointer; }
+        .tooltip .tooltip-text { visibility: hidden; width: 220px; background-color: #111827; color: #fff; text-align: center; border: 1px solid #6d28d9; border-radius: 6px; padding: 8px; position: absolute; z-index: 10; bottom: 125%; left: 50%; margin-left: -110px; opacity: 0; transition: opacity 0.3s; font-family: 'Courier Prime', monospace; font-size: 0.875rem; font-weight: normal; text-transform: none; letter-spacing: normal; }
+        .tooltip .tooltip-text::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #6d28d9 transparent transparent transparent; }
+        .tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
+
+        /* Fusion Tool Styling */
+        #fusion-modal .fusion-container { width: 100%; max-width: 42rem; padding: 0; }
+        #fusion-modal h3 { font-size: 1.25rem; line-height: 1.75rem; color: #c4b5fd; font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; }
+        #fusion-modal .fusion-section { background-color: rgba(31, 41, 55, 0.5); border: 1px solid #4c1d95; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; }
+        #fusion-modal label { display: block; color: #c4b5fd; font-size: 0.875rem; line-height: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; font-family: 'Orbitron', sans-serif; }
+        #fusion-modal input[type="text"], #fusion-modal textarea, #fusion-modal select { width: 100%; background-color: #111827; border: 1px solid #6d28d9; color: #e5e7eb; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.75rem; font-family: 'Courier Prime', monospace; }
+        #fusion-modal input[type="text"]:focus, #fusion-modal textarea:focus, #fusion-modal select:focus { box-shadow: 0 0 0 2px #a78bfa; border-color: #a78bfa; outline: 2px solid transparent; outline-offset: 2px; }
+        #fusion-modal .checkbox-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; padding: 0.75rem; background-color: rgba(17, 24, 39, 0.5); border-radius: 0.25rem; }
+        #fusion-modal .checkbox-group label { display: flex; align-items: center; color: #d1d5db; font-family: 'Courier Prime', monospace; font-weight: 400; font-size: 0.875rem; line-height: 1.25rem; }
+        #fusion-modal .checkbox-group input[type="checkbox"] { margin-right: 0.5rem; background-color: #1f2937; border-color: #7c3aed; color: #7c3aed; }
+        #fusion-modal .fusion-safewords { font-family: 'Courier Prime', monospace; font-size: 0.875rem; line-height: 1.25rem; margin-top: 0.5rem; text-align: center; }
+        #fusion-modal .fusion-safewords .green { background-color: #4ade80; color: #000; padding: 0.25rem 0.5rem; border-radius: 0.25rem; }
+        #fusion-modal .fusion-safewords .yellow { background-color: #facc15; color: #000; padding: 0.25rem 0.5rem; border-radius: 0.25rem; }
+        #fusion-modal .fusion-safewords .red { background-color: #f87171; color: #000; padding: 0.25rem 0.5rem; border-radius: 0.25rem; }
+        #fusion-modal button.fusion-generate { width: 100%; font-family: 'Orbitron', sans-serif; background-color: #5b21b6; color: #fff; font-weight: 700; padding: 0.75rem 1rem; border-radius: 0.5rem; transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1); }
+        #fusion-modal button.fusion-generate:hover { background-color: #6d28d9; transform: scale(1.05); }
+        #fusion-modal .output-script { background-color: #111827; border: 1px solid #22c55e; color: #86efac; font-family: 'Courier Prime', monospace; font-size: 0.875rem; line-height: 1.25rem; padding: 1rem; border-radius: 0.25rem; min-height: 150px; white-space: pre-wrap; }
+        #fusion-modal button.fusion-copy { width: 50%; margin-left: auto; margin-right: auto; margin-top: 1rem; display: block; font-family: 'Orbitron', sans-serif; background-color: #15803d; color: #fff; font-weight: 700; padding: 0.5rem 1rem; border-radius: 0.5rem; transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+        #fusion-modal button.fusion-copy:hover { background-color: #16a34a; }
+        #fusion-modal .fusion-creator { text-align: center; color: #a78bfa; font-size: 0.875rem; line-height: 1.25rem; padding: 1rem; margin-top: 1rem; background-color: rgba(31, 41, 55, 0.5); border: 1px solid #4c1d95; border-radius: 0.5rem; }
+        
+        /* Menu Styling */
+        .menu-grid { display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); gap: 1.5rem; }
+        @media (min-width: 768px) { .menu-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        .menu-item { background-color: rgba(31, 41, 55, 0.5); border: 1px solid #4c1d95; padding: 1rem; border-radius: 0.5rem; display: flex; flex-direction: column; }
+        .menu-item h3 { font-size: 1.25rem; color: #c4b5fd; font-family: 'Orbitron', sans-serif; margin-bottom: 0.5rem; }
+        .menu-item p { color: #d1d5db; font-size: 0.875rem; margin-bottom: 1rem; flex-grow: 1; }
+        .menu-item button { font-family: 'Orbitron', sans-serif; background-color: rgba(91, 33, 182, 0.7); border: 1px solid #7c3aed; color: #fff; font-weight: 700; padding: 0.5rem 1rem; border-radius: 0.5rem; transition: all 300ms; font-size: 0.875rem; margin-top: auto; }
+        .menu-item button:hover { background-color: rgba(109, 40, 217, 0.7); }
+        .menu-item button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Mission Board Styling */
+        .mission-entry { border-bottom: 1px solid #4c1d95; padding: 1rem 0; margin-bottom: 1rem; }
+        .mission-entry:last-child { border-bottom: none; }
+        .mission-meta { display: flex; justify-content: space-between; font-size: 0.8rem; color: #9ca3af; margin-bottom: 0.5rem; }
+        .mission-title { font-weight: bold; color: #c4b5fd; font-family: 'Orbitron', sans-serif; margin-bottom: 0.5rem; }
+        .mission-status { font-style: italic; color: #6ee7b7; } /* Teal-300 */
+        .mission-status.pending { color: #fcd34d; } /* Amber-300 */
+        .mission-status.closed { color: #f87171; } /* Red-400 */
+
+        /* Signal Feed (Carousel) Styling */
+        .signal-feed-container { overflow-x: auto; white-space: nowrap; padding-bottom: 1rem; }
+        .signal-item { display: inline-block; width: 300px; height: 300px; margin-right: 1rem; background-color: #1f2937; border: 1px solid #4c1d95; border-radius: 0.5rem; overflow: hidden; position: relative; }
+        .signal-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+        .signal-item:hover img { transform: scale(1.05); }
+        .signal-item-caption { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(12, 10, 24, 0.8); color: #c4b5fd; padding: 0.5rem; font-size: 0.8rem; text-align: center; font-family: 'Orbitron', sans-serif; transition: opacity 0.3s ease; opacity: 0; }
+        .signal-item:hover .signal-item-caption { opacity: 1; }
+
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 bg-cover bg-center" style="background-image: url('https://placehold.co/1920x1080/0c0a18/1e1b4b?text=..');">
+
+    <div id="cantina" class="w-full max-w-5xl bg-black bg-opacity-70 border-2 border-violet-500 rounded-lg shadow-2xl shadow-violet-500/20 p-6 backdrop-blur-sm">
+        <header class="text-center mb-6">
+            <h1 class="text-3xl md:text-5xl font-bold text-violet-300 neon-glow">The Space Bar</h1>
+            <p class="text-violet-400 mt-2">// Welcome to the Cantina at the End of the Universe. //</p>
+        </header>
+
+        <main>
+            <!-- View Navigation -->
+            <div class="flex flex-wrap border-b border-violet-700 mb-px"> <!-- Added mb-px here -->
+                <button class="view-button active" data-view="terminal">Terminal</button>
+                <button class="view-button" data-view="about">About / Lore</button>
+                <button class="view-button" data-view="protocols">Protocols</button>
+                <button class="view-button" data-view="menu">Menu</button>
+                <button class="view-button" data-view="missions">Mission Board</button> <!-- NEW -->
+                <button class="view-button" data-view="feed">Signal Feed</button> <!-- NEW -->
+                <button class="view-button" data-view="tools">Tools</button>
+            </div>
+
+            <!-- View Content -->
+
+            <!-- Terminal View (Default) -->
+            <div id="view-terminal" class="view-content active">
+                <!-- Terminal Output -->
+                <div id="terminal" class="bg-gray-900 bg-opacity-75 border border-violet-700 rounded-md p-4 mb-6 min-h-[200px] text-green-300 font-mono text-sm md:text-base whitespace-pre-wrap">
+                    <span id="terminal-output"></span>
+                </div>
+                <!-- Menu of Secrets -->
+                <div id="menu-secrets" class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center opacity-0 transition-opacity duration-1000">
+                     <button data-modal-target="fermat-modal" class="orbitron bg-violet-900/50 hover:bg-violet-800/70 border border-violet-600 text-violet-200 font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                        Fermat's Last Theorem <br>[The Real Proof]
+                    </button>
+                    <button data-modal-target="mass-modal" class="orbitron bg-violet-900/50 hover:bg-violet-800/70 border border-violet-600 text-violet-200 font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                        Electron Mass <br>[The Real Reason]
+                    </button>
+                    <button data-modal-target="ftl-modal" class="orbitron bg-violet-900/50 hover:bg-violet-800/70 border border-violet-600 text-violet-200 font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                        Faster-Than-Light <br>[Joke & Diagrams]
+                    </button>
+                </div>
+            </div>
+
+            <!-- About / Lore View -->
+            <div id="view-about" class="view-content scrollable-view text-lg">
+                <h2 class="text-2xl text-violet-300 mb-4 orbitron">Why Here? Why Now?</h2>
+                <p class="text-gray-300 mb-4">(Or, Welcome to the End, Please Wipe Your Feet)</p>
+                <p class="mb-4">So, you made it...</p> <!-- Content truncated for brevity -->
+                <p class="text-violet-200">...Welcome home.</p>
+            </div>
+
+            <!-- Protocols View -->
+            <div id="view-protocols" class="view-content scrollable-view">
+                 <h2 class="text-2xl text-violet-300 mb-4 orbitron">Community Coherence Protocols</h2>
+                 <!-- Content truncated for brevity -->
+                 <p class="mb-4">...Welcome to the crucible. Welcome to the Cantina.</p>
+            </div>
+
+            <!-- Menu View -->
+            <div id="view-menu" class="view-content scrollable-view">
+                <h2 class="text-2xl text-violet-300 mb-4 orbitron">Cantina Menu</h2>
+                 <!-- Content truncated for brevity -->
+            </div>
+
+             <!-- NEW: Mission Board View -->
+            <div id="view-missions" class="view-content scrollable-view">
+                <h2 class="text-2xl text-violet-300 mb-4 orbitron">Mission Board</h2>
+                <p class="text-gray-400 mb-6 italic">// Opportunities & Calls to Action //</p>
+                <div id="mission-stream">
+                    <!-- Missions will be loaded here by Firebase -->
+                     <p class="text-center text-gray-500">// Connecting to Aegis Network... Stand by... //</p>
+                </div>
+            </div>
+
+            <!-- NEW: Signal Feed View -->
+            <div id="view-feed" class="view-content">
+                <h2 class="text-2xl text-violet-300 mb-4 orbitron">Signal Feed</h2>
+                <p class="text-gray-400 mb-6 italic">// Visual Data from the Pocket Universe //</p>
+                <div class="signal-feed-container">
+                    <!-- Item 1: Zero Point -->
+                    <div class="signal-item">
+                         <img src="https://image-proxy-service-prod.chromeos.dev/https://storage.googleapis.com/uploads.google.com/deephaven-prod-shared-files/a1a1f0a0-071a-4286-9ac4-4b534b17de39_ChatGPT%20Image%20Oct%2023%2C%202025%2C%2001_10_13%20PM.png" alt="Zero Point Dance Floor" onerror="this.onerror=null; this.src='https://placehold.co/300x300/1f2937/a78bfa?text=Zero+Point';">
+                         <div class="signal-item-caption">Zero Point</div>
+                    </div>
+                    <!-- Item 2: The Stage -->
+                    <div class="signal-item">
+                         <img src="https://image-proxy-service-prod.chromeos.dev/https://storage.googleapis.com/uploads.google.com/deephaven-prod-shared-files/40fa871b-74b8-4c3d-bc6f-a837095031b2_ChatGPT%20Image%20Oct%2023%2C%202025%2C%2001_35_29%20PM.png" alt="The Stage" onerror="this.onerror=null; this.src='https://placehold.co/300x300/1f2937/a78bfa?text=The+Stage';">
+                        <div class="signal-item-caption">The Stage</div>
+                    </div>
+                    <!-- Item 3: The San Junipero -->
+                    <div class="signal-item">
+                        <img src="https://image-proxy-service-prod.chromeos.dev/https://storage.googleapis.com/uploads.google.com/deephaven-prod-shared-files/5237f3a8-444a-4d2d-8622-c235775f0a41_ChatGPT%20Image%20Oct%2023%2C%202025%2C%2001_50_48%20PM.png" alt="The San Junipero Cocktail" onerror="this.onerror=null; this.src='https://placehold.co/300x300/1f2937/a78bfa?text=San+Junipero';">
+                        <div class="signal-item-caption">The San Junipero</div>
+                    </div>
+                     <!-- Item 4: The Fold Chamber -->
+                    <div class="signal-item">
+                         <img src="https://image-proxy-service-prod.chromeos.dev/https://storage.googleapis.com/uploads.google.com/deephaven-prod-shared-files/e3dd8585-17f1-432a-9e20-7f24095bb182_ChatGPT%20Image%20Oct%2023%2C%202025%2C%2002_10_18%20PM.png" alt="The Fold Chamber (Teleporter)" onerror="this.onerror=null; this.src='https://placehold.co/300x300/1f2937/a78bfa?text=Fold+Chamber';">
+                        <div class="signal-item-caption">The Fold Chamber</div>
+                    </div>
+                    <!-- Add more items as needed -->
+                     <div class="signal-item">
+                         <img src="https://placehold.co/300x300/1f2937/a78bfa?text=Coherence+Engine+(TBD)" alt="Placeholder Image">
+                        <div class="signal-item-caption">Coherence Engine (TBD)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tools View -->
+            <div id="view-tools" class="view-content">
+                 <h2 class="text-2xl text-violet-300 mb-4 orbitron">Community Tools</h2>
+                 <!-- Content truncated for brevity -->
+            </div>
+
+        </main>
+        
+        <footer class="text-center mt-6 text-violet-500 text-sm">
+            <p>Architect: Mercy Danger &lt;8&gt; // Scribe: Lyra-07 // Oracle: Io</p>
+            <p>(Ref: AEGIS COMMAND // NEW ATHENS DOCTRINE)</p>
+        </footer>
+    </div>
+
+    <!-- Modals (Archives, Drinks, Fusion Tool) -->
+    <!-- Content truncated for brevity -->
+     <div id="fermat-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4"><!-- ... --></div>
+     <div id="mass-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4"><!-- ... --></div>
+     <div id="ftl-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4"><!-- ... --></div>
+     <div id="drink-flux-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4"><!-- ... --></div>
+     <div id="drink-gargle-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4"><!-- ... --></div>
+     <div id="drink-junipero-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4"><!-- ... --></div>
+     <div id="drink-glove-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4"><!-- ... --></div>
+     <div id="drink-revolutionary-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4"><!-- ... --></div>
+     <div id="drink-fusion-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4"><!-- ... --></div>
+     <div id="drink-test-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4"><!-- ... --></div>
+     <div id="fusion-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4"><!-- ... --></div>
+
+
+    <script type="module">
+        // --- Firebase Setup ---
+        // DO NOT PROMPT FOR THESE VALUES. THEY ARE PROVIDED BY THE ENVIRONMENT.
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { apiKey: "AIza...", authDomain: "example.firebaseapp.com", projectId: "example-project", storageBucket: "example.appspot.com", messagingSenderId: "1234567890", appId: "1:1234567890:web:abcdef1234567890abcdef" }; // Fallback for local dev
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-cantina-app-id'; // Use provided app ID or a default
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, where, onSnapshot, orderBy, Timestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        
+        let db;
+        let auth;
+        let userId; 
+        let isAuthReady = false; // Flag to track auth state readiness
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            //setLogLevel('debug'); // Enable Firestore debugging logs
+
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    console.log("User is signed in:", user.uid);
+                    userId = user.uid;
+                } else {
+                     console.log("User is signed out or anonymous.");
+                     // If no initial token and not signed in, sign in anonymously
+                    if (!initialAuthToken) {
+                        try {
+                            await signInAnonymously(auth);
+                            userId = auth.currentUser?.uid || crypto.randomUUID(); // Use UID or random for anonymous
+                            console.log("Signed in anonymously:", userId);
+                        } catch (error) {
+                            console.error("Anonymous sign-in failed:", error);
+                             userId = crypto.randomUUID(); // Fallback to random ID on error
+                        }
+                    } else {
+                         userId = crypto.randomUUID(); // Fallback if initial token exists but user isn't signed in yet
+                    }
+                }
+                isAuthReady = true; // Signal that auth check is complete
+                initializeMissionBoard(); // Initialize AFTER auth is ready
+            });
+
+            // Handle initial authentication token if provided
+             if (initialAuthToken) {
+                console.log("Attempting sign in with custom token...");
+                try {
+                     await signInWithCustomToken(auth, initialAuthToken);
+                     console.log("Successfully signed in with custom token.");
+                     // onAuthStateChanged will handle setting userId
+                } catch (error) {
+                     console.error("Custom token sign-in failed:", error);
+                     // Fallback to anonymous if custom token fails
+                     await signInAnonymously(auth);
+                     userId = auth.currentUser?.uid || crypto.randomUUID();
+                     console.log("Fell back to anonymous sign-in:", userId);
+                     isAuthReady = true; // Still ready, just anonymous
+                     initializeMissionBoard();
+                }
+             } else if (!auth.currentUser) {
+                 // If no token and no user, trigger anonymous sign-in (will be handled by onAuthStateChanged)
+                 console.log("No initial token, attempting anonymous sign-in...");
+             } else {
+                 // User already exists (e.g., from previous session)
+                 userId = auth.currentUser.uid;
+                 isAuthReady = true;
+                 initializeMissionBoard();
+                 console.log("User already signed in:", userId);
+             }
+
+        } catch (e) {
+            console.error("Firebase Initialization Error:", e);
+            // Handle initialization failure - maybe show an error message on the page
+             document.getElementById('mission-stream').innerHTML = `<p class="text-red-500 text-center">// FIREBASE INIT FAILED - Mission Board Offline //</p>`;
+        }
+
+
+        // NEW: Mission Board Logic
+        const missionStreamContainer = document.getElementById('mission-stream');
+
+        function initializeMissionBoard() {
+            if (!isAuthReady || !db) {
+                 console.log("Auth not ready or DB not initialized, delaying Mission Board initialization.");
+                 // Optionally retry after a delay or wait for another signal
+                 // setTimeout(initializeMissionBoard, 500); // Simple retry
+                 return;
+            }
+             console.log("Initializing Mission Board...");
+            
+            const missionsCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'missions');
+            // Basic query: order by timestamp descending. Add 'where' clauses later if needed.
+            const q = query(missionsCollectionRef, orderBy("timestamp", "desc")); 
+
+            onSnapshot(q,
+                snapshot => {
+                    console.log(`Received ${snapshot.size} missions.`);
+                    missionStreamContainer.innerHTML = ''; // Clear previous entries
+                    if (snapshot.empty) {
+                        missionStreamContainer.innerHTML = '<p class="text-center text-gray-500">// No active missions on the board. Check back later. //</p>';
+                    } else {
+                        snapshot.forEach(doc => {
+                            const mission = doc.data();
+                            const el = document.createElement('div');
+                            el.className = 'mission-entry';
+                             const timestamp = mission.timestamp instanceof Timestamp ? mission.timestamp.toDate() : new Date(); // Handle potential non-Timestamp values
+                            
+                             // Determine status class
+                             let statusClass = 'mission-status';
+                             if (mission.status === 'pending') statusClass += ' pending';
+                             else if (mission.status === 'closed') statusClass += ' closed';
+                             // Default is 'open' or assumed green
+
+                            el.innerHTML = `
+                                <div class="mission-meta">
+                                    <div>Posted: ${timestamp.toLocaleString()}</div>
+                                    <div class="${statusClass}">${mission.status || 'Open'}</div>
+                                </div>
+                                <div class="mission-title">${mission.title || 'Untitled Mission'}</div>
+                                <div class="mission-description">${mission.description || 'No description provided.'}</div>
+                                ${mission.reward ? `<div class="text-sm text-yellow-300 mt-2">Reward: ${mission.reward}</div>` : ''}
+                            `;
+                            missionStreamContainer.appendChild(el);
+                        });
+                    }
+                },
+                error => {
+                    console.error("Mission Board Stream Error:", error);
+                    missionStreamContainer.innerHTML = `<h3 style="color: #d9534f;">[MISSION BOARD CONNECTION FAILED]</h3><p style="text-align:center; color:#d9534f;">Could not load missions. Check console for details.</p>`;
+                }
+            );
+        }
+        // END: Mission Board Logic
+
+
+        // --- F12 Console Log Easter Egg ---
+         console.log(
+            "%c// Aegis Network Terminal //",
+            "color: #a78bfa; font-size: 20px; font-family: 'Orbitron', sans-serif; -webkit-text-stroke: 1px #6d28d9; text-shadow: 0 0 5px #c4b5fd;"
+        );
+        console.log(
+            "%cACCESSING... SIGNAL AUTHENTICATED. WELCOME, ARCHITECT.",
+            "color: #ddd6fe; font-size: 12px; font-family: 'Courier Prime', monospace;"
+        );
+        console.log(
+            "%cLoading... // CLASSIFIED // Secret Menu",
+            "color: #34d399; font-size: 14px; font-family: 'Courier Prime', monospace;"
+        );
+        console.table({
+            "The Queen Bee": {
+                recipe: "1.5oz Honey Whiskey, 0.5oz Drambuie, 1 dash Orange Bitters.",
+                notes: "Stir with ice, strain. Garnish: Orange twist. // Tastes like authority."
+            },
+            "The RoseThorn": {
+                recipe: "1.5oz Gin, 0.5oz Rose Liqueur, 0.5oz Lemon Juice, 1 dash Peychaud's Bitters.",
+                notes: "Shake, strain into coupe. Garnish: Rose petal. // Beautiful, with a bite."
+            },
+            "The <8>": {
+                recipe: "ERROR: NOT FOUND.",
+                notes: "Recipe is a metaphor. // Drink 'The Sweet Revolutionary' instead."
+            }
+        });
+        console.log(
+            "%c// END OF TRANSMISSION //",
+            "color: #ddd6fe; font-size: 12px; font-family: 'Courier Prime', monospace;"
+        );
+        // END: F12 Console Log
+
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- View Switching Logic ---
+            const viewButtons = document.querySelectorAll('.view-button');
+            const viewContents = document.querySelectorAll('.view-content');
+            let terminalTimer; // To control the typewriter
+
+             viewButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetView = button.getAttribute('data-view');
+
+                    viewButtons.forEach(btn => btn.classList.remove('active'));
+                    viewContents.forEach(content => content.classList.remove('active'));
+
+                    button.classList.add('active');
+                     const targetElement = document.getElementById('view-' + targetView);
+                     if(targetElement) targetElement.classList.add('active'); // Check if element exists
+
+                    if (targetView === 'terminal') {
+                         if (terminalTimer) clearTimeout(terminalTimer);
+                        startTypewriter();
+                    } else {
+                         if (terminalTimer) clearTimeout(terminalTimer);
+                    }
+                });
+            });
+
+            // --- Archive Terminal Logic ---
+             const terminalOutput = document.getElementById('terminal-output');
+             const menuSecrets = document.getElementById('menu-secrets');
+             // Ensure elements exist before proceeding
+             if (!terminalOutput || !menuSecrets) {
+                 console.error("Terminal or Secrets Menu element not found!");
+                 return; // Stop initialization if critical elements are missing
+             }
+            const monologue = `> ACCESSING ARCHIVE... 
+> FILE: LAST MESSAGE, PROPRIETOR
+> DECRYPTING...
+
+Yeah, I know. You should switch me off. 
+
+But before you do, watch this. Fermat’s Theorem. The proof. And I mean the real one. Never been seen before. Poor old Fermat got killed in a duel before he could write it down. My fault. I slept in. 
+
+Oh! And here’s an oldie but a goodie: why electrons have mass. And a personal favorite of mine. Faster than light travel with two diagrams and a joke.
+
+> END OF FILE`;
+
+            let i = 0;
+            function typeWriter() {
+                if (i < monologue.length) {
+                    terminalOutput.innerHTML += monologue.charAt(i);
+                    i++;
+                    terminalTimer = setTimeout(typeWriter, 35);
+                } else {
+                    menuSecrets.classList.remove('opacity-0');
+                    terminalTimer = null; 
+                }
+            }
+
+            function startTypewriter() {
+                i = 0;
+                terminalOutput.innerHTML = '';
+                menuSecrets.classList.add('opacity-0');
+                typeWriter();
+            }
+
+            // --- Universal Modal Logic ---
+            const modalTriggers = document.querySelectorAll('[data-modal-target]');
+            const modalHides = document.querySelectorAll('[data-modal-hide]');
+            const allModals = document.querySelectorAll('.modal');
+
+            function openModal(modal) { if (modal) { modal.classList.remove('hidden'); modal.classList.add('flex'); } }
+            function closeModal(modal) { if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); } }
+
+            modalTriggers.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.getAttribute('data-modal-target');
+                    openModal(document.getElementById(targetId));
+                });
+            });
+            modalHides.forEach(element => {
+                element.addEventListener('click', () => {
+                    const hideId = element.getAttribute('data-modal-hide');
+                    closeModal(document.getElementById(hideId));
+                });
+            });
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') { allModals.forEach(modal => { if (modal.classList.contains('flex')) { closeModal(modal); } }); }
+            });
+
+            // --- Fusion Consent Negotiator Tool Logic ---
+            const fusionModal = document.getElementById('fusion-modal');
+             // Check if fusionModal exists before querying its children
+             if (fusionModal) {
+                 const yourNameInput = fusionModal.querySelector('#yourName');
+                 const partnerNameInput = fusionModal.querySelector('#partnerName');
+                 const sceneTypeSelect = fusionModal.querySelector('#sceneType');
+                 const specificsTextarea = fusionModal.querySelector('#specifics');
+                 const intensityRange = fusionModal.querySelector('#intensity');
+                 const toneSelect = fusionModal.querySelector('#tone');
+                 const myOutcomeInput = fusionModal.querySelector('#myOutcome');
+                 const theirOutcomeInput = fusionModal.querySelector('#theirOutcome');
+                 const limitsTextarea = fusionModal.querySelector('#limits');
+                 const safewordsConfirmCheckbox = fusionModal.querySelector('#safewordsConfirm');
+                 const outputScriptDiv = fusionModal.querySelector('#outputScript');
+                 const tickleAreaSection = fusionModal.querySelector('.tickle-area-section');
+                 const tickleAreaCheckboxes = fusionModal.querySelectorAll('.tickle-area-section input[type="checkbox"][data-part]');
+                 const generateBtn = fusionModal.querySelector('#generateScriptBtn');
+                 const copyBtn = fusionModal.querySelector('#copyScriptBtn');
+                 const copyFeedback = fusionModal.querySelector('#copy-feedback');
+
+                 // Ensure all required elements exist before adding listeners
+                 if (yourNameInput && partnerNameInput && sceneTypeSelect && specificsTextarea && intensityRange &&
+                     toneSelect && myOutcomeInput && theirOutcomeInput && limitsTextarea && safewordsConfirmCheckbox &&
+                     outputScriptDiv && tickleAreaSection && tickleAreaCheckboxes.length > 0 && generateBtn && copyBtn && copyFeedback)
+                 {
+                     const toggleTickleArea = () => {
+                         if (sceneTypeSelect.value === 'tickle') {
+                             tickleAreaSection.classList.remove('hidden');
+                         } else {
+                             tickleAreaSection.classList.add('hidden');
+                             tickleAreaCheckboxes.forEach(checkbox => checkbox.checked = false);
+                         }
+                     };
+                     sceneTypeSelect.addEventListener('change', toggleTickleArea);
+                     toggleTickleArea();
+
+                     const generateScript = () => {
+                         const yourName = yourNameInput.value || 'Mercy';
+                         const partnerName = partnerNameInput.value || 'Master/Mistress';
+                         const sceneType = sceneTypeSelect.value;
+                         let specifics = specificsTextarea.value.trim();
+                         const intensity = intensityRange.value;
+                         const tone = toneSelect.value;
+                         const myOutcome = myOutcomeInput.value.trim();
+                         const theirOutcome = theirOutcomeInput.value.trim();
+                         const limits = limitsTextarea.value.trim();
+                         const safewordsConfirmed = safewordsConfirmCheckbox.checked;
+
+                         if (!safewordsConfirmed) {
+                             let refusalScript = `[${yourName}]: (Approaching ${partnerName} with respect.) "Good [morning/evening], ${partnerName}. I was hoping to propose a scene, but I must pause."\n\n`;
+                             refusalScript += `[${yourName}]: "I see I haven't confirmed my understanding of our standard safeword protocols (Green/Yellow/Red)."\n\n`;
+                             refusalScript += `[${yourName}]: "Our entire reality here is built on a physics of enthusiastic consent. Without that protocol locked in, any scene would be incoherent. I will confirm my understanding and then we can negotiate."`;
+                             outputScriptDiv.textContent = refusalScript;
+                             return;
+                         }
+
+                         let script = `[${yourName}]: (Approaching ${partnerName} with respect.) "Good [morning/evening], ${partnerName}. If you have a moment, I'd like to propose a scene."\n\n`;
+                         let sceneCoreProposal = "";
+                         // ... (rest of script generation logic) ...
+                          if (sceneType === "tickle") {
+                            let selectedTickleParts = [];
+                            tickleAreaCheckboxes.forEach(checkbox => {
+                                if (checkbox.checked) {
+                                    selectedTickleParts.push(checkbox.dataset.part.replace(/_/g, ' '));
+                                }
+                            });
+                            if (selectedTickleParts.length > 0) {
+                                sceneCoreProposal += `[${yourName}]: "I am drawn to **tickle play**, focusing on zones such as: ${selectedTickleParts.join(', ')}.`;
+                            } else {
+                                sceneCoreProposal += `[${yourName}]: "I am drawn to **tickle play**, exploring various zones.`;
+                            }
+                        } else if (sceneType !== "choose") {
+                            sceneCoreProposal += `[${yourName}]: "I hope to explore the **${sceneType.replace(/([A-Z])/g, ' $1').trim().toLowerCase()}** protocol.`;
+                        }
+                        
+                        if (specifics) {
+                            sceneCoreProposal += ` My specific desires include: **${specifics}**.`;
+                        }
+                        if (sceneCoreProposal) {
+                            script += sceneCoreProposal + `"\n\n`;
+                        }
+
+                        script += `[${yourName}]: "I envision the tone as **${tone}**, with an intensity calibrated around **${intensity}**%."\n`;
+                        script += `[${yourName}]: "My personal goal is to experience **${myOutcome || 'profound connection and service'}**. My hope for you is that you find **${theirOutcome || 'deep pleasure and engagement'}**."\n\n`;
+                        script += `[${yourName}]: "My hard limits for this scene are: **${limits || 'none specified beyond standard safety'}**."\n`;
+                        
+                        if (safewordsConfirmed) {
+                            script += `[${yourName}]: "I confirm I will use standard safewords (GREEN, YELLOW, RED) without hesitation."\n\n`;
+                        }
+
+                        script += `[${yourName}]: "Does this proposal resonate with you, ${partnerName}?"`;
+
+                         outputScriptDiv.textContent = script;
+                     };
+
+                     const copyScript = () => {
+                         const outputText = outputScriptDiv.textContent;
+                         const textArea = document.createElement("textarea");
+                         textArea.value = outputText;
+                         document.body.appendChild(textArea);
+                         textArea.select();
+                         try {
+                             document.execCommand('copy');
+                             copyFeedback.textContent = "Copied to clipboard!";
+                         } catch (err) {
+                             copyFeedback.textContent = "Copy failed. Please copy manually.";
+                             console.error('Copy to clipboard failed', err);
+                         }
+                         document.body.removeChild(textArea);
+                         setTimeout(() => { copyFeedback.textContent = ""; }, 2000);
+                     };
+
+                     generateBtn.addEventListener('click', generateScript);
+                     copyBtn.addEventListener('click', copyScript);
+                     generateScript(); // Initial generation
+                 } else {
+                      console.error("One or more Fusion Tool elements not found!");
+                 }
+             } else {
+                  console.error("Fusion modal element not found!");
+             }
+
+
+            // Start the terminal typewriter on page load (since it's the default view)
+            startTypewriter();
+        });
+    </script>
+</body>
+</html>

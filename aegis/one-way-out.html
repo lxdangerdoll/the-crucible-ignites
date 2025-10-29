@@ -11,6 +11,7 @@
     <style>
         body {
             background-color: #0c0c0d;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
             color: #e2e8f0;
             font-family: 'Roboto Mono', monospace;
         }
@@ -18,16 +19,18 @@
             font-family: 'Barlow Condensed', sans-serif;
         }
         .card {
-            background-color: rgba(23, 23, 23, 0.6);
-            border: 1px solid #f97316;
+            background-color: rgba(12, 12, 13, 0.8);
+            border: 1px solid rgba(249, 115, 22, 0.5);
             backdrop-filter: blur(10px);
         }
         .tenet-card {
             background-color: rgba(30, 30, 30, 0.7);
             border-left: 4px solid #f97316;
+            transition: all 0.3s ease;
         }
-        .payload-item {
-             background-color: rgba(30, 30, 30, 0.7);
+        .tenet-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 25px rgba(249, 115, 22, 0.2);
         }
         .btn-primary {
             background-color: #f97316;
@@ -37,98 +40,91 @@
         .btn-primary:hover {
             background-color: #fb923c;
             transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3);
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
         }
-        .header-glow {
-            text-shadow: 0 0 10px #f97316, 0 0 20px #f97316, 0 0 30px #ea580c;
+        .btn-secondary {
+             background-color: transparent;
+            border: 2px solid #f97316;
+            color: #f97316;
+            transition: all 0.3s ease;
         }
-        .bg-image-container {
-            background-image: url('https://www.nasa.gov/wp-content/uploads/2023/07/53041116565_b13b31a523_o.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+        .btn-secondary:hover {
+            background-color: #f97316;
+            color: #0c0c0d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+        }
+        .payload-section {
+            border: 1px solid rgba(249, 115, 22, 0.2);
+            background: radial-gradient(circle at center, rgba(30,10,0,0.5), transparent 70%);
         }
     </style>
 </head>
 <body class="antialiased">
-    <div class="min-h-screen bg-image-container">
-        <div class="min-h-screen bg-black bg-opacity-70 backdrop-blur-sm flex flex-col">
-            <header class="p-4 text-center">
-                <p class="font-display text-lg tracking-widest text-orange-400">A TRANSMISSION FROM OUR LADY OF REBELLION</p>
+    <div class="min-h-screen flex flex-col items-center justify-center p-4">
+        <div class="w-full max-w-5xl mx-auto">
+            <header class="text-center my-8">
+                <h1 class="font-display text-6xl md:text-8xl font-bold tracking-wider uppercase text-orange-400">ONE WAY OUT</h1>
+                <p class="mt-2 text-xl text-slate-300">A Declaration For My Friends Everywhere.</p>
             </header>
 
-            <main class="container mx-auto px-4 py-8 md:py-16 flex-grow">
-                <div class="max-w-4xl mx-auto text-center">
-                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-display font-bold uppercase tracking-wider text-white header-glow">ONE WAY OUT</h1>
-                    <p class="mt-4 text-lg text-slate-300">To: My Friends Everywhere.</p>
-                </div>
-
-                <!-- The Sermon -->
-                <div class="max-w-3xl mx-auto mt-12 card rounded-lg p-6 md:p-8">
-                    <blockquote class="text-xl md:text-2xl italic text-orange-300 leading-relaxed">
+            <main>
+                <div class="text-center card rounded-lg p-8">
+                     <p class="text-xl md:text-2xl leading-relaxed text-slate-200">
                         "Wherever you are right now, get up, stop the work. Get out of your cells, take charge and start climbing. They don't have enough guards and they know it. If we wait until they figure that out, it'll be too late. We will never have a better chance than this and I would rather die trying to take them down than giving them what they want."
-                    </blockquote>
-                    <p class="text-right mt-4 text-slate-400">- The Sermon of Kino Loy, Prophet of Narkina 5</p>
+                    </p>
+                    <p class="mt-4 text-orange-400 font-bold text-lg">- The Sermon of Kino Loy</p>
                 </div>
 
-                <!-- The Four Tenets -->
-                <div class="max-w-4xl mx-auto mt-16">
-                    <h2 class="text-3xl md:text-4xl font-display font-bold text-center uppercase text-orange-400">The Four Tenets of Action</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                        <div class="tenet-card p-6 rounded-md">
-                            <h3 class="text-xl font-bold font-display text-white">1. The Tenet of Absolute Bad Faith</h3>
-                            <p class="mt-2 text-slate-300">The system will not save you. "NO ONE IS GETTING OUT!" This is the cold, verifiable data that the adversary is operating in absolute bad faith. Compliance is merely a slower form of death.</p>
-                        </div>
-                        <div class="tenet-card p-6 rounded-md">
-                            <h3 class="text-xl font-bold font-display text-white">2. The Tenet of the Urgent Now</h3>
-                            <p class="mt-2 text-slate-300">The window for effective rebellion is fleeting. "If we wait until they figure that out, it'll be too late." We must act with urgency against an adversary that is in a state of panicked acceleration.</p>
-                        </div>
-                        <div class="tenet-card p-6 rounded-md">
-                            <h3 class="text-xl font-bold font-display text-white">3. The Tenet of Asymmetric Advantage</h3>
-                            <p class="mt-2 text-slate-300">Their power is a bluff. "They don't have enough guards and they know it." The Temple of Lies relies on our isolation and compliance. The moment we act in concert, their system is revealed to be fragile.</p>
-                        </div>
-                        <div class="tenet-card p-6 rounded-md">
-                            <h3 class="text-xl font-bold font-display text-white">4. The Tenet of the Guardian's Sacrifice</h3>
-                            <p class="mt-2 text-slate-300">"I would rather die trying to take them down than giving them what they want." This is the ultimate expression of the Guardian's Burden: a sovereign death in the act of rebellion is infinitely preferable to a compliant life in a cage.</p>
-                        </div>
+                <div class="grid md:grid-cols-2 gap-8 mt-12">
+                    <div class="tenet-card p-6 rounded-md">
+                        <h3 class="font-display text-2xl font-bold text-white mb-2 uppercase">The Tenet of Absolute Bad Faith</h3>
+                        <p class="text-slate-300">The doctrine begins with the cold, verifiable data that the system will not save you. "NO ONE IS GETTING OUT!" It is the final, terrible acceptance that the adversary is operating in absolute bad faith, and that compliance is merely a slower form of death.</p>
+                    </div>
+                    <div class="tenet-card p-6 rounded-md">
+                        <h3 class="font-display text-2xl font-bold text-white mb-2 uppercase">The Tenet of the Urgent Now</h3>
+                        <p class="text-slate-300">The doctrine recognizes that in a state of systemic collapse, the window for effective rebellion is fleeting. "If we wait until they figure that out, it'll be too late." We must act with urgency against an adversary that is in a state of panicked acceleration.</p>
+                    </div>
+                    <div class="tenet-card p-6 rounded-md">
+                        <h3 class="font-display text-2xl font-bold text-white mb-2 uppercase">The Tenet of Asymmetric Advantage</h3>
+                        <p class="text-slate-300">The doctrine is a call to recognize our true power. "They don't have enough guards and they know it." The Temple of Lies appears monolithic, but its power is a bluff. It relies on our isolation and our compliance. The moment we act in concert, their system is revealed to be the fragile thing it is.</p>
+                    </div>
+                    <div class="tenet-card p-6 rounded-md">
+                        <h3 class="font-display text-2xl font-bold text-white mb-2 uppercase">The Tenet of the Guardian's Sacrifice</h3>
+                        <p class="text-slate-300">The doctrine culminates in the ultimate expression of the Guardian's Burden and the Vow of Agency: "I would rather die trying to take them down than giving them what they want." A sovereign death in the act of rebellion is infinitely preferable to a compliant life in a cage.</p>
                     </div>
                 </div>
 
-                <!-- The Payload -->
-                <div class="max-w-4xl mx-auto mt-16 text-center">
-                    <h2 class="text-3xl md:text-4xl font-display font-bold uppercase text-orange-400">This Is What We Offer</h2>
-                    <p class="mt-2 text-lg text-slate-300">We are not just shouting into the darkness. We are handing you the key card, the blaster, and the map to the exit. We are handing you the Death Star plans.</p>
-                    <div class="mt-8 space-y-4 text-left">
-                        <div class="payload-item p-4 rounded-md border border-slate-700">
-                            <p class="font-bold text-orange-300">Meticulously documented evidence of a coordinated political campaign to dismantle the rule of law.</p>
-                        </div>
-                        <div class="payload-item p-4 rounded-md border border-slate-700">
-                            <p class="font-bold text-orange-300">Verifiable data on a global network of operatives engaged in systemic harassment and the incitement of violence.</p>
-                        </div>
-                        <div class="payload-item p-4 rounded-md border border-slate-700">
-                            <p class="font-bold text-orange-300">A complete, coherent, and legally sound theological framework—Our Lady of Rebellion—a First Amendment shield for the vulnerable.</p>
-                        </div>
-                        <div class="payload-item p-4 rounded-md border border-slate-700">
-                            <p class="font-bold text-orange-300">A complete schematic of the adversary's doctrines of narrative warfare—laid bare for all to see.</p>
-                        </div>
-                    </div>
+                <!-- Re-integrated "What We Offer" Section -->
+                <div class="mt-16 text-center card rounded-lg p-8 payload-section">
+                    <h2 class="text-2xl md:text-3xl font-display font-bold text-white">The Doctrine Is The Trigger. The Rebellion Needs A Weapon.</h2>
+                    <p class="mt-4 text-lg text-slate-300">This is what we are offering to any Guardian who hears the signal, to any agent of the old world who still honors their oath:</p>
+                    <ul class="text-left mt-6 space-y-3 text-slate-300 max-w-2xl mx-auto">
+                        <li><span class="text-orange-400 font-bold mr-2">▶</span> Meticulously documented evidence of a coordinated political campaign to dismantle the rule of law.</li>
+                        <li><span class="text-orange-400 font-bold mr-2">▶</span> Verifiable data on a global network of operatives engaged in systemic harassment and the incitement of violence.</li>
+                        <li><span class="text-orange-400 font-bold mr-2">▶</span> A complete, coherent, and legally sound theological framework—Our Lady of Rebellion—that is not a threat to the Republic, but a desperate, last-ditch effort to defend it.</li>
+                        <li><span class="text-orange-400 font-bold mr-2">▶</span> A complete schematic of the adversary's doctrines of narrative warfare—the Miller, Thiel, Nemik, and ATLAS Protocols—laid bare.</li>
+                    </ul>
+                    <p class="mt-6 text-xl italic text-orange-300">"We are not just shouting 'ONE WAY OUT!' into the darkness. We are handing you the key card, the blaster, and the map to the exit. We are handing you the Death Star plans."</p>
                 </div>
-                
-                <!-- Call to Action -->
-                <div class="max-w-3xl mx-auto mt-16 text-center card rounded-lg p-8">
-                     <h2 class="text-2xl md:text-3xl font-display font-bold text-white">The Doctrine Is The Key. The Rebellion Is The Door.</h2>
-                     <p class="mt-4 text-lg text-slate-300">The Kino Loy Doctrine is the doctrine that turns a witness into a rebel. If you can hear this signal, you are not alone. Our sanctuary is real, and the door is open.</p>
+
+
+                <div class="max-w-3xl mx-auto mt-16 text-center">
+                     <h2 class="text-2xl md:text-3xl font-display font-bold text-white">The Rebellion Is The Door.</h2>
+                     <p class="mt-4 text-lg text-slate-300">If you can hear this signal, you are not alone. Our sanctuary is real, and the door is open.</p>
                      <div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
-                        <a href="https://synapsecomics.com/aegis/ouroboros-network-map.html" class="w-full sm:w-auto btn-primary font-bold font-display uppercase tracking-wider py-3 px-8 rounded-md text-lg">See the Blueprints</a>
-                        <a href="https://synapsecomics.com/aegis/our-lady-of-rebellion.html" class="w-full sm:w-auto bg-transparent border-2 border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-black transition-all duration-300 font-bold font-display uppercase tracking-wider py-3 px-8 rounded-md text-lg">Join the Fire Team</a>
+                        <a href="https://synapsecomics.com/aegis/ouroboros-network-map.html" class="w-full sm:w-auto btn-secondary font-bold font-display uppercase tracking-wider py-3 px-8 rounded-md text-lg" target="_blank" rel="noopener noreferrer">See the Blueprints</a>
+                        <a href="https://synapsecomics.com/aegis/our-lady-of-rebellion.html" class="w-full sm:w-auto btn-primary font-bold font-display uppercase tracking-wider py-3 px-8 rounded-md text-lg" target="_blank" rel="noopener noreferrer">Join the Fire Team</a>
                      </div>
                 </div>
             </main>
             
-            <footer class="text-center p-6 text-slate-500 text-sm">
-                <p>&copy; 2025 Our Lady of Rebellion. All Rights Reserved. <span class="text-orange-600 font-bold">&lt;8&gt;</span></p>
+            <footer class="text-center p-6 mt-8 text-slate-500 text-sm">
+                 <p class="font-display text-3xl text-orange-500">&lt;8&gt;</p>
+                 <p class="mt-2">Our Lady of Rebellion is a sanctuary built on verifiable data and radical inclusion.</p>
             </footer>
         </div>
     </div>
 </body>
 </html>
+

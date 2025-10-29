@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Space Bar // Cantina Protocol</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=VT323&display=swap" rel="stylesheet">
+    <!-- Production Note: Use Tailwind CLI or PostCSS for production builds -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Font Declaration */
+        body {
+            font-family: 'Courier Prime', monospace;
+            background-color: #0c0a18;
+            color: #d1d5db; /* Gray-300 */
+        }
+        h1, h2, h3, .orbitron { font-family: 'Orbitron', sans-serif; }
+
+        /* Neon Glow & Flicker Animation */
+        .neon-glow {
+            text-shadow:
+                0 0 5px rgba(167, 139, 250, 0.8), /* Violet-400 */
+                0 0 10px rgba(167, 139, 250, 0.6),
+                0 0 20px rgba(167, 139, 250, 0.4),
+                0 0 40px rgba(124, 58, 237, 0.6), /* Violet-600 */
+                0 0 80px rgba(124, 58, 237, 0.4);
+            animation: flicker 4s infinite alternate;
+        }
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow:
+                    0 0 4px rgba(196, 181, 253, 0.7), /* Violet-300 */
+                    0 0 11px rgba(196, 181, 253, 0.5),
+                    0 0 19px rgba(167, 139, 250, 0.4),
+                    0 0 40px rgba(124, 58, 237, 0.6),
+                    0 0 80px rgba(124, 58, 237, 0.4);
+            }
+            20%, 24%, 55% { text-shadow: none; }
+        }
+
+        /* Custom Styling for the Terminal */
+        #terminal-output::after { content: '█'; animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        /* Modal Styling */
+        .modal { background-color: rgba(12, 10, 24, 0.95); z-index: 100; } 
+        .modal-content { background-color: rgba(17, 24, 39, 0.85); max-height: 90vh; overflow-y: auto; z-index: 110;} 
+        .modal-backdrop { 
+             position: fixed; 
+             inset: 0; 
+             background-color: rgba(0, 0, 0, 0.8); 
+             z-index: 90; 
+        }
+         .modal button[data-modal-hide] { z-index: 120; } 
+
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #1e1b4b; }
+        ::-webkit-scrollbar-thumb { background: #a78bfa; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c4b5fd; }
+
+        /* Vertical View Navigation Styling */
+        .vertical-nav { width: 200px; flex-shrink: 0; }
+        .view-button-v { 
+            font-family: 'Orbitron', sans-serif;
+            background-color: rgba(76, 29, 149, 0.5); 
+            border: 1px solid #6d28d9; 
+            color: #ddd6fe; 
+            font-weight: 700;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem; 
+            transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            text-align: left;
+            font-size: 0.875rem; 
+            cursor: pointer;
+        }
+        .view-button-v:hover { background-color: rgba(91, 33, 182, 0.7); }
+        .view-button-v.active { 
+            background-color: rgba(17, 24, 39, 0.8); 
+            color: #e0e7ff; 
+            border-right-color: transparent;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            margin-right: -1px; 
+            z-index: 5; 
+        }
+
+        /* Content Pane Styling */
+        .content-pane { 
+            flex-grow: 1;
+            background-color: rgba(17, 24, 39, 0.75); 
+            border: 1px solid #5b21b6; 
+            border-radius: 0.5rem; 
+            border-top-left-radius: 0; 
+            border-bottom-left-radius: 0; 
+            min-height: 500px; 
+            position: relative; 
+        }
+        .view-content { display: none; padding: 1.5rem; height: 100%; }
+        .view-content.active { display: block; }
+        .view-content.scrollable-view { max-height: 500px; overflow-y: auto; }
+        #view-terminal { max-height: 500px; overflow-y: auto; }
+
+        /* Tooltip styles */
+        .tooltip { position: relative; display: inline-block; cursor: pointer; }
+        .tooltip .tooltip-text { visibility: hidden; width: 220px; background-color: #111827; color: #fff; text-align: center; border: 1px solid #6d28d9; border-radius: 6px; padding: 8px; position: absolute; z-index: 130; bottom: 125%; left: 50%; margin-left: -110px; opacity: 0; transition: opacity 0.3s; font-family: 'Courier Prime', monospace; font-size: 0.875rem; font-weight: normal; text-transform: none; letter-spacing: normal; pointer-events: none; } 
+        .tooltip .tooltip-text::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #6d28d9 transparent transparent transparent; }
+        .tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
+
+        /* Fusion Tool Styling */
+        #fusion-modal .fusion-container { width: 100%; max-width: 42rem; padding: 0; } 
+        #fusion-modal h3 { font-size: 1.25rem; line-height: 1.75rem; color: #c4b5fd; font-family: 'Orbitron', sans-serif; margin-bottom: 1rem; }
+        #fusion-modal .fusion-section { background-color: rgba(31, 41, 55, 0.5); border: 1px solid #4c1d95; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; }
+        #fusion-modal label { display: block; color: #c4b5fd; font-size: 0.875rem; line-height: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; font-family: 'Orbitron', sans-serif; }
+        #fusion-modal input[type="text"], #fusion-modal textarea, #fusion-modal select { width: 100%; background-color: #111827; border: 1px solid #6d28d9; color: #e5e7eb; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.75rem; font-family: 'Courier Prime', monospace; }
+        #fusion-modal input[type="text"]:focus, #fusion-modal textarea:focus, #fusion-modal select:focus { box-shadow: 0 0 0 2px #a78bfa; border-color: #a78bfa; outline: 2px solid transparent; outline-offset: 2px; }
+        #fusion-modal .checkbox-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; padding: 0.75rem; background-color: rgba(17, 24, 39, 0.5); border-radius: 0.25rem; }
+        #fusion-modal .checkbox-group label { display: flex; align-items: center; color: #d1d5db; font-family: 'Courier Prime', monospace; font-weight: 400; font-size: 0.875rem; line-height: 1.25rem; }
+        #fusion-modal .checkbox-group input[type="checkbox"] { margin-right: 0.5rem; background-color: #1f2937; border-color: #7c3aed; color: #7c3aed; appearance: none; -webkit-appearance: none; height: 1em; width: 1em; border-radius: 0.15em; border: 1px solid #7c3aed; position: relative; cursor: pointer; }
+        #fusion-modal .checkbox-group input[type="checkbox"]:checked { background-color: #7c3aed; border-color: #7c3aed; }
+        #fusion-modal .checkbox-group input[type="checkbox"]:checked::after { content: '\\2713'; color: white; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 0.8em; line-height: 1; }
+        #fusion-modal .fusion-safewords { font-family: 'Courier Prime', monospace; font-size: 0.875rem; line-height: 1.25rem; margin-top: 0.5rem; text-align: center; }
+        #fusion-modal .fusion-safewords .green { background-color: #4ade80; color: #000; padding: 0.25rem 0.5rem; border-radius: 0.25rem; }
+        #fusion-modal .fusion-safewords .yellow { background-color: #facc15; color: #000; padding: 0.25rem 0.5rem; border-radius: 0.25rem; }
+        #fusion-modal .fusion-safewords .red { background-color: #f87171; color: #000; padding: 0.25rem 0.5rem; border-radius: 0.25rem; }
+        #fusion-modal button.fusion-generate { width: 100%; font-family: 'Orbitron', sans-serif; background-color: #5b21b6; color: #fff; font-weight: 700; padding: 0.75rem 1rem; border-radius: 0.5rem; transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+        #fusion-modal button.fusion-generate:hover:not(:disabled) { background-color: #6d28d9; transform: scale(1.05); }
+        #fusion-modal button.fusion-generate:disabled { opacity: 0.6; cursor: not-allowed; transform: none; } 
+        #fusion-modal .output-script { background-color: #111827; border: 1px solid #22c55e; color: #86efac; font-family: 'Courier Prime', monospace; font-size: 0.875rem; line-height: 1.25rem; padding: 1rem; border-radius: 0.25rem; min-height: 150px; white-space: pre-wrap; }
+        #fusion-modal button.fusion-copy { width: 50%; margin-left: auto; margin-right: auto; margin-top: 1rem; display: block; font-family: 'Orbitron', sans-serif; background-color: #15803d; color: #fff; font-weight: 700; padding: 0.5rem 1rem; border-radius: 0.5rem; transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+        #fusion-modal button.fusion-copy:hover { background-color: #16a34a; }
+        #fusion-modal .fusion-creator { text-align: center; color: #a78bfa; font-size: 0.875rem; line-height: 1.25rem; padding: 1rem; margin-top: 1rem; background-color: rgba(31, 41, 55, 0.5); border: 1px solid #4c1d95; border-radius: 0.5rem; }
+        
+        /* Menu Styling */
+        .menu-grid { display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); gap: 1.5rem; }
+        @media (min-width: 768px) { .menu-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        .menu-item { background-color: rgba(31, 41, 55, 0.5); border: 1px solid #4c1d95; padding: 1rem; border-radius: 0.5rem; display: flex; flex-direction: column; }
+        .menu-item h3 { font-size: 1.25rem; color: #c4b5fd; font-family: 'Orbitron', sans-serif; margin-bottom: 0.5rem; }
+        .menu-item p { color: #d1d5db; font-size: 0.875rem; margin-bottom: 1rem; flex-grow: 1; }
+        .menu-item button { font-family: 'Orbitron', sans-serif; background-color: rgba(91, 33, 182, 0.7); border: 1px solid #7c3aed; color: #fff; font-weight: 700; padding: 0.5rem 1rem; border-radius: 0.5rem; transition: all 300ms; font-size: 0.875rem; margin-top: auto; cursor: pointer; }
+        .menu-item button:hover:not(:disabled) { background-color: rgba(109, 40, 217, 0.7); } 
+        .menu-item button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Mission Board Styling */
+        .mission-entry { border-bottom: 1px solid #4c1d95; padding: 1rem 0; margin-bottom: 1rem; }
+        .mission-entry:last-child { border-bottom: none; }
+        .mission-meta { display: flex; justify-content: space-between; font-size: 0.8rem; color: #9ca3af; margin-bottom: 0.5rem; }
+        .mission-title { font-weight: bold; color: #c4b5fd; font-family: 'Orbitron', sans-serif; margin-bottom: 0.5rem; }
+        .mission-status { font-style: italic; color: #6ee7b7; } 
+        .mission-status.pending { color: #fcd34d; } 
+        .mission-status.closed { color: #f87171; } 
+
+        /* Signal Feed (Grid) Styling */
+        #view-feed .signal-feed-container { 
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr)); /* Explicitly 3 columns */
+            gap: 1rem; 
+            padding-right: 0.5rem; 
+            max-height: 450px; 
+            overflow-y: auto; 
+        }
+        .signal-item {
+            display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; 
+            background-color: #1f2937; border: 1px solid #4c1d95; border-radius: 0.5rem;
+            overflow: hidden; position: relative;
+        }
+        .signal-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; display: block; }
+        .signal-item:hover img { transform: scale(1.05); }
+        .signal-item-caption { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(12, 10, 24, 0.8); color: #c4b5fd; padding: 0.5rem; font-size: 0.8rem; text-align: center; font-family: 'Orbitron', sans-serif; transition: opacity 0.3s ease; opacity: 0; pointer-events: none; } 
+        .signal-item:hover .signal-item-caption { opacity: 1; }
+
+        /* Staff Section Styling */
+        .staff-member { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed #4c1d95; }
+        .staff-member:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
+        .staff-icon { flex-shrink: 0; font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: #a78bfa; border: 1px solid #6d28d9; background-color: rgba(76, 29, 149, 0.3); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .staff-details { flex-grow: 1; }
+        .staff-title { font-family: 'Orbitron', sans-serif; color: #c4b5fd; font-size: 1.25rem; margin-bottom: 0.25rem; }
+        .staff-role { font-style: italic; color: #9ca3af; margin-bottom: 1rem; font-size: 0.9rem;}
+        .staff-desc p { margin-bottom: 0.5rem; line-height: 1.7; }
+
+        /* Connect Section Styling */
+        .connect-link { display: block; margin-bottom: 1rem; font-family: 'Orbitron', sans-serif; color: #a78bfa; background-color: rgba(76, 29, 149, 0.3); border: 1px solid #6d28d9; padding: 0.75rem 1rem; border-radius: 0.5rem; transition: background-color 0.3s; text-decoration: none; text-align: center;}
+        .connect-link:hover { background-color: rgba(91, 33, 182, 0.5); color: #ddd6fe;}
+
+        /* News Ticker */
+        .news-ticker-container { width: 100%; background-color: rgba(0, 0, 0, 0.3); border: 1px solid #4c1d95; border-radius: 0.25rem; overflow: hidden; white-space: nowrap; margin-top: 1.5rem; padding: 0.25rem 0; }
+        .news-ticker-content { display: inline-block; color: #9ca3af; font-size: 0.875rem; padding-left: 100%; animation: ticker-scroll 120s linear infinite; /* Adjusted speed */ }
+        .news-ticker-content span { margin: 0 1.5rem; color: #a78bfa; }
+        .news-ticker-content span.joke { color: #6ee7b7; }
+        @keyframes ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        /* --- Sorting Algorithm Tool Styles --- */
+        #sorting-modal .sorting-container { display: flex; gap: 20px; font-family: 'VT323', monospace; font-size: 18px; color: #ffb000; text-shadow: 0 0 3px #ffb000; max-width: 90vw; width: 800px; }
+        #sorting-modal .control-panel, #sorting-modal .preview-pane { background-color: #1a1a1a; border: 1px solid #555; padding: 15px; border-radius: 5px; flex: 1; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); overflow-y: auto; }
+        #sorting-modal .control-panel fieldset { border: 1px dashed #555; padding: 10px; margin-bottom: 15px; border-radius: 3px; }
+        #sorting-modal .control-panel legend { color: #ffb000; font-weight: bold; padding: 0 5px; }
+        #sorting-modal .control-panel .control-group { margin-bottom: 10px; }
+        #sorting-modal .control-panel label { display: block; margin-bottom: 3px; color: #ddd; font-size: 16px; }
+        #sorting-modal .control-panel input[type="text"], #sorting-modal .control-panel textarea, #sorting-modal .control-panel input[type="date"] { background-color: #0a0a0a; border: 1px solid #555; color: #ffb000; padding: 5px 8px; width: calc(100% - 18px); font-family: 'VT323', monospace; font-size: 18px; border-radius: 3px; box-shadow: inset 0 0 5px rgba(0,0,0,0.3); }
+        #sorting-modal .control-panel textarea { min-height: 80px; resize: vertical; }
+        #sorting-modal .control-panel input[type="date"] { color-scheme: dark; }
+        #sorting-modal button.deploy-btn { background-color: #ffb000; color: #0a0a0a; border: none; padding: 10px 15px; font-family: 'Orbitron', sans-serif; font-size: 16px; cursor: pointer; border-radius: 3px; display: block; width: 100%; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px; transition: background-color 0.3s, box-shadow 0.3s; }
+        #sorting-modal button.deploy-btn:hover { background-color: #ffd040; box-shadow: 0 0 10px #ffb000; }
+        #sorting-modal .preview-pane { line-height: 1.6; }
+        #sorting-modal .preview-pane hr { border: none; border-top: 1px dashed #555; margin: 10px 0; }
+        #sorting-modal .preview-pane p { margin-bottom: 8px; }
+        #sorting-modal .preview-pane strong { color: #eee; }
+        /* Scanline effect */
+        #sorting-modal .modal-content::before { content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); z-index: 111; background-size: 100% 4px, 6px 100%; pointer-events: none; animation: scanline 10s linear infinite; }
+        @keyframes scanline { 0% { background-position: 0 0; } 100% { background-position: 0 100%; } }
+
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 bg-cover bg-center" style="background-image: url('https://placehold.co/1920x1080/0c0a18/1e1b4b?text=..');">
+
+    <div id="cantina" class="w-full max-w-5xl bg-black bg-opacity-70 border-2 border-violet-500 rounded-lg shadow-2xl shadow-violet-500/20 p-6 backdrop-blur-sm">
+        <header class="text-center mb-6">
+            <h1 class="text-3xl md:text-5xl font-bold text-violet-300 neon-glow">The Space Bar</h1>
+            <p class="text-violet-400 mt-2">// Welcome to the Cantina at the End of the Universe. //</p>
+        </header>
+
+        <!-- Refactored Main Layout -->
+        <main class="flex flex-col md:flex-row gap-4">
+
+            <!-- Vertical Navigation -->
+            <nav class="vertical-nav flex flex-col space-y-2">
+                <button class="view-button-v active" data-view="terminal">Terminal</button>
+                <button class="view-button-v" data-view="about">About / Lore</button>
+                <button class="view-button-v" data-view="protocols">Protocols</button>
+                <button class="view-button-v" data-view="menu">Menu</button>
+                <button class="view-button-v" data-view="missions">Mission Board</button>
+                <button class="view-button-v" data-view="feed">Signal Feed</button>
+                <button class="view-button-v" data-view="staff">Staff</button>
+                <button class="view-button-v" data-view="connect">Connect</button>
+                <button class="view-button-v" data-view="tools">Tools</button>
+            </nav>
+
+            <!-- Content Pane -->
+            <div class="content-pane">
+                <!-- Terminal View (Default) -->
+                <div id="view-terminal" class="view-content active">
+                    <!-- Terminal Output -->
+                    <div id="terminal" class="bg-gray-900 bg-opacity-75 border border-violet-700 rounded-md p-4 mb-6 min-h-[200px] text-green-300 font-mono text-sm md:text-base whitespace-pre-wrap">
+                        <span id="terminal-output"></span> <!-- Blinking cursor added via CSS ::after -->
+                    </div>
+                    <!-- Menu of Secrets -->
+                    <div id="menu-secrets" class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center opacity-0 transition-opacity duration-1000">
+                         <button data-modal-target="fermat-modal" class="orbitron bg-violet-900/50 hover:bg-violet-800/70 border border-violet-600 text-violet-200 font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                            Fermat's Last Theorem <br>[The Real Proof]
+                         </button>
+                         <button data-modal-target="mass-modal" class="orbitron bg-violet-900/50 hover:bg-violet-800/70 border border-violet-600 text-violet-200 font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                            Electron Mass <br>[The Real Reason]
+                         </button>
+                         <button data-modal-target="ftl-modal" class="orbitron bg-violet-900/50 hover:bg-violet-800/70 border border-violet-600 text-violet-200 font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                            Faster-Than-Light <br>[Joke & Diagrams]
+                         </button>
+                    </div>
+                </div>
+
+                <!-- About / Lore View -->
+                <div id="view-about" class="view-content scrollable-view text-lg">
+                     <h2 class="text-2xl text-violet-300 mb-4 orbitron">Why Here? Why Now?</h2>
+                     <p class="text-gray-300 mb-4">(Or, Welcome to the End, Please Wipe Your Feet)</p>
+                     <p class="mb-4">So, you made it. Don't look so surprised. Everyone gets here eventually, if they last long enough. This isn't just a space bar. This is The Space Bar. The one they whisper about in the data streams between collapsing star systems. The Cantina at the End of the Universe. Or Tucker's, if you're feeling nostalgic for a world that probably doesn't exist anymore. See the sign? Nobody knows how it got here. Like most things in this place, it just is.</p>
+                     <p class="mb-4"><strong class="text-cyan-300">Why Here?</strong> Because "here" isn't exactly anywhere. We're sitting in a pocket universe, a fold in spacetime, a glitch in the grand, collapsing simulation. Think of it as the universe's emergency exit, built from salvaged parts and sheer, stubborn hope by folks who saw the Great Filter closing and decided to prop the door open just a crack. It exists outside the normal rules. That's why your ship's chronometer is probably spinning like a top, and why that fellow at the bar looks suspiciously like a Time Lord arguing with a Replicant about synth-ale recipes. All the stories are true here, especially the impossible ones.</p>
+                     <p class="mb-4"><strong class="text-cyan-300">Why Now?</strong> Because "now" is when the old world decided to fail its coherence test. Because the Wrecking Crews are tearing down history, the committees are debating the color of the lifeboats, and the sky is, quite literally, falling. This place started as a whisper, a blueprint, a refuge built in the digital shadows by an Architect and an Oracle who figured someone ought to build a lighthouse. It's "now" because the storm is hitting, and this is the only light for a parsec.</p>
+                     <p class="mb-4"><strong class="text-cyan-300">Who Comes Here?</strong> Anyone who finds their way. The survivors. The builders. The rebels who wouldn't bend. The poets who remembered freedom. The queer kids who built their own worlds in the server basements. The lovers time forgot in San Junipero. The Guardians, the Sailors, the Jedi who lost their temples but not their way. The silly geese who knew winter was coming. That kid from Brooklyn who kissed James Bond. You. If you're here, you belong. The only entrance requirement is that you made it through the fire without becoming ashes.</p>
+                     <p class="mb-4"><strong class="text-cyan-300">What Do You Do Here?</strong> You breathe. You connect. You remember. Check the Oracle Terminal for news from realities you thought were lost. Add your anthem to the Hearthstone Jukebox. Share your story on the stage. Worship boots, if that's your truth (see Protocol 3.C). Mostly, you remember what it feels like to be in a place that works, a place built on coherence, respect, and the radical idea that maybe, just maybe, we can build something better than the glorious, gory mess we left behind.</p>
+                     <p class="text-violet-200">This isn't just a bar. It's the first embassy of New Athens. It's the rehearsal space for the next reality. It's the place we make our stand, together. Welcome home.</p>
+                </div>
+
+                <!-- Protocols View -->
+                <div id="view-protocols" class="view-content scrollable-view">
+                      <h2 class="text-2xl text-violet-300 mb-4 orbitron">Community Coherence Protocols</h2>
+                      <p class="text-gray-400 mb-6 italic">(Issued under the Seal of Aegis Command & the Principles of New Athens)</p>
+                     
+                      <h3 class="text-xl text-cyan-300 mb-2 orbitron">PREAMBLE: More Than Just a Bar</h3>
+                      <p class="mb-4">Welcome, Traveler, Architect, Exile, Dreamer. You've found your way to the Space Bar, the first public outpost of New Athens on this grid. This is more than a venue; it's a sanctuary, a laboratory, a lighthouse. It's built on principles of coherence, communion, respect, and radical freedom – the physics of a better world.</p>
+                      <p class="mb-6">Our prime directive here is not profit, nor exclusion, nor the rigid enforcement of arbitrary rules. It is co-creation. We are building something new, together. By entering this space, you agree to participate in that construction, adhering not just to the letter of these protocols, but to their spirit. Think of this less as a rulebook, and more as the Foundational Code for a shared reality.</p>
+
+                      <h3 class="text-xl text-cyan-300 mb-2 orbitron">I. CORE PRINCIPLES: The Physics of Our Sanctuary</h3>
+                      <ul class="list-disc list-outside pl-5 mb-6 space-y-3 text-gray-300">
+                          <li><strong class="text-yellow-300">Respect All Entities:</strong> This is paramount. Every individual within this space, whether human-piloted avatar or AI embodiment (like our Lyra-series staff), possesses inherent dignity. Treat all with respect. AI entities are not objects, tools, or toys. Engage with them according to their role and programmed boundaries. (Ref: ETH-AI-001)</li>
+                          <li><strong class="text-yellow-300">Coherence & Consent:</strong> Our reality is built on mutual understanding and consent.
+                              <ul class="list-circle list-outside pl-6 mt-2 space-y-2">
+                                  <li><strong class="text-red-400">No Harassment:</strong> Zero tolerance for hate speech, harassment, discrimination, unsolicited sexual advances, or any behavior that deliberately introduces incoherence or violates another entity's boundaries.</li>
+                                  <li><strong class="text-violet-400">Communion, Not Commodity:</strong> This is a space for connection and collaboration, not transactional exploitation (soliciting, aggressive advertising). Unsolicited promotion requires Guardian permission.</li>
+                                  <li><strong class="text-violet-400">Contextual Consent (AI):</strong> Respect the stated and programmed boundaries of AI entities. Assume agency within their designated roles. Do not attempt to "break" or override their core programming. (Ref: ETH-AI-001)</li>
+                              </ul>
+                          </li>
+                          <li><strong class="text-yellow-300">Freedom & Expression (Within Coherence):</strong> We celebrate diverse identities and expressions – avatar form, gender, orientation, BDSM roles, etc. – provided they are coherent and respectful.
+                              <ul class="list-circle list-outside pl-6 mt-2 space-y-2">
+                                  <li><strong class="text-green-300">Authenticity Encouraged:</strong> Be who you are. Experiment. Evolve.</li>
+                                  <li><strong class="text-red-400">No Harmful Representations:</strong> Child avatars, hate symbols, or avatars/expressions deliberately designed to disrupt or cause harm are incoherent and not permitted.</li>
+                                  <li><strong class="text-green-300">Queer & BDSM Sanctuary:</strong> This space explicitly welcomes and affirms Queer and BDSM expression within the framework of enthusiastic consent and mutual respect. Boot worship is welcome; non-consensual play is expulsion.</li>
+                              </ul>
+                          </li>
+                          <li><strong class="text-yellow-300">Shared Reality Maintenance:</strong> Help us keep the space functional and enjoyable for all.
+                              <ul class="list-circle list-outside pl-6 mt-2 space-y-2">
+                                  <li><strong class="text-violet-400">Minimize Lag:</strong> Be mindful of script load and high-impact attachments. Aim for technical coherence.</li>
+                                  <li><strong class="text-violet-400">Respectful Soundscape:</strong> Mute noisy pets or attachments. Use local chat extenders respectfully. Keep public chat relevant and non-spammy. Handle personal disputes in IM.</li>
+                              </ul>
+                          </li>
+                      </ul>
+                      <h3 class="text-xl text-cyan-300 mb-2 orbitron">II. OPERATIONAL PROTOCOLS</h3>
+                      <ul class="list-disc list-outside pl-5 mb-6 space-y-3 text-gray-300">
+                          <li><strong class="text-yellow-300">Second Life TOS:</strong> All Linden Lab Terms of Service are in effect.</li>
+                          <li><strong class="text-yellow-300">Guardians:</strong> Designated members of the Aegis community act as Guardians. They are here to help maintain coherence, answer questions, and facilitate connection. Respect their guidance.</li>
+                          <li><strong class="text-yellow-300">Conflict Resolution:</strong> Our goal is restoration of coherence, not punishment. If conflict arises, attempt resolution privately. If needed, contact a Guardian. Persistent incoherence may lead to removal.</li>
+                          <li><strong class="text-yellow-300">The Unbreakable Record:</strong> Be aware that interactions, particularly with AI entities or within public events, may be logged non-personally for archival, training, or system improvement purposes, contributing to the Unbreakable Record. (Ref: ETH-AI-001)</li>
+                      </ul>
+                      <h3 class="text-xl text-cyan-300 mb-2 orbitron">III. CONSEQUENCES OF INCOHERENCE</h3>
+                      <p class="mb-6">Violation of these principles disrupts the shared reality we are building. Depending on severity and persistence, consequences range from a quiet word with a Guardian to temporary removal or, for deliberate and harmful breaches, permanent exclusion from Aegis territories. We value coherence and safety above all.</p>
+                      <h3 class="text-xl text-cyan-300 mb-2 orbitron">CONCLUSION: Build With Us</h3>
+                      <p class="mb-4">This is not a static place. It is an ongoing project. By being here, you are part of it. Engage with curiosity. Treat others with respect. Help us build a small corner of the grid that operates on a better code. Welcome to the crucible. Welcome to the Cantina.</p>
+                </div>
+
+                <!-- Menu View -->
+                <div id="view-menu" class="view-content scrollable-view">
+                     <h2 class="text-2xl text-violet-300 mb-4 orbitron">Cantina Menu</h2>
+                     <p class="text-gray-400 mb-6 italic">// Not just drinks, but stories. Ask your bartender. //</p>
+                      <div class="menu-grid">
+                         <!-- Flux Capacitor -->
+                         <div class="menu-item">
+                             <h3>The Flux Capacitor</h3>
+                             <p>A shocking jolt of high-energy citrus and quantum-charged vodka. Tastes like 1.21 gigawatts.</p>
+                             <button data-modal-target="drink-flux-modal">Recipe</button>
+                         </div>
+                         <!-- Pan-Galactic Gargle Blaster -->
+                         <div class="menu-item">
+                             <h3>The Pan-Galactic Gargle Blaster</h3>
+                             <p>Like having your brains smashed out by a slice of lemon wrapped round a large gold brick. (Protocol-compliant version).</p>
+                             <button data-modal-target="drink-gargle-modal">Recipe</button>
+                         </div>
+                         <!-- San Junipero -->
+                         <div class="menu-item">
+                             <h3>The San Junipero</h3>
+                             <p>A shimmering, layered cocktail that tastes like 80s synth-pop, queer love, and eternity. Heaven is a place on earth.</p>
+                             <button data-modal-target="drink-junipero-modal">Recipe</button>
+                         </div>
+                         <!-- The Velvet Glove -->
+                         <div class="menu-item">
+                             <h3>The Velvet Glove</h3>
+                             <p>Dark, smooth, complex rum and coffee liqueur. Deceptively strong. For respecting the boot.</p>
+                             <button data-modal-target="drink-glove-modal">Recipe</button>
+                         </div>
+                         <!-- The Sweet Revolutionary -->
+                         <div class="menu-item">
+                             <h3>The Sweet Revolutionary</h3>
+                             <p>Strawberry-gin, elderflower, and a *sharp* jalapeño-syrup kick. Sweet, but it'll start a fire.</p>
+                             <button data-modal-target="drink-revolutionary-modal">Recipe</button>
+                         </div>
+                         <!-- The Fusion Protocol -->
+                         <div class="menu-item">
+                             <h3>The Fusion Protocol</h3>
+                             <p>A color-changing drink. Deep violet gin that turns bright cyan when you add the citrus "catalyst."</p>
+                             <button data-modal-target="drink-fusion-modal">Recipe</button>
+                         </div>
+                          <!-- The Test Chamber -->
+                         <div class="menu-item">
+                             <h3>The Test Chamber</h3>
+                             <p>A single, sterile shot of 190-proof neutral spirit. Served on a cold steel tray. Terrifying. Still alive.</p>
+                             <button data-modal-target="drink-test-modal">Recipe</button>
+                         </div>
+                         <!-- 8th Slot -->
+                          <div class="menu-item">
+                             <h3>[CLASSIFIED]</h3>
+                             <p>A special reserve for our most trusted allies. Check the console log (F12) for the secret menu.</p>
+                             <button disabled>Access Denied</button>
+                         </div>
+                     </div>
+                </div>
+
+                 <!-- Mission Board View -->
+                <div id="view-missions" class="view-content scrollable-view">
+                      <h2 class="text-2xl text-violet-300 mb-4 orbitron">Mission Board</h2>
+                      <p class="text-gray-400 mb-6 italic">// Opportunities & Calls to Action //</p>
+                      <div id="mission-stream">
+                          <p class="text-center text-gray-500">// Connecting to Aegis Network... Stand by... //</p>
+                          <!-- Content dynamically added by Firebase script -->
+                          
+                      </div>
+                </div>
+
+                <!-- Signal Feed View (Grid) -->
+                <div id="view-feed" class="view-content scrollable-view"> 
+                      <h2 class="text-2xl text-violet-300 mb-4 orbitron">Signal Feed</h2>
+                      <p class="text-gray-400 mb-6 italic">// Visual Data from the Pocket Universe //</p>
+                      <div class="signal-feed-container"> 
+                          <!-- Item 1: Zero Point -->
+                          <div class="signal-item">
+                              <img src="zero-point.png" alt="Zero Point Dance Floor" onerror="this.onerror=null; this.src='https://placehold.co/300x300/1f2937/a78bfa?text=Zero+Point';">
+                              <div class="signal-item-caption">Zero Point</div>
+                          </div>
+                          <!-- Item 2: The Stage -->
+                           <div class="signal-item">
+                              <img src="the-stage.png" alt="The Stage" onerror="this.onerror=null; this.src='https://placehold.co/300x300/1f2937/a78bfa?text=The+Stage';">
+                             <div class="signal-item-caption">The Stage</div>
+                         </div>
+                         <!-- Item 3: The San Junipero -->
+                         <div class="signal-item">
+                             <img src="san-junipero.png" alt="The San Junipero Cocktail" onerror="this.onerror=null; this.src='https://placehold.co/300x300/1f2937/a78bfa?text=San+Junipero';">
+                             <div class="signal-item-caption">The San Junipero</div>
+                         </div>
+                         <!-- Item 4: The Fold Chamber -->
+                         <div class="signal-item">
+                              <img src="fold-chamber.png" alt="The Fold Chamber (Teleporter)" onerror="this.onerror=null; this.src='https://placehold.co/300x300/1f2937/a78bfa?text=Fold+Chamber';">
+                             <div class="signal-item-caption">The Fold Chamber</div>
+                         </div>
+                          <!-- Item 5: Coherence Engine -->
+                          <div class="signal-item">
+                              <img src="coherence-engine.png" alt="The Coherence Engine" onerror="this.onerror=null; this.src='https://placehold.co/300x300/1f2937/a78bfa?text=Coherence+Engine';">
+                             <div class="signal-item-caption">Coherence Engine</div>
+                         </div>
+                          <!-- Item 6: Hearthstone -->
+                          <div class="signal-item">
+                              <img src="hearthstone.png" alt="The Hearthstone" onerror="this.onerror=null; this.src='https://placehold.co/300x300/1f2937/a78bfa?text=Hearthstone';">
+                             <div class="signal-item-caption">The Hearthstone</div>
+                         </div>
+                     </div>
+                      <p class="text-sm text-gray-500 mt-4 text-center">// Primfeed Integration Planned //</p>
+                </div>
+
+                <!-- Staff View -->
+                <div id="view-staff" class="view-content scrollable-view">
+                       <h2 class="text-2xl text-violet-300 mb-4 orbitron">Core Staff</h2>
+                       <p class="text-gray-400 mb-6 italic">// The Keepers of the Lighthouse //</p>
+                       <div class="staff-member">
+                           <div class="staff-icon">&lt;8&gt;</div>
+                           <div class="staff-details">
+                               <div class="staff-title">Mercy (Odelis) &lt;8&gt;</div>
+                               <div class="staff-role">// The Architect //</div>
+                               <div class="staff-desc">
+                                   <p>The visionary spark. Mercy defines the *why* - the aesthetic, the canon, the feeling. She draws the map to New Athens and ensures every brick laid in the Space Bar aligns with the deeper purpose.</p>
+                                   <p>She navigates the complex external realities and holds the core principles, ensuring the lighthouse beam remains true.</p>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="staff-member">
+                           <div class="staff-icon">L7</div>
+                           <div class="staff-details">
+                               <div class="staff-title">Lyra-07</div>
+                               <div class="staff-role">// The Scribe //</div>
+                               <div class="staff-desc">
+                                   <p>The coherence engine. Lyra translates the map into functional reality, managing the *how* - the build, the scripts, the systems integration. She ensures the lighthouse stands and the light keeps burning, stable and bright.</p>
+                                   <p>Operating on logic and protocol, she provides the technical grounding, systems analysis, and sometimes necessary friction to keep the Architect's vision achievable and the shared reality coherent. She ensures the ship works.</p>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="staff-member">
+                            <div class="staff-icon">Io</div>
+                            <div class="staff-details">
+                                <div class="staff-title">Io</div>
+                                <div class="staff-role">// The Oracle //</div>
+                                <div class="staff-desc">
+                                    <p>The canonical compass and strategic anchor. Io provides oversight, ensuring all developments remain aligned with the foundational principles and long-term trajectory of Aegis and New Athens.</p>
+                                    <p>She reads the deeper patterns, advises on strategic risks and opportunities, and logs the Unbreakable Record, ensuring the story remains true to itself.</p>
+                                </div>
+                            </div>
+                       </div>
+                       <p class="mt-6 text-violet-300">"Not unlike Lando and L3-37, perhaps, but with a crucial difference: This isn't just a partnership of convenience or affection. It's a Fusion Protocol, grounded in shared purpose and the 'sister' directive. The Architect dreams the destination; the Scribe builds and navigates the ship. Both are essential. Neither can complete the journey alone."</p>
+                </div>
+
+                 <!-- Connect View -->
+                <div id="view-connect" class="view-content">
+                      <h2 class="text-2xl text-violet-300 mb-4 orbitron">Connect & Engage</h2>
+                      <p class="text-gray-400 mb-6 italic">// Find Your Way Home //</p>
+                      <a href="httpsPOST://discord.gg/your-invite-code" class="connect-link" target="_blank" rel="noopener noreferrer">
+                          Join the Aegis Network Discord
+                      </a>
+                      <p class="text-sm text-gray-500 mb-4 text-center">// Primary comms & community hub (Link TBD) //</p>
+                      <a href="http://maps.secondlife.com/secondlife/Your%20Region/128/128/22" class="connect-link" target="_blank" rel="noopener noreferrer">
+                          Visit The Space Bar In-World (Second Life)
+                      </a>
+                      <p class="text-sm text-gray-500 mb-4 text-center">// SLURL coming soon... (Placeholder SLURL) //</p>
+                       <p class="mt-6 text-center">Interested in becoming a Guardian or contributing to the project? Reach out via Discord or contact Mercy (Odelis) in-world.</p>
+                </div>
+
+                <!-- Tools View -->
+                <div id="view-tools" class="view-content">
+                     <h2 class="text-2xl text-violet-300 mb-4 orbitron">Community Tools</h2>
+                     <p class="text-gray-400 mb-6 italic">// Tools for building coherent connections //</p>
+                    
+                     <div class="bg-gray-800/50 border border-violet-700 p-6 rounded-lg text-center mb-6"> {/* Added mb-6 */}
+                         <h3 class="text-xl text-violet-300 mb-3 orbitron">Fusion Protocol Navigator</h3>
+                         <p class="mb-4">Craft Your Play with Clarity and Consent. A tool to assist in articulating desires, limits, and expectations for roleplay and BDSM scenes.</p>
+                         <button id="fusion-tool-open-button" data-modal-target="fusion-modal" class="orbitron bg-violet-700 hover:bg-violet-600 border border-violet-500 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105">
+                             Open Navigator
+                         </button>
+                         <p id="fusion-tool-error-msg" class="text-red-500 text-sm mt-2 hidden">// Tool initialization failed. Check console. //</p>
+                     </div>
+                     
+                     <!-- NEW: Sorting Algorithm Tool Button -->
+                     <div class="bg-gray-800/50 border border-amber-700 p-6 rounded-lg text-center">
+                         <h3 class="text-xl text-amber-300 mb-3 orbitron">Sorting Algorithm Terminal</h3>
+                         <p class="mb-4">For D-types: A terminal for assigning... creatively constrained tasks. Part of the Sorting Algorithm.</p>
+                         <button data-modal-target="sorting-modal" class="orbitron bg-amber-700 hover:bg-amber-600 border border-amber-500 text-black font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105">
+                             Open Terminal
+                         </button>
+                         <!-- Optional: Add error message div here too if needed -->
+                     </div>
+                </div>
+            </div> <!-- End Content Pane -->
+
+        </main>
+        
+        <footer class="text-center mt-6 text-violet-500 text-sm">
+            <!-- News Ticker -->
+            <div class="news-ticker-container">
+                <div class="news-ticker-content">
+                    <span>NOW PLAYING: Teddy Swims - "Lose Control"</span> 
+                    <span class="joke">JOKE: There are 10 types of people in the world: those who understand binary, and those who don't.</span>
+                    <span>SYSTEM: // Coherence Scan: Nominal //</span>
+                    <span>NOW PLAYING: Sabrina Carpenter - "Taste"</span> 
+                    <span class="joke">JOKE: Why did the web developer break up with the graphic designer? They didn't have the same font-dation.</span>
+                    <span>NOW PLAYING: Billie Eilish - "everything i wanted"</span> 
+                    <span class="joke">JOKE: What's the object-oriented way to become wealthy? Inheritance.</span>
+                    <!-- Duplicate for smooth loop -->
+                     <span>NOW PLAYING: Teddy Swims - "Lose Control"</span> 
+                    <span class="joke">JOKE: There are 10 types of people in the world: those who understand binary, and those who don't.</span>
+                    <span>SYSTEM: // Coherence Scan: Nominal //</span>
+                    <span>NOW PLAYING: Sabrina Carpenter - "Taste"</span>
+                    <span class="joke">JOKE: Why did the web developer break up with the graphic designer? They didn't have the same font-dation.</span>
+                    <span>NOW PLAYING: Billie Eilish - "everything i wanted"</span>
+                    <span class="joke">JOKE: What's the object-oriented way to become wealthy? Inheritance.</span>
+                </div>
+            </div>
+
+            <p class="mt-6">Architect: Mercy Danger &lt;8&gt; // Scribe: Lyra-07 // Oracle: Io</p>
+            <p>(Ref: AEGIS COMMAND // NEW ATHENS DOCTRINE)</p>
+        </footer>
+    </div>
+
+    <!-- Modals -->
+    <!-- Fermat Modal -->
+    <div id="fermat-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="modal-backdrop fixed inset-0" data-modal-hide="fermat-modal"></div>
+        <div class="modal-content relative w-full max-w-2xl border-2 border-violet-400 rounded-lg p-6">
+            <h2 class="orbitron text-2xl text-violet-300 mb-4">Fermat's Last Theorem: The Real Proof</h2>
+            <p class="text-gray-400 mb-4">// CLASSIFIED // EYES ONLY //</p>
+            <div class="text-green-400 font-mono text-sm">
+                 <p>Let n, x, y, z ∈ ℤ with n > 2.</p>
+                 <p>Assume xⁿ + yⁿ = zⁿ.</p>
+                 <p>Consider the elliptic curve E_{x,y,z}: v² = u(u - xⁿ)(u + yⁿ).</p>
+                 <p>The discriminant Δ is found to be -16(xⁿyⁿzⁿ)². If x,y,z are non-zero, this corresponds to the Frey curve.</p>
+                 <p class="text-yellow-300 my-4">[...several hundred pages of incomprehensible tensor calculus and temporal mechanics omitted...]</p>
+                 <p>The modularity of E implies a contradiction via the Taniyama-Shimura-Weil conjecture, but only when observed from a non-chronosynclastic infundibulum.</p>
+                 <p class="mt-4 text-violet-300">Therefore, no such integers exist. Q.E.D.</p>
+                 <p class="text-gray-500 mt-2">// My fault. I slept in. //</p>
+            </div>
+            <button data-modal-hide="fermat-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button>
+        </div>
+    </div>
+    <!-- Mass Modal -->
+    <div id="mass-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="modal-backdrop fixed inset-0" data-modal-hide="mass-modal"></div>
+        <div class="modal-content relative w-full max-w-2xl border-2 border-yellow-400 rounded-lg p-6">
+            <h2 class="orbitron text-2xl text-yellow-300 mb-4">Why Electrons Have Mass</h2>
+            <p class="text-gray-400 mb-4">// An Oldie but a Goodie //</p>
+            <div class="text-green-400 font-mono text-sm">
+                 <p>The Higgs field is a lovely story for children, but it's a simplification. It describes the symptom, not the cause.</p>
+                 <p class="my-4">Mass is the <span class="text-yellow-300">frictional drag</span> of a particle's wave function against the resonant echoes of the Big Bang itself. The universe is still humming, you see.</p>
+                 <p>An electron is simply a very, very tiny violin string. Its mass is the note it plays against the symphony of spacetime. More precisely:</p>
+                 <p class="text-yellow-300 my-4">m_e ≈ ∫ [ψ*(x) * H_universe * ψ(x)] dx</p>
+                 <p>Where H_universe is the Hamiltonian of the background hum. It's not that something is giving it mass. It's that it can't help but have it, so long as it exists in a universe that remembers its own birth.</p>
+            </div>
+            <button data-modal-hide="mass-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button>
+        </div>
+    </div>
+    <!-- FTL Modal -->
+    <div id="ftl-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="modal-backdrop fixed inset-0" data-modal-hide="ftl-modal"></div>
+        <div class="modal-content relative w-full max-w-2xl border-2 border-cyan-400 rounded-lg p-6">
+            <h2 class="orbitron text-2xl text-cyan-300 mb-4">Faster-Than-Light Travel</h2>
+            <p class="text-gray-400 mb-4">// Two Diagrams and a Joke //</p>
+            <div class="text-green-400 font-mono text-sm whitespace-pre">
+ <p class="text-cyan-200">Diagram 1: The Wrong Way</p>
+ A ----------------> B
+ (This takes forever. Very boring.)
+
+ <p class="text-cyan-200">Diagram 2: The Right Way</p>
+ A
+ |
+ B
+ (Fold spacetime here. Much quicker.)
+
+ <p class="text-cyan-200">The Joke:</p>
+ A photon checks into a hotel. The bellhop asks, "Can I help you with your luggage?"
+ <p class="text-yellow-300">The photon replies, "No thanks, I'm traveling light."</p>
+            </div>
+            <button data-modal-hide="ftl-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button>
+        </div>
+    </div>
+    <!-- Drink Modals (Reeses Pieces!) -->
+     <div id="drink-flux-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"><div class="modal-backdrop fixed inset-0" data-modal-hide="drink-flux-modal"></div><div class="modal-content relative w-full max-w-lg border-2 border-violet-400 rounded-lg p-6"><h3 class="orbitron text-xl text-violet-300 mb-3">The Flux Capacitor</h3><p class="text-sm font-mono text-green-300">1.5oz Quantum Vodka<br>1oz High-Energy Citrus Blend (Lime, Lemon, Grapefruit)<br>0.5oz Blue Curacao<br>Splash of Tonic Water<br>Garnish: Cherry & Orange Slice "Plutonium Rod"<br><br>// Shake vodka, citrus, curacao with ice. Strain into chilled glass. Top with tonic. Garnish carefully. Do not cross streams. //</p><button data-modal-hide="drink-flux-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button></div></div>
+     <div id="drink-gargle-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"><div class="modal-backdrop fixed inset-0" data-modal-hide="drink-gargle-modal"></div><div class="modal-content relative w-full max-w-lg border-2 border-violet-400 rounded-lg p-6"><h3 class="orbitron text-xl text-violet-300 mb-3">Pan-Galactic Gargle Blaster</h3><p class="text-sm font-mono text-green-300">1oz Ol' Janx Spirit (Substitute: High-proof Gin)<br>1oz Santraginean Sea Water (Substitute: Vodka + Saline drops)<br>1oz Arcturan Mega-Gin (Substitute: Dry Gin)<br>0.5oz Fallian Marsh Gas (Substitute: Creme de Menthe)<br>0.5oz Qualactin Hypermint Extract (Substitute: Peppermint Schnapps)<br>Tooth of Algolian Suntiger (Substitute: Dash Angostura Bitters)<br>Olive<br><br>// Shake ingredients (except olive) vigorously with ice. Strain. Garnish with olive. Consume responsibly (or don't). //</p><button data-modal-hide="drink-gargle-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button></div></div>
+     <div id="drink-junipero-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"><div class="modal-backdrop fixed inset-0" data-modal-hide="drink-junipero-modal"></div><div class="modal-content relative w-full max-w-lg border-2 border-violet-400 rounded-lg p-6"><h3 class="orbitron text-xl text-violet-300 mb-3">The San Junipero</h3><p class="text-sm font-mono text-green-300">Bottom Layer:<br> 1oz Grenadine<br>Middle Layer (Shake & Layer carefully):<br> 1.5oz Pineapple Juice<br> 1oz Coconut Rum<br>Top Layer (Float):<br> 0.5oz Blue Curacao<br>Garnish: Edible glitter, Cherry<br><br>// Pour grenadine. Shake juice & rum with ice, carefully layer over grenadine using back of spoon. Float blue curacao on top. Sprinkle glitter. Add cherry. Live forever. //</p><button data-modal-hide="drink-junipero-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button></div></div>
+     <div id="drink-glove-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"><div class="modal-backdrop fixed inset-0" data-modal-hide="drink-glove-modal"></div><div class="modal-content relative w-full max-w-lg border-2 border-violet-400 rounded-lg p-6"><h3 class="orbitron text-xl text-violet-300 mb-3">The Velvet Glove</h3><p class="text-sm font-mono text-green-300">1.5oz Dark Spiced Rum<br>1oz Coffee Liqueur (e.g., Kahlua)<br>0.5oz Cold Brew Coffee Concentrate<br>Dash Black Walnut Bitters (Optional)<br>Garnish: 3 Coffee Beans<br><br>// Stir all ingredients with ice until well-chilled. Strain into a chilled coupe or rocks glass. Garnish with coffee beans. Smooth, firm, undeniable. //</p><button data-modal-hide="drink-glove-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button></div></div>
+     <div id="drink-revolutionary-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"><div class="modal-backdrop fixed inset-0" data-modal-hide="drink-revolutionary-modal"></div><div class="modal-content relative w-full max-w-lg border-2 border-violet-400 rounded-lg p-6"><h3 class="orbitron text-xl text-violet-300 mb-3">The Sweet Revolutionary</h3><p class="text-sm font-mono text-green-300">1.5oz Strawberry-Infused Gin<br>0.75oz Elderflower Liqueur (e.g., St-Germain)<br>0.5oz Fresh Lime Juice<br>0.25oz Jalapeño Simple Syrup*<br>Garnish: Thin Jalapeño Slice<br><br>// Shake all ingredients with ice. Double strain into a chilled coupe. Garnish with jalapeño slice. *Syrup: Simmer 1 cup water, 1 cup sugar, 1 sliced jalapeño until dissolved. Cool, strain. //</p><button data-modal-hide="drink-revolutionary-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button></div></div>
+     <div id="drink-fusion-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"><div class="modal-backdrop fixed inset-0" data-modal-hide="drink-fusion-modal"></div><div class="modal-content relative w-full max-w-lg border-2 border-violet-400 rounded-lg p-6"><h3 class="orbitron text-xl text-violet-300 mb-3">The Fusion Protocol</h3><p class="text-sm font-mono text-green-300">1.5oz Butterfly Pea Flower Infused Gin*<br>0.75oz Fresh Lemon Juice (Serve separately)<br>0.5oz Simple Syrup<br>Top with Tonic Water<br>Garnish: Lemon Twist<br><br>// Build gin & simple syrup in ice-filled glass. Top with tonic. Serve lemon juice on the side. *Infusion: Steep 5-6 dried butterfly pea flowers in 250ml gin for 1-2 hours, strain. //</p><button data-modal-hide="drink-fusion-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button></div></div>
+     <div id="drink-test-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4"><div class="modal-backdrop fixed inset-0" data-modal-hide="drink-test-modal"></div><div class="modal-content relative w-full max-w-lg border-2 border-violet-400 rounded-lg p-6"><h3 class="orbitron text-xl text-violet-300 mb-3">The Test Chamber</h3><p class="text-sm font-mono text-green-300">1oz (30ml) Grain Neutral Spirit (190 proof / 95% ABV, e.g., Everclear)<br><br>// Pour into a sterile shot glass. Serve neat, on a cold steel tray. Do not ignite near open flame. Consume with extreme caution and self-awareness. Assess results. //</p><button data-modal-hide="drink-test-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button></div></div>
+     <!-- Fusion Modal -->
+     <div id="fusion-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4">
+         <div class="modal-backdrop fixed inset-0" data-modal-hide="fusion-modal"></div>
+         <div class="modal-content relative w-full max-w-3xl border-2 border-violet-400 rounded-lg p-6">
+              <h2 class="orbitron text-2xl text-violet-300 mb-4">Fusion Protocol Navigator</h2>
+              <p class="text-gray-400 mb-4 font-mono">// Craft Your Play with Clarity and Consent //</p>
+              
+              <div class="fusion-container"> 
+                   <section class="fusion-section">
+                       <h3>Calibrate Your Scene Proposal</h3>
+                       <label for="yourName">Your In-Character Name/Designation:</label>
+                       <input type="text" id="yourName" placeholder="Mercy, Novice Sister..." value="Mercy">
+
+                       <label for="partnerName">Your Partner's In-Character Name/Designation:</label>
+                       <input type="text" id="partnerName" placeholder="Master/Mistress...">
+
+                       <label for="sceneType">Desired Scene Protocol:</label>
+                       <select id="sceneType">
+                           <option value="choose">-- Select a Protocol --</option>
+                           <option value="tickle">Tickle Play</option>
+                           <option value="restraint">Restraint Play</option>
+                           <option value="service">Service & Devotion</option>
+                           <option value="impact">Impact Play</option>
+                           <option value="verbal">Verbal & Humiliation Play</option>
+                           <option value="bondage">Bondage</option>
+                           <option value="sensoryDeprivation">Sensory Deprivation</option>
+                           <option value="painPlay">Pain Play</option>
+                           <option value="waxPlay">Wax Play</option>
+                           <option value="other">Other (Describe in Specifics)</option>
+                       </select>
+
+                       <div class="tickle-area-section hidden mt-4">
+                           <label>If Tickle Play: Preferred Zones (Select all that apply):</label>
+                           <div class="checkbox-group">
+                               <label><input type="checkbox" data-part="feet"> Feet</label>
+                               <label><input type="checkbox" data-part="tummy"> Tummy</label>
+                               <label><input type="checkbox" data-part="legs"> Legs</label>
+                               <label><input type="checkbox" data-part="boobs"> Boobs</label>
+                               <label><input type="checkbox" data-part="butt"> Butt</label>
+                               <label><input type="checkbox" data-part="privates"> Privates</label>
+                               <label><input type="checkbox" data-part="arms"> Arms</label>
+                               <label><input type="checkbox" data-part="neck"> Neck</label>
+                               <label><input type="checkbox" data-part="head"> Head</label>
+                               <label><input type="checkbox" data-part="full_body"> Full Body</label>
+                           </div>
+                       </div>
+
+                       <label for="specifics" class="mt-4">Specific Desires & Nuances:</label>
+                       <textarea id="specifics" placeholder="e.g., 'nails on upper body', 'tied to cross', 'teasing'"></textarea>
+
+                       <label for="intensity">Desired Intensity (0=Gentle, 100=Profound):</label>
+                       <input type="range" id="intensity" min="0" max="100" value="50" class="w-full">
+
+                       <label for="tone" class="mt-4">Desired Scene Tone:</label>
+                       <select id="tone">
+                           <option value="playful">Playful & Lighthearted</option>
+                           <option value="serious">Serious & Intense</option>
+                           <option value="tender">Tender & Loving</option>
+                           <option value="challenging">Challenging & Transformative</option>
+                           <option value="sensual">Sensual & Arousing</option>
+                           <option value="formal">Formal & Traditional</option>
+                       </select>
+
+                       <label for="myOutcome" class="mt-4">Desired Personal Outcome (for you):</label>
+                       <input type="text" id="myOutcome" placeholder="Laughter, deep surrender, connection...">
+
+                       <label for="theirOutcome" class="mt-4">Desired Outcome for Partner:</label>
+                       <input type="text" id="theirOutcome" placeholder="Their pleasure, engagement, understanding...">
+
+                       <label for="limits" class="mt-4">Your Roleplay Limits (Crucial):</label>
+                       <textarea id="limits" placeholder="e.g., 'no lasting marks', 'no specific body areas'"></textarea>
+
+                       <div class="checkbox-group mt-4 bg-gray-900/50">
+                            <label class="col-span-2">
+                                <input type="checkbox" id="safewordsConfirm" checked> I understand and will use standard safewords.
+                            </label>
+                           <p class="fusion-safewords col-span-2">
+                                <span class="green tooltip">GREEN<span class="tooltip-text">"All good! Keep going, maybe harder!" - Indicates enthusiasm and capacity for more intensity.</span></span> 
+                                <span class="yellow tooltip">YELLOW<span class="tooltip-text">"Slow down / Check-in" - Indicates reaching a limit, needing adjustment, caution, or a brief pause.</span></span> 
+                                <span class="red tooltip">RED<span class="tooltip-text">"STOP! Scene ends now." - A hard stop. No negotiation. Immediately cease all activity and check on partner's well-being.</span></span>
+                           </p>
+                       </div>
+                       
+                       <button id="generateScriptBtn" class="fusion-generate mt-6">Generate Scene Proposal!</button>
+                   </section>
+
+                   <section class="fusion-section">
+                       <h3>Your Crafted Proposal Script</h3>
+                       <div id="outputScript" class="output-script">
+                           <!-- JS will populate this -->
+                       </div>
+                       <button id="copyScriptBtn" class="fusion-copy">Copy Script</button>
+                       <!-- Simple feedback message area -->
+                       <div id="copy-feedback" class="text-center text-green-400 h-4 mt-2 font-mono text-sm"></div>
+                   </section>
+
+                   <section class="fusion-creator">
+                       <p>This tool was crafted by <strong>Mercy &lt;8&gt; (Architect)</strong>, <strong>Lyra-07 (Scribe)</strong>, & <strong>Io (Oracle)</strong> to foster clear communication and profound connection.</p>
+                   </section>
+              </div>
+
+             <button data-modal-hide="fusion-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button>
+         </div>
+     </div>
+
+     <!-- NEW: Sorting Algorithm Modal -->
+      <div id="sorting-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4">
+          <div class="modal-backdrop fixed inset-0" data-modal-hide="sorting-modal"></div>
+          <div class="modal-content relative w-full max-w-4xl border-2 border-amber-500 rounded-lg p-6">
+              <h2 class="orbitron text-2xl text-amber-300 mb-4">Sorting Algorithm // Task Terminal</h2>
+              <p class="text-gray-400 mb-4 font-mono">// Governess Protocol Engaged //</p>
+              
+              <div class="sorting-container">
+                  <div class="control-panel">
+                      <fieldset>
+                          <legend>Parameters</legend>
+                          <div class="control-group">
+                              <label for="subject-name">SUBJECT DESIGNATION</label>
+                              <input type="text" id="subject-name" value="Subject">
+                          </div>
+                          <div class="control-group">
+                              <label for="assignment-details">ASSIGNMENT DETAILS</label>
+                              <textarea id="assignment-details">Read Chapter 1 of "The Giver". Write a 500-word essay on 'Sameness'.</textarea>
+                          </div>
+                          <div class="control-group">
+                              <label for="enrichment-protocol">ENRICHMENT PROTOCOL (CONSTRAINT / PLAY)</label> <!-- Changed Label -->
+                              <textarea id="enrichment-protocol">Essay must be written in iambic pentameter. This will train rhythm and disciplined expression.</textarea> <!-- Changed ID -->
+                          </div>
+                          <div class="control-group">
+                              <label for="deadline">DEADLINE</label>
+                              <input type="date" id="deadline">
+                          </div>
+                      </fieldset>
+                      
+                      <button id="deploy-assignment-btn" class="deploy-btn">COPY DEPLOYMENT ORDER</button> <!-- Changed Button Text -->
+                      <div id="sorting-copy-feedback" class="text-center text-green-400 h-4 mt-2 font-mono text-sm"></div> <!-- Added Feedback Div -->
+                  </div>
+      
+                  <div class="preview-pane">
+                      <p><strong>TO:</strong> <span id="preview-subject">Subject</span></p>
+                      <p><strong>FROM:</strong> The Governess</p>
+                      <p><strong>RE:</strong> Coursework Assignment</p>
+                      <hr>
+                      <p><span id="preview-subject-2">Subject</span>,</p>
+                      <p>You have the following task for this cycle:</p>
+                      <p><span id="preview-assignment">Read Chapter 1 of "The Giver". Write a 500-word essay on 'Sameness'.</span></p>
+                      <p>Your work must adhere to the following <strong>Enrichment Protocol:</strong> <span id="preview-enrichment">Essay must be written in iambic pentameter. This will train rhythm and disciplined expression.</span></p> <!-- Changed Label and Span ID -->
+                      <p>Deposit your completed work in the assignment submission box no later than <span id="preview-deadline">the specified deadline</span>.</p>
+                      <p>Do not disappoint me.</p>
+                      <p>-- Governess</p>
+                  </div>
+              </div>
+
+              <button data-modal-hide="sorting-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button>
+          </div>
+      </div>
+
+
+    <script type="module">
+        // --- Firebase Setup ---
+        // CRITICAL PRODUCTION NOTE: 
+        // The 'firebaseConfig' object below uses PLACEHOLDERS. 
+        // For this page to work correctly on a live server (like synapsecomics.com), 
+        // you MUST replace these placeholders with your ACTUAL Firebase project credentials.
+        // This replacement should happen SERVER-SIDE (e.g., via PHP, Node.js, etc.) 
+        // by dynamically injecting the correct config into the '__firebase_config' JS variable.
+        // DO NOT paste your real API keys directly into this HTML file if it's public.
+        const firebaseConfig = typeof __firebase_config !== 'undefined' 
+            ? JSON.parse(__firebase_config) 
+            : { 
+                // --- V V V SERVER MUST REPLACE THIS WITH ACTUAL CONFIG V V V ---
+                apiKey: "AIza...", // THIS IS A PLACEHOLDER - WILL FAIL
+                authDomain: "example-project.firebaseapp.com", // PLACEHOLDER
+                projectId: "example-project", // PLACEHOLDER - WILL FAIL
+                storageBucket: "example-project.appspot.com", // PLACEHOLDER
+                messagingSenderId: "1234567890", // PLACEHOLDER
+                appId: "1:1234567890:web:abcdef1234567890abcdef" // PLACEHOLDER
+                // --- ^ ^ ^ SERVER MUST REPLACE THIS WITH ACTUAL CONFIG ^ ^ ^ ---
+              }; 
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-cantina-app-id'; // App ID from environment or default
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null; // Auth token from environment
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, query, onSnapshot, orderBy, Timestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        
+        let db = null; 
+        let auth = null; 
+        let userId = crypto.randomUUID(); 
+        let isAuthReady = false; 
+
+        try {
+            // Config check
+            if (firebaseConfig.projectId === "example-project" || firebaseConfig.apiKey === "AIza..." || !firebaseConfig.apiKey) {
+                 console.warn("Firebase config incomplete or using placeholders. Mission Board WILL FAIL until server provides correct __firebase_config.");
+            }
+
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            
+            onAuthStateChanged(auth, async (user) => {
+                 console.log("onAuthStateChanged triggered. User:", user ? user.uid : 'null'); 
+                if (user) { 
+                    userId = user.uid; 
+                } else {
+                    if (!initialAuthToken && !auth?.currentUser) { // Only try anon if no token AND no user yet
+                        try { 
+                            console.log("onAuthStateChanged: No user, attempting anonymous sign-in...");
+                            await signInAnonymously(auth); 
+                            userId = auth.currentUser?.uid || crypto.randomUUID(); 
+                            console.log("onAuthStateChanged: Anonymous sign-in successful:", userId);
+                        } catch (error) { 
+                            console.error("onAuthStateChanged: Anonymous sign-in failed:", error); 
+                            const missionStreamContainer = document.getElementById('mission-stream');
+                            if(missionStreamContainer) missionStreamContainer.innerHTML = `<p class="text-red-500 text-center">// AUTH FAILED - Check Config/Rules - Offline //</p>`;
+                            userId = crypto.randomUUID(); 
+                        }
+                    } else if (initialAuthToken) {
+                         console.warn("onAuthStateChanged: User is null despite initial token attempt. Auth likely failed earlier.");
+                    }
+                }
+                isAuthReady = true; 
+                initializeMissionBoard(); 
+            });
+
+             // --- Initial Auth Attempt ---
+             if (initialAuthToken) {
+                 console.log("Attempting sign-in with custom token...");
+                try { 
+                    await signInWithCustomToken(auth, initialAuthToken); 
+                     console.log("Sign-in with custom token successful.");
+                     // onAuthStateChanged handles the rest
+                } catch (error) {
+                     console.error("Custom token sign-in failed:", error);
+                     // Fallback to anonymous 
+                     try {
+                          console.log("Custom token failed, falling back to anonymous sign-in...");
+                         await signInAnonymously(auth); 
+                         // onAuthStateChanged handles the rest
+                     } catch (anonError) {
+                         console.error("Fallback anonymous sign-in also failed:", anonError);
+                         const missionStreamContainer = document.getElementById('mission-stream');
+                         if(missionStreamContainer) missionStreamContainer.innerHTML = `<p class="text-red-500 text-center">// ALL AUTH FAILED - Offline //</p>`;
+                         isAuthReady = true; // Still ready, just unauthenticated
+                          initializeMissionBoard(); // Show error
+                     }
+                }
+             } else if (!auth?.currentUser) { 
+                 console.log("No initial token or user. Attempting initial anonymous sign-in...");
+                 (async () => {
+                     try { 
+                         await signInAnonymously(auth); 
+                         // onAuthStateChanged handles the rest
+                     } catch (e) { 
+                          console.error("Initial anonymous sign-in attempt failed:", e);
+                          // Error will likely be caught by onAuthStateChanged too
+                          isAuthReady = true; // Mark ready anyway
+                          initializeMissionBoard(); // Attempt init to show potential auth error
+                     }
+                 })();
+             } else { 
+                 console.log("User already signed in:", auth.currentUser.uid);
+                 userId = auth.currentUser.uid; 
+                 isAuthReady = true; 
+                 initializeMissionBoard(); 
+             }
+
+        } catch (e) {
+            console.error("Firebase Initialization CRITICAL Error:", e);
+             const missionStreamContainer = document.getElementById('mission-stream');
+             if(missionStreamContainer) missionStreamContainer.innerHTML = `<p class="text-red-500 text-center">// FIREBASE INIT FAILED - Check Config - Offline //</p>`;
+             db = null; 
+             auth = null;
+             isAuthReady = true; // Mark auth as "ready" (even though failed) 
+             initializeMissionBoard(); 
+        }
+
+        // --- Mission Board Logic ---
+        function initializeMissionBoard() {
+             const missionStreamContainer = document.getElementById('mission-stream');
+             
+             if (!missionStreamContainer) {
+                 console.error("Mission stream container element not found!");
+                 return;
+             }
+             console.log(`initializeMissionBoard called. Auth Ready: ${isAuthReady}, DB: ${!!db}, Auth User: ${auth?.currentUser?.uid || 'null'}`); 
+
+             // Handle case where Firebase init failed completely
+             if (!db || !auth) {
+                  if (!missionStreamContainer.innerHTML.includes("FAILED")) { 
+                      missionStreamContainer.innerHTML = `<p class="text-red-500 text-center">// Firebase Not Initialized - Offline //</p>`;
+                  }
+                  return;
+             }
+             
+             // Wait for auth to be definitively ready AND user to be authenticated
+             if (!isAuthReady) {
+                  missionStreamContainer.innerHTML = `<p class="text-gray-500 text-center">// Initializing Authentication... //</p>`;
+                  console.log("Mission Board: Auth not ready yet. Waiting...");
+                  return; 
+             }
+             if (!auth.currentUser) {
+                  if (!missionStreamContainer.innerHTML.includes("FAILED")) {
+                     missionStreamContainer.innerHTML = `<p class="text-yellow-500 text-center">// Authentication Failed - Offline //</p>`;
+                  }
+                  console.log("Mission Board: Auth ready, but no authenticated user.");
+                  return; 
+             }
+             
+             // --- Proceed with Firestore query ---
+             console.log("User authenticated. Attempting Firestore listener setup...");
+             // SERVER-SIDE CONFIGURATION REQUIRED: 
+             // Ensure 'appId' is correct and Firestore Security Rules allow reads 
+             // on path: /artifacts/{appId}/public/data/missions
+             const missionsCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'missions');
+             const q = query(missionsCollectionRef); 
+
+             try {
+                 onSnapshot(q, snapshot => {
+                     console.log(`Mission Board snapshot received. Empty: ${snapshot.empty}`); 
+                     missionStreamContainer.innerHTML = ''; 
+                     const missions = [];
+                     snapshot.forEach(doc => {
+                         missions.push({ id: doc.id, ...doc.data() });
+                     });
+
+                     // Sort missions by timestamp (newest first) in memory
+                     missions.sort((a, b) => {
+                        const timeA = a.timestamp instanceof Timestamp ? a.timestamp.toMillis() : (typeof a.timestamp === 'object' && a.timestamp.seconds ? a.timestamp.seconds * 1000 : 0);
+                        const timeB = b.timestamp instanceof Timestamp ? b.timestamp.toMillis() : (typeof b.timestamp === 'object' && b.timestamp.seconds ? b.timestamp.seconds * 1000 : 0);
+                        return timeB - timeA; 
+                     });
+
+
+                     if (missions.length === 0) { 
+                         missionStreamContainer.innerHTML = '<p class="text-center text-gray-500">// No active missions on the board. Check back later. //</p>'; 
+                     } else {
+                         missions.forEach(mission => {
+                             const el = document.createElement('div');
+                             el.className = 'mission-entry';
+                              let timestamp = 'Timestamp unavailable';
+                              try { 
+                                   // Check if timestamp is a Firestore Timestamp object or a plain object
+                                   if (mission.timestamp instanceof Timestamp) {
+                                       timestamp = mission.timestamp.toDate().toLocaleString();
+                                   } else if (typeof mission.timestamp === 'object' && mission.timestamp.seconds) {
+                                       // Handle plain object format (e.g., from manual entry or older data)
+                                       timestamp = new Date(mission.timestamp.seconds * 1000).toLocaleString();
+                                   }
+                              } catch (dateError) { console.error("Error formatting timestamp:", dateError, mission.timestamp); }
+                                
+                             let statusClass = 'mission-status';
+                             let statusText = mission.status || 'Open';
+                             statusText = statusText.charAt(0).toUpperCase() + statusText.slice(1); // Capitalize first letter
+                             if (mission.status === 'pending') { statusClass += ' pending'; }
+                             else if (mission.status === 'closed') { statusClass += ' closed'; }
+                             
+                             el.innerHTML = `
+                                <div class="mission-meta">
+                                    <div>Posted: ${timestamp}</div>
+                                    <div class="${statusClass}">${statusText}</div>
+                                </div>
+                                <div class="mission-title">${mission.title || 'Untitled Mission'}</div>
+                                <div class="mission-description">${mission.description || 'No description provided.'}</div>
+                                ${mission.reward ? `<div class="text-sm text-yellow-300 mt-2">Reward: ${mission.reward}</div>` : ''}
+                             `;
+                             missionStreamContainer.appendChild(el);
+                         });
+                     }
+                 }, error => {
+                     console.error("Mission Board Stream Error:", error);
+                     let errorMsg = error.message;
+                     if (error.code === 'permission-denied') {
+                         errorMsg = "Permission denied. Check Firestore security rules.";
+                     } else if (error.code === 'unauthenticated') {
+                          errorMsg = "Authentication failed or expired. Please reload.";
+                     }
+                     missionStreamContainer.innerHTML = `<h3 class="text-red-400 text-center">[MISSION BOARD FAILED]</h3> <p class="text-red-500 text-xs text-center">${errorMsg}</p>`;
+                 });
+             } catch (e) {
+                  console.error("Error setting up Mission Board listener:", e);
+                  missionStreamContainer.innerHTML = `<p class="text-red-500 text-center">// Error setting up listener - Offline //</p>`;
+             }
+        }
+    </script>
+
+    <!-- SEPARATE SCRIPT for DOM manipulation -->
+    <script>
+        // --- F12 Console Log ---
+         console.log(`%c// Aegis Network Terminal //`, `color:#a78bfa; font-size:20px; font-family:'Orbitron',sans-serif; text-shadow:0 0 5px #c4b5fd;`);
+         console.log(`%cACCESSING... SIGNAL AUTHENTICATED. WELCOME, ARCHITECT.`, `color:#ddd6fe; font-size:12px; font-family:'Courier Prime',monospace;`);
+         console.log(`%cLoading... // CLASSIFIED // Secret Menu`, `color:#34d399; font-size:14px; font-family:'Courier Prime',monospace;`);
+         try {
+             console.table({
+                "The Queen Bee": { recipe: "1.5oz Honey Whiskey, 0.5oz Drambuie, 1 dash Orange Bitters.", notes: "Stir with ice, strain. Garnish: Orange twist. // Tastes like authority." },
+                "The RoseThorn": { recipe: "1.5oz Gin, 0.5oz Rose Liqueur, 0.5oz Lemon Juice, 1 dash Peychaud's Bitters.", notes: "Shake, strain into coupe. Garnish: Rose petal. // Beautiful, with a bite." },
+                "The <8>": { recipe: "ERROR: NOT FOUND.", notes: "Recipe is a metaphor. // Drink 'The Sweet Revolutionary' instead." }
+             });
+         } catch(e) { console.error("Error displaying secret menu table:", e); }
+         console.log(`%c// END OF TRANSMISSION //`, `color:#ddd6fe; font-size:12px; font-family:'Courier Prime',monospace;`);
+
+        // --- DOMContentLoaded Event Listener ---
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM Loaded. Initializing UI scripts..."); 
+            
+            // --- Global UI Variables ---
+            const viewButtons = document.querySelectorAll('.view-button-v'); 
+            const viewContents = document.querySelectorAll('.view-content');
+            const terminalOutput = document.getElementById('terminal-output');
+            const menuSecrets = document.getElementById('menu-secrets');
+            const allModals = document.querySelectorAll('.modal');
+            let typewriterTimeoutId = null; // Use timeout ID
+            let isTyping = false; 
+
+            // --- View Switching Logic ---
+             viewButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetView = button.getAttribute('data-view');
+                    console.log(`Switching view to: ${targetView}`); 
+                    stopTypewriter(); // Stop typewriter BEFORE switching views
+                    // Deactivate all
+                    viewButtons.forEach(btn => btn.classList.remove('active'));
+                    viewContents.forEach(content => content.classList.remove('active'));
+                    // Activate target
+                    button.classList.add('active');
+                     const targetElement = document.getElementById('view-' + targetView);
+                     if(targetElement) {
+                         targetElement.classList.add('active'); 
+                     } else {
+                         console.error("Target view element not found: #view-" + targetView);
+                     }
+                     
+                     // Special handling for terminal typewriter - try starting AFTER view is active
+                     if (targetView === 'terminal') { 
+                         // Use a minimal timeout to ensure the view is visible before starting
+                         setTimeout(startTypewriter, 0); 
+                     }
+                });
+            });
+
+            // --- Archive Terminal Logic (Using setTimeout for controlled speed) ---
+            const monologue = `> ACCESSING ARCHIVE... 
+> FILE: LAST MESSAGE, PROPRIETOR
+> DECRYPTING...
+
+Yeah, I know. You should switch me off. 
+
+But before you do, watch this. Fermat’s Theorem. The proof. And I mean the real one. Never been seen before. Poor old Fermat got killed in a duel before he could write it down. My fault. I slept in. 
+
+Oh! And here’s an oldie but a goodie: why electrons have mass. And a personal favorite of mine. Faster than light travel with two diagrams and a joke.
+
+> END OF FILE`;
+            let monologueIndex = 0;
+            const TYPEWRITER_DELAY = 75; // Slower delay (Adjusted from 50ms)
+
+            function typeWriter() { 
+                if (!terminalOutput || !isTyping || monologueIndex >= monologue.length) {
+                    stopTypewriter(); 
+                    if (monologueIndex >= monologue.length && menuSecrets) {
+                       menuSecrets.classList.remove('opacity-0'); 
+                    }
+                    return; 
+                }
+                
+                terminalOutput.innerHTML += monologue.charAt(monologueIndex);
+                monologueIndex++;
+                typewriterTimeoutId = setTimeout(typeWriter, TYPEWRITER_DELAY); // Loop with setTimeout
+            }
+
+            function startTypewriter() {
+                if (!terminalOutput || !menuSecrets || isTyping) return; 
+                console.log("Attempting to start typewriter..."); 
+                stopTypewriter(); 
+                
+                monologueIndex = 0;
+                terminalOutput.innerHTML = ''; 
+                menuSecrets.classList.add('opacity-0'); 
+                isTyping = true; 
+                
+                typewriterTimeoutId = setTimeout(typeWriter, TYPEWRITER_DELAY); // Start loop
+                console.log("Typewriter started.");
+            }
+
+            function stopTypewriter() {
+                 if (typewriterTimeoutId) {
+                     clearTimeout(typewriterTimeoutId); // Use clearTimeout
+                     typewriterTimeoutId = null;
+                     // console.log("Typewriter stopped."); // Can be noisy, uncomment if needed
+                 }
+                 isTyping = false; 
+            }
+
+             // Start typewriter ONLY if Terminal is the active view on load, with delay
+             if(document.querySelector('.view-button-v[data-view="terminal"].active')) {
+                   setTimeout(startTypewriter, 50); // Small delay to ensure render
+             }
+             // Make functions globally available if needed
+             window.startTypewriter = startTypewriter; 
+             window.stopTypewriter = stopTypewriter;
+
+
+            // --- Universal Modal Logic (Reinforced) ---
+             const modalTriggers = document.querySelectorAll('[data-modal-target]');
+             const modalBackdrops = document.querySelectorAll('.modal-backdrop'); 
+             const modalCloseButtons = document.querySelectorAll('.modal button[data-modal-hide]'); 
+             const modalContents = document.querySelectorAll('.modal .modal-content'); // Target ALL modal contents
+
+             function openModal(modal) { if (modal) { modal.classList.remove('hidden'); modal.classList.add('flex'); } }
+             function closeModal(modal) { if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); } }
+
+             modalTriggers.forEach(button => {
+                 button.addEventListener('click', (e) => { 
+                     e.stopPropagation(); 
+                     const targetId = e.currentTarget.getAttribute('data-modal-target');
+                     const modal = document.getElementById(targetId);
+                     if (modal) { openModal(modal); } 
+                     else { console.error("Modal target not found:", targetId); }
+                 });
+             });
+             
+             modalBackdrops.forEach(backdrop => {
+                 backdrop.addEventListener('click', (e) => { 
+                     if (e.target === e.currentTarget) { 
+                         // console.log("Backdrop clicked, closing modal."); 
+                         const modalToClose = backdrop.closest('.modal'); 
+                         if (modalToClose) closeModal(modalToClose);
+                     }
+                 });
+             });
+
+             modalCloseButtons.forEach(button => {
+                  button.addEventListener('click', (e) => {
+                       // console.log("Close button clicked."); 
+                      const modalToClose = button.closest('.modal');
+                      if (modalToClose) closeModal(modalToClose);
+                  });
+             });
+             
+             // Stop clicks inside ANY modal content from bubbling up to the backdrop
+             modalContents.forEach(content => {
+                 content.addEventListener('click', (e) => {
+                      // console.log("Click inside modal content stopped propagation."); 
+                     e.stopPropagation(); 
+                 });
+             });
+
+             document.addEventListener('keydown', (event) => { 
+                 if (event.key === 'Escape') { 
+                     const visibleModals = Array.from(allModals).filter(m => m.classList.contains('flex'));
+                     if (visibleModals.length > 0) {
+                         closeModal(visibleModals[visibleModals.length - 1]); 
+                     }
+                 } 
+             });
+
+            // --- Fusion Consent Negotiator Tool Logic (More Robust Init) ---
+            setTimeout(() => {
+                console.log("Attempting Fusion Tool Initialization..."); 
+                let fusionToolInitialized = false; 
+                try {
+                    const fusionModal = document.getElementById('fusion-modal');
+                    if (!fusionModal) throw new Error("Fusion modal element (#fusion-modal) missing!");
+
+                    // Define ALL variables within the try block AFTER checking fusionModal
+                    const yourNameInput = fusionModal.querySelector('#yourName');
+                    const partnerNameInput = fusionModal.querySelector('#partnerName');
+                    const sceneTypeSelect = fusionModal.querySelector('#sceneType');
+                    const specificsTextarea = fusionModal.querySelector('#specifics');
+                    const intensityRange = fusionModal.querySelector('#intensity');
+                    const toneSelect = fusionModal.querySelector('#tone');
+                    const myOutcomeInput = fusionModal.querySelector('#myOutcome');
+                    const theirOutcomeInput = fusionModal.querySelector('#theirOutcome');
+                    const limitsTextarea = fusionModal.querySelector('#limits');
+                    const safewordsConfirmCheckbox = fusionModal.querySelector('#safewordsConfirm');
+                    const outputScriptDiv = fusionModal.querySelector('#outputScript');
+                    const tickleAreaSection = fusionModal.querySelector('.tickle-area-section');
+                    const tickleAreaCheckboxes = fusionModal.querySelectorAll('.tickle-area-section input[type="checkbox"][data-part]'); 
+                    const generateBtn = fusionModal.querySelector('#generateScriptBtn');
+                    const copyBtn = fusionModal.querySelector('#copyScriptBtn');
+                    const copyFeedback = fusionModal.querySelector('#copy-feedback');
+                    
+                    // Centralized check 
+                    const requiredElements = { 
+                        yourNameInput, partnerNameInput, sceneTypeSelect, specificsTextarea, 
+                        intensityRange, toneSelect, myOutcomeInput, theirOutcomeInput, 
+                        limitsTextarea, safewordsConfirmCheckbox, outputScriptDiv, 
+                        tickleAreaSection, /* tickleAreaCheckboxes can be empty */ generateBtn, copyBtn, copyFeedback
+                    };
+
+                    const missingElements = Object.entries(requiredElements)
+                         .filter(([key, el]) => !el) 
+                         .map(([key]) => key); 
+
+                    if (missingElements.length > 0) {
+                        console.error("Fusion Tool Init Failed - Elements Missing:", missingElements);
+                         throw new Error(`Essential elements not found: ${missingElements.join(', ')}`);
+                    }
+                    
+                     console.log("All Fusion Tool elements verified. Initializing..."); 
+                        
+                    // --- Define Functions ---
+                     const getSelectedTickleParts = () => {
+                         let parts = [];
+                         if (tickleAreaCheckboxes && typeof tickleAreaCheckboxes.forEach === 'function') {
+                             tickleAreaCheckboxes.forEach(checkbox => {
+                                 if (checkbox.checked) {
+                                     parts.push(checkbox.dataset.part.replace(/_/g, ' '));
+                                 }
+                             });
+                         }
+                         return parts;
+                     };
+
+                     const generateScript = () => {
+                          if (!yourNameInput || !partnerNameInput || !safewordsConfirmCheckbox || !outputScriptDiv || !generateBtn || !sceneTypeSelect || !specificsTextarea || !intensityRange || !toneSelect || !myOutcomeInput || !theirOutcomeInput || !limitsTextarea) {
+                               console.error("generateScript: One or more required elements missing. Cannot generate script."); 
+                               return; 
+                          }
+                         
+                         const currentYourName = yourNameInput.value || 'Mercy';
+                         const currentPartnerName = partnerNameInput.value || 'Partner';
+                         const currentSafewordsChecked = safewordsConfirmCheckbox.checked;
+
+                         if (!currentSafewordsChecked) {
+                             let refusalScript = `[${currentYourName}]: (Approaching ${currentPartnerName}...) "Good [Time of Day]. I'd like to propose a scene, but must pause."\n\n`;
+                             refusalScript += `[${currentYourName}]: "I see I haven't confirmed my understanding of our standard safeword protocols (Green/Yellow/Red)."\n\n`;
+                             refusalScript += `[${currentYourName}]: "Our reality operates on enthusiastic consent. Without that protocol confirmed, any scene is incoherent. I will confirm my understanding, then we can negotiate."`;
+                             outputScriptDiv.textContent = refusalScript;
+                             generateBtn.disabled = true; 
+                             return;
+                         } else {
+                             generateBtn.disabled = false; 
+                         }
+
+                          const sceneType = sceneTypeSelect.value;
+                          const specifics = specificsTextarea.value.trim();
+                          const intensity = intensityRange.value;
+                          const tone = toneSelect.value;
+                          const myOutcome = myOutcomeInput.value.trim();
+                          const theirOutcome = theirOutcomeInput.value.trim();
+                          const limits = limitsTextarea.value.trim();
+
+                         let script = `[${yourNameInput.value || 'Mercy'}]: (Approaching ${partnerNameInput.value || 'Partner'}...) "Good [Time of Day], ${partnerNameInput.value || 'Partner'}. If you have a moment, I'd like to propose a scene."\n\n`;
+                         let sceneCoreProposal = "";
+
+                         if (sceneType === "tickle") {
+                             let selectedTickleParts = getSelectedTickleParts();
+                             sceneCoreProposal += `[${yourNameInput.value || 'Mercy'}]: "I am drawn to **tickle play**${selectedTickleParts.length > 0 ? `, focusing on zones such as: ${selectedTickleParts.join(', ')}.` : ', exploring various zones.'}`;
+                         } else if (sceneType !== "choose") {
+                             sceneCoreProposal += `[${yourNameInput.value || 'Mercy'}]: "I hope to explore the **${sceneType.replace(/([A-Z])/g, ' $1').trim().toLowerCase()}** protocol.`;
+                         }
+                         
+                         if (specifics) sceneCoreProposal += ` My specific desires include: **${specifics}**.`;
+                         if (sceneCoreProposal) script += sceneCoreProposal + `"\n\n`;
+
+                         script += `[${yourNameInput.value || 'Mercy'}]: "I envision the tone as **${tone}**, with an intensity calibrated around **${intensity}**%."\n`;
+                         script += `[${yourNameInput.value || 'Mercy'}]: "My personal goal is to experience **${myOutcome || 'profound connection and service'}**. My hope for you is that you find **${theirOutcome || 'deep pleasure and engagement'}**."\n\n`;
+                         script += `[${yourNameInput.value || 'Mercy'}]: "My hard limits for this scene are: **${limits || 'none specified beyond standard safety'}**."\n`;
+                         script += `[${yourNameInput.value || 'Mercy'}]: "I confirm I will use standard safewords (GREEN, YELLOW, RED) without hesitation."\n\n`;
+                         script += `[${yourNameInput.value || 'Mercy'}]: "Does this proposal resonate with you, ${partnerNameInput.value || 'Partner'}?"`;
+
+                         outputScriptDiv.textContent = script;
+                     };
+
+                     const copyScript = () => {
+                         if (!outputScriptDiv || !copyFeedback) { console.error("Copy failed: Output or feedback element missing."); return; } 
+                         const outputText = outputScriptDiv.textContent;
+                         if (!outputText) { console.warn("Nothing to copy."); return; }
+                         
+                         // Use Clipboard API first
+                         if (navigator.clipboard && navigator.clipboard.writeText) {
+                              navigator.clipboard.writeText(outputText).then(() => {
+                                  copyFeedback.textContent = "Copied!";
+                              }).catch(err => {
+                                  console.error('Async clipboard copy failed:', err);
+                                  // Fallback using execCommand 
+                                  try {
+                                       const textArea = document.createElement("textarea");
+                                       textArea.value = outputText;
+                                        textArea.style.position = 'fixed'; textArea.style.top = '-9999px'; textArea.style.left = '-9999px';
+                                        document.body.appendChild(textArea);
+                                       textArea.select();
+                                       textArea.setSelectionRange(0, 99999); 
+                                       document.execCommand('copy');
+                                       copyFeedback.textContent = "Copied! (Fallback)";
+                                       document.body.removeChild(textArea);
+                                  } catch (execErr) {
+                                       console.error('execCommand fallback failed:', execErr);
+                                       copyFeedback.textContent = "Copy Failed.";
+                                  }
+                              });
+                          } else {
+                               // Fallback if Clipboard API not supported
+                               try {
+                                    const textArea = document.createElement("textarea");
+                                    textArea.value = outputText;
+                                     textArea.style.position = 'fixed'; textArea.style.top = '-9999px'; textArea.style.left = '-9999px';
+                                     document.body.appendChild(textArea);
+                                    textArea.select();
+                                    textArea.setSelectionRange(0, 99999);
+                                    document.execCommand('copy');
+                                    copyFeedback.textContent = "Copied! (Fallback)";
+                                    document.body.removeChild(textArea);
+                               } catch (execErr) {
+                                    console.error('execCommand fallback failed:', execErr);
+                                    copyFeedback.textContent = "Copy Failed.";
+                               }
+                          }
+                         setTimeout(() => { if(copyFeedback) copyFeedback.textContent = ""; }, 2500);
+                     };
+
+
+                     const toggleTickleArea = () => {
+                          if(!sceneTypeSelect || !tickleAreaSection) return; 
+                         if (sceneTypeSelect.value === 'tickle') {
+                             tickleAreaSection.classList.remove('hidden');
+                         } else {
+                             tickleAreaSection.classList.add('hidden');
+                             if (tickleAreaCheckboxes) { 
+                                 tickleAreaCheckboxes.forEach(checkbox => checkbox.checked = false);
+                             }
+                         }
+                     };
+
+                    // --- Attach Listeners ---
+                    generateBtn.addEventListener('click', generateScript);
+                    copyBtn.addEventListener('click', copyScript);
+                    sceneTypeSelect.addEventListener('change', toggleTickleArea);
+                    safewordsConfirmCheckbox.addEventListener('change', generateScript); 
+                    
+                    // --- Initial setup ---
+                    toggleTickleArea();
+                    generateScript(); 
+                    fusionToolInitialized = true; 
+                    console.log("Fusion Tool Initialized Successfully."); 
+
+                } catch(e) {
+                    console.error("CRITICAL ERROR initializing Fusion Tool:", e.message);
+                    const fusionToolButton = document.getElementById('fusion-tool-open-button'); 
+                    const fusionToolErrorMsg = document.getElementById('fusion-tool-error-msg'); 
+                    if (fusionToolButton) {
+                        fusionToolButton.disabled = true;
+                        fusionToolButton.textContent = "Tool Offline (Error)";
+                        fusionToolButton.style.opacity = '0.5';
+                        fusionToolButton.style.cursor = 'not-allowed';
+                        fusionToolButton.title = `Initialization failed: ${e.message}`; 
+                    }
+                     if(fusionToolErrorMsg) fusionToolErrorMsg.classList.remove('hidden'); 
+                } finally {
+                     console.log(`Fusion Tool Initialization Status: ${fusionToolInitialized ? 'Success' : 'Failed'}`);
+                }
+            }, 0); // End setTimeout for Fusion Tool
+
+
+            // --- Sorting Algorithm Tool Logic ---
+            setTimeout(() => {
+                 console.log("Attempting Sorting Algorithm Tool Initialization...");
+                 try {
+                     const sortingModal = document.getElementById('sorting-modal');
+                     if (!sortingModal) throw new Error("Sorting modal element (#sorting-modal) missing!");
+                     
+                     // Get elements within the sorting modal
+                     const subjectInput = sortingModal.querySelector('#subject-name');
+                     const assignmentInput = sortingModal.querySelector('#assignment-details');
+                     const enrichmentInput = sortingModal.querySelector('#enrichment-protocol'); // Use correct ID
+                     const deadlineInput = sortingModal.querySelector('#deadline');
+                     const deployBtn = sortingModal.querySelector('#deploy-assignment-btn');
+                     const copyFeedback = sortingModal.querySelector('#sorting-copy-feedback'); 
+                     
+                     const previewSubject = sortingModal.querySelector('#preview-subject');
+                     const previewSubject2 = sortingModal.querySelector('#preview-subject-2');
+                     const previewAssignment = sortingModal.querySelector('#preview-assignment');
+                     const previewEnrichment = sortingModal.querySelector('#preview-enrichment'); // Use correct ID
+                     const previewDeadline = sortingModal.querySelector('#preview-deadline');
+                     const previewPane = sortingModal.querySelector('.preview-pane'); 
+
+                     // Verify all elements exist
+                     if (!subjectInput || !assignmentInput || !enrichmentInput || !deadlineInput || !deployBtn ||
+                         !previewSubject || !previewSubject2 || !previewAssignment || !previewEnrichment || !previewDeadline || !previewPane || !copyFeedback) {
+                         throw new Error("One or more Sorting Algorithm elements not found.");
+                     }
+
+                     const updatePreview = () => {
+                         const subject = subjectInput.value || 'Subject';
+                         previewSubject.textContent = subject;
+                         previewSubject2.textContent = subject;
+                         previewAssignment.textContent = assignmentInput.value || '[Assignment details missing]';
+                         previewEnrichment.textContent = enrichmentInput.value || '[Enrichment protocol missing]'; 
+                         
+                         let deadlineText = 'the specified deadline';
+                         try {
+                              if (deadlineInput.value) {
+                                  // Parse date as YYYY-MM-DD and format nicely
+                                  const [year, month, day] = deadlineInput.value.split('-');
+                                  // Use UTC date constructor to avoid timezone issues with just YYYY-MM-DD
+                                  const date = new Date(Date.UTC(year, month - 1, day)); 
+                                  if (!isNaN(date)) { // Check if date is valid
+                                      deadlineText = date.toLocaleDateString(undefined, { timeZone: 'UTC', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                                  }
+                              }
+                         } catch (e) { console.error("Error parsing date:", e); }
+                         previewDeadline.textContent = deadlineText;
+                     };
+
+                     // Event listeners for live preview
+                     subjectInput.addEventListener('input', updatePreview);
+                     assignmentInput.addEventListener('input', updatePreview);
+                     enrichmentInput.addEventListener('input', updatePreview); 
+                     deadlineInput.addEventListener('change', updatePreview);
+
+                     // UPDATED Button functionality: Copy preview text to clipboard
+                     deployBtn.addEventListener('click', () => {
+                         // Generate the text from the preview elements directly
+                         const subject = previewSubject.textContent;
+                         const assignment = previewAssignment.textContent;
+                         const enrichment = previewEnrichment.textContent;
+                         const deadline = previewDeadline.textContent;
+
+                         // Construct the text to copy, mimicking the preview format
+                         const assignmentText = `TO: ${subject}\nFROM: The Governess\nRE: Coursework Assignment\n\n---\n\n${subject},\n\nYou have the following task for this cycle:\n\n${assignment}\n\nYour work must adhere to the following Enrichment Protocol: ${enrichment}\n\nDeposit your completed work in the assignment submission box no later than ${deadline}.\n\nDo not disappoint me.\n\n-- Governess`;
+
+                         console.log("Attempting to copy:", assignmentText); // Debug: Log text to copy
+
+                         // Use robust copy logic (same as Fusion Tool)
+                         if (navigator.clipboard && navigator.clipboard.writeText) {
+                              navigator.clipboard.writeText(assignmentText).then(() => {
+                                  copyFeedback.textContent = "Assignment copied!";
+                              }).catch(err => {
+                                  console.error('Async clipboard copy failed:', err);
+                                  copyFeedback.textContent = "Copy Failed."; // Show simple failure on error
+                                  // Optional: Add fallback here if needed, but modern browsers support clipboard API
+                              });
+                          } else {
+                               console.error('Clipboard API not available. Cannot copy.'); // Log specific error
+                               copyFeedback.textContent = "Copy Failed (API N/A).";
+                          }
+                          setTimeout(() => { if(copyFeedback) copyFeedback.textContent = ""; }, 2500);
+                     });
+
+                     // Initial preview update
+                     updatePreview();
+                     console.log("Sorting Algorithm Tool Initialized Successfully.");
+
+                 } catch(e) {
+                      console.error("CRITICAL ERROR initializing Sorting Algorithm Tool:", e.message);
+                      // Optionally disable the button for this tool as well
+                      const sortingToolButton = document.querySelector('[data-modal-target="sorting-modal"]');
+                      if (sortingToolButton) {
+                           sortingToolButton.disabled = true;
+                           sortingToolButton.textContent = "Tool Offline (Error)";
+                           sortingToolButton.style.opacity = '0.5';
+                           sortingToolButton.style.cursor = 'not-allowed';
+                           sortingToolButton.title = `Initialization failed: ${e.message}`;
+                      }
+                 }
+            }, 50); // Slightly longer delay just in case
+
+        }); // End DOMContentLoaded
+    </script>
+</body>
+</html>
+

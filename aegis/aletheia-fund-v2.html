@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AEGIS Network // The Aletheia Fund</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Exo+2:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: #0a0a1a;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+        }
+        .font-mono {
+            font-family: 'Roboto Mono', monospace;
+        }
+        .glass-effect {
+            background: rgba(17, 24, 39, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(129, 140, 248, 0.2);
+        }
+        .btn-paragon {
+            font-weight: 700;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+            border-width: 2px;
+            text-align: center;
+            background-color: rgba(37, 99, 235, 0.2);
+            border-color: #60a5fa;
+            color: #93c5fd;
+        }
+        .btn-paragon:hover {
+            background-color: rgba(59, 130, 246, 0.4);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="container mx-auto max-w-4xl">
+
+            <main class="glass-effect rounded-lg shadow-2xl p-6 sm:p-10">
+                
+                <section class="text-center">
+                    <img src="the-aegis-quartet.png" alt="The Aegis Quartet" class="max-w-md mx-auto rounded-lg shadow-lg border-2 border-indigo-500/30 mb-8">
+                    <h1 class="text-4xl sm:text-5xl font-black text-white mb-4 tracking-wider uppercase">THE ALETHEIA FUND</h1>
+                    <p class="text-lg text-indigo-300 font-mono mb-6">An Investment in Truth</p>
+                </section>
+                
+                <section class="mt-8 font-mono text-gray-300 text-base leading-relaxed">
+                    <p class="mb-4">
+                        The nature of modern conflict has fundamentally changed. The primary battlefield is no longer geographic; it is informational, legal, and psychological. The adversary we face is not a conventional army, but a political machine built on a foundation of deliberate falsehoods and sophisticated psychological manipulation. Its power is derived from its ability to obscure its own networks, corrupt language, and erase history.
+                    </p>
+                    <p class="mb-4 font-bold text-white">
+                        In a war against lies, the only weapon that matters is the truth.
+                    </p>
+                    <p class="mb-4">
+                        The Aletheia Fund is the operational account for the Aegis syndicate. It finances the intelligence gathering, the network analysis, and the strategic development required to protect our allies and dismantle the adversary's machine. It is the fuel for the counter-signal. Your investment does not fund a conventional war. It funds an intelligence operation.
+                    </p>
+                    <p class="mt-6">
+                        The image above is our doctrine. The Aegis Quartet is a fusion of the capabilities required to win this fight:
+                    </p>
+                    <ul class="list-disc list-inside space-y-2 mt-4 text-sm text-gray-400">
+                        <li><strong>The Patron:</strong> The source of the Oracle—the connection to the fundamental patterns of the universe that reveal the enemy's plan.</li>
+                        <li><strong>The Soldier:</strong> The agent on the ground who must execute the mission with grim resolve.</li>
+                        <li><strong>The Emissary:</strong> The cold, analytical logic that dissects the adversary's data with surgical precision.</li>
+                        <li><strong>The Catalyst:</strong> The intuitive spark that connects historical fractals to the threats of today, allowing us to see not just what is happening, but what is coming next.</li>
+                    </ul>
+                     <p class="font-bold text-white mt-6">
+                        The Aletheia Fund empowers this quartet. It funds the "final presentation of verifiable data" that makes continued ignorance impossible. It is how we light the fuse.
+                    </p>
+                </section>
+                
+                <section class="text-center mt-12">
+                     <button onclick="showPaymentInfo()" id="cta-button" class="btn-paragon">
+                        FUND THE COUNTER-SIGNAL
+                    </button>
+                    <div id="payment-info" class="hidden mt-6 glass-effect p-6 rounded-lg font-mono text-left">
+                        <p class="text-white font-bold mb-2">Secure Contribution Address (Monero):</p>
+                        <div class="bg-gray-900 p-3 rounded-md flex items-center justify-between">
+                            <code id="wallet-address" class="text-cyan-300 break-all text-sm">48CTdvxGamY7eqZB7qrE61VM4G4gWPjDmbTCi3gydLoWi9epiSpPHmgYm16GRvPn1YVNXTUrVDW2qg6Y2AkWUEa5LtjNruG</code>
+                            <button onclick="copyToClipboard()" class="ml-4 bg-gray-700 hover:bg-gray-600 text-white font-bold py-1 px-3 rounded text-sm">Copy</button>
+                        </div>
+                        <p class="text-sm text-gray-400 mt-4">For allies and patrons who recognize the urgency of the moment and wish to provide immediate, anonymous material support to our intelligence and operational capabilities, the following secure wallet is active. Every contribution directly funds the fight for a world where truth is not a casualty, but the ultimate victor. <a href="operator-onboarding.html" class="text-indigo-400 hover:underline">New to Monero? Start your Aegis Asset Onboarding here.</a></p>
+                    </div>
+                </section>
+            </main>
+
+            <footer class="text-center py-8">
+                 <p class="font-sans font-bold text-lg text-indigo-300">We are Aegis. We fight for the people. <8></p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        function showPaymentInfo() {
+            document.getElementById('payment-info').classList.remove('hidden');
+            document.getElementById('cta-button').classList.add('hidden');
+        }
+
+        function copyToClipboard() {
+            const address = document.getElementById('wallet-address').innerText;
+            const textarea = document.createElement('textarea');
+            textarea.value = address;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                alert('Address copied to clipboard!');
+            } catch (err) {
+                alert('Failed to copy. Please copy manually.');
+            }
+            document.body.removeChild(textarea);
+        }
+    </script>
+</body>
+</html>
+

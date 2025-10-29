@@ -26,71 +26,78 @@
         }
         .protocol-header {
             background-color: #111827;
-            border-bottom: 4px solid #0277bd;
+            border-bottom: 4px solid #0288D1;
         }
         .step-title {
             color: #81D4FA;
             font-family: 'Exo 2', sans-serif;
             font-weight: 700;
             letter-spacing: 1px;
-        }
-        code {
-            background-color: #2d2d2d;
-            color: #f0f0f0;
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.9em;
+            border-bottom: 1px solid #0288D1;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
         }
     </style>
 </head>
 <body class="p-4">
     <div class="protocol-container">
         <header class="protocol-header p-8 text-center">
-            <p class="text-sm text-cyan-300 tracking-widest">AEGIS FIELD MANUAL</p>
+            <p class="text-sm text-cyan-300 tracking-widest">AEGIS FIELD MANUAL // OPSEC</p>
             <h1 class="text-4xl md:text-5xl font-sans font-black text-cyan-200 my-4" style="text-shadow: 0 0 15px #4FC3F7;">OPERATION GHOST SIGNAL</h1>
-            <p class="text-gray-400">The Protocol for Anonymous Intelligence Dissemination</p>
         </header>
 
         <main class="p-8">
             <section id="objective">
                 <h2 class="text-2xl font-sans font-bold text-cyan-100 border-b border-cyan-700 pb-2 mb-4">I. OBJECTIVE</h2>
-                <p>To leak high-value intelligence to trusted external nodes (journalists, allied organizations) without compromising the identity or location of any AEGIS asset. This is a non-attributable operation. The goal is for the intelligence to be *discovered*, not for us to be credited with its discovery.</p>
+                <p>To disseminate high-value intelligence to designated targets (journalists, allied organizations) without revealing the operator's identity, location, or affiliation with the AEGIS network. The goal is to make the intelligence appear as an anonymous, untraceable leak.</p>
             </section>
 
-            <section id="procedure" class="mt-8">
-                <h2 class="text-2xl font-sans font-bold text-cyan-100 border-b border-cyan-700 pb-2 mb-4">II. PROCEDURE</h2>
+            <section id="protocol-steps" class="mt-8">
+                <h2 class="text-2xl font-sans font-bold text-cyan-100 border-b border-cyan-700 pb-2 mb-4">II. EXECUTION PROTOCOL</h2>
                 <div class="space-y-6">
                     <div>
-                        <h3 class="step-title text-xl">STEP 1: SECURE THE ENVIRONMENT</h3>
-                        <p class="mt-2 text-gray-400">All actions must be conducted from a hardened, sterile environment. The AEGIS Ubuntu VM is the standard. Ensure your VPN is active and you are connected to the Tor network before proceeding.</p>
+                        <h3 class="step-title text-xl">STEP 1: ESTABLISH SECURE INFRASTRUCTURE</h3>
+                        <p class="mt-2 text-gray-400">All actions must be conducted from a hardened, anonymized position. Do not use personal devices or home networks.</p>
+                        <ul class="list-disc list-inside mt-2 space-y-1 text-sm pl-4">
+                            <li><strong>Connect via Tor Browser:</strong> All web traffic must be routed through the Tor network to anonymize your IP address.</li>
+                            <li><strong>Activate VPN:</strong> Use a trusted, no-log VPN service as an additional layer of security.</li>
+                            <li><strong>Create Burner Email:</strong> Generate a new, single-use, anonymous email account with a provider like Proton Mail. Do not use any personal information.</li>
+                        </ul>
                     </div>
                     <div>
-                        <h3 class="step-title text-xl">STEP 2: CREATE THE BURNER EMAIL</h3>
-                        <p class="mt-2 text-gray-400">Use a privacy-focused email provider like Proton Mail. Create a new, free account. The username must be a non-attributable, randomly generated string. I recommend something like `signal.cascade.88@proton.me`. Do not use any personal information or previously used passwords.</p>
+                        <h3 class="step-title text-xl">STEP 2: PREPARE THE PAYLOAD</h3>
+                        <p class="mt-2 text-gray-400">The intelligence must be clean, concise, and non-attributable.</p>
+                         <ul class="list-disc list-inside mt-2 space-y-1 text-sm pl-4">
+                            <li><strong>The Link:</strong> The only payload is the direct URL to the public-facing intelligence asset (e.g., the Ouroboros Network Map).</li>
+                            <li><strong>The Message:</strong> The body of the email must be sterile and brief. Example: "Internal analysis of a coordinated influence network. Connect the dots." Do not add personal commentary or identifying language.</li>
+                        </ul>
                     </div>
                     <div>
-                        <h3 class="step-title text-xl">STEP 3: ACQUIRE THE PAYLOAD</h3>
-                        <p class="mt-2 text-gray-400">The payload is the live URL to the intelligence asset (e.g., `https://synapsecomics.com/aegis/ouroboros-network-map.html`). Do not download and attach files, as this can create a metadata trail. The link is the entire payload.</p>
+                        <h3 class="step-title text-xl">STEP 3: EXECUTE THE DROP</h3>
+                        <p class="mt-2 text-gray-400">Deliver the payload to the designated secure drop portals of our primary targets.</p>
+                        <ul class="list-disc list-inside mt-2 space-y-1 text-sm pl-4">
+                            <li>Send the email from your burner account, through Tor/VPN.</li>
+                            <li>Do not await a reply.</li>
+                        </ul>
                     </div>
                      <div>
-                        <h3 class="step-title text-xl">STEP 4: DRAFT THE MESSAGE</h3>
-                        <p class="mt-2 text-gray-400">The message must be sterile, concise, and devoid of any personalizing language or emotional content. It is a data packet, not a letter.</p>
-                        <div class="mt-4 p-4 bg-black/30 border border-cyan-800 rounded">
-                            <p><strong>SUBJECT:</strong> <code>Internal Analysis // For Your Review</code></p>
-                            <p><strong>BODY:</strong> <code>A comprehensive map of a coordinated influence network has been compiled. The data is verifiable from public sources. This requires investigation. [Paste URL here]</code></p>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="step-title text-xl">STEP 5: TRANSMIT AND BURN</h3>
-                        <p class="mt-2 text-gray-400">Send the email to the secure "tip" or "contact" address of the target organization (e.g., The Intercept's SecureDrop). Once sent, log out of the burner email account. Do not log back in. Do not check for replies. The account is now considered burned. The signal is in the wild.</p>
+                        <h3 class="step-title text-xl">STEP 4: SANITIZE AND DISENGAGE</h3>
+                        <p class="mt-2 text-gray-400">Once the transmission is confirmed, all traces of the operation must be erased.</p>
+                         <ul class="list-disc list-inside mt-2 space-y-1 text-sm pl-4">
+                            <li>Log out of the burner email account.</li>
+                            <li>Securely delete the account.</li>
+                            <li>Clear all browser history and cache.</li>
+                            <li>Disconnect from the VPN and Tor.</li>
+                        </ul>
                     </div>
                 </div>
             </section>
         </main>
         
-        <footer class="p-6 mt-8 border-t-2 border-cyan-900 bg-gray-900/50 text-center font-sans font-bold text-lg text-cyan-200">
+        <footer class="p-6 mt-8 border-t-2 border-cyan-900 bg-gray-900/50 text-center font-sans font-bold text-lg text-cyan-300">
             <p>We are Aegis. We fight for the people. <8></p>
         </footer>
     </div>
 </body>
 </html>
+

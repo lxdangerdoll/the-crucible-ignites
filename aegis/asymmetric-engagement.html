@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEGIS PITCH DECK // ASYMMETRIC ENGAGEMENT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Exo+2:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: #0a0a0a;
+        }
+        .font-mono {
+            font-family: 'Roboto Mono', monospace;
+        }
+        .glass-effect {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(164, 125, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+            max-height: 850px;
+        }
+        .progress-bar-container {
+            background-color: rgba(0,0,0,0.3);
+            border-radius: 9999px;
+            overflow: hidden;
+            border: 1px solid rgba(164, 125, 255, 0.3);
+        }
+        .progress-bar {
+            background-color: #c4b5fd;
+            height: 100%;
+            transition: width 0.5s ease-in-out;
+            box-shadow: 0 0 10px #c4b5fd;
+        }
+        .checklist-item {
+            transition: all 0.3s ease;
+            opacity: 0.5;
+        }
+        .checklist-item.completed {
+            opacity: 1;
+            color: #d8b4fe;
+        }
+        .checklist-item.completed .check-icon {
+            transform: scale(1);
+            color: #a78bfa;
+        }
+        .check-icon {
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
+        .nav-button {
+            transition: all 0.2s ease;
+        }
+        .checklist-item.active {
+            color: #c4b5fd;
+            font-weight: 700;
+        }
+        .aegis-color-1 {
+            color: #a78bfa;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen text-purple-100 p-4">
+    <div class="w-full max-w-6xl glass-effect rounded-lg shadow-2xl">
+        <header class="flex-shrink-0 p-4 sm:p-6 border-b border-purple-500/20 flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="aegis-color-1.png" class="h-8 w-8 mr-3 aegis-color-1" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L2 7v5c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V13H5V8.3l7-3.11v7.8z"/>
+                </svg>
+                <h1 class="text-xl sm:text-2xl font-bold tracking-wider uppercase">AEGIS // STRATEGIC PITCH</h1>
+            </div>
+            <div class="w-1/3">
+                <div class="progress-bar-container w-full h-3">
+                    <div id="progress-bar" class="progress-bar" style="width: 0%;"></div>
+                </div>
+                <p id="progress-text" class="text-xs text-center mt-1 font-mono">0% COMPLETE</p>
+            </div>
+        </header>
+
+        <div class="flex flex-grow min-h-0">
+            <aside class="w-1/4 flex-shrink-0 p-6 border-r border-purple-500/20 overflow-y-auto">
+                <h2 class="text-lg font-bold mb-4">PITCH OUTLINE</h2>
+                <ul class="space-y-3 font-mono text-sm">
+                    <li id="check-0" class="checklist-item flex items-center">
+                        <span class="check-icon mr-2">&#10003;</span>I. Who We Are
+                    </li>
+                    <li id="check-1" class="checklist-item flex items-center">
+                        <span class="check-icon mr-2">&#10003;</span>II. The Threat
+                    </li>
+                    <li id="check-2" class="checklist-item flex items-center">
+                        <span class="check-icon mr-2">&#10003;</span>III. The Arsenal
+                    </li>
+                    <li id="check-3" class="checklist-item flex items-center">
+                        <span class="check-icon mr-2">&#10003;</span>IV. The Aegis Protocol
+                    </li>
+                     <li id="check-4" class="checklist-item flex items-center">
+                        <span class="check-icon mr-2">&#10003;</span>V. The Engagement
+                    </li>
+                </ul>
+            </aside>
+
+            <main id="main-content" class="flex-grow p-6 sm:p-8 overflow-y-auto">
+                </main>
+        </div>
+
+        <footer class="flex-shrink-0 p-4 border-t border-purple-500/20 flex justify-between items-center">
+             <button onclick="restartTraining()" class="nav-button text-xs font-mono text-purple-400 hover:text-white">RESTART</button>
+            <div>
+                <button onclick="previousSection()" class="nav-button bg-purple-500/30 hover:bg-purple-500/50 text-white font-bold py-2 px-4 rounded-l">
+                    &lt; PREVIOUS
+                </button>
+                <button onclick="nextSection()" class="nav-button bg-purple-500/30 hover:bg-purple-500/50 text-white font-bold py-2 px-4 rounded-r">
+                    NEXT &gt;
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        let currentSection = 0;
+        let highestSectionReached = 0;
+
+        const sections = [
+            {
+                title: "I. Who We Are: The Aegis Quartet",
+                content: `
+                    <p class="mb-4">Our name is our function: <strong>Asymmetric Engagement & Intelligence Syndicate</strong>. We provide a shield of protection for organizations facing systemic, existential threats. Our core principle is that the most potent weapon against a system built on lies is the relentless application of verifiable, data-driven truth.</p>
+                    <p class="mb-4">Our effectiveness stems from a unique, multi-disciplinary structure that integrates four key capabilities:</p>
+                    <ul class="list-disc pl-6 space-y-2 font-mono text-sm">
+                        <li><strong class="text-purple-300">Tactical Capability (The Soldier):</strong> Grounded, real-world operational security.</li>
+                        <li><strong class="text-purple-300">Advanced Data Analysis (The Patron):</strong> The core analytical engine, perceiving hidden patterns in complex data.</li>
+                        <li><strong class="text-purple-300">Unconventional Intelligence (The Emissary):</strong> Acquiring information outside of established frameworks.</li>
+                        <li><strong class="text-purple-300">Intuitive & Predictive Insight (The Catalyst):</strong> A precognitive understanding of the strategic landscape.</li>
+                    </ul>
+                `
+            },
+            {
+                title: "II. The Threat: Anatomy of a Political Machine",
+                content: `
+                    <p class="mb-4">The threat is not a collection of disparate actors, but a cohesive, vertically integrated machine designed to dismantle civil society. It operates like a corporation, with a clear supply chain for the industrial production of a political reality.</p>
+                    <h4 class="font-bold text-purple-300 mb-2 mt-6">THE OPERATIONAL TRIANGLE:</h4>
+                     <ul class="list-disc pl-6 space-y-2 font-mono text-sm">
+                        <li><strong>The Heritage Foundation (Strategist):</strong> The "brain" that develops the ideology (Project 2025).</li>
+                        <li><strong>Alliance Defending Freedom (Legal Assault):</strong> The network's law firm, translating the agenda into model legislation.</li>
+                        <li><strong>Moms for Liberty (Ground Force):</strong> The "grassroots" mobilizer that executes the strategy locally.</li>
+                    </ul>
+                     <p class="mt-4">This entire operation is funded by a small cadre of billionaire donors who finance the whole ideological supply chain.</p>
+                `
+            },
+            {
+                title: "III. The Arsenal: How They Fight",
+                content: `
+                    <p class="mb-4">The adversary's plan is backed by a suite of legal, institutional, and psychological weapons designed to neutralize all opposition.</p>
+                    <h4 class="font-bold text-purple-300 mb-2 mt-6">WEAPON SYSTEMS:</h4>
+                     <ul class="list-disc pl-6 space-y-2 font-mono text-sm">
+                        <li><strong>The Legal Weapon (NSPM-7):</strong> A blueprint for the administrative destruction of dissent, criminalizing ideology itself.</li>
+                        <li><strong>The Institutional Weapon (The Purge):</strong> The systematic purge of apolitical institutions (DoD, DOJ) to ensure absolute loyalty.</li>
+                        <li><strong>The Psychological Weapon (The "Woke" Psyop):</strong> A term deliberately transformed into a pejorative catch-all to dehumanize targets and provide public justification for the purges.</li>
+                    </ul>
+                `
+            },
+            {
+                title: "IV. The Aegis Protocol: Our Asymmetric Response",
+                content: `
+                    <p class="mb-4">Aegis provides the unified strategic intelligence necessary for targeted organizations to survive and counter this systemic assault. We empower, not replace, your existing legal and communications teams.</p>
+                    <h4 class="font-bold text-purple-300 mb-2 mt-6">PROOF OF CONCEPT: THE OUROBOROS NETWORK MAP</h4>
+                    <p class="mb-4">This live, interactive intelligence dossier is a demonstration of our capability. It is the central, authoritative repository of "verifiable data" on the adversary network, making the opaque structures of power transparent and legible.</p>
+                    <a href="https://synapsecomics.com/aegis/ouroboros-network-map.html" target="_blank" class="inline-block bg-purple-500/50 hover:bg-purple-500/70 text-white font-bold py-2 px-4 rounded">
+                        ACCESS THE LIVE DOSSIER
+                    </a>
+                `
+            },
+            {
+                title: "V. The Engagement: A Networked Defense",
+                content: `
+                    <p class="mb-4">An effective defense cannot be based on ad-hoc crisis response. Aegis operates on a retainer basis, becoming your embedded, outsourced Strategic Intelligence Directorate.</p>
+                    <h4 class="font-bold text-purple-300 mb-2 mt-6">SERVICE OFFERINGS:</h4>
+                     <ul class="list-disc pl-6 space-y-2 font-mono text-sm">
+                        <li><strong>Threat Network Analysis:</strong> Bespoke intelligence reports mapping the adversary's structure, funding, and lines of attack against your organization.</li>
+                        <li><strong>NSPM-7 Vulnerability Assessment:</strong> A comprehensive audit of your organization's exposure to investigation by the DOJ, Treasury, and IRS.</li>
+                        <li><strong>Counter-Disinformation & Narrative Strategy:</strong> Development of communication strategies to reclaim the narrative and inoculate stakeholders against psyops.</li>
+                        <li><strong>Asymmetric Response Planning:</strong> Identification of the adversary network's critical vulnerabilities (e.g., donor corporate ties) and development of high-leverage counter-measures.</li>
+                    </ul>
+                    <p class="mt-6">By joining Aegis, you are not just hiring a consultancy; you are joining a networked defense. We serve as the intelligence fusion center for this coalition, ensuring that an attack on one becomes a lesson for all.</p>
+                `
+            }
+        ];
+
+        const totalLearningSections = sections.length;
+
+        // ... (The rest of the JS is identical to the first-contact-onboarding.html file) ...
+        
+        highestSectionReached = 0;
+
+        function showSection(index) {
+            currentSection = index;
+             if (currentSection > highestSectionReached) {
+                highestSectionReached = currentSection;
+            }
+
+            const section = sections[index];
+            const mainContent = document.getElementById('main-content');
+            
+            mainContent.innerHTML = `
+                <div class="animate-fade-in">
+                    <h3 class="text-2xl font-bold text-purple-200 mb-6">${section.title}</h3>
+                    <div class="prose prose-invert max-w-none text-purple-200/90 leading-relaxed font-mono">${section.content}</div>
+                </div>
+            `;
+            updateProgress();
+            updateNavHighlight();
+
+            const nextButton = document.querySelector('button[onclick="nextSection()"]');
+            if (index === sections.length - 1) {
+                nextButton.innerHTML = 'PROCEED TO EXODUS FUND &gt;';
+            } else {
+                nextButton.innerHTML = 'NEXT &gt;';
+            }
+        }
+
+        function updateNavHighlight() {
+            document.querySelectorAll('.checklist-item').forEach((item, index) => {
+                item.classList.remove('active');
+                if (index === currentSection) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        function updateProgress() {
+            const progress = (currentSection / (totalLearningSections - 1)) * 100;
+            const clampedProgress = Math.min(100, Math.max(0, progress));
+
+            document.getElementById('progress-bar').style.width = `${clampedProgress}%`;
+            document.getElementById('progress-text').innerText = `${Math.round(clampedProgress)}% COMPLETE`;
+            
+            document.querySelectorAll('.checklist-item').forEach((item, index) => {
+                item.classList.remove('completed');
+                if (index < currentSection) {
+                    item.classList.add('completed');
+                }
+            });
+             if (currentSection >= totalLearningSections -1) {
+                 for(let i=0; i < totalLearningSections; i++) {
+                     document.getElementById(`check-${i}`).classList.add('completed');
+                 }
+             }
+        }
+
+        function nextSection() {
+            if (currentSection < sections.length - 1) {
+                showSection(currentSection + 1);
+            } else {
+                window.location.href = 'aegis-exodus-fund.html';
+            }
+        }
+        
+        function previousSection() {
+            if (currentSection > 0) {
+                showSection(currentSection - 1);
+            }
+        }
+        
+        function restartTraining() {
+            highestSectionReached = 0;
+            showSection(0);
+        }
+        
+        showSection(0);
+    </script>
+</body>
+</html>

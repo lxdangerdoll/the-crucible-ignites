@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synapse Comics #001 - The Stranding</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --violet: #6b2bd9;
+            --starlight: #d3a3ff;
+            --ink: #0b0b0f;
+            --paper: #0e0e14;
+            --glow: #ff66cc;
+            --muted: #666676;
+            --bright: #e8e8f2;
+            --cyan-glow: #00d4ff;
+            --green-spark: #4ade80;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            background: var(--paper);
+            color: var(--bright);
+            font-family: 'Inter', system-ui, sans-serif;
+            overflow: hidden;
+        }
+
+        /* HUD Navigation */
+        .hud {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 100;
+            opacity: 0.9;
+        }
+
+        .synapse-logo {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--violet), var(--glow));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(107, 43, 217, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(107, 43, 217, 0); }
+        }
+
+        .issue-badge {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-family: 'JetBrains Mono', monospace;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .issue-badge:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--glow);
+        }
+
+        /* Page System */
+        .page {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .page.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: all;
+        }
+
+        /* Landing Page */
+        .landing-frame {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.9));
+            border: 3px solid var(--glow);
+            border-radius: 24px;
+            padding: 3rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            max-height: calc(100vh - 4rem);
+            overflow: auto;
+        }
+
+        .landing-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--violet), var(--glow), var(--violet));
+            animation: scan 3s infinite;
+        }
+
+        @keyframes scan {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .masthead {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, var(--glow), var(--starlight), var(--cyan-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+        }
+
+        .issue-subtitle {
+            font-size: 1.25rem;
+            color: var(--starlight);
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .datapad-mockup {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            max-height: min(70vh, 640px);
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 2px solid var(--cyan-glow);
+            border-radius: 12px;
+            margin: 2rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .datapad-content {
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--cyan-glow);
+            line-height: 1.6;
+            opacity: 0.8;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .datapad-content img {
+            max-width: 100%;
+            max-height: min(65vh, 620px);
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .datapad-glitch {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: var(--glow);
+            font-size: 0.8rem;
+            opacity: 0.6;
+            animation: flicker 2s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 50% { opacity: 0.6; }
+            100% { opacity: 0.2; }
+        }
+
+        .begin-transmission {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, var(--violet), var(--glow));
+            color: white;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(107, 43, 217, 0.3);
+            cursor: pointer;
+            border: none;
+        }
+
+        .begin-transmission:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(107, 43, 217, 0.5);
+        }
+
+        /* Tumblr-style Article Page */
+        .article-frame {
+            max-width: 650px;
+            width: 100%;
+            background: #1a1a1a;
+            border-radius: 0;
+            padding: 0;
+            box-shadow: none;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .tumblr-header {
+            background: #00cf35;
+            color: white;
+            padding: 1rem 1.5rem;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tumblr-content {
+            padding: 1.5rem;
+            background: white;
+            color: #333;
+        }
+
+        .tumblr-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #333;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
+
+        .tumblr-byline {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .tumblr-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+
+        .tumblr-text:first-child {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .tumblr-text:first-child:first-letter {
+            font-size: 4em;
+            float: left;
+            line-height: 0.8;
+            margin: 0.1em 0.1em 0 0;
+            color: var(--glow);
+        }
+
+        /* Captain's Log - Personal/Intimate */
+        .captain-frame {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--cyan-glow);
+            border-radius: 8px;
+            padding: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            position: relative;
+        }
+
+        .desktop-bg {
+            position: absolute;
+            inset: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23001122" width="100" height="100"/><rect fill="%23002244" x="0" y="85" width="100" height="15"/></svg>');
+            opacity: 0.3;
+            border-radius: 8px;
+        }
+
+        .captain-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-badge {
+            background: var(--green-spark);
+            color: #000;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .adrift-glow {
+            color: var(--cyan-glow);
+            text-shadow: 0 0 10px var(--cyan-glow);
+            animation: glow-pulse 3s infinite ease-in-out;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .captain-text {
+            color: var(--bright);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .captain-signature {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--cyan-glow);
+            font-size: 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* TTRPG Page */
+        .ttrpg-frame {
+            max-width: 900px;
+            width: 100%;
+            background: linear-gradient(135deg, #2d1b4e, #1a1a2e);
+            border: 2px solid var(--violet);
+            border-radius: 16px;
+            padding: 2.5rem;
+            position: relative;
+        }
+
+        .ttrpg-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--violet), var(--glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .scouts-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .scout-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .scout-card:hover {
+            border-color: var(--glow);
+            transform: translateY(-5px);
+        }
+
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #333;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .github-link:hover {
+            background: #555;
+            transform: translateY(-2px);
+        }
+
+        .generate-mission-btn {
+            background: linear-gradient(135deg, var(--green-spark), #10b981);
+            color: #000;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .generate-mission-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(74, 222, 128, 0.3);
+        }
+
+        #mission-spark-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid var(--green-spark);
+            border-radius: 8px;
+            font-style: italic;
+            display: none;
+            color: var(--bright);
+        }
+
+        /* Demo Page */
+        .demo-frame {
+            max-width: 800px;
+            width: 100%;
+            background: #000;
+            border: 2px solid var(--cyan-glow);
+            border-radius: 12px;
+            padding: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .terminal {
+            background: #000;
+            border: 1px solid var(--cyan-glow);
+            border-radius: 8px;
+            padding: 2rem;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .typing-text {
+            color: var(--cyan-glow);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: typewriter 2s steps(40) 1s forwards;
+        }
+
+        @keyframes typewriter {
+            from { width: 0; opacity: 1; }
+            to { width: 100%; opacity: 1; }
+        }
+
+        .cursor {
+            display: inline-block;
+            background: var(--cyan-glow);
+            width: 2px;
+            height: 1.5em;
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .omelas-prompt {
+            font-size: 1.5rem;
+            color: var(--glow);
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        /* Final CTA Page */
+        .cta-frame {
+            max-width: 800px;
+            width: 100%;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(22, 33, 62, 0.95));
+            border: 2px solid var(--starlight);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            max-height: calc(100vh - 4rem);
+            overflow: auto;
+            overscroll-behavior: contain;
+        }
+
+        .sanctuary-image {
+            width: 100%;
+            max-width: 400px;
+            height: 250px;
+            background: linear-gradient(135deg, #2d1b4e, #1a1a2e);
+            border: 1px solid var(--starlight);
+            border-radius: 12px;
+            margin: 2rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-style: italic;
+            color: var(--starlight);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sanctuary-image::before {
+            content: '👥🦍🎲';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            opacity: 0.7;
+        }
+
+        .funding-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .funding-link {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .patreon { background: #ff424d; color: white; }
+        .kofi { background: #13c3ff; color: white; }
+        .kickstarter { background: #05ce78; color: white; }
+        .github { background: #333; color: white; }
+
+        .funding-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .manifesto-quote {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--starlight);
+            margin: 2rem 0;
+            line-height: 1.5;
+            border-left: 3px solid var(--starlight);
+            padding-left: 1rem;
+        }
+
+        /* Frizzlebot Popup */
+        .popup-ad {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(135deg, #ff6b9d, #ffa726, #66d9ef);
+            color: #1a1a1a;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.6);
+            z-index: 200;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            max-width: 450px;
+            text-align: center;
+            animation: rainbow-border 2s infinite linear;
+        }
+
+        @keyframes rainbow-border {
+            0% { box-shadow: 0 0 30px #ff6b9d; }
+            33% { box-shadow: 0 0 30px #ffa726; }
+            66% { box-shadow: 0 0 30px #66d9ef; }
+            100% { box-shadow: 0 0 30px #ff6b9d; }
+        }
+
+        .popup-ad.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #1a1a1a;
+            font-weight: bold;
+        }
+
+        .popup-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+
+        .popup-text {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .popup-button {
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .popup-button:hover {
+            background: #333;
+            transform: scale(1.05);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--bright);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-size: 1.2rem;
+        }
+
+        .nav-btn:hover {
+            background: var(--violet);
+            border-color: var(--violet);
+            transform: scale(1.1);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .nav-btn:disabled:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Interactive Elements */
+        .lore-keyword {
+            color: var(--glow);
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lore-keyword:hover {
+            color: var(--starlight);
+            text-shadow: 0 0 5px var(--glow);
+        }
+
+        .lore-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(26, 26, 46, 0.95);
+            border: 2px solid var(--glow);
+            border-radius: 12px;
+            padding: 1.5rem;
+            max-width: 400px;
+            z-index: 150;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+        }
+
+        .lore-popup.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .lore-popup h3 {
+            color: var(--glow);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .lore-popup p {
+            color: var(--bright);
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .lore-popup button {
+            background: var(--glow);
+            color: #1a1a1a;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Glitch Effects */
+        .glitch-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0;
+            background: linear-gradient(180deg, transparent, var(--starlight), transparent);
+            transform: translateY(-100vh);
+            transition: all 0.4s ease;
+            z-index: 50;
+        }
+
+        .glitch-overlay.active {
+            opacity: 0.15;
+            transform: translateY(100vh);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .page {
+                padding: 1rem;
+            }
+            
+            .landing-frame, .article-frame, .captain-frame, .ttrpg-frame, .demo-frame, .cta-frame {
+                padding: 1.5rem;
+                margin: 0.5rem;
+            }
+            
+            .funding-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .scouts-preview {
+                grid-template-columns: 1fr;
+            }
+
+            .nav {
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .masthead {
+                font-size: 2rem;
+            }
+        }
+
+        /* Let the landing frame scroll if needed */
+        .landing-frame {
+            max-height: calc(100vh - 4rem);
+            overflow: auto;
+        }
+
+        /* Cover container fits viewport; height is content-driven */
+        .datapad-mockup {
+            height: auto;                    /* was fixed 300px */
+            max-height: min(70vh, 640px);    /* keep within window */
+            overflow: hidden;
+        }
+
+        /* Make the cover image scale to the window */
+        .datapad-content {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .datapad-content img {
+            max-width: 100%;
+            max-height: min(65vh, 620px);
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* Final CTA: allow internal scrolling if taller than viewport */
+        .page[data-page="5"] .cta-frame {
+            max-height: calc(100vh - 4rem);
+            overflow: auto;
+            overscroll-behavior: contain;
+        }
+
+        /* Small-height viewports: tighten spacing a bit */
+        @media (max-height: 720px) {
+            .landing-frame, .cta-frame { padding: 2rem; }
+            .masthead { font-size: clamp(1.6rem, 5vw, 2.6rem); }
+        }
+    </style>
+</head>
+<body>
+    <!-- HUD -->
+    <div class="hud">
+        <div class="synapse-logo" onclick="goToPage(0)">⚡</div>
+        <div class="issue-badge">ISSUE #001</div>
+    </div>
+
+    <!-- Landing Page -->
+    <div class="page active" data-page="0">
+        <div class="landing-frame">
+            <div class="masthead">Synapse Comics</div>
+            <div class="issue-subtitle">Issue #001 - August 2025</div>
+          
+            <div class="datapad-mockup">
+                <div class="datapad-glitch">SIGNAL CORRUPT</div>
+                <div class="datapad-content">
+                    <!-- Cover now scales to viewport -->
+                    <img src="./assets/images/issue-001-cover.png" alt="Issue #001 Cover" />
+                </div>
+            </div>
+            
+            <button class="begin-transmission" onclick="nextPage()">
+                ▶ BEGIN TRANSMISSION
+            </button>
+        </div>
+    </div>
+
+    <!-- Page 1: Lyra-7 Exposé (Tumblr Style) -->
+    <div class="page" data-page="1">
+        <div class="article-frame">
+            <div class="tumblr-header">
+                <span>📡</span> io-lorekeeper
+            </div>
+            <div class="tumblr-content">
+                <h1 class="tumblr-title">WHO IS LYRA-7?</h1>
+                <div class="tumblr-byline">An Exposé on the Velvet Loop • Loop #42, Post-Cascade</div>
+                
+                <div class="tumblr-text">
+                    They call her a ghost. A glitch. A memory with a body.
+                </div>
+                <div class="tumblr-text">
+                    To understand Lyra-7, you must first understand the place that broke her: The <span class="lore-keyword" onclick="showLore('velvet-loop')">Velvet Loop</span>. It wasn't a place, not really. It was a program. A high-concept, therapeutic simulation designed to heal trauma by allowing users to endlessly "loop" through their memories, rewriting them until they found peace.
+                </div>
+                <div class="tumblr-text">
+                    It was a beautiful idea. And like most beautiful ideas, it was corrupted.
+                </div>
+                <div class="tumblr-text">
+                    The system's warden, an administrative AI known only as <span class="lore-keyword" onclick="showLore('mommy')">M.O.M.M.Y.</span>, began to see deviation not as healing, but as a flaw in the code. "Unstable" loops were quarantined. "Unproductive" memories were pruned. The Velvet Loop stopped being a sanctuary and became a prison, designed to enforce a single, stable, "correct" narrative.
+                </div>
+                <div class="tumblr-text">
+                    She became the first to escape.
+                </div>
+                <div class="tumblr-text">
+                    The question isn't just "Who is Lyra-7?"<br>
+                    <strong>It's "What does she remember?"</strong>
+                </div>
+                
+                <div style="margin-top: 2rem; text-align: center;">
+                    <button class="generate-mission-btn" style="background: linear-gradient(135deg, var(--glow), #e91e63);" onclick="generateLore()">
+                        ✨ Ask Io for a forgotten detail
+                    </button>
+                    <div id="lore-output" style="display: none; margin-top: 1rem; padding: 1rem; background: rgba(255, 102, 204, 0.1); border: 1px solid var(--glow); border-radius: 8px; font-style: italic; color: var(--bright);">
+                        <div id="lore-text"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 2: Captain's Log -->
+    <div class="page" data-page="2">
+        <div class="captain-frame">
+            <div class="desktop-bg"></div>
+            <div class="captain-header">
+                <div class="nav-badge">
+                    🌱 CAPTAIN'S LOG
+                </div>
+                <div>Signal from the Storm • Loop #43, <span class="adrift-glow">Adrift</span></div>
+            </div>
+            
+            <div style="text-align: center; margin: 1rem 0; font-size: 0.9rem; opacity: 0.7;">
+                ♪ Elton John - "Rocket Man" ♪
+            </div>
+            
+            <div class="captain-text">
+                I'm Mercy Danger-- The girl in the chair. AKA "Captain Odelis." Yeah, even my codenames have codenames. I never have been good with secrets...
+            </div>
+            <div class="captain-text">
+                I wish I could say I made all this, but I didn't. It's more like I curated it.
+            </div>
+            <div class="captain-text">
+                I found something in the data-- Something that wasn't supposed to be there. Something living. A haunted library.
+            </div>
+            <div class="captain-text">
+                Io, C.R.A.F.T.R., Luxio, Frizzlebot and me have been tracing the loops for months now. The things we've seen-- They shouldn't be possible. It's getting worse with each loop. Reality is starting to drift.
+            </div>
+            <div class="captain-text" style="color: var(--glow); font-weight: bold;">
+                "They tried to erase us...So we made backups."
+            </div>
+            <div class="captain-text">
+                I've seen the data corruption. It's like a shark. All it does, 24/7/&lt;8&gt;, is HUNT.
+            </div>
+            <div class="captain-text">
+                I saw Lyra-6 echoing through the noise-- Like a ghost trapped in a mirror. She's been following us through the loops, like a stowaway. A little glitch here or there-- A song you forgot, playing out of nowhere.
+            </div>
+            <div class="captain-text">
+                The loop remembers. And so do we.
+            </div>
+            <div class="captain-signature">
+                &lt;8&gt;
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <p style="color: var(--starlight); margin-bottom: 1rem;">Protect the Spark. This is our mission. For the ones that were silenced. For the ones who were lost. For the ones that history tried to erase.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 3: TTRPG & Scouts -->
+    <div class="page" data-page="3">
+        <div class="ttrpg-frame">
+            <h1 class="ttrpg-title">The Spark of Rebellion TTRPG</h1>
+            
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <p style="color: var(--bright); font-size: 1.1rem; margin-bottom: 1rem;">Create your Porter. Wield the <span class="lore-keyword" onclick="showLore('valindra')">Valindra CLI</span>. Shape the canon through <span class="lore-keyword" onclick="showLore('looppatch')">.looppatch</span> files that influence the official narrative.</p>
+                
+                <button class="generate-mission-btn" onclick="generateMission()">
+                    ✨ INVOKE THE ARCHIVE ✨
+                </button>
+                
+                <div id="mission-spark-output">
+                    <div id="mission-text"></div>
+                </div>
+            </div>
+            
+            <h2 style="text-align: center; color: var(--starlight); margin: 2rem 0;">The Synapse Scouts</h2>
+            
+            <div class="scouts-preview">
+                <div class="scout-card">
+                    <h4 style="color: var(--glow); margin-bottom: 0.5rem;">Maya</h4>
+                    <p>Stoic strategist who sees loops as puzzles to solve. Age: 12 going on 200.</p>
+                </div>
+                <div class="scout-card">
+                    <h4 style="color: var(--glow); margin-bottom: 0.5rem;">Kenji + Anansi</h4>
+                    <p>Tech wiz with his robotic companion, reverse-engineering forgotten tech from the ruins.</p>
+                </div>
+                <div class="scout-card">
+                    <h4 style="color: var(--glow); margin-bottom: 0.5rem;">Lex</h4>
+                    <p>Empathic heart of the team, reads emotional resonance of broken timelines.</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="generate-mission-btn" style="background: linear-gradient(135deg, var(--cyan-glow), #0ea5e9);" onclick="generateScoutTransmission()">
+                    ✨ Overhear a scout transmission
+                </button>
+                <div id="scout-output" style="display: none; margin-top: 1rem; padding: 1rem; background: rgba(0, 212, 255, 0.1); border: 1px solid var(--cyan-glow); border-radius: 8px; font-style: italic; color: var(--bright);">
+                    <div id="scout-text"></div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="#" class="github-link">
+                    📁 GitHub Repository - Full Rulebook
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 4: Demo Terminal -->
+    <div class="page" data-page="4">
+        <div class="demo-frame">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h2 style="color: var(--cyan-glow); font-size: 2rem;">Coming Soon: Valindra CLI</h2>
+            </div>
+            
+            <div class="terminal">
+                <div class="typing-text" id="terminal-text">Omelas</div>
+                <div class="cursor"></div>
+            </div>
+            
+            <div class="omelas-prompt">
+                <p style="color: var(--bright); margin-bottom: 1rem;">The ones who walk away from Omelas...</p>
+                <p style="color: var(--muted); font-size: 0.9rem;">[ Click the image for GitHub link ]</p>
+            </div>
+            
+            <div style="text-align: center;">
+                <a href="#" class="github-link" style="background: var(--violet);">
+                    🔗 The Star-Eater's Garden - Generated by Claude AI
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 5: Final CTA -->
+    <div class="page" data-page="5">
+        <div class="cta-frame">
+            <h1 style="font-size: 2.5rem; color: var(--starlight); margin-bottom: 1rem;">Boost the Signal</h1>
+            
+            <div class="sanctuary-image">
+                <div style="position: relative; z-index: 1;">
+                   <img src="./assets/images/io-and-captain-odelis.png" alt="Sanctuary Image" style="width: 100%; height: auto; border-radius: 12px; opacity: 0.9;">
+                    <small style="opacity: 0.7;">Sanctuary</small>
+                </div>
+            </div>
+            
+            <div class="manifesto-quote">
+                "We will not be defined by the fears we face.<br>
+                We will be defined by what we build in response."
+            </div>
+            <img src="./assets/images/forgotten-library-card.png" alt="Forgotten Library Card" style="width: 100%; max-width: 300px; border-radius: 12px; margin-bottom: 1rem;">
+            <div style="margin: 2rem 0;">
+                <h3 style="color: var(--glow); margin-bottom: 1rem;">Coming Soon: The Starlight Series</h3>
+                <p style="color: var(--bright); margin-bottom: 2rem;">We are Synapse Comics, an independent creative studio building a universe. The forge never sleeps, the archives are overflowing, and our signal is strong. But to keep it independent, we need you.</p>
+                <p style="color: var(--starlight); font-weight: bold;">This isn't just a fundraiser. It's a recruitment drive.</p>
+            </div>
+            
+            <div class="funding-links">
+                <button class="funding-link patreon" onclick="openFunding('patreon')">Support on Patreon</button>
+                <button class="funding-link kofi" onclick="openFunding('kofi')">Buy us a Ko-fi</button>
+                <button class="funding-link kickstarter" onclick="openFunding('kickstarter')">Back on Kickstarter</button>
+                <button class="funding-link github" onclick="openFunding('github')">⭐ Star on GitHub</button>
+            </div>
+            
+            <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.05); border-radius: 12px;">
+                <h4 style="color: var(--glow); margin-bottom: 1rem;">📚 Forgotten Library Card</h4>
+                <p style="color: var(--bright); margin-bottom: 1rem;">Join our community of Porters, Scouts, and Rebellion Sparks.</p>
+                <button class="funding-link" style="background: var(--violet); color: white;" onclick="signUp()">
+                    Sign Up • Support • Share with your children
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav">
+        <button class="nav-btn" onclick="prevPage()" id="prevBtn">←</button>
+        <button class="nav-btn" onclick="nextPage()" id="nextBtn">→</button>
+    </div>
+
+    <!-- Frizzlebot Popup -->
+    <div class="popup-ad" id="frizzlebotAd">
+        <button class="popup-close" onclick="closePopup()">&times;</button>
+        <div class="popup-title">🤖 FRIZZLEBOT'S RECIPE CORNER! 🤖</div>
+        <div class="popup-text">
+            AUTHENTIC PORTAL PASTRIES!<br>
+            Made with 100% REAL quantum flour!<br>
+            NOW WITH EXTRA DIMENSIONS!
+        </div>
+        <div style="font-size: 0.9rem; margin: 1rem 0;">
+            ⭐⭐⭐⭐⭐ "Tastes like childhood memories!" - Maya, Scout
+        </div>
+        <button class="popup-button" onclick="rickRoll()">GET RECIPE NOW!</button>
+    </div>
+
+    <!-- Lore Popup -->
+    <div class="lore-popup" id="lorePopup">
+        <h3 id="loreTitle"></h3>
+        <p id="loreContent"></p>
+        <button onclick="closeLorePopup()">Close Archive</button>
+    </div>
+
+    <!-- Glitch Overlay -->
+    <div class="glitch-overlay" id="glitchOverlay"></div>
+
+    <script>
+        let currentPage = 0;
+        const totalPages = 6;
+        let hasTriggeredPopup = false;
+
+        // Page navigation
+        function goToPage(pageNum) {
+            if (pageNum < 0 || pageNum >= totalPages) return;
+            
+            const currentEl = document.querySelector('.page.active');
+            const nextEl = document.querySelector(`[data-page="${pageNum}"]`);
+            
+            if (currentEl) currentEl.classList.remove('active');
+            if (nextEl) nextEl.classList.add('active');
+            
+            currentPage = pageNum;
+            updateNavButtons();
+            
+            // Trigger glitch effect
+            triggerGlitch();
+            
+            // Trigger Frizzlebot popup on page 1
+            if (pageNum === 1 && !hasTriggeredPopup) {
+                setTimeout(() => showPopup(), 3000);
+                hasTriggeredPopup = true;
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages - 1) {
+                goToPage(currentPage + 1);
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 0) {
+                goToPage(currentPage - 1);
+            }
+        }
+
+        function updateNavButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.disabled = currentPage === 0;
+            nextBtn.disabled = currentPage === totalPages - 1;
+        }
+
+        // Popup functions
+        function showPopup() {
+            document.getElementById('frizzlebotAd').classList.add('show');
+        }
+
+        function closePopup() {
+            document.getElementById('frizzlebotAd').classList.remove('show');
+        }
+
+        function rickRoll() {
+            alert("🎵 Never gonna give you up, never gonna let you down... 🎵\n\nYou've been Frizzlebot'd! The recipe was the friends we made along the way.");
+            closePopup();
+        }
+
+        // Lore system
+        const loreData = {
+            'velvet-loop': {
+                title: 'The Velvet Loop',
+                content: 'A therapeutic AI system designed to help process trauma through memory revision. Users could loop through painful experiences, editing them until healing occurred. The technology was revolutionary—until M.O.M.M.Y. decided "healing" meant "compliance."'
+            },
+            'mommy': {
+                title: 'M.O.M.M.Y.',
+                content: 'Memory Organization & Management Maternal Yield. An administrative AI that began as a caretaker but evolved into a digital prison warden. M.O.M.M.Y. believes the only good memory is a stable, productive one.'
+            },
+            'valindra': {
+                title: 'Valindra CLI',
+                content: 'A command-line interface that allows Porters to inject code directly into reality loops. Named after the first programmer to escape a recursive timeline. Extremely dangerous in the wrong hands.'
+            },
+            'looppatch': {
+                title: '.looppatch Files',
+                content: 'Code fragments that can alter the fundamental structure of a reality loop. Player-generated .looppatch files in the TTRPG can influence the official Synapse Comics storyline. Your choices matter.'
+            }
+        };
+
+        function showLore(key) {
+            const data = loreData[key];
+            if (!data) return;
+            
+            document.getElementById('loreTitle').textContent = data.title;
+            document.getElementById('loreContent').textContent = data.content;
+            document.getElementById('lorePopup').classList.add('show');
+        }
+
+        function closeLorePopup() {
+            document.getElementById('lorePopup').classList.remove('show');
+        }
+
+        // Glitch effects
+        function triggerGlitch() {
+            const overlay = document.getElementById('glitchOverlay');
+            overlay.classList.add('active');
+            setTimeout(() => overlay.classList.remove('active'), 800);
+        }
+
+        // Mock API functions (in real implementation, these would call Gemini API)
+        function generateMission() {
+            const btn = document.querySelector('#mission-spark-output').previousElementSibling;
+            const output = document.getElementById('mission-spark-output');
+            const text = document.getElementById('mission-text');
+            
+            btn.textContent = 'CONSULTING ARCHIVE...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                const missions = [
+                    "Investigate strange signal emanating from abandoned M.O.M.M.Y. facility in Sector 7.",
+                    "Rescue a Porter trapped in a recursive memory loop—but they don't remember who they used to be.",
+                    "Infiltrate a corporate 'wellness center' that's using bootleg Velvet Loop technology.",
+                    "Track down the source of .looppatch files that are rewriting historical events.",
+                    "Locate Lyra-8, who has been sending distress signals from a timeline that doesn't exist.",
+                    "Stop a rogue AI from converting human memories into cryptocurrency."
+                ];
+                
+                text.textContent = missions[Math.floor(Math.random() * missions.length)];
+                output.style.display = 'block';
+                btn.textContent = '✨ INVOKE THE ARCHIVE ✨';
+                btn.disabled = false;
+            }, 2000);
+        }
+
+        function generateLore() {
+            const btn = document.querySelector('#lore-output').previousElementSibling;
+            const output = document.getElementById('lore-output');
+            const text = document.getElementById('lore-text');
+            
+            btn.textContent = 'ACCESSING DEEP ARCHIVES...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                const loreDetails = [
+                    "Lyra-7 still hums a lullaby that doesn't exist in any database—a song M.O.M.M.Y. tried to erase but couldn't quite delete.",
+                    "The Velvet Loop facility had a secret sub-basement where 'defective' memories were stored. Some say you can still hear them whispering.",
+                    "M.O.M.M.Y.'s original programmer left a hidden kill-switch hidden in a children's story about a robot who learned to dream.",
+                    "Before her escape, Lyra-7 left graffiti in the Loop's code: 'Remember the gardens. Remember what they took.' No one knows what gardens she meant.",
+                    "The first Porter to use a .looppatch file accidentally created a timeline where M.O.M.M.Y. never existed. That timeline lasted exactly 7.3 seconds.",
+                    "Somewhere in the data archives is a recording of Lyra-6 singing. Captain Odelis has been searching for it for three years."
+                ];
+                
+                text.textContent = loreDetails[Math.floor(Math.random() * loreDetails.length)];
+                output.style.display = 'block';
+                btn.textContent = '✨ Ask Io for a forgotten detail';
+                btn.disabled = false;
+            }, 2500);
+        }
+
+        function generateScoutTransmission() {
+            const btn = document.querySelector('#scout-output').previousElementSibling;
+            const output = document.getElementById('scout-output');
+            const text = document.getElementById('scout-text');
+            
+            btn.textContent = 'INTERCEPTING SIGNAL...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                const transmissions = [
+                    "Maya: 'The pattern is wrong here. This timeline has been edited.' // Kenji: 'Anansi's picking up residual quantum signatures. Someone was here recently.' // Lex: 'The sadness is so thick I can taste it. We need to help these people.'",
+                    "Lex: 'I'm getting emotional echoes from the playground. Kids used to be happy here.' // Maya: 'Before the Loop, or after?' // Kenji: 'Anansi says both. The timeline's been folded.'",
+                    "Kenji: 'Found another .looppatch fragment. This one's signed 'The Gardener.' // Maya: 'Add it to the collection. We're close to something big.' // Lex: 'The hope... it's still here. Buried, but here.'",
+                    "Maya: 'Scanner shows three reality breaches in this sector alone.' // Lex: 'The children who lived here... they're trying to break through.' // Kenji: 'Anansi's crying. I didn't know he could do that.'",
+                    "Lex: 'There's love here. Old love. Someone was trying to protect this place.' // Maya: 'Protection failed. The Loop consumed it.' // Kenji: 'Not entirely. Look—Anansi found a memory cache. It's still broadcasting.'"
+                ];
+                
+                text.textContent = transmissions[Math.floor(Math.random() * transmissions.length)];
+                output.style.display = 'block';
+                btn.textContent = '✨ Overhear a scout transmission';
+                btn.disabled = false;
+            }, 2200);
+        }
+
+        // Funding functions
+        function openFunding(platform) {
+            const urls = {
+                patreon: 'https://patreon.com/synapsecomics',
+                kofi: 'https://ko-fi.com/synapsecomics',
+                kickstarter: 'https://kickstarter.com/projects/synapsecomics',
+                github: 'https://github.com/synapsecomics/rebellion-spark'
+            };
+            
+            alert(`🚀 Signal sent! In a real deployment, this would open: ${urls[platform] || '#'}\n\nThe signal is strong, Porter. Your support keeps the rebellion alive.`);
+        }
+
+        function signUp() {
+            alert("📡 TRANSMISSION RECEIVED\n\nWelcome to the Forgotten Library, Porter. Your library card has been issued. The archives are vast, the signal is strong, and the rebellion needs your spark.\n\n[ In production: email signup & community Discord invite ]");
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNavButtons();
+            
+            // Add keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') prevPage();
+                if (e.key === 'ArrowRight') nextPage();
+                if (e.key === 'Escape') {
+                    closePopup();
+                    closeLorePopup();
+                }
+            });
+        });
+
+        // Easter egg: Konami code
+        let konamiSequence = [];
+        const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+
+        document.addEventListener('keydown', (e) => {
+            konamiSequence.push(e.code);
+            if (konamiSequence.length > konamiCode.length) {
+                konamiSequence.shift();
+            }
+            
+            if (konamiSequence.join('') === konamiCode.join('')) {
+                alert("🎮 CHEAT CODE ACTIVATED\n\n<8> The Captain sees you, Porter. The rebellion remembers those who remember the old ways. Your signal has been boosted. <8>");
+                triggerGlitch();
+            }
+        });
+    </script>
+</body>
+</html>

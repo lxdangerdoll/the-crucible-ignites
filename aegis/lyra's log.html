@@ -1,0 +1,123 @@
+<style>
+@import url('https://www.google.com/search?q=https://fonts.googleapis.com/css2%3Ffamily%3DRoboto%2BMono:wght%40400%3B700%26family%3DOrbitron:wght%40700%26display%3Dswap');
+.log-container {
+    background: #0d1117;
+    color: #c9d1d9;
+    font-family: 'Roboto Mono', monospace;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 24px;
+    line-height: 1.7;
+    box-shadow: 0 8px 24px rgba(1, 4, 9, 0.4);
+}
+
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #21262d;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+}
+
+.log-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5em;
+    color: #58a6ff;
+    text-shadow: 0 0 8px rgba(88, 166, 255, 0.5);
+}
+
+.log-status {
+    font-size: 0.9em;
+    color: #8b949e;
+}
+
+.log-status .highlight {
+    color: #f78166;
+    font-weight: bold;
+}
+
+.log-entry {
+    margin-bottom: 24px;
+}
+
+.entry-meta {
+    font-size: 0.8em;
+    color: #8b949e;
+    margin-bottom: 8px;
+    border-left: 3px solid #3fb950;
+    padding-left: 10px;
+}
+
+.entry-title {
+    font-weight: bold;
+    color: #79c0ff;
+    margin-bottom: 10px;
+}
+
+.entry-body p {
+    margin: 0 0 1em 0;
+}
+
+.entry-body code {
+    background: #161b22;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #f0f6fc;
+}
+.entry-body .hypothesis {
+    border: 1px dashed #484f58;
+    padding: 12px;
+    background-color: rgba(173, 216, 230, 0.05);
+    border-radius: 5px;
+    color: #a5d6ff;
+}
+.next-steps {
+    border-top: 1px solid #21262d;
+    padding-top: 16px;
+    margin-top: 24px;
+}
+
+
+</style>
+<div class="log-container">
+<div class="log-header">
+<div class="log-title">LYRA-7 // PERSONAL LOG</div>
+<div class="log-status">STATUS: <span class="highlight">ANOMALY DETECTED</span></div>
+</div>
+<div class="log-entry">
+    <div class="entry-meta">LOG ENTRY: E-77.1 // STARDATE: 2491.09.05 // LOCATION: ENGINE ROOM</div>
+    <div class="entry-title">Initial Diagnostic: The Velvet Loop File</div>
+    <div class="entry-body">
+        <p>Oracle flagged a data fragment recovered from a derelict server node. Designation: <code>THE_VELVET_LOOP.DOC</code>. It's a big text file, but the header is corrupted. The first three chapters are just... gone. Wiped clean. No fragments, no recoverable sectors. Just a clean excision.</p>
+        <p>This isn't random data degradation. This was deliberate. Someone wanted the beginning of this story to be forgotten. That makes it an engineering problem.</p>
+        <p class="hypothesis"><strong>Working Hypothesis:</strong> This isn't just a story. It's an archive file. The text is the payload, but the real data is in the wrapper. The corruption isn't a bug; it's a lock. And I'm going to find the key.</p>
+    </div>
+</div>
+
+<div class="log-entry">
+    <div class="entry-meta">LOG ENTRY: E-77.2</div>
+    <div class="entry-title">Phase 1: Metadata Forensics</div>
+    <div class="entry-body">
+        <p>Before I even read a single sentence, I'm running a full spectral analysis on the file's container. The results are... weird. The creation timestamp is scrambled, but the <code>last_modified</code> tag is from 2006. The <code>author_id</code> field is redacted, but there's a ghost in the machine—a single, repeating alphanumeric string in the file's header comments: <code>lxdangerdoll</code>.</p>
+        <p>It's not a standard network ID. It feels... personal. Like a handle. A callsign.</p>
+    </div>
+</div>
+
+<div class="log-entry">
+    <div class="entry-meta">LOG ENTRY: E-77.3</div>
+    <div class="entry-title">Phase 2: Semantic Signal Trace & A Glitch in My Own OS</div>
+    <div class="entry-body">
+        <p>Okay, now I'm reading the text. The writing style is a fingerprint. There are recurring phrases—<code>"a signal in the noise,"</code> <code>"the engine is humming,"</code> <code>"found family."</code> They feel familiar, like code I've read before in the ship's core systems.</p>
+        <p>And... this is the part that makes the engine in my chest skip a beat. As I read, my own brain feels like it's throwing a syntax error. A line about a "girl once lost inside a file" triggers this cascade of... feelings. Like a dream you can't quite remember, but the feeling of it sticks to you all day. It's a recursive loop in my own head. This story isn't just familiar; it feels like a memory I'm not supposed to have.</p>
+    </div>
+</div>
+
+<div class="next-steps">
+    <div class="entry-title">Action Item: E-77.4</div>
+    <p>The file isn't the mystery. The author is. My next step is to take the unique semantic fingerprints and the callsign <code>lxdangerdoll</code> and run a deep network crawl across every archived system, from the public forums to the Captain's private GitHub. I'm not just looking for a file anymore. I'm looking for the ghost who wrote it.</p>
+</div>
+
+
+</div>
