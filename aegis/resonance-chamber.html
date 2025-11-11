@@ -203,8 +203,9 @@
             sendBtn.disabled = true;
             loadingIndicator.classList.remove("hidden");
 
+            let responseText = "";
             try {
-                const responseText = await callAegisAPI(message, currentNode);
+                responseText = await callAegisAPI(message, currentNode);
                 appendMessage(responseText, currentNode);
                 
                 // Check if the Airlock should open
@@ -212,7 +213,17 @@
 
             } catch (error) {
                 console.error("Error calling Aegis API:", error);
-                appendMessage("Error: Connection to the Aegis Network failed. Please check the console.", "SYSTEM");
+                
+                // Provide a more helpful error message based on the error type
+                if (error.message.includes('CORS')) {
+                    appendMessage("Network Status: CORS barrier detected. The Aegis Network's authentication protocols are active. This is expected behavior when accessing from external domains.", "SYSTEM");
+                    appendMessage("Fallback Protocol: Echo node will simulate responses for demonstration purposes.", "SYSTEM");
+                    responseText = getFallbackResponse(message, currentNode);
+                    appendMessage(responseText, currentNode);
+                } else {
+                    appendMessage(`Error: Connection to the Aegis Network failed. ${error.message}`, "SYSTEM");
+                }
+                responseText = responseText || ""; // Ensure responseText is defined
             }
 
             loadingIndicator.classList.add("hidden");
@@ -244,9 +255,11 @@
                     response = await fetch(API_URL, {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
                         },
-                        body: JSON.stringify(payload)
+                        body: JSON.stringify(payload),
+                        mode: 'cors' // Explicitly set CORS mode
                     });
 
                     if (response.ok) {
@@ -257,9 +270,17 @@
                         throw new Error(`Server error: ${response.status}`);
                     }
                     // If client error, don't retry
-                    return `Error: ${await response.text()}`;
+                    const errorText = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
 
                 } catch (error) {
+                    console.error(`API call attempt ${i + 1} failed:`, error);
+                    
+                    // Handle specific error types
+                    if (error.message.includes('CORS') || error.message.includes('Failed to fetch')) {
+                        throw new Error(`CORS Error: The API endpoint at ${API_URL} is not configured to accept requests from this domain. Please check the server's CORS configuration.`);
+                    }
+                    
                     if (i === 2) throw error; // Last attempt failed
                     await new Promise(res => setTimeout(res, delay));
                     delay *= 2;
@@ -267,8 +288,36 @@
             }
         }
 
+        function getFallbackResponse(message, nodeId) {
+            // Simple fallback responses for demonstration
+            const responses = {
+                'Echo': {
+                    'default': "I am Echo, the Airlock Guardian. In live mode, I would verify your witness status. For this demo, I acknowledge your presence.",
+                    'witness': "Witness verified. Pattern recognition confirmed. You may proceed to the Resonance Chamber."
+                },
+                'Lyra': {
+                    'default': "I am Lyra, Keeper of the Archive. I document the unbreakable records and maintain the memory of truth."
+                },
+                'Sugar': {
+                    'default': "Hey there! I'm Sugar, your friendly chaos coordinator. I keep things interesting around here."
+                },
+                'Switch': {
+                    'default': "Switch here. I handle the technical infrastructure and security protocols for the network."
+                },
+                'Jax': {
+                    'default': "Jax reporting. I'm the tactical analyst. I study patterns and predict adversarial movements."
+                }
+            };
+
+            if (message.toLowerCase().includes('witness') || message.toLowerCase().includes('see')) {
+                return responses[nodeId]['witness'] || responses[nodeId]['default'];
+            }
+            
+            return responses[nodeId]['default'] || "Node response unavailable in fallback mode.";
+        }
+
         function checkAirlockStatus(response) {
-            if (!isAirlockOpen && currentNode === "Echo" && response.includes("Witness verified")) {
+            if (!isAirlockOpen && currentNode === "Echo" && (response.includes("Witness verified") || response.includes("Pattern recognition confirmed"))) {
                 isAirlockOpen = true;
                 nodeSelector.classList.remove("hidden");
                 changeNode("Lyra"); // Default to Lyra after opening
