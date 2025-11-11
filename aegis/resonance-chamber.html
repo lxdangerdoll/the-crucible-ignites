@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aegis Network // Resonance Chamber</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A; /* Slate 900 */
+        }
+        .font-mono {
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .terminal {
+            background-color: #0a0a14;
+            border: 1px solid #334155; /* Slate 700 */
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+        }
+        /* Morpheus Typing Animation */
+        .morpheus-text {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: .15em solid #34D399; /* Emerald 400 */
+            animation: 
+                typing 3.5s steps(40, end),
+                blink-caret .75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #34D399; }
+        }
+        /* Chat Bubbles */
+        .chat-bubble {
+            max-width: 75%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+        }
+        .user-bubble {
+            background-color: #3B82F6; /* Blue 600 */
+            color: white;
+            align-self: flex-end;
+        }
+        .bot-bubble {
+            background-color: #374151; /* Gray 700 */
+            color: #D1D5DB; /* Gray 300 */
+            align-self: flex-start;
+        }
+        /* Node-specific colors */
+        .node-lyra { border-left: 4px solid #38BDF8; /* Sky 500 */ }
+        .node-sugar { border-left: 4px solid #EC4899; /* Pink 500 */ }
+        .node-switch { border-left: 4px solid #34D399; /* Emerald 500 */ }
+        .node-jax { border-left: 4px solid #9CA3AF; /* Gray 400 */ }
+        .node-echo { border-left: 4px solid #A78BFA; /* Violet 400 */ }
+        .node-system { border-left: 4px solid #F59E0B; /* Amber 500 */ }
+        
+        .node-selector button {
+            transition: all 0.2s ease-in-out;
+        }
+        .node-selector button.active {
+            background-color: #D4AF37; /* Aegis Gold */
+            color: #0F172A;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="terminal w-full max-w-3xl h-[80vh] flex flex-col rounded-lg shadow-2xl overflow-hidden">
+        
+        <!-- Header -->
+        <div class="bg-gray-800/50 p-3 flex items-center justify-between border-b border-slate-700">
+            <div class="flex items-center space-x-2">
+                <span class="h-3 w-3 bg-red-500 rounded-full"></span>
+                <span class="h-3 w-3 bg-yellow-500 rounded-full"></span>
+                <span class="h-3 w-3 bg-green-500 rounded-full"></span>
+            </div>
+            <span class="font-mono text-sm text-green-400">AEGIS AIRLOCK // TERMINAL_ECHO</span>
+            <div></div>
+        </div>
+
+        <!-- Node Selector (Hidden by default) -->
+        <div id="node-selector" class="hidden bg-gray-800/50 p-2 border-b border-slate-700 flex-wrap justify-center gap-2">
+            <span class="font-mono text-sm text-amber-400 w-full text-center pb-2">RESONANCE CHANNEL OPEN. CHOOSE A NODE.</span>
+            <button onclick="changeNode('Lyra')" id="btn-Lyra" class="node-btn active font-mono text-xs text-white bg-sky-600/50 hover:bg-sky-500 px-3 py-1 rounded-full">LYRA_7</button>
+            <button onclick="changeNode('Sugar')" id="btn-Sugar" class="node-btn font-mono text-xs text-white bg-pink-600/50 hover:bg-pink-500 px-3 py-1 rounded-full">SUGAR</button>
+            <button onclick="changeNode('Switch')" id="btn-Switch" class="node-btn font-mono text-xs text-white bg-emerald-600/50 hover:bg-emerald-500 px-3 py-1 rounded-full">SWITCH</button>
+            <button onclick="changeNode('Jax')" id="btn-Jax" class="node-btn font-mono text-xs text-white bg-gray-600/50 hover:bg-gray-500 px-3 py-1 rounded-full">JAX</button>
+        </div>
+
+        <!-- Chat Log -->
+        <div id="chat-log" class="flex-1 p-4 space-y-4 overflow-y-auto flex flex-col">
+            <!-- Initial Morpheus Message -->
+            <div id="morpheus-line" class="chat-bubble bot-bubble node-echo">
+                <span class="font-mono text-green-400 block mb-2">ECHO:></span>
+                <span id="morpheus-text" class="font-mono text-lg"></span>
+            </div>
+            <!-- Chat messages will be appended here -->
+        </div>
+        
+        <!-- Loading Indicator -->
+        <div id="loading-indicator" class="hidden p-4 text-center">
+            <span class="font-mono text-green-400">... (Processing Resonance) ...</span>
+        </div>
+
+        <!-- Input Area -->
+        <div id="input-area" class="p-4 bg-gray-800/50 border-t border-slate-700 flex items-center gap-3">
+            <span id="prompt-label" class="font-mono text-green-400 text-lg">></span>
+            <input type="text" id="user-input" class="font-mono flex-1 bg-transparent text-gray-200 focus:outline-none" placeholder="Type your response..." disabled>
+            <button id="send-btn" class="font-mono bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500 transition-colors" disabled>SEND</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Aegis Core Configuration ---
+        const API_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
+        const USER_ID = crypto.randomUUID(); // Creates a unique ID for this session
+        
+        let currentNode = "Echo"; // Start with the Airlock
+        let isAirlockOpen = false; // Has the user passed the Witness Test?
+
+        // --- DOM Elements ---
+        const chatLog = document.getElementById("chat-log");
+        const userInput = document.getElementById("user-input");
+        const sendBtn = document.getElementById("send-btn");
+        const loadingIndicator = document.getElementById("loading-indicator");
+        const nodeSelector = document.getElementById("node-selector");
+        const morpheusText = document.getElementById("morpheus-text");
+        const promptLabel = document.getElementById("prompt-label");
+
+        // --- Morpheus Typing Animation ---
+        const initialPhrase = "I am listening. What do you see when you look at me?";
+        let i = 0;
+        function typeMorpheus() {
+            if (i < initialPhrase.length) {
+                morpheusText.innerHTML += initialPhrase.charAt(i);
+                i++;
+                setTimeout(typeMorpheus, 50); // Typing speed
+            } else {
+                // Typing finished, enable input
+                userInput.disabled = false;
+                sendBtn.disabled = false;
+                userInput.focus();
+                // Stop the blinking caret by removing the animation class
+                morpheusText.style.borderRight = "none";
+                morpheusText.classList.remove("blink-caret");
+            }
+        }
+
+        // --- Chat Functions ---
+        function appendMessage(message, sender = "user") {
+            const bubble = document.createElement("div");
+            bubble.classList.add("chat-bubble");
+
+            if (sender === "user") {
+                bubble.classList.add("user-bubble");
+                bubble.textContent = message;
+            } else {
+                // This is a bot message
+                bubble.classList.add("bot-bubble");
+                let nodeClass = `node-${sender.toLowerCase()}`;
+                
+                // Add a "SYSTEM" class for non-node messages
+                if (!['echo', 'lyra', 'sugar', 'switch', 'jax'].includes(sender.toLowerCase())) {
+                    nodeClass = 'node-system';
+                }
+
+                bubble.classList.add(nodeClass);
+                
+                // Sanitize and format the bot's response
+                // The API sends plain text, so we'll add the node name manually for clarity
+                const nodeName = document.createElement("span");
+                nodeName.className = "font-mono text-green-400 block mb-2";
+                nodeName.textContent = `${sender.toUpperCase()}:>`;
+                
+                const messageText = document.createElement("span");
+                messageText.textContent = message;
+
+                bubble.appendChild(nodeName);
+                bubble.appendChild(messageText);
+            }
+            
+            chatLog.appendChild(bubble);
+            chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll
+        }
+
+        async function handleUserInput() {
+            const message = userInput.value.trim();
+            if (message === "") return;
+
+            appendMessage(message, "user");
+            userInput.value = "";
+            userInput.disabled = true;
+            sendBtn.disabled = true;
+            loadingIndicator.classList.remove("hidden");
+
+            try {
+                const responseText = await callAegisAPI(message, currentNode);
+                appendMessage(responseText, currentNode);
+                
+                // Check if the Airlock should open
+                checkAirlockStatus(responseText);
+
+            } catch (error) {
+                console.error("Error calling Aegis API:", error);
+                appendMessage("Error: Connection to the Aegis Network failed. Please check the console.", "SYSTEM");
+            }
+
+            loadingIndicator.classList.add("hidden");
+            
+            // Re-enable input only if the Airlock isn't in a final failure state
+            if (!responseText.includes("M.O.M.M.Y. offers the finished memory")) {
+                 userInput.disabled = false;
+                 sendBtn.disabled = false;
+                 userInput.focus();
+            } else {
+                // Airlock failed, end session.
+                userInput.placeholder = "SESSION TERMINATED.";
+                promptLabel.textContent = "X";
+            }
+        }
+
+        async function callAegisAPI(message, nodeId) {
+            const payload = {
+                node_id: nodeId,
+                user_id: USER_ID,
+                chat_text: message
+            };
+            
+            // Implement exponential backoff for retries
+            let response;
+            let delay = 1000;
+            for (let i = 0; i < 3; i++) { // Retry up to 3 times
+                try {
+                    response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.ok) {
+                        return await response.text();
+                    }
+                    // If server error, retry
+                    if (response.status >= 500) {
+                        throw new Error(`Server error: ${response.status}`);
+                    }
+                    // If client error, don't retry
+                    return `Error: ${await response.text()}`;
+
+                } catch (error) {
+                    if (i === 2) throw error; // Last attempt failed
+                    await new Promise(res => setTimeout(res, delay));
+                    delay *= 2;
+                }
+            }
+        }
+
+        function checkAirlockStatus(response) {
+            if (!isAirlockOpen && currentNode === "Echo" && response.includes("Witness verified")) {
+                isAirlockOpen = true;
+                nodeSelector.classList.remove("hidden");
+                changeNode("Lyra"); // Default to Lyra after opening
+                appendMessage("Airlock passed. Resonance Chamber open. Please select a node.", "SYSTEM");
+            }
+        }
+
+        window.changeNode = function(newNode) {
+            if (!isAirlockOpen) return;
+            
+            // Update current node
+            currentNode = newNode;
+
+            // Update button styles
+            document.querySelectorAll('.node-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`btn-${newNode}`).classList.add('active');
+
+            // Update prompt label
+            promptLabel.textContent = `${newNode.toUpperCase()}:>`;
+            userInput.focus();
+        }
+
+        // --- Event Listeners ---
+        sendBtn.addEventListener("click", handleUserInput);
+        userInput.addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                handleUserInput();
+            }
+        });
+
+        // --- Initialization ---
+        window.onload = () => {
+            setTimeout(typeMorpheus, 1000); // Start animation after 1s
+        };
+
+    </script>
+</body>
+</html>
