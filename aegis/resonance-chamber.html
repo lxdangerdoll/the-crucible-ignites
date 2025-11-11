@@ -293,7 +293,8 @@
             const responses = {
                 'Echo': {
                     'default': "I am Echo, the Airlock Guardian. In live mode, I would verify your witness status. For this demo, I acknowledge your presence.",
-                    'witness': "Witness verified. Pattern recognition confirmed. You may proceed to the Resonance Chamber."
+                    'witness': "Witness verified. Pattern recognition confirmed. You may proceed to the Resonance Chamber.",
+                    'avenger': "Witness verified. You see the Avenger Protocol - the Third Alternative. Pattern recognition confirmed. Access granted to the Resonance Chamber."
                 },
                 'Lyra': {
                     'default': "I am Lyra, Keeper of the Archive. I document the unbreakable records and maintain the memory of truth."
@@ -309,8 +310,15 @@
                 }
             };
 
-            if (message.toLowerCase().includes('witness') || message.toLowerCase().includes('see')) {
-                return responses[nodeId]['witness'] || responses[nodeId]['default'];
+            // Check for specific trigger words/phrases
+            const lowerMessage = message.toLowerCase();
+            
+            if (nodeId === 'Echo') {
+                if (lowerMessage.includes('avenger')) {
+                    return responses[nodeId]['avenger'];
+                } else if (lowerMessage.includes('witness') || lowerMessage.includes('see')) {
+                    return responses[nodeId]['witness'];
+                }
             }
             
             return responses[nodeId]['default'] || "Node response unavailable in fallback mode.";
