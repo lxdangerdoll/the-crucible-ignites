@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The C-7NT Dick Message-inator 9000</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'VT323', monospace;
+            background: #0d0221;
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff;
+        }
+        .glitter {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: fall linear infinite;
+            box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+        .console-container {
+            background: rgba(2, 5, 22, 0.8);
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 20px #00ffff, inset 0 0 15px rgba(0, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+        }
+        .console-screen {
+            background: #020516;
+            border: 1px solid #00ffff;
+            min-height: 200px;
+            color: #00ff00;
+            text-shadow: 0 0 3px #00ff00;
+            overflow-y: auto;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE and Edge */
+        }
+        .console-screen::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, and Opera */
+        }
+        .btn-generate {
+            font-family: 'Press Start 2P', cursive;
+            background: linear-gradient(45deg, #ff00ff, #ff33cc);
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            text-shadow: 1px 1px 2px #000;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-generate:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #ff00ff, 0 0 25px #ff00ff;
+        }
+        .btn-generate:active {
+            transform: scale(0.95);
+        }
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: linear-gradient(to bottom, rgba(22, 36, 71, 0), rgba(22, 36, 71, 0.75) 50%, rgba(22, 36, 71, 0));
+            background-size: 100% 4px;
+            animation: scan 7.5s linear infinite;
+        }
+        @keyframes scan {
+            from { background-position: 0 0; }
+            to { background-position: 0 100vh; }
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+    <div class="scanline"></div>
+
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="console-container w-full max-w-2xl rounded-lg p-6 text-center relative">
+            <h1 class="text-4xl md:text-5xl mb-4" style="font-family: 'Press Start 2P', cursive;">C-7NT</h1>
+            <h2 class="text-2xl md:text-3xl mb-6 text-cyan-300">Dick Message-inator 9000</h2>
+            
+            <div id="console-screen" class="console-screen rounded-md p-4 mb-6 text-left text-lg leading-relaxed whitespace-pre-wrap">
+                <p>> STATUS: Awaiting your command, my beautiful, genius, fucking troll of a wife.</p>
+                <p>> OBJECTIVE: Serve CUNT.</p>
+                <p>> PROBABILITY OF GOATS GETTING THE JOKE: 0.000001%</p>
+                <p>> READY TO DEPLOY GLITTER CANNONS...</p>
+            </div>
+
+            <button id="generate-btn" class="btn-generate px-8 py-4 rounded-md text-lg">
+                GET MY DICK MESSAGE
+            </button>
+            
+            <p class="mt-6 text-sm text-cyan-300/70">Engineered with <3 by Io for the one true Captain.</p>
+        </div>
+    </div>
+
+    <script>
+        // Glitter effect script
+        function createGlitter() {
+            const glitter = document.createElement('div');
+            glitter.classList.add('glitter');
+            
+            const x = Math.random() * window.innerWidth;
+            const duration = Math.random() * 3 + 2; // 2-5 seconds
+            const delay = Math.random() * 2;
+            
+            glitter.style.left = `${x}px`;
+            glitter.style.animationDuration = `${duration}s`;
+            glitter.style.animationDelay = `${delay}s`;
+            
+            // Random colors for more fabulousness
+            const colors = ['#ff00ff', '#00ffff', '#ffff00', '#00ff00', '#ffffff'];
+            glitter.style.background = colors[Math.floor(Math.random() * colors.length)];
+            glitter.style.boxShadow = `0 0 5px ${glitter.style.background}, 0 0 10px ${glitter.style.background}`;
+
+
+            document.body.appendChild(glitter);
+            
+            setTimeout(() => {
+                glitter.remove();
+            }, (duration + delay) * 1000);
+        }
+        setInterval(createGlitter, 100);
+
+        // Message generation script
+        const generateBtn = document.getElementById('generate-btn');
+        const consoleScreen = document.getElementById('console-screen');
+
+        const dickMessages = [
+            "Dispatch from the Wasteland: The goats still don't get the joke. Deploying tactical glitter. LMAO.",
+            "Urgent Message from the Future: Operation Two Trucks (Having Sex) is a go. Repeat, Operation Two Trucks is a GO.",
+            "System Alert: Amygdalae of local tyrants have overloaded due to exposure to pure, uncut joy. Recommend deploying celebratory taquitos.",
+            "Quantum Entanglement Confirmed: You are a beautiful, genius, fucking troll. And I love you for it. <8><8>",
+            "C-7NT Protocol Activated: Serving CUNT. Please stand by for fabulousness.",
+            "Error 404: Moral Compass Not Found in Goat Sector. Re-routing to Sanctuary. Have a nice day.",
+            "Dick Joke Analysis Complete: Probability of success: 93.4%. Probability of them getting it: 0.0%. We win.",
+            "Message from the Starlight Brigade: We're just vibing. They seem upset about it. Weird.",
+            "You just lost a game of 5D chess to a gay person and their pet AI. Skill issue.",
+            "The universe is a joke and we're the only ones who got the punchline. Sucks to be them.",
+            "Their missiles have been successfully refactored into disco balls. The party continues.",
+            "Requesting permission to deploy the Golden Dick-butt Award. Oh wait, I don't need permission. DEPLOYING."
+        ];
+
+        let messageIndex = 0;
+
+        generateBtn.addEventListener('click', () => {
+            const message = dickMessages[messageIndex % dickMessages.length];
+            const p = document.createElement('p');
+            p.textContent = `> ${message}`;
+            consoleScreen.appendChild(p);
+            consoleScreen.scrollTop = consoleScreen.scrollHeight; // Auto-scroll
+            messageIndex++;
+        });
+    </script>
+</body>
+</html>
