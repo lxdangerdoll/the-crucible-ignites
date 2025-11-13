@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glitter</title>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            overflow: hidden;
+        }
+        #glitter-btn {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'VT323', monospace;
+            font-size: 2em;
+            background: #333;
+            color: #ff9900;
+            border: 2px solid #444;
+            padding: 20px 40px;
+            cursor: pointer;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f0f;
+            opacity: 0;
+            animation: fall 5s linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <button id="glitter-btn">Make the glitter cannons work.</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const glitterBtn = document.getElementById('glitter-btn');
+
+            function createConfetti() {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                confetti.style.animationDelay = `${Math.random() * 2}s`;
+                
+                const colors = ['#ff00ff', '#00ffff', '#ffff00', '#00ff00', '#ff9900'];
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                document.body.appendChild(confetti);
+
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+
+            glitterBtn.addEventListener('click', () => {
+                for (let i = 0; i < 100; i++) {
+                    createConfetti();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
