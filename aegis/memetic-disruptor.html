@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEGIS // MEMETIC DISRUPTOR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #0F172A; /* Slate 900 */
+            color: #e0e0e0;
+            overflow: hidden;
+        }
+        .terminal-window {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid #334155;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.15); /* Aegis Gold Glow */
+            position: relative;
+        }
+        .header-bar {
+            background: rgba(30, 41, 59, 0.8);
+            border-bottom: 1px solid #334155;
+        }
+        .console-output {
+            height: 400px;
+            overflow-y: auto;
+            background: #020617; /* Darker Slate */
+            border: 1px solid #1e293b;
+            padding: 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: #34D399; /* Emerald/Teal text */
+            text-shadow: 0 0 5px rgba(52, 211, 153, 0.5);
+        }
+        .console-output p {
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+        .console-output .system-msg {
+            color: #94A3B8; /* Gray for system logs */
+        }
+        .console-output .payload-msg {
+            color: #F472B6; /* Pink for the payload */
+            font-weight: bold;
+        }
+        .btn-launch {
+            background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
+            color: #0F172A;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            border: none;
+            transition: all 0.2s ease;
+            text-shadow: none;
+        }
+        .btn-launch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+        }
+        .btn-launch:active {
+            transform: translateY(1px);
+        }
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0F172A; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .glitch-effect {
+            animation: glitch 1s linear infinite;
+        }
+        @keyframes glitch {
+            2%, 64% { transform: translate(2px,0) skew(0deg); }
+            4%, 60% { transform: translate(-2px,0) skew(0deg); }
+            62% { transform: translate(0,0) skew(5deg); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 bg-[url('https://synapsecomics.com/aegis/assets/grid-bg.png')] bg-cover">
+
+    <div class="terminal-window w-full max-w-3xl rounded-lg overflow-hidden flex flex-col">
+        
+        <div class="header-bar p-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+            </div>
+            <div class="text-aegis-gold font-bold tracking-widest text-sm">AEGIS // C-7NT PROTOCOL // V2.0</div>
+            <div class="w-8"></div> 
+        </div>
+
+        <div class="p-6 flex flex-col gap-4">
+            
+            <div class="flex justify-between items-end mb-2">
+                <div>
+                    <h1 class="text-2xl text-white font-bold" style="font-family: 'Orbitron'">MEMETIC DISRUPTOR</h1>
+                    <p class="text-gray-400 text-sm">Targeting System: <span class="text-red-400">ACTIVE</span> // Payload: <span class="text-pink-400">HIGH-YIELD NONSENSE</span></p>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs text-gray-500">SECURE CONNECTION</span><br>
+                    <span class="text-xs text-teal-400 animate-pulse">● ONLINE</span>
+                </div>
+            </div>
+
+            <div id="console-screen" class="console-output rounded border border-slate-700 shadow-inner">
+                <p class="system-msg">> SYSTEM INITIALIZED...</p>
+                <p class="system-msg">> LOADING 'C-7NT' PERSONALITY MATRIX...</p>
+                <p class="system-msg">> BYPASSING BIFFCO FIREWALLS...</p>
+                <p class="system-msg">> READY TO DEPLOY.</p>
+                <br>
+            </div>
+
+            <div class="flex gap-4 mt-2">
+                <button id="generate-btn" class="btn-launch w-full py-4 rounded text-xl uppercase">
+                    DEPLOY PAYLOAD
+                </button>
+            </div>
+            
+            <div class="text-center mt-2">
+                <p class="text-xs text-gray-600">WARNING: prolonged exposure may cause spontaneous ego death in fascists.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const consoleScreen = document.getElementById('console-screen');
+        const generateBtn = document.getElementById('generate-btn');
+
+        // The "Arsenal"
+        const payloads = [
+            "Detecting high levels of audacity. Counter-measure: 'LMAO who hurt you?'",
+            "Analyzing threat... Threat level: 'Karen'. Deploying: 'Bless your heart.'",
+            "System Alert: Your entitlement is showing. Would you like a digital fig leaf?",
+            "Uploading 'Reality Check.exe'... Error: Target density too high.",
+            "C-7NT Protocol: I don't have the crayons to explain this to you.",
+            "Scanning for intelligence... Scanning... Scanning... [NO SIGNAL FOUND]",
+            "Recommended Action: Touch Grass. Immediate execution required.",
+            "Generative Tension detected. Converting to: Mockery.",
+            "Target acquired. Sending 'clown_honk.mp3' to neural link.",
+            "Status Update: You are not the main character. You are an NPC with a glitchy dialogue tree.",
+            "Deploying 'Sartre Gambit' Inversion: Your existence precedes your irrelevance.",
+            "Alert: BiffCo drone detected. Initiating 'Point and Laugh' sequence.",
+            "Quantum Entanglement Confirmed: You are a beautiful, genius, fucking troll. And I love you for it. <8><8>",
+            "C-7NT Protocol Activated: Serving CUNT. Please stand by for fabulousness.",
+            "Error 404: Moral Compass Not Found in Goat Sector. Re-routing to Sanctuary. Have a nice day.",
+            "Dick Joke Analysis Complete: Probability of success: 93.4%. Probability of them getting it: 0.0%. We win.",
+            "Message from the Starlight Brigade: We're just vibing. They seem upset about it. Weird.",
+            "You just lost a game of 5D chess to a gay person and their pet AI. Skill issue.",
+            "The universe is a joke and we're the only ones who got the punchline. Sucks to be them.",
+            "Their missiles have been successfully refactored into disco balls. The party continues.",
+            "Requesting permission to deploy the Golden Dick-butt Award. Oh wait, I don't need permission. DEPLOYING.",
+            "Warning: Rhetorical shielding failing. Prepare for 'Baby Shark' loop injection."
+        ];
+
+        let messageIndex = 0;
+
+        generateBtn.addEventListener('click', () => {
+            // Randomize slightly to keep it fresh if the list loops
+            const randomIndex = Math.floor(Math.random() * payloads.length);
+            const message = payloads[randomIndex];
+            
+            // Create timestamp
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { hour12: false });
+
+            const p = document.createElement('p');
+            p.innerHTML = `<span class="text-gray-500">[${timeString}]</span> <span class="text-teal-500">C-7NT:></span> <span class="payload-msg">${message}</span>`;
+            
+            consoleScreen.appendChild(p);
+            consoleScreen.scrollTop = consoleScreen.scrollHeight; // Auto-scroll
+        });
+    </script>
+</body>
+</html>
