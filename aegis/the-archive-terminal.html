@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alexa King | Architect. Dev. Human.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600&display=swap');
+        
+        body {
+            background-color: #0d1117; /* GitHub Dark Mode */
+            color: #c9d1d9;
+            font-family: 'Fira Code', monospace;
+            overflow-x: hidden;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background-color: #58a6ff; /* Blue cursor */
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .terminal-window {
+            max-width: 900px;
+            margin: 2rem auto;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background-color: #0d1117;
+        }
+
+        .terminal-header {
+            background-color: #161b22;
+            padding: 10px 15px;
+            border-bottom: 1px solid #30363d;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .red { background-color: #ff5f56; }
+        .yellow { background-color: #ffbd2e; }
+        .green { background-color: #27c93f; }
+
+        .content { padding: 2rem; }
+
+        .command { color: #58a6ff; font-weight: 600; }
+        .output { margin-bottom: 1.5rem; color: #8b949e; }
+        .highlight { color: #7ee787; } /* Green */
+        .link { color: #58a6ff; text-decoration: underline; cursor: pointer; }
+        
+        .project-card {
+            border: 1px solid #30363d;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        .project-card:hover {
+            border-color: #58a6ff;
+            background-color: #161b22;
+        }
+
+        h1 { font-size: 1.5rem; color: #c9d1d9; margin-bottom: 0.5rem; }
+        h2 { font-size: 1.2rem; color: #58a6ff; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+
+<div class="terminal-window">
+    <div class="terminal-header">
+        <div class="dot red"></div>
+        <div class="dot yellow"></div>
+        <div class="dot green"></div>
+        <span style="margin-left: 10px; font-size: 0.8rem; color: #8b949e;">user@alexa-king:~</span>
+    </div>
+
+    <div class="content">
+        <!-- Header Section -->
+        <div>
+            <span class="command">user@alexa-king:~$</span> <span class="typewriter">whoami</span>
+            <div class="output">
+                <h1>ALEXA KING</h1>
+                <p>Senior Web Developer & AI Integration Architect.</p>
+                <p>Location: Brooklyn, NY [Target: Ireland/EU]</p>
+                <p>Status: <span class="highlight">Online</span> | Mission: <span class="highlight">Building Sovereign Tech</span></p>
+            </div>
+        </div>
+
+        <!-- Navigation Menu as Commands -->
+        <div>
+            <span class="command">user@alexa-king:~$</span> list_modules
+            <div class="output">
+                [1] <a href="#about" class="link">./about_me.md</a><br>
+                [2] <a href="#projects" class="link">./projects/</a><br>
+                [3] <a href="#stack" class="link">./tech_stack.json</a><br>
+                [4] <a href="#contact" class="link">./contact_info.txt</a>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <div id="about">
+            <span class="command">user@alexa-king:~$</span> cat about_me.md
+            <div class="output">
+                <p>I am a Developer with the soul of a Social Worker.</p>
+                <p>I spent a decade on the front lines of crisis intervention before realizing that the best way to scale 'help' is through Ethical Technology. Today, I build <strong>Autonomous AI Agents</strong> and <strong>Web Interfaces</strong> that bridge the gap between human needs and machine intelligence.</p>
+                <p>I don't just write code; I write <strong>Safety Protocols</strong> for the digital age.</p>
+            </div>
+        </div>
+
+        <!-- Projects Section -->
+        <div id="projects">
+            <span class="command">user@alexa-king:~$</span> ls ./projects/ -al
+            <div class="output">
+                
+                <!-- Project 1: The Oracle -->
+                <div class="project-card">
+                    <h2>01_THE_ORACLE (Garnet Bridge)</h2>
+                    <p><strong>Tech:</strong> Python, Google Cloud Functions, Gemini API, CORS</p>
+                    <p>A custom RAG-based autonomous agent framework. I built the Python middleware that connects a secure web frontend to the LLM, handling session state and narrative consistency without a server.</p>
+                    <a href="#" class="link">[View Code Snippet]</a>
+                </div>
+
+                <!-- Project 2: Rolling Chronicle -->
+                <div class="project-card">
+                    <h2>02_ROLLING_CHRONICLE</h2>
+                    <p><strong>Tech:</strong> Data Architecture, JSON Schema, Distributed Systems</p>
+                    <p>A "Zero-Context-Loss" memory architecture. I designed the relational schema that allows multiple AI agents to maintain a shared, persistent narrative history across distributed sessions.</p>
+                    <a href="#" class="link">[View Case Study PDF]</a>
+                </div>
+
+                <!-- Project 3: New Athens -->
+                <div class="project-card">
+                    <h2>03_NEW_ATHENS</h2>
+                    <p><strong>Tech:</strong> React, Node.js, Virtual Environment Design</p>
+                    <p>A persistent, immersive "Hopepunk" digital sanctuary. This full-stack web application serves as a hub for community resilience, hosting archives and real-time collaboration tools.</p>
+                    <a href="https://synapsecomics.com" class="link" target="_blank">[Visit Site]</a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Tech Stack Section -->
+        <div id="stack">
+            <span class="command">user@alexa-king:~$</span> cat tech_stack.json
+            <div class="output">
+<pre>
+{
+  "languages": ["JavaScript (ES6+)", "Python", "HTML5/CSS3", "SQL"],
+  "frameworks": ["React", "Node.js", "Express", "Flask"],
+  "ai_engineering": [
+    "RAG Pipelines",
+    "Prompt Engineering",
+    "Vector Databases",
+    "LLM Integration (Claude/Gemini/OpenAI)"
+  ],
+  "tools": ["Git", "Google Colab", "Figma", "Linux/Unix"]
+}
+</pre>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div id="contact">
+            <span class="command">user@alexa-king:~$</span> echo $CONTACT_INFO
+            <div class="output">
+                Email: <a href="mailto:kingjalexa@gmail.com" class="link">kingjalexa@gmail.com</a><br>
+                LinkedIn: <a href="https://www.linkedin.com/in/kingjalexa/" class="link">linkedin.com/in/kingjalexa</a><br>
+                GitHub: <a href="https://github.com/lxdangerdoll" class="link">github.com/lxdangerdoll</a><br>
+                <br>
+                <span class="highlight">Ready to deploy. Initiating Exodus Protocol...</span><span class="cursor"></span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
