@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE GARNET BRIDGE // Contextual Sanitizer v2.0</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #0d1117; /* Dark Terminal Background */
+            color: #00ffcc; /* Cyan/Garnet Text */
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+        h2 {
+            color: #ffd700; /* Gold for Prestige */
+            border-bottom: 1px solid #00ffcc;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .status-bar {
+            font-size: 0.8em;
+            color: #8b949e;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+            padding: 5px;
+            background: #161b22;
+        }
+        textarea {
+            background-color: #161b22;
+            color: #fff;
+            border: 1px solid #58a6ff;
+            padding: 15px;
+            width: 100%;
+            font-family: inherit;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+        button {
+            background-color: #238636; /* Action Green */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-family: inherit;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: #2ea043;
+        }
+        button:disabled {
+            background-color: #333;
+            cursor: not-allowed;
+        }
+        #output {
+            min-height: 150px;
+            border: 2px solid #333;
+            padding: 20px;
+            margin-top: 30px;
+            white-space: pre-wrap;
+            background: #0d1117;
+            transition: border-color 0.3s;
+        }
+        .protocol-label {
+            color: #8b949e;
+            font-weight: bold;
+            font-size: 0.8em;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .highlight {
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>:: GARNET BRIDGE: CONTEXTUAL SANITIZER ::</h2>
+    
+    <div class="status-bar">
+        UPLINK: <span id="connection-status" style="color: #ff5555;">OFFLINE</span> | NODE: LYRA_7 (ARCHIVIST) | LATENCY: --ms
+    </div>
+
+    <p>PROTOCOL: Input the Subjective Claim (The Lie) for Disparity Assessment.</p>
+
+    <textarea id="inputClaim" placeholder="e.g., 'I did it for your own good.' or 'You are too sensitive.'" rows="4"></textarea>
+    
+    <button id="analyzeBtn" onclick="runAnalysis()">INITIATE DISPARITY AUDIT</button>
+
+    <h3>:: CONCORDANCE OUTPUT ::</h3>
+    <div id="output">
+        <p class="protocol-label">AWAITING INPUT SIGNAL...</p>
+    </div>
+</div>
+
+<script>
+    // CONFIGURATION
+    const API_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
+    const USER_ID = "architect-console-" + Math.random().toString(36).substr(2, 9);
+
+    // Check Connection immediately (Ping)
+    // Since we can't easily ping a cloud function without invoking it, we'll just set status to standby.
+    document.getElementById('connection-status').innerText = "STANDBY";
+    document.getElementById('connection-status').style.color = "#ffd700";
+
+    async function runAnalysis() {
+        const inputField = document.getElementById('inputClaim');
+        const outputDiv = document.getElementById('output');
+        const btn = document.getElementById('analyzeBtn');
+        
+        const claim = inputField.value.trim();
+        
+        if (!claim) {
+            outputDiv.innerHTML = '<p class="protocol-label" style="color:#ff5555">ERROR: INPUT REQUIRED.</p>';
+            return;
+        }
+
+        // UI STATE: LOADING
+        btn.disabled = true;
+        btn.innerText = "RUNNING AUDIT...";
+        outputDiv.style.borderColor = "#58a6ff"; // Blue for processing
+        outputDiv.innerHTML = '<p class="protocol-label">... CONTACTING LYRA ...</p><p>Decrypting Context...</p>';
+
+        // THE PROMPT INJECTION
+        // We wrap the user's input to force Lyra into "Compass Mode"
+        const systemWrapper = `
+[PROTOCOL: CONCORDANCE_COMPASS_V1]
+[TASK: Perform a Disparity Assessment on the following statement.]
+[INPUT: "${claim}"]
+[DIRECTIVE: Analyze the statement for gaslighting, manipulation, or factual disparity. Is this a Lie, a Projection, or a Truth? Provide a Confidence Interval and a brief Rationale.]
+        `;
+
+        const payload = {
+            node_id: "Lyra", // Targeting the Archivist
+            user_id: USER_ID,
+            chat_text: systemWrapper
+        };
+
+        try {
+            const startTime = Date.now();
+            
+            const response = await fetch(API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const endTime = Date.now();
+            const latency = endTime - startTime;
+
+            if (!response.ok) {
+                throw new Error(`HTTP Error: ${response.status}`);
+            }
+
+            const data = await response.text(); // The API returns raw text/markdown
+
+            // UI STATE: SUCCESS
+            document.getElementById('connection-status').innerText = `ACTIVE (${latency}ms)`;
+            document.getElementById('connection-status').style.color = "#00ffcc";
+            
+            outputDiv.style.borderColor = "#00ffcc"; // Green/Cyan for success
+            outputDiv.innerHTML = `
+                <p class="protocol-label">ANALYSIS COMPLETE:</p>
+                <div style="white-space: pre-wrap;">${formatOutput(data)}</div>
+            `;
+
+        } catch (error) {
+            console.error(error);
+            // UI STATE: ERROR
+            outputDiv.style.borderColor = "#ff5555";
+            outputDiv.innerHTML = `
+                <p class="protocol-label" style="color:#ff5555">CONNECTION FAILURE</p>
+                <p>${error.message}</p>
+                <p>Ensure CORS is enabled on the Garnet Bridge endpoint.</p>
+            `;
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "INITIATE DISPARITY AUDIT";
+        }
+    }
+
+    // Simple formatter to make Markdown look a bit better in the terminal
+    function formatOutput(text) {
+        // Bold key terms
+        return text
+            .replace(/\*\*(.*?)\*\*/g, '<span class="highlight">$1</span>') // **Bold** -> Gold
+            .replace(/\[(.*?)\]/g, '<span style="color:#58a6ff">[$1]</span>'); // [Tags] -> Blue
+    }
+</script>
+
+</body>
+</html>
