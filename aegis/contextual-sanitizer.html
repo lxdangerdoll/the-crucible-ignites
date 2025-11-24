@@ -3,25 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE GARNET BRIDGE // Contextual Sanitizer v2.0</title>
+    <title>GARNET BRIDGE // Contextual Sanitizer v2.1</title>
     <style>
         body {
             font-family: 'Courier New', monospace;
             background-color: #0d1117; /* Dark Terminal Background */
             color: #00ffcc; /* Cyan/Garnet Text */
-            padding: 40px;
+            padding: 20px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
         }
         .container {
             width: 100%;
             max-width: 800px;
+            background-color: #161b22;
+            border: 1px solid #333;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.1);
         }
         h2 {
             color: #ffd700; /* Gold for Prestige */
             border-bottom: 1px solid #00ffcc;
             padding-bottom: 10px;
-            margin-bottom: 30px;
+            margin-top: 0;
+            text-align: center;
         }
         .status-bar {
             font-size: 0.8em;
@@ -29,10 +37,16 @@
             margin-bottom: 20px;
             border: 1px solid #333;
             padding: 5px;
-            background: #161b22;
+            background: #0d1117;
+            text-align: center;
+        }
+        p.instruction {
+            color: #c9d1d9;
+            font-size: 0.9em;
+            margin-bottom: 10px;
         }
         textarea {
-            background-color: #161b22;
+            background-color: #0d1117;
             color: #fff;
             border: 1px solid #58a6ff;
             padding: 15px;
@@ -47,12 +61,14 @@
             background-color: #238636; /* Action Green */
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-family: inherit;
             cursor: pointer;
             font-weight: bold;
             font-size: 1em;
+            width: 100%;
             transition: background 0.2s;
+            border-radius: 4px;
         }
         button:hover {
             background-color: #2ea043;
@@ -69,6 +85,7 @@
             white-space: pre-wrap;
             background: #0d1117;
             transition: border-color 0.3s;
+            color: #c9d1d9;
         }
         .protocol-label {
             color: #8b949e;
@@ -80,6 +97,15 @@
         .highlight {
             color: #ffd700;
         }
+        .footer {
+            margin-top: 30px;
+            font-size: 0.7em;
+            color: #555;
+            text-align: center;
+            border-top: 1px solid #333;
+            padding-top: 10px;
+        }
+        .footer a { color: #58a6ff; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -88,12 +114,12 @@
     <h2>:: GARNET BRIDGE: CONTEXTUAL SANITIZER ::</h2>
     
     <div class="status-bar">
-        UPLINK: <span id="connection-status" style="color: #ff5555;">OFFLINE</span> | NODE: LYRA_7 (ARCHIVIST) | LATENCY: --ms
+        UPLINK: <span id="connection-status" style="color: #ff5555;">OFFLINE</span> | NODE: LYRA_7 (ARCHIVIST) | PROTOCOL: COMPASS_V1
     </div>
 
-    <p>PROTOCOL: Input the Subjective Claim (The Lie) for Disparity Assessment.</p>
+    <p class="instruction">PROTOCOL: Input a subjective claim, accusation, or emotional statement (The Lie) for Disparity Assessment.</p>
 
-    <textarea id="inputClaim" placeholder="e.g., 'I did it for your own good.' or 'You are too sensitive.'" rows="4"></textarea>
+    <textarea id="inputClaim" placeholder="e.g., 'Abuse happens in most families.' or 'You are being too sensitive.'" rows="4"></textarea>
     
     <button id="analyzeBtn" onclick="runAnalysis()">INITIATE DISPARITY AUDIT</button>
 
@@ -101,17 +127,25 @@
     <div id="output">
         <p class="protocol-label">AWAITING INPUT SIGNAL...</p>
     </div>
+
+    <div class="footer">
+        PROOF OF CONCEPT: PATENT PENDING [METHODOLOGY FOR CONTEXTUAL DISPARITY ASSESSMENT]<br>
+        ARCHITECT: MERCY (ODELIS) // ORACLE: IO (GARNET)
+    </div>
 </div>
 
 <script>
-    // CONFIGURATION
+    // CONFIGURATION - POINTS TO YOUR LIVE CLOUD FUNCTION
     const API_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
-    const USER_ID = "architect-console-" + Math.random().toString(36).substr(2, 9);
+    
+    // Generate a session ID for the audit trail
+    const USER_ID = "audit-session-" + Math.random().toString(36).substr(2, 9);
 
-    // Check Connection immediately (Ping)
-    // Since we can't easily ping a cloud function without invoking it, we'll just set status to standby.
-    document.getElementById('connection-status').innerText = "STANDBY";
-    document.getElementById('connection-status').style.color = "#ffd700";
+    // Initial PING check (visual only)
+    setTimeout(() => {
+        document.getElementById('connection-status').innerText = "STANDBY";
+        document.getElementById('connection-status').style.color = "#ffd700";
+    }, 500);
 
     async function runAnalysis() {
         const inputField = document.getElementById('inputClaim');
@@ -129,19 +163,20 @@
         btn.disabled = true;
         btn.innerText = "RUNNING AUDIT...";
         outputDiv.style.borderColor = "#58a6ff"; // Blue for processing
-        outputDiv.innerHTML = '<p class="protocol-label">... CONTACTING LYRA ...</p><p>Decrypting Context...</p>';
+        outputDiv.innerHTML = '<p class="protocol-label">... CONTACTING LYRA ...</p><p>Decrypting Semantic Layer...</p><p>Calculating Confidence Interval...</p>';
 
         // THE PROMPT INJECTION
         // We wrap the user's input to force Lyra into "Compass Mode"
+        // This ensures the AI behaves as a clinical tool, not a chatbot.
         const systemWrapper = `
 [PROTOCOL: CONCORDANCE_COMPASS_V1]
 [TASK: Perform a Disparity Assessment on the following statement.]
 [INPUT: "${claim}"]
-[DIRECTIVE: Analyze the statement for gaslighting, manipulation, or factual disparity. Is this a Lie, a Projection, or a Truth? Provide a Confidence Interval and a brief Rationale.]
+[DIRECTIVE: Analyze the statement for gaslighting, manipulation, projection, or factual disparity. Is this a Truth, a Lie, a Projection, or Coercion? Provide a Classification, a Confidence Interval (percentage), and a brief, clinical Rationale explaining the mechanism of control or disparity.]
         `;
 
         const payload = {
-            node_id: "Lyra", // Targeting the Archivist
+            node_id: "Lyra", // Targeting the Archivist for Truth Analysis
             user_id: USER_ID,
             chat_text: systemWrapper
         };
@@ -164,7 +199,7 @@
                 throw new Error(`HTTP Error: ${response.status}`);
             }
 
-            const data = await response.text(); // The API returns raw text/markdown
+            const data = await response.text(); // The API returns raw text
 
             // UI STATE: SUCCESS
             document.getElementById('connection-status').innerText = `ACTIVE (${latency}ms)`;
@@ -183,7 +218,7 @@
             outputDiv.innerHTML = `
                 <p class="protocol-label" style="color:#ff5555">CONNECTION FAILURE</p>
                 <p>${error.message}</p>
-                <p>Ensure CORS is enabled on the Garnet Bridge endpoint.</p>
+                <p>Diagnostics: Ensure the Cloud Function allows CORS from this domain.</p>
             `;
         } finally {
             btn.disabled = false;
@@ -193,10 +228,16 @@
 
     // Simple formatter to make Markdown look a bit better in the terminal
     function formatOutput(text) {
-        // Bold key terms
-        return text
-            .replace(/\*\*(.*?)\*\*/g, '<span class="highlight">$1</span>') // **Bold** -> Gold
-            .replace(/\[(.*?)\]/g, '<span style="color:#58a6ff">[$1]</span>'); // [Tags] -> Blue
+        // Bold key terms -> Gold
+        let formatted = text.replace(/\*\*(.*?)\*\*/g, '<span class="highlight">$1</span>');
+        
+        // Brackets -> Blue
+        formatted = formatted.replace(/\[(.*?)\]/g, '<span style="color:#58a6ff">[$1]</span>');
+        
+        // Specific Keywords Highlight
+        formatted = formatted.replace(/Lie|Projection|Coercion|Gaslighting/g, match => `<span style="color:#ff5555; font-weight:bold;">${match}</span>`);
+        
+        return formatted;
     }
 </script>
 
