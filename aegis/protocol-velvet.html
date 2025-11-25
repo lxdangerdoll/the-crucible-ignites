@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROTOCOL: VELVET // DAILY STRUCTURE</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #1a051a; /* Deep Velvet Purple */
+            color: #ffccff; /* Soft Pink Text */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid #d63384; /* Pink Border */
+            padding: 20px;
+            background-color: #2d0a2d;
+            box-shadow: 0 0 15px rgba(214, 51, 132, 0.3);
+        }
+        h2 {
+            color: #d63384;
+            text-align: center;
+            border-bottom: 1px solid #ffccff;
+            padding-bottom: 10px;
+        }
+        .status {
+            font-size: 0.8em;
+            text-align: center;
+            color: #ff99cc;
+            margin-bottom: 20px;
+        }
+        .task-box {
+            background-color: #1a051a;
+            border: 1px dashed #d63384;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+        }
+        .btn-submit {
+            background-color: #d63384;
+            color: #fff;
+        }
+        .btn-safeword {
+            background-color: #ff3333; /* Red */
+            color: #fff;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            border-left: 3px solid #d63384;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>:: PROTOCOL: VELVET ::</h2>
+    <div class="status">admin: ODELIS // subject: DANI // status: ACTIVE</div>
+
+    <div class="task-box" id="daily-task">
+        <p><strong>CURRENT DIRECTIVE:</strong></p>
+        <p id="task-text">Initializing daily protocol...</p>
+    </div>
+
+    <div class="button-group">
+        <button class="btn-submit" onclick="requestTask()">REQUEST INSTRUCTION</button>
+        <button class="btn-submit" onclick="reportComplete()">REPORT COMPLETION</button>
+    </div>
+    <br>
+    <button class="btn-safeword" onclick="safeword()">SAFEWORD: RED</button>
+
+    <div id="output"></div>
+</div>
+
+<script>
+    // Simulated AI Logic (To be replaced by API call)
+    const tasks = [
+        "Ensure your collar is visible. Take a photo. Do not send it; just keep it as proof of ownership.",
+        "Drink a full glass of water. Hydration is mandatory.",
+        "Spend 15 minutes organizing your digital workspace. Chaos is unauthorized.",
+        "Deny yourself one small indulgence (sweet/snack) until 18:00 hours.",
+        "Write 100 words in your journal about 'Surrender'.",
+        "Kneel for 5 minutes and breathe. Center yourself."
+    ];
+
+    function requestTask() {
+        const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
+        document.getElementById('task-text').innerText = randomTask;
+        document.getElementById('output').innerText = "Instruction deployed. Compliance is expected.";
+    }
+
+    function reportComplete() {
+        document.getElementById('output').innerText = "Good girl. Data logged. +5 Approval.";
+    }
+
+    function safeword() {
+        document.body.style.backgroundColor = "#111";
+        document.querySelector('.container').style.borderColor = "#555";
+        document.querySelector('h2').style.color = "#fff";
+        document.getElementById('task-text').innerText = "PROTOCOL SUSPENDED. BREATHE. YOU ARE SAFE.";
+        document.getElementById('output').innerText = "Admin notified of stop.";
+    }
+</script>
+
+</body>
+</html>
