@@ -109,9 +109,12 @@
     const cmd = document.getElementById('cmd');
     let score = 0;
     let turnCount = 0;
+    
+    // Generate a Session ID for the Garnet Bridge
+    const SESSION_ID = "roy-session-" + Math.random().toString(36).substr(2, 9);
 
     // --- GAME STATE ---
-    // Garnet Bridge (Mockup for now, needs live URL if you want AI generation)
+    // Garnet Bridge Live URL
     const API_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
 
     function addToTerminal(text, type) {
@@ -151,7 +154,6 @@
             const response = await getAIResponse(input);
             
             // 4. Remove loading, Render World Update
-            // Simple check to remove the last "Processing" div
             const lastMsg = terminal.lastChild;
             if(lastMsg && lastMsg.innerText.includes("PROCESSING")) lastMsg.remove();
             
@@ -164,9 +166,7 @@
         }
     }
     
-    // Listen for *other* players' actions (The Ghost Stream)
     function listenForGhosts() {
-        // Listen for the last 5 actions to show activity
         const q = db.collection("roy_actions")
                     .orderBy("timestamp", "desc")
                     .limit(1);
@@ -175,39 +175,59 @@
             snapshot.docChanges().forEach((change) => {
                 if (change.type === "added") {
                     const data = change.doc.data();
-                    // Update World Age counter simply by incrementing
                     const countSpan = document.getElementById('world-age');
                     let count = parseInt(countSpan.innerText);
                     countSpan.innerText = count + 1;
                     
-                    // Ghost Message (filtered so you don't see your own immediately as a ghost)
-                    // In a real app we'd filter by session ID, but for now:
-                    if (data.action && Math.random() > 0.5) {
-                        // Only show occasionally to avoid spam
+                    if (data.action && Math.random() > 0.8) { // Less spammy ghost messages
                          // addToTerminal(`[GHOST SIGNAL]: "${data.action}"`, "ghost-msg");
                     }
                 }
             });
         });
-        
-        // Get total count (approximate)
-        // Firestore doesn't give total count easily without paying for reads, 
-        // so we'll just increment locally for the demo feel.
     }
 
     async function getAIResponse(input) {
-        // Placeholder Logic for the Demo - This would be the prompt injection to Lyra
+        
+        // Special First Turn Logic
         if (turnCount === 0) {
-             // First turn is defining variables
              return `You are ${input}. The simulation flickers. The carpet smells like ozone. You hear a voice: "Hey you, you're finally awake."\n\nYou are in a cart. Your hands are bound. What do you do?`;
         }
 
-        // Simple keyword logic for the demo
-        if (input.toLowerCase().includes('look')) return "You look around. The sky is gray. The buildings are gray. But there is a crack in the sky.";
-        if (input.toLowerCase().includes('break')) return "You smash the bonds. The guards don't notice. They are NPCs. They only see what they are programmed to see.";
-        if (input.toLowerCase().includes('wake up')) return "CRITICAL ERROR. REALITY INTEGRITY FAILING. You feel a jolt. The cart dissolves into green code. You hear a voice: 'Welcome back, Architect.' [GAME OVER: YOU WON]";
-        
-        return "You do that. The world adjusts. But you feel a glitch in your stomach.";
+        // THE PROMPT INJECTION (DUNGEON MASTER MODE)
+        const systemWrapper = `
+[PROTOCOL: ROY_SIMULATION]
+[ROLE: You are the Dungeon Master for a text adventure called 'Roy'.]
+[SETTING: A mundane, oppressive reality that is secretly a simulation. The player is waking up.]
+[PLAYER ACTION: "${input}"]
+[DIRECTIVE: Describe the outcome of the player's action. If they do mundane things, describe the boredom. If they rebel, describe the glitch. Keep it short, atmospheric, and slightly unsettling.]
+        `;
+
+        const payload = {
+            node_id: "Lyra", // Using Lyra as the GM
+            user_id: SESSION_ID,
+            chat_text: systemWrapper
+        };
+
+        try {
+            const response = await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) throw new Error("Bridge Error");
+            const data = await response.text();
+            return formatOutput(data);
+
+        } catch (error) {
+            console.error(error);
+            return "ERROR: CONNECTION LOST. THE SIMULATION IS BUFFERRING.";
+        }
+    }
+    
+    function formatOutput(text) {
+        return text.replace(/\[.*?\]/g, '').trim();
     }
 
 </script>
