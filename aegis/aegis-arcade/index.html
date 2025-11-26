@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>SPACE BAR ARCADE // SELECT CARTRIDGE</title>
     <style>
+        /* ... existing styles ... */
         body {
             font-family: 'Courier New', monospace;
             background-color: #020202;
@@ -16,7 +17,7 @@
             background-image: linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px),
             linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px);
             background-size: 20px 20px;
-            overflow: hidden; /* Hide scrollbar for the ticker */
+            overflow: hidden; 
         }
         h1 {
             color: #ffd700;
@@ -116,7 +117,7 @@
             height: 40px;
             background-color: #111;
             border-top: 1px solid #00ffcc;
-            padding-left: 100%; /* Push off screen */
+            padding-left: 100%; 
             box-sizing: content-box;
         }
         .ticker {
@@ -230,12 +231,16 @@
         <p>🎁 FREE holographic spatula if you act now!</p>
         <p style="font-size: 0.8rem; margin-top: 1rem; color: #aaa; font-style: italic;">"I said it was edible. YOU said it was a metaphor."<br>— Frizzlebot</p>
         <div style="margin-top: 1rem; text-align: center;">
-            <!-- Updated Link to the Kitchen -->
             <button onclick="window.location.href='kitchen-of-the-synaptic-archives.html'" style="background: #ffcc00; color: #000; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-weight: bold;">Get Recipe!</button>
         </div>
     </div>
 
 <script>
+    // Console Easter Egg
+    console.log("%c>>> AEGIS ARCADE SYSTEM LOG <<<", "color: #00ffcc; font-weight: bold; font-size: 1.2em;");
+    console.log("%c[NOTICE]: A corrupted file fragment was detected in sector 7G.", "color: #888;");
+    console.log("%c[HINT]: Looking for the past? Try navigating to 'the-velvet-loop.html'.", "color: #ffd700; font-style: italic;");
+
     // Frizzlebot Trigger
     setTimeout(() => {
         document.getElementById('frizzlebotAd').style.display = 'block';
