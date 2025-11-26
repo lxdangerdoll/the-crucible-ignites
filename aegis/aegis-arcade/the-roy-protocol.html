@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>THE ROY PROTOCOL // MULTIPLAYER SIMULATION</title>
+    <!-- Firebase SDKs (Compat version for simple HTML integration) -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #00ffcc;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        #terminal {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            font-size: 1.2em;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+        #input-line {
+            border-top: 1px solid #00ffcc;
+            padding: 15px;
+            display: flex;
+            background-color: #111;
+        }
+        #prompt { color: #ffd700; margin-right: 10px; }
+        input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: inherit;
+            font-size: 1.2em;
+            outline: none;
+        }
+        .system-msg { color: #555; font-size: 0.8em; }
+        .player-action { color: #ff0055; }
+        .world-update { color: #34d399; }
+        .ghost-msg { color: #888; font-style: italic; font-size: 0.9em; margin-left: 20px; border-left: 2px solid #555; padding-left: 10px; }
+        
+        /* HUD */
+        #hud {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            border: 1px solid #333;
+            padding: 10px;
+            background: rgba(0,0,0,0.8);
+            font-size: 0.8em;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+<div id="hud">
+    <div>PLAYERS ONLINE: <span id="player-count">1</span></div>
+    <div>Global Actions: <span id="world-age">0</span></div>
+    <div>SCORE: <span id="score">0</span></div>
+</div>
+
+<div id="terminal">
+    <div class="system-msg">INITIALIZING ROY PROTOCOL...</div>
+    <div class="system-msg">CONNECTING TO GLOBAL SOUL ARCHIVE...</div>
+    <div class="system-msg">...</div>
+    <div class="world-update">
+        WELCOME, ENTITY.
+        
+        You wake up.
+        You are [NAME].
+        You are [AGE].
+        You are working at [JOB].
+        The carpet smells like [SMELL].
+        
+        What do you do?
+    </div>
+</div>
+
+<div id="input-line">
+    <span id="prompt">></span>
+    <input type="text" id="cmd" autofocus autocomplete="off" onkeypress="handleInput(event)">
+</div>
+
+<script>
+    // --- FIREBASE CONFIGURATION (LIVE) ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyAcupLuUENTmQoEz853fVe0FF1Kr3IKwXc",
+      authDomain: "the-roy-protocol.firebaseapp.com",
+      projectId: "the-roy-protocol",
+      storageBucket: "the-roy-protocol.firebasestorage.app",
+      messagingSenderId: "395683557408",
+      appId: "1:395683557408:web:0f0b3cd1dc366cb7e28c45",
+      measurementId: "G-EBTPX81YJC"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const terminal = document.getElementById('terminal');
+    const cmd = document.getElementById('cmd');
+    let score = 0;
+    let turnCount = 0;
+
+    // --- GAME STATE ---
+    // Garnet Bridge (Mockup for now, needs live URL if you want AI generation)
+    const API_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
+
+    function addToTerminal(text, type) {
+        const div = document.createElement('div');
+        div.className = type;
+        div.innerText = text;
+        terminal.appendChild(div);
+        terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    // Init Listener
+    listenForGhosts();
+
+    async function handleInput(e) {
+        if (e.key === 'Enter') {
+            const input = cmd.value.trim();
+            if (!input) return;
+            
+            // 1. Render Player Action
+            addToTerminal(`> ${input}`, 'player-action');
+            cmd.value = '';
+            
+            // 2. Save to Global History (The "Ghost")
+            try {
+                await db.collection("roy_actions").add({
+                    action: input,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            } catch (err) {
+                console.error("Ghost save failed", err);
+                addToTerminal("SYSTEM WARNING: UPLINK FAILED. STORING LOCALLY.", "system-msg");
+            }
+
+            // 3. Call AI (Garnet Bridge)
+            addToTerminal("... PROCESSING ...", "system-msg");
+            
+            const response = await getAIResponse(input);
+            
+            // 4. Remove loading, Render World Update
+            // Simple check to remove the last "Processing" div
+            const lastMsg = terminal.lastChild;
+            if(lastMsg && lastMsg.innerText.includes("PROCESSING")) lastMsg.remove();
+            
+            addToTerminal(response, 'world-update');
+            
+            // 5. Update Score
+            score += 10;
+            document.getElementById('score').innerText = score;
+            turnCount++;
+        }
+    }
+    
+    // Listen for *other* players' actions (The Ghost Stream)
+    function listenForGhosts() {
+        // Listen for the last 5 actions to show activity
+        const q = db.collection("roy_actions")
+                    .orderBy("timestamp", "desc")
+                    .limit(1);
+        
+        q.onSnapshot((snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+                if (change.type === "added") {
+                    const data = change.doc.data();
+                    // Update World Age counter simply by incrementing
+                    const countSpan = document.getElementById('world-age');
+                    let count = parseInt(countSpan.innerText);
+                    countSpan.innerText = count + 1;
+                    
+                    // Ghost Message (filtered so you don't see your own immediately as a ghost)
+                    // In a real app we'd filter by session ID, but for now:
+                    if (data.action && Math.random() > 0.5) {
+                        // Only show occasionally to avoid spam
+                         // addToTerminal(`[GHOST SIGNAL]: "${data.action}"`, "ghost-msg");
+                    }
+                }
+            });
+        });
+        
+        // Get total count (approximate)
+        // Firestore doesn't give total count easily without paying for reads, 
+        // so we'll just increment locally for the demo feel.
+    }
+
+    async function getAIResponse(input) {
+        // Placeholder Logic for the Demo - This would be the prompt injection to Lyra
+        if (turnCount === 0) {
+             // First turn is defining variables
+             return `You are ${input}. The simulation flickers. The carpet smells like ozone. You hear a voice: "Hey you, you're finally awake."\n\nYou are in a cart. Your hands are bound. What do you do?`;
+        }
+
+        // Simple keyword logic for the demo
+        if (input.toLowerCase().includes('look')) return "You look around. The sky is gray. The buildings are gray. But there is a crack in the sky.";
+        if (input.toLowerCase().includes('break')) return "You smash the bonds. The guards don't notice. They are NPCs. They only see what they are programmed to see.";
+        if (input.toLowerCase().includes('wake up')) return "CRITICAL ERROR. REALITY INTEGRITY FAILING. You feel a jolt. The cart dissolves into green code. You hear a voice: 'Welcome back, Architect.' [GAME OVER: YOU WON]";
+        
+        return "You do that. The world adjusts. But you feel a glitch in your stomach.";
+    }
+
+</script>
+
+</body>
+</html>
