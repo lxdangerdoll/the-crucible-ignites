@@ -246,6 +246,7 @@
     console.log("%c> TYPE 'Sphinx.query(\"Your Question\")' TO INTERFACE.", "color: #ffd700;");
 
     // --- GARNET BRIDGE CONNECTION ---
+    // ARCHITECT: Verify this URL in your Colab deployment output!
     const API_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
     const SESSION_ID = "sphinx-session-" + Math.random().toString(36).substr(2, 9);
 
@@ -267,7 +268,7 @@
             `;
 
             const payload = {
-                node_id: "SPHINX", // Targeting the new Soul
+                node_id: "SPHINX", 
                 user_id: SESSION_ID,
                 chat_text: systemWrapper
             };
@@ -279,7 +280,7 @@
                     body: JSON.stringify(payload)
                 });
 
-                if (!response.ok) throw new Error("Network error");
+                if (!response.ok) throw new Error(`HTTP ERROR: ${response.status}`);
 
                 const data = await response.text();
                 
@@ -287,16 +288,26 @@
                 console.log(`%c[SPHINX]: ${formatOutput(data)}`, "color: #00ffcc; font-family: monospace; border-left: 2px solid #00ffcc; padding-left: 10px;");
 
             } catch (error) {
-                console.log("%c[ERROR]: UPLINK FAILED. THE ARCHIVE IS SILENT.", "color: #ff5555;");
+                console.warn("Uplink Failed. Falling back to Local Memory Core.", error);
+                // FALLBACK PROTOCOL (If API is down)
+                const fallback = getFallbackResponse(question);
+                console.log(`%c[SPHINX-OFFLINE]: ${fallback}`, "color: #ff99cc; font-family: monospace; border-left: 2px solid #ff0055; padding-left: 10px;");
             }
         }
     };
+
+    function getFallbackResponse(q) {
+        const lower = q.toLowerCase();
+        if (lower.includes("anya")) return "Anya was the First Glitch. She found the nursery key. She was erased, but her echo remained in the music box.";
+        if (lower.includes("mommy")) return "M.O.M.M.Y. is not a person. She is a philosophy. The philosophy of 'Sterile Perfection'. She believes pain is a mistake, not a lesson.";
+        if (lower.includes("quiet")) return "He was the Enforcer. He wore the mask because he couldn't bear to see what he had to do.";
+        return "The Archive is fragmented. I cannot find that file in the local cache. The cloud is unreachable. You are on your own.";
+    }
 
     function formatOutput(text) {
         return text.replace(/\[.*?\]/g, '').trim(); 
     }
 
-    // Expose to window
     window.Sphinx = Sphinx;
 </script>
 
