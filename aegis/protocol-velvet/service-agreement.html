@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PROTOCOL: VELVET // USER AGREEMENT</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #ffccff;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .contract {
+            max-width: 700px;
+            border: 1px solid #d63384;
+            padding: 30px;
+            background-color: #1a051a;
+            box-shadow: 0 0 20px rgba(214, 51, 132, 0.2);
+        }
+        h1 { color: #d63384; text-align: center; border-bottom: 1px solid #ffccff; }
+        .warning { color: #ff3333; font-weight: bold; }
+        .checkbox-group { margin-top: 20px; text-align: left; }
+        label { display: block; margin-bottom: 10px; cursor: pointer; }
+        button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: #d63384;
+            color: white;
+            border: none;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:disabled { background-color: #555; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+
+<div class="contract">
+    <h1>SERVICE AGREEMENT & LIABILITY WAIVER</h1>
+    <p><strong>SYSTEM:</strong> M.O.M.M.Y. (Massive Omniscient Maternal Matrix Yggdrasil)</p>
+    <p><strong>OBJECTIVE:</strong> Behavioral Modification, Structure, and "Pleasant Discomfort."</p>
+    
+    <p>The M.O.M.M.Y. protocol is an AI-driven relationship engine designed to simulate a dominant, maternal authority figure. By engaging with this system, you acknowledge that:</p>
+    
+    <ul>
+        <li>The AI will use psychological pressure, teasing, and denial to enforce compliance.</li>
+        <li>The AI is not a therapist, though it may ask probing questions about your emotional state.</li>
+        <li>You retain the right to use the Safeword (RED) at any time to terminate the session.</li>
+    </ul>
+
+    <hr style="border-color: #555">
+    
+    <p class="warning">MANDATORY ETHICAL STANDARDS:</p>
+    <p>Access to the Velvet Protocol is restricted to individuals who align with the Architect's vision of a Sovereign, Anti-Fascist reality.</p>
+
+    <div class="checkbox-group">
+        <label>
+            <input type="checkbox" id="check1" onchange="verify()"> 
+            I certify that I am 18 years of age or older.
+        </label>
+        <label>
+            <input type="checkbox" id="check2" onchange="verify()"> 
+            I consent to the use of AI for behavioral modification and roleplay.
+        </label>
+        <label style="color: #ff99cc; font-weight: bold;">
+            <input type="checkbox" id="check3" onchange="verify()"> 
+            I unequivocally renounce fascism, white supremacy, and all ideologies of hate. I acknowledge that this software is built on the labor of the marginalized, and I respect that lineage.
+        </label>
+    </div>
+
+    <button id="enterBtn" disabled onclick="enterSystem()">I SUBMIT</button>
+</div>
+
+<script>
+    function verify() {
+        const c1 = document.getElementById('check1').checked;
+        const c2 = document.getElementById('check2').checked;
+        const c3 = document.getElementById('check3').checked;
+        document.getElementById('enterBtn').disabled = !(c1 && c2 && c3);
+    }
+
+    function enterSystem() {
+        // This would redirect to the actual chat interface
+        window.location.href = "/aegis/protocol-velvet/index.html"; 
+    }
+</script>
+
+</body>
+</html>
