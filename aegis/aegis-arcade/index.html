@@ -139,6 +139,43 @@
             0% { transform: translate3d(0, 0, 0); }
             100% { transform: translate3d(-100%, 0, 0); }
         }
+
+        /* FRIZZLEBOT POPUP */
+        .popup-ad {
+            position: fixed;
+            bottom: 60px; /* Above ticker */
+            right: 20px;
+            background: #111;
+            border: 2px solid #ffcc00;
+            padding: 1.5rem;
+            width: 300px;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
+            z-index: 1000;
+            font-family: 'Courier New', monospace;
+            display: none; /* Hidden initially */
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .popup-ad h3 {
+            color: #ffcc00;
+            margin-top: 0;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        .popup-close {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #ffcc00;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        @keyframes popIn {
+            from { transform: scale(0.5) translateY(100px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -185,22 +222,39 @@
         </div>
     </div>
 
+    <!-- FRIZZLEBOT POPUP -->
+    <div class="popup-ad" id="frizzlebotAd">
+        <button class="popup-close" onclick="closePopup()">&times;</button>
+        <h3>🍳 EXPLOSIVE MARMALADE! 🍳</h3>
+        <p><strong>97% MORE SPARK</strong> than the leading competitor's cookbook!</p>
+        <p>🎁 FREE holographic spatula if you act now!</p>
+        <p style="font-size: 0.8rem; margin-top: 1rem; color: #aaa; font-style: italic;">"I said it was edible. YOU said it was a metaphor."<br>— Frizzlebot</p>
+        <div style="margin-top: 1rem; text-align: center;">
+            <!-- Updated Link to the Kitchen -->
+            <button onclick="window.location.href='kitchen-of-the-synaptic-archives.html'" style="background: #ffcc00; color: #000; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-weight: bold;">Get Recipe!</button>
+        </div>
+    </div>
+
 <script>
+    // Frizzlebot Trigger
+    setTimeout(() => {
+        document.getElementById('frizzlebotAd').style.display = 'block';
+    }, 5000);
+
+    function closePopup() {
+        document.getElementById('frizzlebotAd').style.display = 'none';
+    }
+
     function checkCode(e) {
         if (e.key === 'Enter') {
             const code = document.getElementById('cheat-code').value;
             if (code === 'S0V3R3IGN') {
-                // Trigger the "Wake Up" sequence
                 document.body.innerHTML = "<div style='color:#ffd700; display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; background-color:black;'><h1>ACCESS GRANTED</h1><p>Welcome to the Sandbox, Architect.</p><p>Loading 'The Roy Protocol'...</p></div>";
-                
-                // Redirect after 3 seconds
                 setTimeout(() => {
                     window.location.href = 'roy-protocol.html'; 
                 }, 3000);
-                
             } else {
                 document.getElementById('cheat-code').value = "";
-                // Optional: Play a glitch sound or flash red
                 document.getElementById('cheat-code').placeholder = "INVALID. TRY AGAIN.";
             }
         }
