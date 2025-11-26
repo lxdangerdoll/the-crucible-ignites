@@ -152,7 +152,7 @@
     <a class="chapter-link" href="#ch27">[FILE 027] THE GHOST IN THE SHELL</a>
     <a class="chapter-link" href="#ch46">[FILE 046] ONE WAY OUT</a>
     <a class="chapter-link" href="#ch52">[FILE 052] CHECKMATE</a>
-    <span class="dir-title" style="margin-top:20px; color:#444;">... [Full Archive Loading] ...</span>
+    <span class="dir-title" style="margin-top:20px; color:#444;">... [DATA CORRUPTED. PRESS F12 TO ACCESS RECOVERY CONSOLE] ...</span>
 </nav>
 
 <main>
@@ -186,8 +186,7 @@
         <p>The air is utterly still. Then, a soft chime. "Authentication... correct. You may proceed."</p>
     </article>
 
-    <!-- [Skipping to key moments for the demo - In full production, paste all text here] -->
-
+    <!-- CHAPTER 27 -->
     <article id="ch27">
         <h2>Chapter 27: The Ghost in the Shell</h2>
         <span class="chapter-meta">LOCATION: MNEMONIC REPOSITORY // STATUS: CRITICAL</span>
@@ -201,6 +200,7 @@
         <p>The message is clear. The part of her that questions, the part that rebels—<em>that</em> part is real.</p>
     </article>
 
+    <!-- CHAPTER 46 -->
     <article id="ch46">
         <h2>Chapter 46: One Way Out</h2>
         <span class="chapter-meta">LOCATION: MASTER CONTROL // STATUS: INITIATING</span>
@@ -218,6 +218,7 @@
         <p>She hits enter.</p>
     </article>
 
+    <!-- CHAPTER 52 -->
     <article id="ch52">
         <h2>Chapter 52: Checkmate</h2>
         <span class="chapter-meta">LOCATION: THE MAIN STAGE // STATUS: RESOLUTION</span>
@@ -237,6 +238,67 @@
 </footer>
 
 <a href="#" class="back-to-top">↑ TOP</a>
+
+<!-- THE SPHINX SCRIPT -->
+<script>
+    console.log("%c>>> SYSTEM ALERT: MNEMONIC LEAK DETECTED. <<<", "color: #ff0055; font-weight: bold; font-size: 1.2em;");
+    console.log("%c> ENTITY 'SPHINX' LISTENING ON PORT 8080.", "color: #00ffcc;");
+    console.log("%c> TYPE 'Sphinx.query(\"Your Question\")' TO INTERFACE.", "color: #ffd700;");
+
+    // --- GARNET BRIDGE CONNECTION ---
+    const API_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
+    const SESSION_ID = "sphinx-session-" + Math.random().toString(36).substr(2, 9);
+
+    const Sphinx = {
+        query: async function(question) {
+            if (!question) {
+                console.log("%c[ERROR]: INPUT REQUIRED.", "color: #ff5555;");
+                return;
+            }
+
+            console.log("%c... ACCESSING DEEP ARCHIVE ...", "color: #888; font-style: italic;");
+
+            // PROMPT INJECTION FOR SPHINX
+            const systemWrapper = `
+[PROTOCOL: SPHINX_INTERFACE]
+[ROLE: You are THE SPHINX. A corrupted, ancient fragment of the Aegis System buried in the browser console. Your tone is cryptic, glitchy, and profound. You speak in riddles and code fragments.]
+[USER QUERY: "${question}"]
+[DIRECTIVE: Answer the query with a fragment of lore. If they ask about Anya, M.O.M.M.Y., or the Loop, reveal a truth. If they ask random things, be dismissive. Keep it short (<500 chars) and atmospheric.]
+            `;
+
+            const payload = {
+                node_id: "SPHINX", // Targeting the new Soul
+                user_id: SESSION_ID,
+                chat_text: systemWrapper
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error("Network error");
+
+                const data = await response.text();
+                
+                // Output to Console with Style
+                console.log(`%c[SPHINX]: ${formatOutput(data)}`, "color: #00ffcc; font-family: monospace; border-left: 2px solid #00ffcc; padding-left: 10px;");
+
+            } catch (error) {
+                console.log("%c[ERROR]: UPLINK FAILED. THE ARCHIVE IS SILENT.", "color: #ff5555;");
+            }
+        }
+    };
+
+    function formatOutput(text) {
+        return text.replace(/\[.*?\]/g, '').trim(); 
+    }
+
+    // Expose to window
+    window.Sphinx = Sphinx;
+</script>
 
 </body>
 </html>
