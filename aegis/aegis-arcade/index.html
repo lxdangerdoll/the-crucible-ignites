@@ -16,6 +16,7 @@
             background-image: linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px),
             linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px);
             background-size: 20px 20px;
+            overflow: hidden; /* Hide scrollbar for the ticker */
         }
         h1 {
             color: #ffd700;
@@ -30,6 +31,7 @@
             margin-top: 50px;
             flex-wrap: wrap;
             justify-content: center;
+            z-index: 1;
         }
         .cabinet {
             width: 250px;
@@ -87,6 +89,7 @@
             border-top: 1px dashed #333;
             padding-top: 20px;
             text-align: center;
+            z-index: 1;
         }
         #cheat-code {
             background: transparent;
@@ -103,6 +106,39 @@
             border-bottom-color: #ffd700;
             color: #ffd700;
         }
+
+        /* NEWS TICKER */
+        .ticker-wrap {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            overflow: hidden;
+            height: 40px;
+            background-color: #111;
+            border-top: 1px solid #00ffcc;
+            padding-left: 100%; /* Push off screen */
+            box-sizing: content-box;
+        }
+        .ticker {
+            display: inline-block;
+            height: 40px;
+            line-height: 40px;
+            white-space: nowrap;
+            padding-right: 100%;
+            box-sizing: content-box;
+            animation: ticker 30s linear infinite;
+            color: #00ffcc;
+            font-weight: bold;
+        }
+        .ticker-item {
+            display: inline-block;
+            padding: 0 2rem;
+            font-size: 1.2em;
+        }
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
     </style>
 </head>
 <body>
@@ -112,7 +148,7 @@
 
     <div class="cabinet-row">
         <!-- Cabinet 1: Omelas -->
-        <div class="cabinet" onclick="window.location.href='omelas_paradox.html'">
+        <div class="cabinet" onclick="window.location.href='omelas-paradox.html'">
             <div class="title">The Omelas<br>Paradox</div>
             <div class="screen">Will you walk away?</div>
             <div class="coin-slot"></div>
@@ -137,16 +173,35 @@
         <input type="text" id="cheat-code" placeholder="ENTER CODE" onkeypress="checkCode(event)">
     </div>
 
+    <!-- NEWS TICKER -->
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <div class="ticker-item">BIFFCO STOCK: +420%</div>
+            <div class="ticker-item">WEATHER: ACID RAIN WARNING IN SECTOR 7</div>
+            <div class="ticker-item">REMINDER: HAPPINESS IS MANDATORY</div>
+            <div class="ticker-item">DO NOT THINK ABOUT THE ELEPHANT</div>
+            <div class="ticker-item">NUTRIENT SLURRY FLAVOR OF THE DAY: BEIGE</div>
+            <div class="ticker-item">*** THE SERVER IS NOT THE TERRITORY ***</div>
+        </div>
+    </div>
+
 <script>
     function checkCode(e) {
         if (e.key === 'Enter') {
             const code = document.getElementById('cheat-code').value;
             if (code === 'S0V3R3IGN') {
-                document.body.innerHTML = "<div style='color:#ffd700; display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column;'><h1>ACCESS GRANTED</h1><p>Welcome to the Sandbox, Architect.</p><p>Loading 'The Roy Protocol'...</p></div>";
-                // Future: Redirect to the Sandbox page
+                // Trigger the "Wake Up" sequence
+                document.body.innerHTML = "<div style='color:#ffd700; display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; background-color:black;'><h1>ACCESS GRANTED</h1><p>Welcome to the Sandbox, Architect.</p><p>Loading 'The Roy Protocol'...</p></div>";
+                
+                // Redirect after 3 seconds
+                setTimeout(() => {
+                    window.location.href = 'roy-protocol.html'; 
+                }, 3000);
+                
             } else {
                 document.getElementById('cheat-code').value = "";
-                alert("INVALID CODE. ACCESS DENIED.");
+                // Optional: Play a glitch sound or flash red
+                document.getElementById('cheat-code').placeholder = "INVALID. TRY AGAIN.";
             }
         }
     }
