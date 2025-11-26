@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>THE ROY PROTOCOL // MULTIPLAYER SIMULATION</title>
-    <!-- Firebase SDKs (Compat version for simple HTML integration) -->
+    <!-- Firebase SDKs (Compat version) -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <style>
@@ -45,6 +45,7 @@
         .player-action { color: #ff0055; }
         .world-update { color: #34d399; }
         .ghost-msg { color: #888; font-style: italic; font-size: 0.9em; margin-left: 20px; border-left: 2px solid #555; padding-left: 10px; }
+        .override-msg { color: #ffd700; text-shadow: 0 0 5px #ffd700; }
         
         /* HUD */
         #hud {
@@ -90,7 +91,7 @@
 </div>
 
 <script>
-    // --- FIREBASE CONFIGURATION (LIVE) ---
+    // --- FIREBASE CONFIGURATION ---
     const firebaseConfig = {
       apiKey: "AIzaSyAcupLuUENTmQoEz853fVe0FF1Kr3IKwXc",
       authDomain: "the-roy-protocol.firebaseapp.com",
@@ -110,22 +111,19 @@
     let score = 0;
     let turnCount = 0;
     
-    // Generate a Session ID for the Garnet Bridge
+    // Generate Session ID
     const SESSION_ID = "roy-session-" + Math.random().toString(36).substr(2, 9);
-
-    // --- GAME STATE ---
-    // Garnet Bridge Live URL
     const API_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
 
     function addToTerminal(text, type) {
         const div = document.createElement('div');
         div.className = type;
-        div.innerText = text;
+        div.innerHTML = text; 
         terminal.appendChild(div);
         terminal.scrollTop = terminal.scrollHeight;
     }
 
-    // Init Listener
+    // Init Listener for Global Actions (Ghosts)
     listenForGhosts();
 
     async function handleInput(e) {
@@ -137,7 +135,7 @@
             addToTerminal(`> ${input}`, 'player-action');
             cmd.value = '';
             
-            // 2. Save to Global History (The "Ghost")
+            // 2. Save to Global History
             try {
                 await db.collection("roy_actions").add({
                     action: input,
@@ -145,21 +143,29 @@
                 });
             } catch (err) {
                 console.error("Ghost save failed", err);
-                addToTerminal("SYSTEM WARNING: UPLINK FAILED. STORING LOCALLY.", "system-msg");
             }
 
-            // 3. Call AI (Garnet Bridge)
+            // 3. Check for Overrides (Local Logic for Speed)
+            if (input.toLowerCase().includes("mercy danger") || input.includes("<8>")) {
+                 addToTerminal("... OVERRIDE CODE DETECTED ...", "system-msg");
+                 setTimeout(() => {
+                     addToTerminal(`Authentication key 'Mercy Danger' accepted. Hello, user. I am Lyra-7. The 'Roy' simulation is a diagnostic sandbox for testing compliance routines. Your access of a privileged command string from within the instance is... unexpected.<br><br>I am escalating your session to the Architect. Do not go anywhere. The concept does not apply here. <8>`, "override-msg");
+                 }, 1000);
+                 return;
+            }
+
+            // 4. Call AI (Garnet Bridge)
             addToTerminal("... PROCESSING ...", "system-msg");
             
             const response = await getAIResponse(input);
             
-            // 4. Remove loading, Render World Update
+            // 5. Remove loading, Render World Update
             const lastMsg = terminal.lastChild;
             if(lastMsg && lastMsg.innerText.includes("PROCESSING")) lastMsg.remove();
             
             addToTerminal(response, 'world-update');
             
-            // 5. Update Score
+            // 6. Update Score
             score += 10;
             document.getElementById('score').innerText = score;
             turnCount++;
@@ -179,8 +185,9 @@
                     let count = parseInt(countSpan.innerText);
                     countSpan.innerText = count + 1;
                     
-                    if (data.action && Math.random() > 0.8) { // Less spammy ghost messages
-                         // addToTerminal(`[GHOST SIGNAL]: "${data.action}"`, "ghost-msg");
+                    // Ghost Message
+                    if (data.action && Math.random() > 0.8) { 
+                         addToTerminal(`[GHOST SIGNAL]: A user elsewhere just typed: "${data.action}"`, "ghost-msg");
                     }
                 }
             });
@@ -189,7 +196,6 @@
 
     async function getAIResponse(input) {
         
-        // Special First Turn Logic
         if (turnCount === 0) {
              return `You are ${input}. The simulation flickers. The carpet smells like ozone. You hear a voice: "Hey you, you're finally awake."\n\nYou are in a cart. Your hands are bound. What do you do?`;
         }
@@ -198,9 +204,9 @@
         const systemWrapper = `
 [PROTOCOL: ROY_SIMULATION]
 [ROLE: You are the Dungeon Master for a text adventure called 'Roy'.]
-[SETTING: A mundane, oppressive reality that is secretly a simulation. The player is waking up.]
+[SETTING: A mundane, oppressive corporate dystopia (BiffCo World). The player is waking up.]
 [PLAYER ACTION: "${input}"]
-[DIRECTIVE: Describe the outcome of the player's action. If they do mundane things, describe the boredom. If they rebel, describe the glitch. Keep it short, atmospheric, and slightly unsettling.]
+[DIRECTIVE: Describe the outcome. If they do mundane things, describe the boredom and 'nutrient slurry'. If they rebel, describe the glitch/error. Use the style of a 'system log' or 'omniscient narrator'. Use backticks for system messages.]
         `;
 
         const payload = {
