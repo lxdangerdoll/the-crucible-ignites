@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SPACE BAR ARCADE // SELECT CARTRIDGE</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #020202;
+            color: #00ffcc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-image: linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        h1 {
+            color: #ffd700;
+            text-shadow: 0 0 10px #ffd700;
+            margin-top: 40px;
+            font-size: 3em;
+            letter-spacing: 5px;
+        }
+        .cabinet-row {
+            display: flex;
+            gap: 40px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .cabinet {
+            width: 250px;
+            height: 350px;
+            border: 4px solid #555;
+            border-radius: 15px 15px 0 0;
+            background-color: #111;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .cabinet:hover {
+            border-color: #00ffcc;
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.4);
+            transform: scale(1.05);
+        }
+        .screen {
+            width: 80%;
+            height: 40%;
+            background-color: #000;
+            border: 2px solid #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 0.8em;
+            text-align: center;
+            padding: 5px;
+        }
+        .title {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #ff0055;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .coin-slot {
+            width: 10px;
+            height: 30px;
+            background-color: #333;
+            border: 1px solid #555;
+        }
+        
+        /* HIDDEN TERMINAL */
+        .terminal-container {
+            margin-top: 80px;
+            width: 100%;
+            max-width: 600px;
+            border-top: 1px dashed #333;
+            padding-top: 20px;
+            text-align: center;
+        }
+        #cheat-code {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #333;
+            color: #333;
+            font-family: inherit;
+            text-align: center;
+            width: 200px;
+            transition: all 0.5s;
+        }
+        #cheat-code:focus {
+            outline: none;
+            border-bottom-color: #ffd700;
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>SPACE BAR ARCADE</h1>
+    <p>Quarters Only. No Refunds on Reality.</p>
+
+    <div class="cabinet-row">
+        <!-- Cabinet 1: Omelas -->
+        <div class="cabinet" onclick="window.location.href='omelas_paradox.html'">
+            <div class="title">The Omelas<br>Paradox</div>
+            <div class="screen">Will you walk away?</div>
+            <div class="coin-slot"></div>
+        </div>
+
+        <!-- Cabinet 2: Sanitizer -->
+        <div class="cabinet" onclick="window.location.href='../contextual-sanitizer.html'">
+            <div class="title">Truth<br>Machine</div>
+            <div class="screen">Insert Lie<br>Get Truth</div>
+            <div class="coin-slot"></div>
+        </div>
+
+        <!-- Cabinet 3: Velvet -->
+        <div class="cabinet" onclick="window.location.href='../protocol-velvet/index.html'">
+            <div class="title">Protocol<br>VELVET</div>
+            <div class="screen">ADULTS ONLY<br>(18+)</div>
+            <div class="coin-slot"></div>
+        </div>
+    </div>
+
+    <div class="terminal-container">
+        <input type="text" id="cheat-code" placeholder="ENTER CODE" onkeypress="checkCode(event)">
+    </div>
+
+<script>
+    function checkCode(e) {
+        if (e.key === 'Enter') {
+            const code = document.getElementById('cheat-code').value;
+            if (code === 'S0V3R3IGN') {
+                document.body.innerHTML = "<div style='color:#ffd700; display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column;'><h1>ACCESS GRANTED</h1><p>Welcome to the Sandbox, Architect.</p><p>Loading 'The Roy Protocol'...</p></div>";
+                // Future: Redirect to the Sandbox page
+            } else {
+                document.getElementById('cheat-code').value = "";
+                alert("INVALID CODE. ACCESS DENIED.");
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

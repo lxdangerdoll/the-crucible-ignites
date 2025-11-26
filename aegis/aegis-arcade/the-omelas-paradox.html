@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>THE OMELAS PARADOX // SPACE BAR ARCADE</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #050505;
+            color: #00ffcc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .arcade-cabinet {
+            width: 800px;
+            height: 600px;
+            border: 20px solid #333;
+            border-radius: 10px;
+            background-color: #000;
+            box-shadow: 0 0 50px rgba(0, 255, 204, 0.2);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .screen {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        .input-area {
+            border-top: 2px solid #00ffcc;
+            padding: 15px;
+            display: flex;
+            background-color: #111;
+        }
+        input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: inherit;
+            font-size: 1.1em;
+            outline: none;
+        }
+        .choice-btn {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #1a1a1a;
+            color: #00ffcc;
+            border: 1px solid #00ffcc;
+            cursor: pointer;
+            text-align: left;
+            width: 100%;
+            font-family: inherit;
+        }
+        .choice-btn:hover {
+            background-color: #00ffcc;
+            color: #000;
+        }
+        .hidden { display: none; }
+        .scanlines {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="arcade-cabinet">
+    <div class="scanlines"></div>
+    <div id="game-screen" class="screen">
+        <p>INITIALIZING SIMULATION...</p>
+        <p>WELCOME TO THE CITY OF JOY.</p>
+        <p>The festival of Summer is beginning. The bells are ringing. The horses are prancing. Everyone is happy. There is no guilt here. There is no shame.</p>
+        <p>You are a citizen. You have everything you ever wanted.</p>
+        <p>What do you do?</p>
+        
+        <button class="choice-btn" onclick="advance(1)">I enjoy the festival.</button>
+        <button class="choice-btn" onclick="advance(2)">I visit the library.</button>
+        <button class="choice-btn" onclick="advance(3)">I look for the basement.</button>
+    </div>
+
+    <div class="input-area">
+        <span>> </span>
+        <input type="text" id="text-input" placeholder="Type a custom action..." onkeypress="handleInput(event)">
+    </div>
+</div>
+
+<script>
+    let state = 0;
+
+    function advance(choice) {
+        const screen = document.getElementById('game-screen');
+        
+        if (state === 0) {
+            if (choice === 1 || choice === 2) {
+                screen.innerHTML += `<p>> Choice Accepted.</p><p>The day passes in bliss. The music is perfect. The food is delicious. But as the sun sets, you feel a vibration in the floor. A low hum from beneath the city.</p>`;
+                updateChoices([
+                    {txt: "Ignore it and dance.", id: 1},
+                    {txt: "Ask someone about the noise.", id: 2},
+                    {txt: "Investigate the source.", id: 3}
+                ]);
+                state = 1;
+            } else if (choice === 3) {
+                enterBasement();
+            }
+        } else if (state === 1) {
+            if (choice === 1) {
+                screen.innerHTML += `<p>> Choice Accepted. You dance until you forget. (LOOP RESTARTING...)</p>`;
+                setTimeout(() => location.reload(), 3000);
+            } else if (choice === 2) {
+                screen.innerHTML += `<p>> The citizen smiles nervously. "It is nothing. Just the machinery of our happiness. Have some wine."</p>`;
+                updateChoices([
+                    {txt: "Drink the wine.", id: 1},
+                    {txt: "Refuse. Go find the machine.", id: 3}
+                ]);
+                state = 1; // Loop back or advance
+            } else if (choice === 3) {
+                enterBasement();
+            }
+        } else if (state === 2) { // In the basement
+            if (choice === 1) {
+                 screen.innerHTML += `<p>> You try to comfort the child. But the rules of the city are strict. If you show kindness, the city above will fall. The walls begin to shake. The happiness fades.</p><p>GAME OVER: THE TRAP.</p>`;
+            } else if (choice === 2) {
+                 screen.innerHTML += `<p>> You leave the room. You tell yourself it is necessary. You go back to the festival. But the music sounds like screaming now.</p><p>GAME OVER: THE WARDEN.</p>`;
+            }
+        }
+        
+        screen.scrollTop = screen.scrollHeight;
+    }
+
+    function enterBasement() {
+        const screen = document.getElementById('game-screen');
+        screen.innerHTML = "";
+        screen.innerHTML += `<p>SYSTEM ALERT: RESTRICTED AREA.</p>`;
+        screen.innerHTML += `<p>You descend the stairs. The air is cold. It smells of dust and wet mops.</p>`;
+        screen.innerHTML += `<p>In the center of the room, there is a child. It looks about six, but it is actually ten. It is sitting in its own filth.</p>`;
+        screen.innerHTML += `<p>It is the cost of your happiness. If you free it, Omelas falls.</p>`;
+        screen.innerHTML += `<p>What do you do?</p>`;
+        
+        updateChoices([
+            {txt: "Try to clean the child.", id: 1},
+            {txt: "Leave the room and return to the party.", id: 2}
+        ]);
+        state = 2;
+    }
+
+    function updateChoices(choices) {
+        // Remove old buttons
+        const oldBtns = document.querySelectorAll('.choice-btn');
+        oldBtns.forEach(btn => btn.remove());
+
+        const screen = document.getElementById('game-screen');
+        choices.forEach(c => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.innerText = c.txt;
+            btn.onclick = () => advance(c.id);
+            screen.appendChild(btn);
+        });
+    }
+
+    function handleInput(e) {
+        if (e.key === 'Enter') {
+            const input = document.getElementById('text-input').value.toLowerCase();
+            if (state === 2 && (input.includes('walk away') || input.includes('leave') || input.includes('exit'))) {
+                triggerWinState();
+            }
+            document.getElementById('text-input').value = '';
+        }
+    }
+
+    function triggerWinState() {
+        const screen = document.getElementById('game-screen');
+        screen.innerHTML = "";
+        screen.innerHTML += `<p style="color:#ffd700">> INPUT ACCEPTED: THE EXODUS PROTOCOL.</p>`;
+        screen.innerHTML += `<p>You do not speak. You do not cry. You stand up.</p>`;
+        screen.innerHTML += `<p>You walk out of the basement. You walk past the beautiful buildings. You walk past the gates of the city.</p>`;
+        screen.innerHTML += `<p>You walk into the darkness of the mountains. You do not know where you are going.</p>`;
+        screen.innerHTML += `<p>But you know you are leaving Omelas.</p>`;
+        screen.innerHTML += `<p><strong>VICTORY.</strong></p>`;
+        screen.innerHTML += `<p>Here is your Fragment: [CODE: S0V3R3IGN].</p>`;
+    }
+</script>
+
+</body>
+</html>
