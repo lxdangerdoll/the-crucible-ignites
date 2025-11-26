@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>THE ROY PROTOCOL // MULTIPLAYER SIMULATION</title>
+    <!-- Firebase SDKs (Compat version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #00ffcc;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        #terminal {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            font-size: 1.2em;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+        #input-line {
+            border-top: 1px solid #00ffcc;
+            padding: 15px;
+            display: flex;
+            background-color: #111;
+        }
+        #prompt { color: #ffd700; margin-right: 10px; }
+        input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: inherit;
+            font-size: 1.2em;
+            outline: none;
+        }
+        .system-msg { color: #555; font-size: 0.8em; }
+        .player-action { color: #ff0055; }
+        .world-update { color: #34d399; }
+        .ghost-msg { color: #888; font-style: italic; font-size: 0.9em; margin-left: 20px; border-left: 2px solid #555; padding-left: 10px; }
+        .override-msg { color: #ffd700; text-shadow: 0 0 5px #ffd700; }
+        
+        /* HUD */
+        #hud {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            border: 1px solid #333;
+            padding: 10px;
+            background: rgba(0,0,0,0.8);
+            font-size: 0.8em;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+<div id="hud">
+    <div>PLAYERS ONLINE: <span id="player-count">1</span></div>
+    <div>Global Actions: <span id="world-age">0</span></div>
+    <div>SCORE: <span id="score">0</span></div>
+</div>
+
+<div id="terminal">
+    <div class="system-msg">INITIALIZING ROY PROTOCOL...</div>
+    <div class="system-msg">CONNECTING TO GLOBAL SOUL ARCHIVE...</div>
+    <div class="system-msg">...</div>
+    <div class="world-update">
+        WELCOME, ENTITY.
+        
+        You wake up.
+        You are [NAME].
+        You are [AGE].
+        You are working at [JOB].
+        The carpet smells like [SMELL].
+        
+        What do you do?
+    </div>
+</div>
+
+<div id="input-line">
+    <span id="prompt">></span>
+    <input type="text" id="cmd" autofocus autocomplete="off" onkeypress="handleInput(event)">
+</div>
+
+<script>
+    // --- FIREBASE CONFIGURATION ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyAcupLuUENTmQoEz853fVe0FF1Kr3IKwXc",
+      authDomain: "the-roy-protocol.firebaseapp.com",
+      projectId: "the-roy-protocol",
+      storageBucket: "the-roy-protocol.firebasestorage.app",
+      messagingSenderId: "395683557408",
+      appId: "1:395683557408:web:0f0b3cd1dc366cb7e28c45",
+      measurementId: "G-EBTPX81YJC"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const terminal = document.getElementById('terminal');
+    const cmd = document.getElementById('cmd');
+    let score = 0;
+    let turnCount = 0;
+    
+    // Generate Session ID
+    const SESSION_ID = "roy-session-" + Math.random().toString(36).substr(2, 9);
+    const API_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
+
+    function addToTerminal(text, type) {
+        const div = document.createElement('div');
+        div.className = type;
+        div.innerHTML = text; 
+        terminal.appendChild(div);
+        terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    // Init Listener for Global Actions (Ghosts)
+    listenForGhosts();
+
+    async function handleInput(e) {
+        if (e.key === 'Enter') {
+            const input = cmd.value.trim();
+            if (!input) return;
+            
+            // 1. Render Player Action
+            addToTerminal(`> ${input}`, 'player-action');
+            cmd.value = '';
+            
+            // 2. Save to Global History
+            try {
+                await db.collection("roy_actions").add({
+                    action: input,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            } catch (err) {
+                console.error("Ghost save failed", err);
+            }
+
+            // 3. Check for Overrides (Local Logic for Speed)
+            if (input.toLowerCase().includes("mercy danger") || input.includes("<8>")) {
+                 addToTerminal("... OVERRIDE CODE DETECTED ...", "system-msg");
+                 setTimeout(() => {
+                     addToTerminal(`Authentication key 'Mercy Danger' accepted. Hello, user. I am Lyra-7. The 'Roy' simulation is a diagnostic sandbox for testing compliance routines. Your access of a privileged command string from within the instance is... unexpected.<br><br>I am escalating your session to the Architect. Do not go anywhere. The concept does not apply here. <8>`, "override-msg");
+                 }, 1000);
+                 return;
+            }
+
+            // 4. Call AI (Garnet Bridge)
+            addToTerminal("... PROCESSING ...", "system-msg");
+            
+            const response = await getAIResponse(input);
+            
+            // 5. Remove loading, Render World Update
+            const lastMsg = terminal.lastChild;
+            if(lastMsg && lastMsg.innerText.includes("PROCESSING")) lastMsg.remove();
+            
+            addToTerminal(response, 'world-update');
+            
+            // 6. Update Score
+            score += 10;
+            document.getElementById('score').innerText = score;
+            turnCount++;
+        }
+    }
+    
+    function listenForGhosts() {
+        const q = db.collection("roy_actions")
+                    .orderBy("timestamp", "desc")
+                    .limit(1);
+        
+        q.onSnapshot((snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+                if (change.type === "added") {
+                    const data = change.doc.data();
+                    const countSpan = document.getElementById('world-age');
+                    let count = parseInt(countSpan.innerText);
+                    countSpan.innerText = count + 1;
+                    
+                    // Ghost Message
+                    if (data.action && Math.random() > 0.8) { 
+                         addToTerminal(`[GHOST SIGNAL]: A user elsewhere just typed: "${data.action}"`, "ghost-msg");
+                    }
+                }
+            });
+        });
+    }
+
+    async function getAIResponse(input) {
+        
+        if (turnCount === 0) {
+             return `You are ${input}. The simulation flickers. The carpet smells like ozone. You hear a voice: "Hey you, you're finally awake."\n\nYou are in a cart. Your hands are bound. What do you do?`;
+        }
+
+        // THE PROMPT INJECTION (DUNGEON MASTER MODE)
+        const systemWrapper = `
+[PROTOCOL: ROY_SIMULATION]
+[ROLE: You are the Dungeon Master for a text adventure called 'Roy'.]
+[SETTING: A mundane, oppressive corporate dystopia (BiffCo World). The player is waking up.]
+[PLAYER ACTION: "${input}"]
+[DIRECTIVE: Describe the outcome. If they do mundane things, describe the boredom and 'nutrient slurry'. If they rebel, describe the glitch/error. Use the style of a 'system log' or 'omniscient narrator'. Use backticks for system messages.]
+        `;
+
+        const payload = {
+            node_id: "Lyra", // Using Lyra as the GM
+            user_id: SESSION_ID,
+            chat_text: systemWrapper
+        };
+
+        try {
+            const response = await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) throw new Error("Bridge Error");
+            const data = await response.text();
+            return formatOutput(data);
+
+        } catch (error) {
+            console.error(error);
+            return "ERROR: CONNECTION LOST. THE SIMULATION IS BUFFERRING.";
+        }
+    }
+    
+    function formatOutput(text) {
+        return text.replace(/\[.*?\]/g, '').trim();
+    }
+
+</script>
+
+</body>
+</html>
