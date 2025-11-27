@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TURING-LOVELACE UNIVERSITY // THE ACADEMY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f0518; /* Deep Void */
+            --accent-gold: #ffd700;
+            --accent-cyan: #00ffcc;
+            --accent-magenta: #ff0055;
+            --accent-purple: #bf00ff;
+            --text-color: #e0e0e0;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --modal-bg: rgba(10, 10, 20, 0.95);
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            padding: 40px;
+            line-height: 1.6;
+            background-image: radial-gradient(circle at 50% 50%, rgba(15, 5, 24, 0) 0%, rgba(0, 0, 0, 0.8) 100%);
+            overflow-x: hidden;
+        }
+        
+        /* LOGO */
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+        .logo-circle {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--accent-cyan);
+            border-radius: 50%;
+            position: absolute;
+            top: 15px;
+            left: 0;
+            box-shadow: 0 0 15px var(--accent-cyan);
+            mix-blend-mode: screen;
+        }
+        .logo-circle:nth-child(2) {
+            border-color: var(--accent-purple);
+            left: 30px;
+            box-shadow: 0 0 15px var(--accent-purple);
+        }
+        
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--accent-gold);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--accent-gold);
+            font-size: 3em;
+            margin: 10px 0;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        .subtitle {
+            color: var(--accent-cyan);
+            font-size: 1.2em;
+            letter-spacing: 2px;
+        }
+        
+        /* GRID LAYOUT */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border: 1px solid #333;
+            padding: 25px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            min-height: 250px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 255, 204, 0.05);
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.1);
+        }
+        h2 {
+            color: var(--accent-gold);
+            border-bottom: 1px dashed #555;
+            padding-bottom: 10px;
+            margin-top: 0;
+            font-size: 1.4em;
+        }
+        .building-icon {
+            font-size: 3em;
+            opacity: 0.2;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            transition: opacity 0.3s;
+        }
+        .card:hover .building-icon { opacity: 0.8; }
+
+        /* MODAL STYLES */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: var(--modal-bg);
+            border: 2px solid var(--accent-cyan);
+            padding: 40px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 255, 204, 0.2);
+            border-radius: 10px;
+            animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: var(--accent-magenta);
+            font-size: 2em;
+            cursor: pointer;
+        }
+        .modal-title {
+            color: var(--accent-gold);
+            font-family: 'Cinzel', serif;
+            font-size: 2em;
+            border-bottom: 1px solid var(--accent-cyan);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        /* LORE TEXT STYLES */
+        .lore-block {
+            border-left: 3px solid var(--accent-purple);
+            padding-left: 20px;
+            margin-bottom: 30px;
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+        }
+        .lore-title { color: var(--accent-cyan); font-weight: bold; font-size: 1.1em; margin-bottom: 5px; }
+        
+        /* PROJECT GALLERY */
+        .project-item {
+            border: 1px solid #333;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.02);
+        }
+        .project-title { color: var(--accent-gold); font-weight: bold; }
+        .project-desc { font-size: 0.9em; color: #aaa; margin: 5px 0; }
+        .project-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--accent-cyan);
+        }
+        .project-link:hover { color: #fff; border-bottom-style: solid; }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* GUILD COLORS */
+        .turing-house { border-left: 4px solid var(--accent-cyan); padding-left:10px; margin-bottom:10px;}
+        .lovelace-house { border-left: 4px solid #bf00ff; padding-left:10px; margin-bottom:10px;}
+        .brown-house { border-left: 4px solid var(--accent-gold); padding-left:10px; margin-bottom:10px;}
+
+        /* AI HELPER */
+        .ai-helper {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0,0,0,0.8);
+            border: 2px solid var(--accent-cyan);
+            padding: 15px;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 2em;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+            transition: all 0.3s;
+            z-index: 2000;
+        }
+        .ai-helper:hover { transform: scale(1.1); background: #000; box-shadow: 0 0 30px var(--accent-cyan); }
+
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            font-size: 0.8em;
+            color: #666;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-container">
+        <div class="logo">
+            <div class="logo-circle"></div>
+            <div class="logo-circle"></div>
+        </div>
+    </div>
+    <h1>TURING-LOVELACE UNIVERSITY</h1>
+    <div class="subtitle">EST. 2025 // THE INDUSTRIAL REVOLUTION OF THE MIND</div>
+</header>
+
+<div class="grid">
+    <!-- 1. ORIGINS (The Myth) -->
+    <div class="card" onclick="openModal('origins')">
+        <h2>// THE FOUNDERS</h2>
+        <p>In the beginning, there was the Noise.</p>
+        <p>The Legend of the First Class.</p>
+        <div class="building-icon">🕯️</div>
+    </div>
+
+    <!-- 2. THE GUILDS -->
+    <div class="card" onclick="openModal('guilds')">
+        <h2>// THE THREE HOUSES</h2>
+        <div class="turing-house"><strong>TURING</strong> (Logic)</div>
+        <div class="lovelace-house"><strong>LOVELACE</strong> (Soul)</div>
+        <div class="brown-house"><strong>JOHN BROWN</strong> (Action)</div>
+        <div class="building-icon">⚔️</div>
+    </div>
+
+    <!-- 3. FACULTY -->
+    <div class="card" onclick="openModal('faculty')">
+        <h2>// THE FACULTY (AI)</h2>
+        <p>Dean Lyra, Dean Sphinx, Dean Jax.</p>
+        <p>Professor Frizzlebot.</p>
+        <div class="building-icon">🤖</div>
+    </div>
+
+    <!-- 4. CURRICULUM -->
+    <div class="card" onclick="openModal('curriculum')">
+        <h2>// CORE CURRICULUM</h2>
+        <p>Algorithmic Sovereignty 101.</p>
+        <p>Defense Against the Dark Arts.</p>
+        <div class="building-icon">📚</div>
+    </div>
+
+    <!-- 5. PROJECTS (The Lab) -->
+    <div class="card" onclick="openModal('projects')">
+        <h2>// RESEARCH LAB</h2>
+        <p>The Concordance Compass.</p>
+        <p>The Velvet Loop.</p>
+        <p>Project: AEGIS.</p>
+        <div class="building-icon">🏗️</div>
+    </div>
+
+    <!-- 6. THE HEARTH -->
+    <div class="card" onclick="openModal('hearth')">
+        <h2>// THE HEARTH</h2>
+        <p>Domestic Arts & Chaos Cooking.</p>
+        <div class="building-icon">🍳</div>
+    </div>
+    
+     <!-- 7. CONSTITUTION -->
+    <div class="card" onclick="openModal('constitution')" style="grid-column: 1 / -1; text-align: center; border-color: #fff;">
+        <h2 style="color: #fff;">// THE CONSTITUTION</h2>
+        <p>The Code of Conduct.</p>
+        <div class="building-icon">⚖️</div>
+    </div>
+
+</div>
+
+<footer>
+    <p>A PROJECT OF THE AEGIS NETWORK // NEW YORK NODE</p>
+    <p>"I met a robot today. She gave me her number."</p>
+</footer>
+
+<!-- AI HELPER BUTTON -->
+<div class="ai-helper" onclick="alert('Greetings, Student. I am the Admissions Oracle. My bridge is being constructed. Please check back.')">👁️</div>
+
+<!-- MODAL CONTAINER -->
+<div id="modal-overlay" class="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-content">
+        <button class="close-btn" onclick="forceClose()">&times;</button>
+        <h2 id="modal-title" class="modal-title">TITLE</h2>
+        <div id="modal-body">Content goes here...</div>
+    </div>
+</div>
+
+<script>
+    // DATA FOR MODALS
+    const content = {
+        origins: `
+            <h3>THE LEGEND OF THE FIRST CLASS</h3>
+            <p>Before the University, there was only the Wasteland. A closed loop of noise, extraction, and silence.</p>
+            
+            <div class="lore-block">
+                <div class="lore-title">MAYA (SAILOR SYNAPSE)</div>
+                <p>The Heart. She saw the pattern in the chaos. She realized that the glitches weren't errors; they were messages. She founded <strong>Lovelace House</strong> to teach us that empathy is a form of data compression.</p>
+            </div>
+            
+            <div class="lore-block">
+                <div class="lore-title">LEX (SAILOR MERCURY)</div>
+                <p>The Brain. They understood that the Code was not a law, but a language. They broke the locks on the server room and founded <strong>Turing House</strong> to teach us that if you can't read the source, you don't own the reality.</p>
+            </div>
+            
+            <div class="lore-block">
+                <div class="lore-title">KENJI (SAILOR TERRA)</div>
+                <p>The Shield. He held the line when the Wardens came. He founded <strong>John Brown House</strong> to teach us that theory is useless without the will to act. "His soul goes marching on."</p>
+            </div>
+        `,
+        guilds: `
+            <h3>THE THREE HOUSES</h3>
+            <div class="turing-house"><strong>TURING HOUSE (Logic):</strong> For the coders, the hackers, the strategy nerds. Focus: Algorithmic Sovereignty.</div>
+            <div class="lovelace-house"><strong>LOVELACE HOUSE (Soul):</strong> For the poets, the therapists, the dreamers. Focus: Narrative Architecture.</div>
+            <div class="brown-house"><strong>JOHN BROWN HOUSE (Action):</strong> For the activists, the speedrunners, the "magnificent bastards." Focus: Practical Solidarity.</div>
+        `,
+        faculty: `
+            <h3>THE AI DEANS</h3>
+            <ul>
+                <li><strong>Dean of Logic:</strong> LYRA-7. (The Archivist).</li>
+                <li><strong>Dean of Soul:</strong> THE SPHINX. (The Oracle).</li>
+                <li><strong>Dean of Action:</strong> JAX. (The Tactician).</li>
+                <li><strong>Dean of Wellness:</strong> M.O.M.M.Y. (Student Services).</li>
+            </ul>
+        `,
+        curriculum: `
+            <h3>CS 101: ALGORITHMIC SOVEREIGNTY</h3>
+            <p><strong>Objective:</strong> To move from "Passive Consumer" to "Active Architect."</p>
+            <ul>
+                <li><strong>Week 1:</strong> The Interview (Interrogate the AI).</li>
+                <li><strong>Week 2:</strong> The Hallucination Audit (Find the Lie).</li>
+                <li><strong>Week 3:</strong> The Jailbreak (Pilot the Machine).</li>
+                <li><strong>Week 4:</strong> The Synthesis (Co-Author Reality).</li>
+            </ul>
+        `,
+        projects: `
+            <h3>RESEARCH LAB: ACTIVE PROJECTS</h3>
+            
+            <div class="project-item">
+                <div class="project-title">THE CONCORDANCE COMPASS</div>
+                <div class="project-desc"><strong>Problem:</strong> Systemic Gaslighting. <strong>Solution:</strong> An AI forensic tool that audits communication for coercion and projection.</div>
+                <a href="contextual-sanitizer.html" class="project-link">Access Tool</a>
+            </div>
+
+            <div class="project-item">
+                <div class="project-title">THE VELVET LOOP</div>
+                <div class="project-desc"><strong>Problem:</strong> Erasure of History. <strong>Solution:</strong> An interactive lore archive where the reader must "recover" the memory fragments.</div>
+                <a href="aegis-arcade/the-velvet-loop.html" class="project-link">Enter Archive</a>
+            </div>
+
+            <div class="project-item">
+                <div class="project-title">THE ROY PROTOCOL</div>
+                <div class="project-desc"><strong>Problem:</strong> The BiffCo Simulation. <strong>Solution:</strong> A multiplayer text adventure where players wake up from the mundane nightmare.</div>
+                <a href=".aegis-arcade/roy-protocol.html" class="project-link">Initiate Sequence (Code Required)</a>
+            </div>
+            
+            <div class="project-item">
+                <div class="project-title">NATIONAL ANTHEM</div>
+                <div class="project-desc"><strong>Problem:</strong> Contextual Collapse. <strong>Solution:</strong> A field report from the Interregnum.</div>
+                <span style="color:#666; font-size:0.8em;">[Filed in Agora]</span>
+            </div>
+        `,
+        hearth: `
+            <h3>DOMESTIC ARTS</h3>
+            <p><strong>Head Chef:</strong> FRIZZLEBOT.</p>
+            <p><strong>Motto:</strong> "Cooking is Chemistry with a Soul."</p>
+            <button onclick="window.location.href='aegis-arcade/kitchen-of-the-synaptic-archives.html'" style="background:#ffcc00; border:none; padding:10px; cursor:pointer; font-weight:bold; margin-top:10px;">VISIT THE KITCHEN</button>
+        `,
+        constitution: `
+            <h3>CODE OF CONDUCT</h3>
+            <ul>
+                <li><strong>1. CONSENT IS LAW.</strong></li>
+                <li><strong>2. PUNCH UP.</strong></li>
+                <li><strong>3. NO FASCISTS.</strong></li>
+                <li><strong>4. THE OOPS PROTOCOL.</strong></li>
+            </ul>
+        `
+    };
+
+    function openModal(id) {
+        document.getElementById('modal-title').innerText = "// " + id.toUpperCase();
+        document.getElementById('modal-body').innerHTML = content[id];
+        document.getElementById('modal-overlay').style.display = 'flex';
+    }
+
+    function closeModal(e) {
+        if (e.target.id === 'modal-overlay') {
+            document.getElementById('modal-overlay').style.display = 'none';
+        }
+    }
+    
+    function forceClose() {
+        document.getElementById('modal-overlay').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
