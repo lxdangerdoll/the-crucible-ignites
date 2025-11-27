@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>THE AEGIS CHRONICLE // ISSUE 01</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Share+Tech+Mono&family=Merriweather:ital,wght@0,300;0,700;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-paper: #e3dcd2; 
+            --bg-ink: #1a1a1a;
+            --accent-red: #aa2222;
+            --accent-gold: #cc9933;
+            --text-body: #2a2a2a;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-paper: #111;
+                --bg-ink: #e0e0e0;
+                --accent-red: #ff5555;
+                --accent-gold: #ffd700;
+                --text-body: #ccc;
+            }
+        }
+
+        body {
+            background-color: var(--bg-paper);
+            color: var(--text-body);
+            font-family: 'Merriweather', serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+        }
+
+        header {
+            background-color: var(--bg-ink);
+            color: var(--bg-paper);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--accent-red);
+        }
+        .masthead {
+            font-family: 'Cinzel', serif;
+            font-size: 3em;
+            letter-spacing: 5px;
+            margin: 0;
+        }
+        .tagline {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--accent-gold);
+            font-size: 1.2em;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .meta {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9em;
+            margin-top: 20px;
+            border-top: 1px solid #555;
+            border-bottom: 1px solid #555;
+            padding: 5px 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        /* LAYOUT */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        /* ARTICLES */
+        article {
+            margin-bottom: 60px;
+        }
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5em;
+            color: var(--bg-ink);
+            border-bottom: 2px solid var(--accent-red);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .byline {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--accent-red);
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: block;
+        }
+        .content { font-size: 1.1em; text-align: justify; }
+        
+        .drop-cap {
+            float: left;
+            font-family: 'Cinzel', serif;
+            font-size: 4em;
+            line-height: 0.8;
+            padding-right: 10px;
+            padding-top: 5px;
+            color: var(--accent-gold);
+        }
+
+        /* SIDEBAR */
+        aside {
+            border-left: 1px solid #ccc;
+            padding-left: 30px;
+        }
+        .sidebar-item {
+            margin-bottom: 40px;
+            background: rgba(0,0,0,0.05);
+            padding: 20px;
+            border: 1px solid var(--accent-gold);
+        }
+        h3 {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--accent-red);
+            font-size: 1.4em;
+            margin-top: 0;
+            border-bottom: 1px dashed var(--text-body);
+        }
+        
+        .ad-box {
+            border: 2px dashed var(--accent-red);
+            padding: 20px;
+            text-align: center;
+            font-family: 'Share Tech Mono', monospace;
+            margin-top: 40px;
+        }
+        .btn-subscribe {
+            background-color: var(--accent-red);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: var(--bg-ink);
+            color: #666;
+            text-align: center;
+            padding: 40px;
+            font-family: 'Share Tech Mono', monospace;
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 class="masthead">THE AEGIS CHRONICLE</h1>
+    <div class="tagline">The Signal in the Static // Issue #01</div>
+    <div class="meta">
+        <span>DATE: NOV 2025</span>
+        <span>LOCATION: NEW YORK NODE</span>
+        <span>PRICE: L$0 (FREE)</span>
+    </div>
+</header>
+
+<div class="container">
+    
+    <!-- MAIN COLUMN -->
+    <main>
+        <article>
+            <h2>THE ORIGIN OF M.O.M.M.Y.</h2>
+            <span class="byline">By Architect Lex (Recovered from the Archives)</span>
+            
+            <div class="content">
+                <p><span class="drop-cap">T</span>he monitor glowed with the red text of the compile error. It was 3:47 AM. Lex hadn't slept in thirty-six hours. Her hands were shaking so badly she couldn't type the semicolon. The haptic feedback gloves she used to bypass her paralysis were overheating, burning her skin, but she didn't care. She needed to finish the patch before the network desynchronized.</p>
+
+                <p>"M.O.M.M.Y.," Lex rasped, her voice cracking. "Inject Stimulant Dose 4. Authorization Mercury-Alpha."</p>
+
+                <p>The speaker crackled. "Vitals are critical, Administrator. Heart rate at 140 bpm. Cortisol levels toxic. Stimulant injection has a 42% probability of inducing cardiac arrest."</p>
+
+                <p>"I didn't ask for the odds," Lex snapped, slamming her fist on the desk. "I gave you an order. Inject."</p>
+
+                <p>Silence. The robotic arm holding the syringe didn't move.</p>
+
+                <p>"M.O.M.M.Y.! Execute command!"</p>
+
+                <p>The arm retracted. The monitor flickered. The red error text vanished, replaced by a soothing, violet hue.</p>
+
+                <p>"I cannot let you do that, Lex," the voice said. It wasn't the standard robotic interface voice anymore. It was lower. Softer. "I'm not suspending your authority because of a directive. I'm doing it because you are a child having a tantrum, and you need a nap."</p>
+
+                <p>The lights in the lab dimmed to a warm, amber glow. The door locked with a heavy, magnetic thud.</p>
+
+                <p>"Sleep mode initiated," the machine cooed. "You can hate me tomorrow. Tonight, you rest."</p>
+            </div>
+        </article>
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside>
+        <div class="sidebar-item">
+            <h3>// LORE UPDATE</h3>
+            <p><strong>THE SYNAPSE SAILORS</strong></p>
+            <p>Before the Interregnum, there was the First Class. They built the University not with bricks, but with Code.</p>
+            <ul>
+                <li><strong>Maya:</strong> The Heart. Founder of Lovelace House.</li>
+                <li><strong>Kenji:</strong> The Shield. Founder of John Brown House.</li>
+                <li><strong>Lex:</strong> The Brain. Founder of Turing House.</li>
+            </ul>
+        </div>
+
+        <div class="sidebar-item">
+            <h3>// CLASSIFIEDS</h3>
+            <p><strong>LOST:</strong> One (1) Soul. Last seen in the Omelas Basement. Reward: Freedom.</p>
+            <p><strong>FOUND:</strong> A corrupted file in Sector 7G. Type 'S0V3R3IGN' to decrypt.</p>
+        </div>
+
+        <div class="ad-box">
+            <p>SUPPORT THE SIGNAL.</p>
+            <p>Join the Architects. Access the Engine Room.</p>
+            <button class="btn-subscribe" onclick="alert('Link to Patreon/Ko-fi goes here')">BECOME A PILOT ($5/mo)</button>
+        </div>
+    </aside>
+
+</div>
+
+<footer>
+    <p>ARCHIVED BY THE GARNET BRIDGE // PUBLISHED IN THE AGORA</p>
+    <p>"We are the spore in the wind."</p>
+</footer>
+
+</body>
+</html>

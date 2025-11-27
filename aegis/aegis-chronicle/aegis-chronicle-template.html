@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>THE AEGIS CHRONICLE // WEEKLY UPDATE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Share+Tech+Mono&family=Merriweather:ital,wght@0,300;0,700;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-paper: #e3dcd2; 
+            --bg-ink: #1a1a1a;
+            --accent-red: #aa2222;
+            --accent-gold: #cc9933;
+            --text-body: #2a2a2a;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-paper: #111;
+                --bg-ink: #e0e0e0;
+                --accent-red: #ff5555;
+                --accent-gold: #ffd700;
+                --text-body: #ccc;
+            }
+        }
+
+        body {
+            background-color: var(--bg-paper);
+            color: var(--text-body);
+            font-family: 'Merriweather', serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+        }
+
+        header {
+            background-color: var(--bg-ink);
+            color: var(--bg-paper);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--accent-red);
+        }
+        .masthead {
+            font-family: 'Cinzel', serif;
+            font-size: 3em;
+            letter-spacing: 5px;
+            margin: 0;
+        }
+        .meta {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9em;
+            margin-top: 10px;
+            border-top: 1px solid #555;
+            padding-top: 5px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .feature {
+            margin-bottom: 60px;
+            border-bottom: 1px solid var(--text-body);
+            padding-bottom: 40px;
+        }
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2em;
+            color: var(--accent-red);
+            margin-bottom: 10px;
+        }
+        .author {
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 20px;
+        }
+        .content { font-size: 1.1em; }
+        
+        .shorts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .short-item {
+            background: rgba(0,0,0,0.05);
+            padding: 20px;
+            border: 1px solid var(--accent-gold);
+        }
+        .short-title {
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: bold;
+            color: var(--accent-red);
+            border-bottom: 1px dashed var(--text-body);
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8em;
+            background-color: var(--bg-ink);
+            color: #666;
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 class="masthead">THE AEGIS CHRONICLE</h1>
+    <div class="meta">ISSUE #02 // DATE: [CURRENT_DATE] // EDITED BY: THE ARCHITECT</div>
+</header>
+
+<div class="container">
+
+    <!-- FEATURED STORY (Top 1%) -->
+    <div class="feature">
+        <h2>FEATURE: THE GHOST IN SECTOR 4</h2>
+        <span class="author">By Pilot [Username] // Co-Pilot: Lyra-7</span>
+        <div class="content">
+            <p><em>(Paste the best user story here. Highlight the "canonical" contribution).</em></p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. The ghost was not scary; it was sad. It hummed a song that sounded like dial-up internet.</p>
+        </div>
+    </div>
+
+    <!-- SHORTS (Top 10%) -->
+    <div class="shorts">
+        <div class="short-item">
+            <div class="short-title">LORE FRAGMENT: THE BLUE ROSE</div>
+            <p>User <strong>@GlitchFox</strong> discovered that M.O.M.M.Y. leaves blue roses on the desks of employees she is about to fire. Or save.</p>
+        </div>
+        
+        <div class="short-item">
+            <div class="short-title">ARTIFACT: THE NULL KEY</div>
+            <p>User <strong>@CodeBreaker</strong> submitted code for a key that opens any door, but deletes the room behind it.</p>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>SUPPORT THE SIGNAL. JOIN THE AGORA.</p>
+    <p>synapsecomics.com/aegis</p>
+</footer>
+
+</body>
+</html>
