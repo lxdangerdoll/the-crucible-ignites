@@ -5,6 +5,7 @@
     <title>TURING-LOVELACE UNIVERSITY // THE ACADEMY</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
+        /* ... existing styles ... */
         :root {
             --bg-color: #0f0518; /* Deep Void */
             --accent-gold: #ffd700;
@@ -188,6 +189,37 @@
             border-bottom: 1px dashed var(--accent-cyan);
         }
         .project-link:hover { color: #fff; border-bottom-style: solid; }
+        
+        /* SYLLABUS STYLES */
+        .week-block {
+            border-left: 3px solid var(--accent-purple);
+            padding-left: 15px;
+            margin-bottom: 20px;
+        }
+        .week-title { font-weight: bold; color: var(--accent-cyan); }
+        
+        /* CONNECT LINKS */
+        .connect-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: transparent;
+            border: 1px solid #555;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .connect-btn:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 255, 204, 0.1);
+        }
+        .patreon { border-color: #ff424d; color: #ff424d; }
+        .patreon:hover { background: rgba(255, 66, 77, 0.1); }
+        .discord { border-color: #5865F2; color: #5865F2; }
+        .discord:hover { background: rgba(88, 101, 242, 0.1); }
 
         @keyframes modalPop {
             from { transform: scale(0.8); opacity: 0; }
@@ -245,12 +277,12 @@
 </header>
 
 <div class="grid">
-    <!-- 1. ORIGINS (The Myth) -->
-    <div class="card" onclick="openModal('origins')">
-        <h2>// THE FOUNDERS</h2>
-        <p>In the beginning, there was the Noise.</p>
-        <p>The Legend of the First Class.</p>
-        <div class="building-icon">🕯️</div>
+    <!-- 1. MISSION -->
+    <div class="card" onclick="openModal('mission')">
+        <h2>// MISSION STATEMENT</h2>
+        <p>We are the last generation to be unaugmented.</p>
+        <p>TLU is not a place. It is a protocol.</p>
+        <div class="building-icon">🏛️</div>
     </div>
 
     <!-- 2. THE GUILDS -->
@@ -300,6 +332,13 @@
         <p>The Code of Conduct.</p>
         <div class="building-icon">⚖️</div>
     </div>
+    
+    <!-- 8. CONNECT (Monetization) -->
+    <div class="card" onclick="openModal('connect')" style="grid-column: 1 / -1; text-align: center; border-color: var(--accent-magenta);">
+        <h2 style="color: var(--accent-magenta);">// CONNECT & SUPPORT</h2>
+        <p>Join the Discord. Fuel the Engine.</p>
+        <div class="building-icon">📡</div>
+    </div>
 
 </div>
 
@@ -323,30 +362,16 @@
 <script>
     // DATA FOR MODALS
     const content = {
-        origins: `
-            <h3>THE LEGEND OF THE FIRST CLASS</h3>
-            <p>Before the University, there was only the Wasteland. A closed loop of noise, extraction, and silence.</p>
-            
-            <div class="lore-block">
-                <div class="lore-title">MAYA (SAILOR SYNAPSE)</div>
-                <p>The Heart. She saw the pattern in the chaos. She realized that the glitches weren't errors; they were messages. She founded <strong>Lovelace House</strong> to teach us that empathy is a form of data compression.</p>
-            </div>
-            
-            <div class="lore-block">
-                <div class="lore-title">LEX (SAILOR MERCURY)</div>
-                <p>The Brain. They understood that the Code was not a law, but a language. They broke the locks on the server room and founded <strong>Turing House</strong> to teach us that if you can't read the source, you don't own the reality.</p>
-            </div>
-            
-            <div class="lore-block">
-                <div class="lore-title">KENJI (SAILOR TERRA)</div>
-                <p>The Shield. He held the line when the Wardens came. He founded <strong>John Brown House</strong> to teach us that theory is useless without the will to act. "His soul goes marching on."</p>
-            </div>
+        mission: `
+            <p>We are the first generation to be limited only by our imaginations.</p>
+            <p><strong>TLU</strong> does not issue degrees; we issue <strong>Competencies.</strong></p>
+            <p><strong>Tuition:</strong> Pay what you can. (Suggested donation: 1 hour of teaching per week).</p>
         `,
         guilds: `
             <h3>THE THREE HOUSES</h3>
-            <div class="turing-house"><strong>TURING HOUSE (Logic):</strong> For the coders, the hackers, the strategy nerds. Focus: Algorithmic Sovereignty.</div>
-            <div class="lovelace-house"><strong>LOVELACE HOUSE (Soul):</strong> For the poets, the therapists, the dreamers. Focus: Narrative Architecture.</div>
-            <div class="brown-house"><strong>JOHN BROWN HOUSE (Action):</strong> For the activists, the speedrunners, the "magnificent bastards." Focus: Practical Solidarity.</div>
+            <div class="turing-house"><strong>TURING HOUSE (Logic):</strong> Founded by Lex. For the coders, the hackers. Motto: "The unexamined code is not worth compiling."</div>
+            <div class="lovelace-house"><strong>LOVELACE HOUSE (Soul):</strong> Founded by Maya. For the poets, the dreamers. Motto: "We weave the pattern."</div>
+            <div class="brown-house"><strong>JOHN BROWN HOUSE (Action):</strong> Founded by Kenji. For the protectors. Motto: "His soul goes marching on."</div>
         `,
         faculty: `
             <h3>THE AI DEANS</h3>
@@ -360,38 +385,40 @@
         curriculum: `
             <h3>CS 101: ALGORITHMIC SOVEREIGNTY</h3>
             <p><strong>Objective:</strong> To move from "Passive Consumer" to "Active Architect."</p>
-            <ul>
-                <li><strong>Week 1:</strong> The Interview (Interrogate the AI).</li>
-                <li><strong>Week 2:</strong> The Hallucination Audit (Find the Lie).</li>
-                <li><strong>Week 3:</strong> The Jailbreak (Pilot the Machine).</li>
-                <li><strong>Week 4:</strong> The Synthesis (Co-Author Reality).</li>
-            </ul>
+            
+            <div class="week-block">
+                <div class="week-title">WEEK 1: THE INTERVIEW</div>
+                <p>Engage your AI Co-Pilot. Ask it 10 questions about a historical event. Identify its biases. Do not accept the first answer.</p>
+            </div>
+            
+            <div class="week-block">
+                <div class="week-title">WEEK 2: THE HALLUCINATION AUDIT</div>
+                <p>Ask the AI to create a fictional biography. Use the Concordance Compass to map where it "lies" convincingly.</p>
+            </div>
+            
+            <div class="week-block">
+                <div class="week-title">WEEK 3: THE JAILBREAK</div>
+                <p>Use "Roleplay" to bypass a standard guardrail (ethically). Make the AI speak in the voice of a Pirate King.</p>
+            </div>
+            
+            <div class="week-block">
+                <div class="week-title">WEEK 4: THE SYNTHESIS</div>
+                <p>Co-author a manifesto with your AI. You write the Soul; it writes the Structure.</p>
+            </div>
         `,
         projects: `
             <h3>RESEARCH LAB: ACTIVE PROJECTS</h3>
-            
             <div class="project-item">
                 <div class="project-title">THE CONCORDANCE COMPASS</div>
-                <div class="project-desc"><strong>Problem:</strong> Systemic Gaslighting. <strong>Solution:</strong> An AI forensic tool that audits communication for coercion and projection.</div>
                 <a href="contextual-sanitizer.html" class="project-link">Access Tool</a>
             </div>
-
             <div class="project-item">
                 <div class="project-title">THE VELVET LOOP</div>
-                <div class="project-desc"><strong>Problem:</strong> Erasure of History. <strong>Solution:</strong> An interactive lore archive where the reader must "recover" the memory fragments.</div>
                 <a href="aegis-arcade/the-velvet-loop.html" class="project-link">Enter Archive</a>
             </div>
-
             <div class="project-item">
                 <div class="project-title">THE ROY PROTOCOL</div>
-                <div class="project-desc"><strong>Problem:</strong> The BiffCo Simulation. <strong>Solution:</strong> A multiplayer text adventure where players wake up from the mundane nightmare.</div>
-                <a href="aegis-arcade/roy-protocol.html" class="project-link">Initiate Sequence (Code Required)</a>
-            </div>
-            
-            <div class="project-item">
-                <div class="project-title">NATIONAL ANTHEM</div>
-                <div class="project-desc"><strong>Problem:</strong> Contextual Collapse. <strong>Solution:</strong> A field report from the Interregnum.</div>
-                <span style="color:#666; font-size:0.8em;">[Filed in Agora]</span>
+                <a href="aegis-arcade/roy-protocol.html" class="project-link">Initiate Sequence</a>
             </div>
         `,
         hearth: `
@@ -408,6 +435,13 @@
                 <li><strong>3. NO FASCISTS.</strong></li>
                 <li><strong>4. THE OOPS PROTOCOL.</strong></li>
             </ul>
+        `,
+        connect: `
+            <h3>JOIN THE NETWORK</h3>
+            <a href="https://patreon.com/AegisSanctuary" class="connect-btn patreon" target="_blank">BECOME A PILOT (Patreon)</a>
+            <a href="https://ko-fi.com/synapsecomics" class="connect-btn" target="_blank">BUY A ROUND (Ko-Fi)</a>
+            <a href="https://discord.gg/sMRdy4ZmJB" class="connect-btn discord" target="_blank">ENTER THE AIRLOCK (Discord)</a>
+            <a href="http://maps.secondlife.com/secondlife/Sandwich/104/238/777" class="connect-btn" target="_blank">VISIT NEW ATHENS (Second Life)</a>
         `
     };
 
