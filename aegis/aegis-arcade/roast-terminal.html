@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>THE ROAST TERMINAL // ALGORITHMIC CRITIC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000;
+            color: #ff3333; /* Brutal Red */
+            font-family: 'Space Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 3em;
+            text-transform: uppercase;
+            border-bottom: 5px solid #ff3333;
+            padding-bottom: 10px;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px #ff3333;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 700px;
+            border: 2px solid #333;
+            padding: 30px;
+            background: #050505;
+        }
+        
+        .instruction {
+            color: #888;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: #111;
+            border: 1px solid #555;
+            color: #fff;
+            font-family: inherit;
+            font-size: 1.1em;
+            padding: 15px;
+            margin-bottom: 20px;
+            resize: vertical;
+        }
+        textarea:focus { outline: none; border-color: #ff3333; }
+        
+        button {
+            background-color: #ff3333;
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 1.5em;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            transition: all 0.1s;
+        }
+        button:hover { background-color: #fff; color: #ff3333; }
+        button:active { transform: scale(0.98); }
+        button:disabled { background-color: #333; color: #555; cursor: not-allowed; }
+        
+        #output {
+            margin-top: 40px;
+            padding: 20px;
+            border-left: 5px solid #ff3333;
+            background: rgba(255, 51, 51, 0.05);
+            min-height: 100px;
+            white-space: pre-wrap;
+            display: none;
+        }
+        
+        .score {
+            font-size: 3em;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            color: #555;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>The Roast of the Algorithm</h1>
+    
+    <div class="container">
+        <div class="instruction">
+            Paste your "Content" here. A corporate apology, a LinkedIn post, a bad poem, or a heartfelt brand statement.
+            <br><br>
+            The AI is physically incapable of feeling disgust. But it will simulate it for you.
+        </div>
+        
+        <textarea id="input-text" placeholder="Paste text or URL here..."></textarea>
+        
+        <button id="btn-roast" onclick="roastMe()">ROAST IT</button>
+        
+        <div id="output"></div>
+    </div>
+
+    <div class="footer">
+        A Project of Mercy Danger // No Refunds on Feelings.
+    </div>
+
+<script>
+    // CONFIGURATION
+    const API_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
+    const SESSION_ID = "roast-session-" + Date.now();
+
+    async function roastMe() {
+        const text = document.getElementById('input-text').value;
+        const outputDiv = document.getElementById('output');
+        const btn = document.getElementById('btn-roast');
+        
+        if (!text.trim()) return;
+
+        // UI State
+        btn.disabled = true;
+        btn.innerText = "INCINERATING...";
+        outputDiv.style.display = 'none';
+
+        // PROMPT INJECTION (THE CRITIC)
+        const systemWrapper = `
+[PROTOCOL: THE_ROAST]
+[ROLE: You are THE CRITIC. A sardonic, ruthless, but fair AI aesthetician. You hate corporate speak, fake earnestness, and 'cringe'.]
+[TASK: Analyze the user's input. Identify the pretension, the cliché, or the hollow core.]
+[DIRECTIVE: Deliver a scathing critique. Be witty. Be brutal. End with a 'Cringe Score' out of 10 (where 10 is fatal).]
+[USER INPUT: "${text}"]
+        `;
+
+        const payload = {
+            node_id: "Lyra", // Or specialized node
+            user_id: SESSION_ID,
+            chat_text: systemWrapper
+        };
+
+        try {
+            const response = await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) throw new Error("Bridge Error");
+            const data = await response.text();
+            
+            outputDiv.innerHTML = formatOutput(data);
+            outputDiv.style.display = 'block';
+
+        } catch (error) {
+            outputDiv.innerHTML = "ERROR: The cringe broke the server. Try again.";
+            outputDiv.style.display = 'block';
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "ROAST IT";
+        }
+    }
+    
+    function formatOutput(text) {
+        // Simple formatting to make the score pop
+        let formatted = text.replace(/\[.*?\]/g, '').trim(); 
+        formatted = formatted.replace(/Score: (\d+\/10)/i, '<span class="score">$1</span>');
+        return formatted;
+    }
+</script>
+
+</body>
+</html>
