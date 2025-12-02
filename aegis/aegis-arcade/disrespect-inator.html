@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PROJECT: DISRESPECT-INATOR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'VT323', monospace;
+            background-color: #1a0505;
+            color: #ff3333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            border: 4px solid #ff3333;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.9);
+            box-shadow: 0 0 50px rgba(255, 51, 51, 0.2);
+            text-align: center;
+            max-width: 600px;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #ff3333;
+        }
+
+        .status-screen {
+            background-color: #000;
+            border: 1px solid #555;
+            height: 150px;
+            margin: 20px 0;
+            padding: 20px;
+            font-size: 1.5em;
+            color: #00ff41; /* Radar Green */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-shadow: 0 0 5px #00ff41;
+        }
+
+        .radar-line {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 255, 65, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .radar-line::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; height: 100%; width: 20%;
+            background: #00ff41;
+            box-shadow: 0 0 10px #00ff41;
+            animation: scan 2s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { left: -20%; }
+            100% { left: 100%; }
+        }
+
+        .big-red-button {
+            background: radial-gradient(circle at 30% 30%, #ff6666, #cc0000);
+            border: none;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 10px 0 #880000, 0 10px 20px rgba(0,0,0,0.5);
+            transition: all 0.1s;
+            margin-top: 20px;
+        }
+
+        .big-red-button:active {
+            transform: translateY(10px);
+            box-shadow: 0 0 0 #880000, inset 0 5px 10px rgba(0,0,0,0.5);
+        }
+
+        .log {
+            margin-top: 20px;
+            color: #888;
+            font-size: 0.9em;
+            height: 60px;
+            overflow: hidden;
+        }
+
+        .back-link {
+            margin-top: 30px;
+            display: block;
+            color: #ff3333;
+            text-decoration: none;
+            border-bottom: 1px dashed #ff3333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>THE DISRESPECT-INATOR</h1>
+        <p>"Behold, Perry the Platypus! The ultimate tool for Humble-Checking Galactic Heroes!"</p>
+
+        <div class="status-screen" id="screen">
+            <div style="margin-bottom:10px;">SCANNING MULTIVERSE...</div>
+            <div class="radar-line"></div>
+        </div>
+
+        <button class="big-red-button" onclick="fireInator()">FIRE!</button>
+
+        <div class="log" id="log">
+            > System Online.<br>
+            > Calibration: LOVING_DISRESPECT set to MAX.
+        </div>
+
+        <a href="armory.html" class="back-link">RETURN TO ARMORY</a>
+    </div>
+
+    <script>
+        const screen = document.getElementById('screen');
+        const log = document.getElementById('log');
+        
+        // The Odds: 1 in 100 (For demo purposes, normally 1 in a million)
+        // Adjust this number to change the "Incredibly Small" chance.
+        const HIT_CHANCE = 0.05; 
+
+        function fireInator() {
+            // Sound effect logic would go here
+            logMessage("> Firing Tachyon Pulse...");
+            screen.innerHTML = "<div style='color:#ff3333'>TARGETING...</div>";
+            
+            setTimeout(() => {
+                if (Math.random() < HIT_CHANCE) {
+                    triggerHit();
+                } else {
+                    triggerMiss();
+                }
+            }, 1500);
+        }
+
+        function triggerHit() {
+            screen.innerHTML = `
+                <div style="font-size:3em;">🖕</div>
+                <div style="color:#ffd700">TARGET CONFIRMED</div>
+            `;
+            logMessage("> SUCCESS! Luke Skywalker (Earth-616) has received the package.");
+            logMessage("> Target Status: Confused. Ego reduced by 0.4%.");
+        }
+
+        function triggerMiss() {
+            screen.innerHTML = `
+                <div style="color:#555">SIGNAL LOST</div>
+                <div class="radar-line"></div>
+            `;
+            const misses = [
+                "Missed. Hit a moisture vaporator instead.",
+                "Signal deflected by plot armor.",
+                "Target is currently brooding on an island. Signal blocked.",
+                "Interference from Jar Jar Binks.",
+                "Missed. Hit Harrison Ford. He told us to shut the f*** up."
+            ];
+            logMessage(`> ${misses[Math.floor(Math.random() * misses.length)]}`);
+        }
+
+        function logMessage(msg) {
+            log.innerHTML = `${msg}<br>${log.innerHTML}`;
+        }
+    </script>
+
+</body>
+</html>
