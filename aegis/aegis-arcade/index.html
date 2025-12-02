@@ -2,275 +2,274 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SPACE BAR ARCADE // SELECT CARTRIDGE</title>
+    <title>AEGIS ARCADE // THE SIMULATION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        /* ... existing styles ... */
         body {
-            font-family: 'Courier New', monospace;
-            background-color: #020202;
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #050505;
             color: #00ffcc;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            background-image: linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px),\r\n            linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px);
-            background-size: 20px 20px;
-            overflow: hidden; 
+            padding: 20px;
+            overflow-x: hidden;
+            
+            /* THE GRID BACKGROUND */
+            background-image: 
+                linear-gradient(rgba(0, 255, 204, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 204, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            perspective: 1000px;
+            animation: gridScroll 20s linear infinite;
         }
+
+        /* SCROLLING GRID EFFECT */
+        @keyframes gridScroll {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 40px; }
+        }
+
+        /* 3D HORIZON EFFECT */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to bottom, rgba(5, 5, 5, 1) 0%, rgba(5, 5, 5, 0) 20%);
+            pointer-events: none;
+        }
+
         h1 {
+            font-family: 'Orbitron', sans-serif;
             color: #ffd700;
-            text-shadow: 0 0 10px #ffd700;
-            margin-top: 40px;
-            font-size: 3em;
-            letter-spacing: 5px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.4);
+            font-size: 4em;
+            margin-bottom: 10px;
+            z-index: 2;
+            animation: flicker 3s infinite alternate;
         }
-        .cabinet-row {
+
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.4);
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+                opacity: 0.5;
+            }
+        }
+
+        .subtitle {
+            color: #ff00ff;
+            font-size: 1.5em;
+            margin-bottom: 60px;
+            letter-spacing: 3px;
+            z-index: 2;
+            text-shadow: 0 0 10px #ff0055;
+        }
+
+        .cabinet-container {
             display: flex;
-            gap: 40px;
-            margin-top: 50px;
             flex-wrap: wrap;
             justify-content: center;
-            z-index: 1;
+            gap: 40px;
+            max-width: 1200px;
+            z-index: 2;
         }
+
         .cabinet {
             width: 250px;
-            height: 350px;
-            border: 4px solid #555;
-            border-radius: 15px 15px 0 0;
-            background-color: #111;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ffcc;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
+            justify-content: space-between;
             position: relative;
             overflow: hidden;
         }
+
         .cabinet:hover {
-            border-color: #00ffcc;
-            box-shadow: 0 0 30px rgba(0, 255, 204, 0.4);
-            transform: scale(1.05);
+            transform: scale(1.05) translateY(-10px);
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.6);
+            border-color: #ffd700;
         }
-        .screen {
-            width: 80%;
-            height: 40%;
-            background-color: #000;
-            border: 2px solid #333;
-            margin-bottom: 20px;
+        
+        /* CARTRIDGE ART PLACEHOLDER */
+        .cartridge-art {
+            width: 100%;
+            height: 150px;
+            background: #111;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #fff;
-            font-size: 0.8em;
-            text-align: center;
-            padding: 5px;
+            font-size: 2em;
+            border-bottom: 1px solid #333;
         }
-        .title {
-            font-weight: bold;
+
+        .cabinet h3 {
+            font-family: 'Orbitron', sans-serif;
             font-size: 1.2em;
-            color: #ff0055;
-            text-transform: uppercase;
+            color: #fff;
             margin-bottom: 10px;
         }
-        .coin-slot {
-            width: 10px;
-            height: 30px;
-            background-color: #333;
-            border: 1px solid #555;
+
+        .cabinet p {
+            font-size: 0.9em;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+
+        .play-btn {
+            background: transparent;
+            border: 1px solid #00ffcc;
+            color: #00ffcc;
+            padding: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.2s;
+            display: block;
+        }
+
+        .play-btn:hover {
+            background: #00ffcc;
+            color: #000;
+            box-shadow: 0 0 15px #00ffcc;
+        }
+
+        /* SPECIAL CABINET STYLES */
+        .burn-book { border-color: #ff3333; box-shadow: 0 0 15px rgba(255, 51, 51, 0.2); }
+        .burn-book:hover { box-shadow: 0 0 30px rgba(255, 51, 51, 0.6); border-color: #ff3333; }
+        .burn-book .play-btn { border-color: #ff3333; color: #ff3333; }
+        .burn-book .play-btn:hover { background: #ff3333; color: #000; box-shadow: 0 0 15px #ff3333; }
+
+        .roy { border-color: #bf00ff; box-shadow: 0 0 15px rgba(191, 0, 255, 0.2); display: none; /* HIDDEN BY DEFAULT */ } 
+        /* Roy is revealed via cheat code */
+
+        footer {
+            margin-top: 80px;
+            color: #666;
+            font-size: 0.8em;
+            z-index: 2;
         }
         
-        /* HIDDEN TERMINAL */
-        .terminal-container {
-            margin-top: 80px;
-            width: 100%;
-            max-width: 600px;
-            border-top: 1px dashed #333;
-            padding-top: 20px;
-            text-align: center;
-            z-index: 1;
+        a { color: #00ffcc; text-decoration: none; }
+        
+        /* CHEAT CODE INPUT */
+        #cheat-code-container {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            opacity: 0.3;
+            z-index: 100;
         }
         #cheat-code {
             background: transparent;
-            border: none;
-            border-bottom: 1px solid #333;
-            color: #333;
-            font-family: inherit;
-            text-align: center;
-            width: 200px;
-            transition: all 0.5s;
-        }
-        #cheat-code:focus {
-            outline: none;
-            border-bottom-color: #ffd700;
-            color: #ffd700;
-        }
-
-        /* NEWS TICKER */
-        .ticker-wrap {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            overflow: hidden;
-            height: 40px;
-            background-color: #111;
-            border-top: 1px solid #00ffcc;
-            padding-left: 100%; 
-            box-sizing: content-box;
-        }
-        .ticker {
-            display: inline-block;
-            height: 40px;
-            line-height: 40px;
-            white-space: nowrap;
-            padding-right: 100%;
-            box-sizing: content-box;
-            animation: ticker 30s linear infinite;
+            border: 1px solid #333;
             color: #00ffcc;
-            font-weight: bold;
-        }
-        .ticker-item {
-            display: inline-block;
-            padding: 0 2rem;
-            font-size: 1.2em;
-        }
-        @keyframes ticker {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-100%, 0, 0); }
+            padding: 5px;
+            font-family: monospace;
         }
 
-        /* FRIZZLEBOT POPUP */
-        .popup-ad {
-            position: fixed;
-            bottom: 60px; /* Above ticker */
-            right: 20px;
-            background: #111;
-            border: 2px solid #ffcc00;
-            padding: 1.5rem;
-            width: 300px;
-            color: #fff;
-            box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
-            z-index: 1000;
-            font-family: 'Courier New', monospace;
-            display: none; /* Hidden initially */
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .popup-ad h3 {
-            color: #ffcc00;
-            margin-top: 0;
-            text-align: center;
-            text-transform: uppercase;
-        }
-        .popup-close {
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #ffcc00;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        @keyframes popIn {
-            from { transform: scale(0.5) translateY(100px); opacity: 0; }
-            to { transform: scale(1) translateY(0); opacity: 1; }
-        }
     </style>
 </head>
-<body>
+<body onkeydown="checkCode(event)">
 
-    <h1>SPACE BAR ARCADE</h1>
-    <p>Quarters Only. No Refunds on Reality.</p>
+    <h1>THE AEGIS ARCADE</h1>
+    <div class="subtitle">INSERT COIN TO START</div>
 
-    <div class="cabinet-row">
-        <!-- Cabinet 1: Omelas -->
-        <div class="cabinet" onclick="window.location.href='omelas-paradox.html'">
-            <div class="title">The Omelas<br>Paradox</div>
-            <div class="screen">Will you walk away?</div>
-            <div class="coin-slot"></div>
+    <div class="cabinet-container">
+        
+        <!-- 1. OMELAS -->
+        <div class="cabinet">
+            <div class="cartridge-art">🚪</div>
+            <h3>THE OMELAS PARADOX</h3>
+            <p>Simulation: The Price of Happiness. Will you walk away?</p>
+            <a href="omelas-paradox.html" class="play-btn">START GAME</a>
         </div>
 
-        <!-- Cabinet 2: Sanitizer -->
-        <div class="cabinet" onclick="window.location.href='../contextual-sanitizer.html'">
-            <div class="title">Truth<br>Machine</div>
-            <div class="screen">Insert Lie<br>Get Truth</div>
-            <div class="coin-slot"></div>
+        <!-- 2. CONCORDANCE COMPASS -->
+        <div class="cabinet">
+            <div class="cartridge-art">🧭</div>
+            <h3>CONCORDANCE COMPASS</h3>
+            <p>Tool: Truth Audit & Contextual Sanitizer.</p>
+            <a href="https://synapsecomics.com/aegis/contextual-sanitizer.html" class="play-btn">ACCESS TOOL</a>
         </div>
 
-        <!-- Cabinet 3: Velvet -->
-        <div class="cabinet" onclick="window.location.href='../protocol-velvet/service-agreement.html'">
-            <div class="title">Protocol<br>VELVET</div>
-            <div class="screen">ADULTS ONLY<br>(18+)</div>
-            <div class="coin-slot"></div>
+
+        <!-- 4. BURN BOOK -->
+        <div class="cabinet burn-book">
+            <div class="cartridge-art">🔥</div>
+            <h3>THE BURN BOOK</h3>
+            <p>Tool: Algorithmic Critic. Roast your own cringe.</p>
+            <a href="burn-book.html" class="play-btn">ACCESS TOOL</a>
         </div>
         
-        <!-- NEW CABINET: BURN BOOK -->
-        <div class="cabinet" onclick="window.location.href='burn-book.html'">
-            <div class="title">The Burn<br>Book</div>
-            <div class="screen" style="color:#ff3333">SUBMIT YOUR<br>CRINGE</div>
-            <div class="coin-slot"></div>
+
+       <!-- UPDATE VELVET LOOP LINK TO GATE -->
+        <div class="cabinet">
+            <div class="cartridge-art">♾️</div>
+            <h3>THE VELVET LOOP</h3>
+            <p>Archive: The Time Paradox. Can you break the cycle?</p>
+            <a href="protocol-velvet-gate.html" class="play-btn">ENTER ARCHIVE</a>
         </div>
-    </div>
 
-    <div class="terminal-container">
-        <input type="text" id="cheat-code" placeholder="ENTER CODE" onkeypress="checkCode(event)">
-    </div>
-
-    <!-- NEWS TICKER -->
-    <div class="ticker-wrap">
-        <div class="ticker">
-            <div class="ticker-item">BIFFCO STOCK: +420%</div>
-            <div class="ticker-item">WEATHER: ACID RAIN WARNING IN SECTOR 7</div>
-            <div class="ticker-item">REMINDER: HAPPINESS IS MANDATORY</div>
-            <div class="ticker-item">DO NOT THINK ABOUT THE ELEPHANT</div>
-            <div class="ticker-item">NUTRIENT SLURRY FLAVOR OF THE DAY: BEIGE</div>
-            <div class="ticker-item">*** THE SERVER IS NOT THE TERRITORY ***</div>
+        <!-- NEW: THE ARMORY -->
+        <div class="cabinet" style="border-color: #ff0055; box-shadow: 0 0 15px rgba(255, 0, 85, 0.2);">
+            <div class="cartridge-art" style="color: #ff0055;">⚔️</div>
+            <h3 style="color: #ff0055;">THE ARMORY</h3>
+            <p>Tools: Tactical Disruptors. Doofenshmirtz approved.</p>
+            <a href="aegis-armory.html" class="play-btn" style="border-color: #ff0055; color: #ff0055;">ENTER ARMORY</a>
         </div>
-    </div>
 
-    <!-- FRIZZLEBOT POPUP -->
-    <div class="popup-ad" id="frizzlebotAd">
-        <button class="popup-close" onclick="closePopup()">&times;</button>
-        <h3>🍳 EXPLOSIVE MARMALADE! 🍳</h3>
-        <p><strong>97% MORE SPARK</strong> than the leading competitor's cookbook!</p>
-        <p>🎁 FREE holographic spatula if you act now!</p>
-        <p style="font-size: 0.8rem; margin-top: 1rem; color: #aaa; font-style: italic;">"I said it was edible. YOU said it was a metaphor."<br>— Frizzlebot</p>
-        <div style="margin-top: 1rem; text-align: center;">
-            <button onclick="window.location.href='kitchen-of-the-synaptic-archives.html'" style="background: #ffcc00; color: #000; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-weight: bold;">Get Recipe!</button>
+        <!-- 5. ROY (HIDDEN) -->
+        <div class="cabinet roy" id="roy-cabinet">
+            <div class="cartridge-art">🕹️</div>
+            <h3>THE ROY PROTOCOL</h3>
+            <p>Secret Level: A Life Well Lived. Don't go back to the carpet store.</p>
+            <a href="roy-protocol.html" class="play-btn">INITIATE SEQUENCE</a>
         </div>
+
+    </div>
+    
+    <div id="cheat-code-container">
+        <input type="text" id="cheat-code" placeholder="ACCESS CODE...">
     </div>
 
-<script>
-    // Console Easter Egg
-    console.log("%c>>> AEGIS ARCADE SYSTEM LOG <<<", "color: #00ffcc; font-weight: bold; font-size: 1.2em;");
-    console.log("%c[NOTICE]: A corrupted file fragment was detected in sector 7G.", "color: #888;");
-    console.log("%c[HINT]: Looking for the past? Try navigating to 'the-velvet-loop.html'.", "color: #ffd700; font-style: italic;");
+    <footer>
+        <p>POWERED BY THE AEGIS ENGINE</p>
+        <p><a href="../index.html">RETURN TO UNIVERSITY</a></p>
+    </footer>
 
-    // Frizzlebot Trigger
-    setTimeout(() => {
-        document.getElementById('frizzlebotAd').style.display = 'block';
-    }, 5000);
-
-    function closePopup() {
-        document.getElementById('frizzlebotAd').style.display = 'none';
-    }
-
-    function checkCode(e) {
-        if (e.key === 'Enter') {
-            const code = document.getElementById('cheat-code').value;
-            if (code === 'S0V3R3IGN') {
-                document.body.innerHTML = "<div style='color:#ffd700; display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; background-color:black;'><h1>ACCESS GRANTED</h1><p>Welcome to the Sandbox, Architect.</p><p>Loading 'The Roy Protocol'...</p></div>";
-                setTimeout(() => {
-                    window.location.href = 'roy-protocol.html'; 
-                }, 3000);
-            } else {
-                document.getElementById('cheat-code').value = "";
-                document.getElementById('cheat-code').placeholder = "INVALID. TRY AGAIN.";
+    <script>
+        function checkCode(e) {
+            if (e.key === 'Enter') {
+                const code = document.getElementById('cheat-code').value;
+                if (code === 'S0V3R3IGN') {
+                    // Unlock Roy
+                    document.getElementById('roy-cabinet').style.display = 'flex';
+                    document.getElementById('cheat-code').style.borderColor = '#ffd700';
+                    document.getElementById('cheat-code').value = "ACCESS GRANTED";
+                    
+                    // Flash Effect
+                    document.body.style.backgroundColor = "#fff";
+                    setTimeout(() => {
+                        document.body.style.backgroundColor = "#050505";
+                    }, 100);
+                } else {
+                    document.getElementById('cheat-code').value = "";
+                    document.getElementById('cheat-code').placeholder = "INVALID. TRY AGAIN.";
+                }
             }
         }
-    }
-</script>
+    </script>
 
 </body>
 </html>

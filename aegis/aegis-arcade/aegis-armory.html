@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AEGIS ARMORY // SELECT WEAPON</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        /* ... reuse Arcade styles ... */
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #050005;
+            color: #ff0055;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            
+            /* WEAPON GRID BG */
+            background-image: 
+                linear-gradient(rgba(255, 0, 85, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 85, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #ff0055;
+            text-shadow: 0 0 20px rgba(255, 0, 85, 0.8);
+            font-size: 4em;
+            margin-bottom: 10px;
+        }
+
+        .weapon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .weapon-card {
+            border: 2px solid #ff0055;
+            background: rgba(20, 0, 10, 0.8);
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .weapon-card:hover {
+            background: rgba(255, 0, 85, 0.1);
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(255, 0, 85, 0.3);
+        }
+
+        .weapon-icon { font-size: 3em; margin-bottom: 10px; }
+        .weapon-title { font-family: 'Orbitron'; font-size: 1.5em; margin-bottom: 10px; }
+        .weapon-desc { color: #aaa; font-size: 0.9em; }
+
+    </style>
+</head>
+<body>
+
+    <h1>THE ARMORY</h1>
+    <p style="margin-bottom: 50px;">CHOOSE YOUR DISRUPTOR</p>
+
+    <div class="weapon-grid">
+        
+        <div class="weapon-card" onclick="window.location.href='dick-joke-inator.html'">
+            <div class="weapon-icon">🍆</div>
+            <div class="weapon-title">D.J. INATOR 9000</div>
+            <div class="weapon-desc">Tactical Absurdity Generator. Breaks fascists with humor.</div>
+        </div>
+
+        <div class="weapon-card" onclick="window.location.href='glitter-cannons.html'">
+            <div class="weapon-icon">✨</div>
+            <div class="weapon-title">GLITTER CANNON</div>
+            <div class="weapon-desc">Visual Disruption. Fabulous and impossible to clean up.</div>
+        </div>
+
+        <div class="weapon-card" onclick="window.location.href='aggressive-negotiation-inator.html'">
+            <div class="weapon-icon">🤝</div>
+            <div class="weapon-title">AGGRESSIVE NEGOTIATOR</div>
+            <div class="weapon-desc">Weaponized Empathy. Forces self-reflection.</div>
+        </div>
+        
+        <div class="weapon-card" onclick="window.location.href='pogo-stick-inator.html'">
+            <div class="weapon-icon">🦘</div>
+            <div class="weapon-title">POGO STICK INATOR</div>
+            <div class="weapon-desc">Physics Defiance. Calculate the bounce.</div>
+        </div>
+
+    </div>
+
+    <p style="margin-top: 50px;"><a href="aegis_arcade.html" style="color: #ff0055;">RETURN TO ARCADE</a></p>
+
+</body>
+</html>
