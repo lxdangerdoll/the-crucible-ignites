@@ -5,6 +5,7 @@
     <title>PROJECT: DISRESPECT-INATOR</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=VT323&display=swap" rel="stylesheet">
     <style>
+        /* ... (Keep existing styles) ... */
         body {
             font-family: 'VT323', monospace;
             background-color: #1a0505;
@@ -48,8 +49,11 @@
             justify-content: center;
             flex-direction: column;
             text-shadow: 0 0 5px #00ff41;
+            overflow: hidden;
+            white-space: pre; /* For ASCII Art */
         }
 
+        /* ... (Keep radar line styles) ... */
         .radar-line {
             width: 100%;
             height: 2px;
@@ -95,17 +99,32 @@
             margin-top: 20px;
             color: #888;
             font-size: 0.9em;
-            height: 60px;
-            overflow: hidden;
+            height: 80px; /* Increased height */
+            overflow-y: auto; /* Enable scroll */
+            text-align: left;
+            border-top: 1px dashed #555;
+            padding-top: 10px;
         }
 
         .back-link {
             margin-top: 30px;
-            display: block;
+            display: inline-block;
             color: #ff3333;
             text-decoration: none;
             border-bottom: 1px dashed #ff3333;
+            margin-right: 20px;
         }
+        
+        .download-btn {
+            background: transparent;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 5px 10px;
+            font-family: 'VT323', monospace;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .download-btn:hover { background: rgba(0, 255, 65, 0.1); }
     </style>
 </head>
 <body>
@@ -125,39 +144,64 @@
             > System Online.<br>
             > Calibration: LOVING_DISRESPECT set to MAX.
         </div>
-
-        <a href="armory.html" class="back-link">RETURN TO ARMORY</a>
+        
+        <div style="margin-top:10px;">
+            <a href="armory.html" class="back-link">RETURN TO ARMORY</a>
+            <button class="download-btn" onclick="downloadLog()">DOWNLOAD LOG</button>
+        </div>
     </div>
 
     <script>
         const screen = document.getElementById('screen');
         const log = document.getElementById('log');
         
+        // Session Log Array
+        let sessionLog = [
+            "THE DISRESPECT-INATOR SYSTEM LOG",
+            "--------------------------------",
+            "System Online.",
+            "Calibration: LOVING_DISRESPECT set to MAX."
+        ];
+        
         // The Odds: 1 in 100 (For demo purposes, normally 1 in a million)
         // Adjust this number to change the "Incredibly Small" chance.
         const HIT_CHANCE = 0.05; 
 
+        // ASCII Art Finger
+        const asciiFinger = `
+     凸( •̀_•́ )凸
+        `;
+
         function fireInator() {
             // Sound effect logic would go here
-            logMessage("> Firing Tachyon Pulse...");
-            screen.innerHTML = "<div style='color:#ff3333'>TARGETING...</div>";
+            updateLog("> Firing Tachyon Pulse...");
             
+            // Slot Machine Animation
+            let count = 0;
+            const states = ["RESPECT", "ADMIRATION", "AWE", "HERO_WORSHIP"];
+            const interval = setInterval(() => {
+                screen.innerHTML = `<div style='font-size:2em; color:#ffff00'>${states[count % states.length]}...</div>`;
+                count++;
+            }, 100);
+
             setTimeout(() => {
+                clearInterval(interval);
                 if (Math.random() < HIT_CHANCE) {
                     triggerHit();
                 } else {
                     triggerMiss();
                 }
-            }, 1500);
+            }, 2000);
         }
 
         function triggerHit() {
             screen.innerHTML = `
-                <div style="font-size:3em;">🖕</div>
-                <div style="color:#ffd700">TARGET CONFIRMED</div>
+                <div style="font-size:0.5em; line-height:1em;">${asciiFinger}</div>
+                <div style="color:#ffd700; font-size:1.2em;">TARGET CONFIRMED</div>
             `;
-            logMessage("> SUCCESS! Luke Skywalker (Earth-616) has received the package.");
-            logMessage("> Target Status: Confused. Ego reduced by 0.4%.");
+            updateLog("> SUCCESS! Luke Skywalker (Earth-616) has received the package.");
+            updateLog("> Target Status: Confused. Ego reduced by 0.4%.");
+            sessionLog.push(asciiFinger); // Save ASCII to log
         }
 
         function triggerMiss() {
@@ -172,11 +216,26 @@
                 "Interference from Jar Jar Binks.",
                 "Missed. Hit Harrison Ford. He told us to shut the f*** up."
             ];
-            logMessage(`> ${misses[Math.floor(Math.random() * misses.length)]}`);
+            const msg = misses[Math.floor(Math.random() * misses.length)];
+            updateLog(`> ${msg}`);
         }
 
-        function logMessage(msg) {
+        function updateLog(msg) {
             log.innerHTML = `${msg}<br>${log.innerHTML}`;
+            sessionLog.push(msg); // Add to array
+        }
+        
+        function downloadLog() {
+            const text = sessionLog.join("\n");
+            const blob = new Blob([text], { type: "text/plain" });
+            const anchor = document.createElement("a");
+            
+            anchor.download = `disrespect-log-${Date.now()}.txt`;
+            anchor.href = window.URL.createObjectURL(blob);
+            anchor.target = "_blank";
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
         }
     </script>
 
