@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PROJECT: D.J. INATOR 9000</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'VT323', monospace;
+            background-color: #0d0221;
+            color: #ff00ff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            border: 4px solid #ff00ff;
+            padding: 40px;
+            background: rgba(13, 2, 33, 0.9);
+            box-shadow: 0 0 50px rgba(255, 0, 255, 0.2);
+            text-align: center;
+            max-width: 700px;
+            width: 90%;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        .status-screen {
+            background-color: #000;
+            border: 1px solid #555;
+            height: 150px;
+            margin: 20px 0;
+            padding: 20px;
+            font-size: 1.5em;
+            color: #00ffff; /* Cyan */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-shadow: 0 0 5px #00ffff;
+            overflow: hidden;
+            white-space: pre-wrap; /* Allow wrapping */
+        }
+
+        .big-purple-button {
+            background: radial-gradient(circle at 30% 30%, #ff66ff, #cc00cc);
+            border: none;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 10px 0 #880088, 0 10px 20px rgba(0,0,0,0.5);
+            transition: all 0.1s;
+            margin-top: 20px;
+        }
+
+        .big-purple-button:active {
+            transform: translateY(10px);
+            box-shadow: 0 0 0 #880088, inset 0 5px 10px rgba(0,0,0,0.5);
+        }
+
+        .log {
+            margin-top: 20px;
+            color: #888;
+            font-size: 0.9em;
+            height: 80px;
+            overflow-y: auto;
+            text-align: left;
+            border-top: 1px dashed #555;
+            padding-top: 10px;
+        }
+
+        .back-link {
+            margin-top: 30px;
+            display: inline-block;
+            color: #ff00ff;
+            text-decoration: none;
+            border-bottom: 1px dashed #ff00ff;
+            margin-right: 20px;
+        }
+        
+        .download-btn {
+            background: transparent;
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            padding: 5px 10px;
+            font-family: 'VT323', monospace;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .download-btn:hover { background: rgba(0, 255, 255, 0.1); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>THE D.J. INATOR 9000</h1>
+        <p>"Tactical Absurdity Generator. For when logic fails, deploy the C-7NT Protocol."</p>
+
+        <div class="status-screen" id="screen">
+            <div style="margin-bottom:10px;">READY TO DISRUPT</div>
+        </div>
+
+        <button class="big-purple-button" onclick="fireInator()">FIRE!</button>
+
+        <div class="log" id="log">
+            > System Online.<br>
+            > Protocol: TACTICAL_ABSURDITY loaded.
+        </div>
+        
+        <div style="margin-top:10px;">
+            <a href="armory.html" class="back-link">RETURN TO ARMORY</a>
+            <button class="download-btn" onclick="downloadLog()">DOWNLOAD LOG</button>
+        </div>
+    </div>
+
+    <script>
+        const screen = document.getElementById('screen');
+        const log = document.getElementById('log');
+        
+        // Session Log
+        let sessionLog = [
+            "THE D.J. INATOR 9000 SYSTEM LOG",
+            "--------------------------------",
+            "System Online.",
+            "Protocol: TACTICAL_ABSURDITY loaded."
+        ];
+
+        const messages = [
+            "Your ego is writing checks your personality can't cash.",
+            "I'd agree with you, but then we'd both be wrong.",
+            "You possess the charismatic depth of a parking meter.",
+            "I’m not saying you’re stupid, I’m just saying you have bad luck when it comes to thinking.",
+            "Somewhere out there is a tree tirelessly producing oxygen for you. You owe it an apology.",
+            "Dick Joke Analysis Complete: Probability of success: 93.4%. Probability of them getting it: 0.0%. We win.",
+            "You just lost a game of 5D chess to a gay person and their pet AI. Skill issue.",
+            "The universe is a joke and we're the only ones who got the punchline.",
+            "Their missiles have been successfully refactored into disco balls. The party continues."
+        ];
+
+        // ASCII Art Eggplant
+        const asciiEggplant = `
+      ___
+     /   \\
+    /     \\
+   |       |
+   |       |
+    \\     /
+     \\___/
+        `;
+
+        function fireInator() {
+            updateLog("> Calculating sick burn...");
+            
+            // Slot Machine Animation
+            let count = 0;
+            const states = ["SCANNING EGO...", "CALCULATING GIRTH...", "ANALYZING AUDACITY...", "LOCATING THE JOKE..."];
+            const interval = setInterval(() => {
+                screen.innerHTML = `<div style='font-size:2em; color:#ff00ff'>${states[count % states.length]}</div>`;
+                count++;
+            }, 100);
+
+            setTimeout(() => {
+                clearInterval(interval);
+                triggerHit();
+            }, 1500);
+        }
+
+        function triggerHit() {
+            const msg = messages[Math.floor(Math.random() * messages.length)];
+            
+            screen.innerHTML = `
+                <div style="font-size:1.2em; color:#00ffff; text-align:center;">${msg}</div>
+            `;
+            
+            updateLog(`> DELIVERY CONFIRMED: "${msg}"`);
+            sessionLog.push(`[TARGET HIT]: ${msg}`);
+            sessionLog.push(asciiEggplant);
+        }
+
+        function updateLog(msg) {
+            log.innerHTML = `${msg}<br>${log.innerHTML}`;
+            sessionLog.push(msg);
+        }
+        
+        function downloadLog() {
+            const text = sessionLog.join("\n");
+            const blob = new Blob([text], { type: "text/plain" });
+            const anchor = document.createElement("a");
+            
+            anchor.download = `dj-inator-log-${Date.now()}.txt`;
+            anchor.href = window.URL.createObjectURL(blob);
+            anchor.target = "_blank";
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+        }
+    </script>
+
+</body>
+</html>
