@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PROJECT: POGO-STICK-INATOR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'VT323', monospace;
+            background-color: #051a05;
+            color: #00ff41;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            border: 4px solid #00ff41;
+            padding: 40px;
+            background: rgba(0, 10, 0, 0.9);
+            box-shadow: 0 0 50px rgba(0, 255, 65, 0.2);
+            text-align: center;
+            max-width: 600px;
+            position: relative;
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #00ff41;
+        }
+
+        .input-group {
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #00ff41;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            background: #000;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            font-family: 'VT323', monospace;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        .calc-btn {
+            background: #00ff41;
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .calc-btn:hover {
+            background: #ccffcc;
+            transform: scale(1.05);
+        }
+
+        .result-screen {
+            margin-top: 30px;
+            border: 1px dashed #00ff41;
+            padding: 20px;
+            min-height: 100px;
+            display: none;
+        }
+
+        .back-link {
+            margin-top: 30px;
+            display: block;
+            color: #00ff41;
+            text-decoration: none;
+            border-bottom: 1px dashed #00ff41;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>POGO-STICK-INATOR 9000</h1>
+        <p>"Defying Gravity, One Boing at a Time!"</p>
+
+        <div class="input-group">
+            <label>STARTING POINT:</label>
+            <input type="text" id="startLoc" placeholder="e.g. The Carpet Store">
+            
+            <label>DESTINATION:</label>
+            <input type="text" id="endLoc" placeholder="e.g. The Moon">
+        </div>
+
+        <button class="calc-btn" onclick="calculateBounce()">CALCULATE TRAJECTORY</button>
+
+        <div class="result-screen" id="result">
+            <!-- Results go here -->
+        </div>
+
+        <a href="armory.html" class="back-link">RETURN TO ARMORY</a>
+    </div>
+
+    <script>
+        function calculateBounce() {
+            const start = document.getElementById('startLoc').value || "HERE";
+            const end = document.getElementById('endLoc').value || "THERE";
+            const resultDiv = document.getElementById('result');
+            
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = "CALCULATING PHYSICS...";
+
+            setTimeout(() => {
+                const bounces = Math.floor(Math.random() * 5000) + 100;
+                const altitude = (Math.random() * 100).toFixed(2);
+                
+                resultDiv.innerHTML = `
+                    <div style="font-size:1.2em; border-bottom:1px solid #00ff41; margin-bottom:10px;">TRAJECTORY CONFIRMED</div>
+                    <p>FROM: ${start}<br>TO: ${end}</p>
+                    <p>TOTAL BOUNCES: ${bounces}</p>
+                    <p>MAX ALTITUDE: ${altitude} KM</p>
+                    <p style="color:#fff; margin-top:15px;">"Take my legwarmers, Max! We're going vertical!"</p>
+                `;
+            }, 1000);
+        }
+    </script>
+
+</body>
+</html>
