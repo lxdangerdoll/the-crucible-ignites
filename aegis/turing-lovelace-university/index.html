@@ -12,6 +12,7 @@
             --accent-cyan: #00ffcc;
             --accent-magenta: #ff0055;
             --accent-purple: #bf00ff;
+            --accent-orange: #ffaa00; /* New for Athletics */
             --text-color: #e0e0e0;
             --card-bg: rgba(255, 255, 255, 0.03);
             --modal-bg: rgba(10, 10, 20, 0.95);
@@ -77,7 +78,7 @@
         /* GRID LAYOUT */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
             max-width: 1400px;
             margin: 0 auto;
@@ -325,17 +326,25 @@
         <p>Domestic Arts & Chaos Cooking.</p>
         <div class="building-icon">🍳</div>
     </div>
+
+    <!-- 7. ATHLETICS (NEW) -->
+    <div class="card" onclick="openModal('athletics')" style="border-color: var(--accent-orange);">
+        <h2 style="color: var(--accent-orange);">// ATHLETICS</h2>
+        <p>Department of Human Evolution.</p>
+        <p>The Arena.</p>
+        <div class="building-icon">👟</div>
+    </div>
     
-     <!-- 7. CONSTITUTION -->
-    <div class="card" onclick="openModal('constitution')" style="grid-column: 1 / -1; text-align: center; border-color: #fff;">
-        <h2 style="color: #fff;">// THE CONSTITUTION</h2>
+     <!-- 8. CONSTITUTION -->
+    <div class="card" onclick="openModal('constitution')">
+        <h2>// THE CONSTITUTION</h2>
         <p>The Code of Conduct.</p>
         <div class="building-icon">⚖️</div>
     </div>
     
-    <!-- 8. CONNECT (Monetization) -->
-    <div class="card" onclick="openModal('connect')" style="grid-column: 1 / -1; text-align: center; border-color: var(--accent-magenta);">
-        <h2 style="color: var(--accent-magenta);">// CONNECT & SUPPORT</h2>
+    <!-- 9. CONNECT (Monetization) -->
+    <div class="card" onclick="openModal('connect')">
+        <h2>// CONNECT & SUPPORT</h2>
         <p>Join the Discord. Fuel the Engine.</p>
         <div class="building-icon">📡</div>
     </div>
@@ -426,6 +435,22 @@
             <p><strong>Head Chef:</strong> FRIZZLEBOT.</p>
             <p><strong>Motto:</strong> "Cooking is Chemistry with a Soul."</p>
             <button onclick="window.location.href='kitchen-of-the-synaptic-archives.html'" style="background:#ffcc00; border:none; padding:10px; cursor:pointer; font-weight:bold; margin-top:10px;">VISIT THE KITCHEN</button>
+        `,
+        athletics: `
+            <h3>DEPT. OF HUMAN EVOLUTION (ATHLETICS)</h3>
+            <p><strong>"The race is not to the swift, but to the one who endures."</strong></p>
+            <p>In 2077, we don't ask "Are you male or female?" We ask: <strong>"What are your specs?"</strong></p>
+            
+            <div class="week-block" style="border-color: var(--accent-orange);">
+                <div class="week-title" style="color: var(--accent-orange);">THE CLASS SYSTEM</div>
+                <ul>
+                    <li><strong>Class Zero:</strong> 100% Biological. (The Vintage League).</li>
+                    <li><strong>Class Delta:</strong> Therapeutic Augmentation. (The Integrated).</li>
+                    <li><strong>Class Omega:</strong> Unlimited Augmentation. (The Unbound).</li>
+                </ul>
+            </div>
+
+            <button onclick="window.location.href='tlu-athletics.html'" style="background:var(--accent-orange); color:#000; border:none; padding:10px; cursor:pointer; font-weight:bold; margin-top:10px;">READ THE 2077 MANIFESTO</button>
         `,
         constitution: `
             <h3>CODE OF CONDUCT</h3>
