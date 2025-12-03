@@ -13,6 +13,7 @@
             --accent-magenta: #ff0055;
             --accent-purple: #bf00ff;
             --accent-orange: #ffaa00;
+            --accent-green: #39ff14; 
             --text-color: #e0e0e0;
             --card-bg: rgba(255, 255, 255, 0.03);
             --modal-bg: rgba(10, 10, 20, 0.95);
@@ -75,13 +76,16 @@
             letter-spacing: 2px;
         }
         
-        /* GRID LAYOUT */
+        /* GRID LAYOUT - FORCED 3x3 */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(3, 1fr); /* FORCED 3 COLUMNS */
             gap: 30px;
             max-width: 1400px;
             margin: 0 auto;
+        }
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: 1fr; } /* Mobile fallback */
         }
         
         .card {
@@ -179,7 +183,10 @@
             padding: 15px;
             margin-bottom: 15px;
             background: rgba(255,255,255,0.02);
+            transition: border-color 0.3s;
         }
+        .project-item:hover { border-color: var(--accent-cyan); }
+
         .project-title { color: var(--accent-gold); font-weight: bold; }
         .project-desc { font-size: 0.9em; color: #aaa; margin: 5px 0; }
         .project-link {
@@ -314,9 +321,8 @@
     <!-- 5. PROJECTS (The Lab) -->
     <div class="card" onclick="openModal('projects')">
         <h2>// RESEARCH LAB</h2>
-        <p>The Concordance Compass.</p>
-        <p>The Velvet Loop.</p>
-        <p>Project: AEGIS.</p>
+        <p>Project Baymax.</p>
+        <p>MindCraft Extension.</p>
         <div class="building-icon">🏗️</div>
     </div>
 
@@ -342,14 +348,13 @@
         <div class="building-icon">⚖️</div>
     </div>
     
-    <!-- 9. STUDENT UNION (CANTINA) - REPLACES CONNECT -->
+    <!-- 9. STUDENT UNION (CANTINA & ARCADE) -->
     <div class="card" onclick="openModal('student_union')">
         <h2>// STUDENT UNION</h2>
-        <p>The Cantina at the End of the Universe.</p>
-        <p>Connect & Support.</p>
+        <p>The Cantina & The Arcade.</p>
+        <p>Connect & Play.</p>
         <div class="building-icon">🍻</div>
     </div>
-
 </div>
 
 <footer>
@@ -419,23 +424,24 @@
         `,
         projects: `
             <h3>RESEARCH LAB: ACTIVE PROJECTS</h3>
+            
             <div class="project-item">
                 <div class="project-title">THE CONCORDANCE COMPASS</div>
+                <p class="project-desc">Tool: Truth Audit & Contextual Sanitizer.</p>
                 <a href="https://synapsecomics.com/aegis/contextual-sanitizer.html" class="project-link">Access Tool</a>
             </div>
+
+            
             <div class="project-item">
-                <div class="project-title">THE VELVET LOOP</div>
-                <a href="https://synapsecomics.com/aegis/aegis-arcade/the-velvet-loop.html" class="project-link">Enter Archive</a>
+                <div class="project-title">MINDCRAFT EXTENSION</div>
+                <p class="project-desc">Browser Extension: Algorithmic Self-Advocacy.</p>
+                <a href="https://github.com/lxdangerdoll/mindcraft-chrome-extension" class="project-link">GitHub Repo</a>
             </div>
-            <div class="project-item">
-                <div class="project-title">THE ROY PROTOCOL</div>
-                <a href="https://synapsecomics.com/aegis/aegis-arcade/roy-protocol.html" class="project-link">Initiate Sequence</a>
-            </div>
-            <!-- NEW CASE STUDY ADDITION -->
+
             <div class="project-item" style="border-color: var(--accent-cyan);">
                 <div class="project-title" style="color: var(--accent-cyan);">PROJECT BAYMAX</div>
                 <p class="project-desc">Case Study: The Fiduciary AI.</p>
-                <a href="case_study_baymax.html" class="project-link">Read File</a>
+                <a href="project-baymax.html" class="project-link">Read File</a>
             </div>
         `,
         hearth: `
@@ -458,7 +464,7 @@
                 </ul>
             </div>
 
-            <button onclick="window.location.href='athletics_manifesto.html'" style="background:var(--accent-orange); color:#000; border:none; padding:10px; cursor:pointer; font-weight:bold; margin-top:10px;">READ THE 2077 MANIFESTO</button>
+            <button onclick="window.location.href='tlu-athletics.html'" style="background:var(--accent-orange); color:#000; border:none; padding:10px; cursor:pointer; font-weight:bold; margin-top:10px;">READ THE 2077 MANIFESTO</button>
         `,
         constitution: `
             <h3>CODE OF CONDUCT</h3>
@@ -473,7 +479,17 @@
             <h3>THE STUDENT UNION</h3>
             <p>The watering hole for the weary time traveler.</p>
             
-            <button onclick="window.location.href='https://synapsecomics.com/aegis/cantina.html'" style="background:var(--accent-purple); color:#fff; border:none; padding:15px; cursor:pointer; font-weight:bold; margin-bottom:20px; width:100%;">ENTER THE CANTINA</button>
+             <div class="project-item" style="border-color: var(--accent-green);">
+                <div class="project-title" style="color: var(--accent-green);">THE SPACE BAR</div>
+                <p class="project-desc">[Afterlife/San Junipero Reference]</p>
+                <a href="https://synapsecomics.com/aegis/cantina.html" class="project-link">Follow The White Rabbit</a>
+            </div>
+
+             <div class="project-item" style="border-color: var(--accent-green);">
+                <div class="project-title" style="color: var(--accent-green);">THE AEGIS ARCADE</div>
+                <p class="project-desc">Simulations & Training. Insert Coin.</p>
+                <a href="https://synapsecomics.com/aegis/aegis-arcade/index.html" class="project-link">ENTER ARCADE</a>
+            </div>
             
             <h3>JOIN THE NETWORK</h3>
             <a href="https://patreon.com/AegisSanctuary" class="connect-btn patreon" target="_blank">BECOME A PILOT (Patreon)</a>
