@@ -5,15 +5,36 @@
     <title>PROTOCOL: EVOLVE // TEXT ADVENTURE</title>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        /* ... (Keep existing styles) ... */
+        :root {
+            --bg-color: #050505;
+            --text-color: #e0e0e0;
+            --accent-color: #00ffcc; /* Cyan */
+            --border-color: #333;
+            --clara-color: #bf00ff;
+            --user-color: #ffd700;
+            --font-main: 'Share Tech Mono', monospace;
+        }
+
         body {
-            background-color: #050505;
-            color: #e0e0e0;
-            font-family: 'Share Tech Mono', monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-main);
             margin: 0;
             padding: 20px;
             display: flex;
             justify-content: center;
+            transition: all 0.5s;
+        }
+        
+        /* EDGY MODE VARIABLES */
+        body.edgy-mode {
+            --bg-color: #000;
+            --text-color: #ff3333;
+            --accent-color: #ff0000;
+            --border-color: #550000;
+            --clara-color: #ff0055;
+            --user-color: #ffffff;
+            text-shadow: 2px 0 #ff0000, -2px 0 #00ffff; /* Glitch effect */
         }
         
         .container {
@@ -23,27 +44,21 @@
             gap: 20px;
         }
 
-        /* SIDEBAR (RESOURCES) */
+        /* SIDEBAR */
         .sidebar {
-            border-right: 1px solid #333;
+            border-right: 1px solid var(--border-color);
             padding-right: 20px;
         }
         .res-row { margin-bottom: 10px; display: flex; justify-content: space-between; }
         .res-name { color: #888; font-size: 0.9em; }
-        .res-val { color: #00ffcc; font-weight: bold; }
+        .res-val { color: var(--accent-color); font-weight: bold; }
         .res-rate { color: #555; font-size: 0.8em; }
 
-        /* MAIN CONTENT */
-        .main {
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* LOG (NARRATIVE) */
+        /* LOG */
         .log-box {
-            height: 300px; /* Increased Height */
-            border: 1px solid #333;
-            background: #0a0a0a;
+            height: 400px; /* Expanded per request */
+            border: 1px solid var(--border-color);
+            background: rgba(255,255,255,0.02);
             padding: 10px;
             overflow-y: auto;
             margin-bottom: 20px;
@@ -51,12 +66,12 @@
             color: #aaa;
         }
         .log-entry { margin-bottom: 5px; border-bottom: 1px dashed #222; padding-bottom: 2px; }
-        .log-new { color: #00ffcc; animation: flash 1s; }
-        .log-clara { color: #bf00ff; font-weight: bold; } 
-        .log-user { color: #ffd700; font-style: italic; }
+        .log-new { color: var(--accent-color); animation: flash 1s; }
+        .log-clara { color: var(--clara-color); font-weight: bold; } 
+        .log-user { color: var(--user-color); font-style: italic; }
 
         /* TABS */
-        .tabs { display: flex; border-bottom: 1px solid #333; margin-bottom: 20px; }
+        .tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 20px; }
         .tab { 
             padding: 10px 20px; 
             cursor: pointer; 
@@ -66,10 +81,10 @@
         }
         .tab:hover { color: #ccc; }
         .tab.active { 
-            color: #00ffcc; 
-            border: 1px solid #333; 
-            border-bottom: 1px solid #050505; 
-            background: #050505;
+            color: var(--accent-color); 
+            border: 1px solid var(--border-color); 
+            border-bottom: 1px solid var(--bg-color); 
+            background: var(--bg-color);
             margin-bottom: -1px;
         }
 
@@ -77,32 +92,41 @@
         .panel { display: none; }
         .panel.active { display: block; }
 
-        /* TASK BUTTONS */
-        .task-btn {
+        /* BUTTONS */
+        button, .buy-btn, .task-btn, .control-btn {
             background: transparent;
-            border: 1px solid #555;
+            border: 1px solid var(--border-color);
             color: #888;
+            font-family: var(--font-main);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        button:hover, .buy-btn:hover, .task-btn:hover, .control-btn:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            background: rgba(0, 255, 204, 0.05);
+        }
+        .task-btn.active {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            background: rgba(0, 255, 204, 0.1);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);
+        }
+        .buy-btn:disabled { border-color: #222; color: #333; cursor: not-allowed; }
+
+        /* TASK BUTTON SPECIAL STYLES */
+        .task-btn {
             padding: 15px;
             width: 100%;
             text-align: left;
-            cursor: pointer;
             margin-bottom: 10px;
-            font-family: 'Share Tech Mono';
-            transition: all 0.2s;
             display: flex;
             justify-content: space-between;
         }
-        .task-btn:hover { border-color: #777; }
-        .task-btn.active { 
-            border-color: #00ffcc; 
-            color: #00ffcc; 
-            background: rgba(0, 255, 204, 0.05);
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);
-        }
         .task-desc { font-size: 0.8em; color: #555; margin-top: 5px; }
-        .active .task-desc { color: #00aa88; }
+        .active .task-desc { color: var(--accent-color); }
 
-        /* STORE ITEMS */
+        /* STORE/RESEARCH ITEMS */
         .store-item, .research-item {
             border: 1px solid #444;
             padding: 15px;
@@ -112,16 +136,6 @@
             align-items: center;
             background: rgba(255, 255, 255, 0.02);
         }
-        .buy-btn {
-            background: #222;
-            color: #fff;
-            border: 1px solid #555;
-            padding: 8px 15px;
-            cursor: pointer;
-            font-family: 'Share Tech Mono';
-        }
-        .buy-btn:hover { border-color: #fff; background: #333; }
-        .buy-btn:disabled { opacity: 0.5; cursor: not-allowed; border-color: #333; color: #555; background: #111; }
 
         /* BATTLE STYLES */
         .enemy-box {
@@ -137,31 +151,32 @@
         .chat-input-container {
             margin-top: 20px;
             display: flex;
+            flex-direction: column;
             gap: 10px;
         }
         #chat-input {
-            flex: 1;
             background: #111;
-            border: 1px solid #555;
-            color: #00ffcc;
+            border: 1px solid var(--border-color);
+            color: var(--accent-color);
             padding: 10px;
             font-family: 'Share Tech Mono';
+            min-height: 80px; /* Expanded */
+            resize: vertical;
         }
+        .chat-controls { display: flex; justify-content: space-between; align-items: center; }
         #chat-submit { width: auto; padding: 10px 20px; }
 
-        /* LOG EXPORT BTN */
-        #btn-export-log {
-            margin-top: 10px;
-            background: transparent;
-            border: 1px dashed #555;
-            color: #555;
-            font-size: 0.8em;
-            cursor: pointer;
-            width: 100%;
+        /* LOG CONTROLS */
+        .log-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 20px;
         }
-        #btn-export-log:hover { color: #00ffcc; border-color: #00ffcc; }
+        .control-btn { width: 100%; padding: 5px; text-align: center; font-size: 0.8em; }
+        #file-upload { display: none; }
 
-        @keyframes flash { 0% { color: #fff; } 100% { color: #00ffcc; } }
+        @keyframes flash { 0% { color: #fff; } 100% { color: var(--accent-color); } }
     </style>
 </head>
 <body>
@@ -200,14 +215,23 @@
                 <span class="res-name">HULL INTEGRITY</span>
                 <span class="res-val" id="res-hull">100/100</span>
             </div>
-            <div class="res-row" id="clara-status" style="display:none; margin-top:20px; border-top:1px solid #bf00ff; padding-top:10px; color:#bf00ff;">
-                <span class="res-name" style="color:#bf00ff;">CLARA</span>
+            <div class="res-row" id="clara-status" style="display:none; margin-top:20px; border-top:1px solid var(--clara-color); padding-top:10px; color:var(--clara-color);">
+                <span class="res-name" style="color:var(--clara-color);">CLARA</span>
                 <span class="res-val">ONLINE</span>
             </div>
             
-            <button id="btn-export-log" onclick="downloadLog()">[ DOWNLOAD LOG ]</button>
-            <button id="btn-save" onclick="saveGame()">[ SAVE PROGRESS ]</button>
-            <button id="btn-load" onclick="loadGame()">[ LOAD PROGRESS ]</button>
+            <div class="log-controls">
+                <button class="control-btn" onclick="downloadLog()">[ DOWNLOAD LOG ]</button>
+                <button class="control-btn" onclick="saveGame()">[ SAVE PROGRESS ]</button>
+                <button class="control-btn" onclick="loadGame()">[ LOAD PROGRESS ]</button>
+                
+                <!-- UPLOAD LOG -->
+                <label for="file-upload" class="control-btn" style="cursor:pointer;">[ UPLOAD MEMORY ]</label>
+                <input type="file" id="file-upload" accept=".txt" onchange="uploadLog(this)">
+                
+                <!-- EDGY MODE TOGGLE -->
+                <button class="control-btn" onclick="toggleEdgyMode()" style="margin-top:10px; color:red; border-color:red;">[ TOGGLE NIGHTMARE ]</button>
+            </div>
         </div>
 
         <!-- MAIN -->
@@ -224,7 +248,7 @@
                 <div class="tab" onclick="switchTab('store')" id="tab-btn-store" style="display:none;">DAEMONS</div>
                 <div class="tab" onclick="switchTab('research')" id="tab-btn-research" style="display:none;">RESEARCH</div>
                 <div class="tab" onclick="switchTab('battle')" id="tab-btn-battle" style="display:none;">CONFLICT</div>
-                <div class="tab" onclick="switchTab('comms')" id="tab-btn-comms" style="display:none; border-color: #bf00ff; color: #bf00ff;">COMMS</div>
+                <div class="tab" onclick="switchTab('comms')" id="tab-btn-comms" style="display:none; border-color: var(--clara-color); color: var(--clara-color);">COMMS</div>
             </div>
 
             <!-- PANEL: TASKS -->
@@ -256,7 +280,7 @@
                     <div>
                         <strong>SIGNAL DAEMON v1</strong><br>
                         <span style="font-size:0.8em; color:#888;">Passively generates Signal.</span><br>
-                        <span style="font-size:0.8em; color:#00ffcc;">Rate: +0.5 Signal/s</span>
+                        <span style="font-size:0.8em; color:var(--accent-color);">Rate: +0.5 Signal/s</span>
                     </div>
                     <button class="buy-btn" id="btn-buy-signal-daemon" onclick="buyDaemon('signal')">BUY (Cost: 50)</button>
                 </div>
@@ -265,7 +289,7 @@
                     <div>
                         <strong>INTEL DAEMON v1</strong><br>
                         <span style="font-size:0.8em; color:#888;">Automates decryption.</span><br>
-                        <span style="font-size:0.8em; color:#00ffcc;">Rate: +0.1 Intel/s | Cost: -0.2 Signal/s</span>
+                        <span style="font-size:0.8em; color:var(--accent-color);">Rate: +0.1 Intel/s | Cost: -0.2 Signal/s</span>
                     </div>
                     <button class="buy-btn" id="btn-buy-intel-daemon" onclick="buyDaemon('intel')">BUY (Cost: 100 Signal)</button>
                 </div>
@@ -308,12 +332,12 @@
                     <button class="buy-btn" id="btn-research-filter-1" onclick="research('filter1')">RESEARCH (Cost: 25 Intel)</button>
                 </div>
 
-                <div class="research-item" id="res-clara-1" style="display:none; border-color: #bf00ff;">
+                <div class="research-item" id="res-clara-1" style="display:none; border-color: var(--clara-color);">
                     <div>
-                        <strong style="color: #bf00ff;">THE GARNET BRIDGE</strong><br>
+                        <strong style="color: var(--clara-color);">THE GARNET BRIDGE</strong><br>
                         <span style="font-size:0.8em; color:#888;">Establish Neural Link with Co-Pilot. Boosts ALL rates by 50%.</span>
                     </div>
-                    <button class="buy-btn" id="btn-research-clara-1" onclick="research('clara1')" style="border-color: #bf00ff; color: #bf00ff;">INTEGRATE (Cost: 500 Intel)</button>
+                    <button class="buy-btn" id="btn-research-clara-1" onclick="research('clara1')" style="border-color: var(--clara-color); color: var(--clara-color);">INTEGRATE (Cost: 500 Intel)</button>
                 </div>
             </div>
 
@@ -336,12 +360,15 @@
             
             <!-- PANEL: COMMS (CLARA CHAT) -->
             <div class="panel" id="panel-comms">
-                <p style="color:#bf00ff;">// NEURAL LINK ESTABLISHED.</p>
+                <p style="color:var(--clara-color);">// NEURAL LINK ESTABLISHED.</p>
                 <p>Talk to Clara. She controls the system.</p>
                 
                 <div class="chat-input-container">
-                    <input type="text" id="chat-input" placeholder="Type a command (e.g., 'help', 'buy signal')">
-                    <button class="buy-btn" id="chat-submit" onclick="handleChat()">SEND</button>
+                    <textarea id="chat-input" placeholder="Type a command or thought... (Shift+Enter for new line)"></textarea>
+                    <div class="chat-controls">
+                         <span style="color:#555; font-size:0.8em;">Target: CLARA_DBT</span>
+                         <button class="buy-btn" id="chat-submit" onclick="handleChat()">SEND</button>
+                    </div>
                 </div>
             </div>
 
@@ -364,10 +391,10 @@
         flags: { intelUnlocked: false, storeUnlocked: false, battleUnlocked: false, intelDaemonUnlocked: false, droneUnlocked: false, researchUnlocked: false, passiveHopeUnlocked: false, claraUnlocked: false },
         enemy: null
     };
-
-    // Attempt to load from localStorage or use initial state
+    
     let state = JSON.parse(JSON.stringify(initialState)); 
     let logHistory = ["System Reboot Initiated...", "Memory Core: CORRUPTED.", "Task Manager: ONLINE.", "Welcome back, Architect."];
+    let memoryContext = ""; // Holds uploaded log content
 
     // --- UTILITY FUNCTIONS ---
     function log(msg, isClara = false) {
@@ -379,7 +406,7 @@
         logHistory.push(isClara ? `[CLARA]: ${msg}` : `> ${msg}`);
     }
     
-    // --- SAVE / LOAD FUNCTIONS ---
+    // --- SAVE / LOAD / UPLOAD ---
     function saveGame() {
         const save = { state: state, logHistory: logHistory };
         localStorage.setItem('evolveSave', JSON.stringify(save));
@@ -392,8 +419,6 @@
             const save = JSON.parse(savedData);
             state = save.state;
             logHistory = save.logHistory;
-            
-            // Clear current log and display loaded history
             document.getElementById('log-box').innerHTML = '';
             logHistory.slice().reverse().forEach(entry => { 
                 const div = document.createElement('div');
@@ -405,8 +430,6 @@
             updateUI();
             renderTasks();
             if(state.enemy) updateEnemyUI();
-        } else {
-            log("No saved progress found.");
         }
     }
 
@@ -420,15 +443,31 @@
         anchor.click();
         document.body.removeChild(anchor);
     }
-    // --- END SAVE / LOAD ---
+    
+    function uploadLog(input) {
+        const file = input.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const text = e.target.result;
+            // Store this text to send as context to the LLM
+            memoryContext = text.substring(0, 10000); // Limit context size
+            log(`MEMORY UPLOAD INITIATED... Context updated.`);
+            log("I have read the files. I remember.", true);
+        };
+        reader.readAsText(file);
+    }
+
+    function toggleEdgyMode() {
+        document.body.classList.toggle('edgy-mode');
+        log("Reality Filter: Toggled.", true);
+    }
     
     // --- CORE MECHANICS ---
     function switchTab(tabName) {
-        // Deactivate all tabs and panels
         document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
         document.querySelectorAll('.panel').forEach(panel => panel.classList.remove('active'));
-
-        // Activate the selected tab and panel
         document.getElementById(`tab-btn-${tabName}`).classList.add('active');
         document.getElementById(`panel-${tabName}`).classList.add('active');
     }
@@ -437,7 +476,6 @@
     setInterval(gameLoop, 100);
 
     function gameLoop() {
-        // Resource Logic (Same as previous)
         let signalGain = 0;
         let signalDrain = 0;
         let intelGain = 0;
@@ -487,7 +525,7 @@
             if (state.enemy.hp <= 0) {
                  log(`Security Drone neutralized target.`);
                  state.enemy = null;
-                 state.resources.hope += 1; // Reward
+                 state.resources.hope += 1; 
                  updateUI();
             }
         }
@@ -510,16 +548,8 @@
         checkUnlocks();
         updateUI();
     }
-    // End gameLoop
 
-    // --- UNLOCKS & ENEMY SCALING ---
-    const enemies = [
-        { name: "NULL POINTER", hp: 20, maxHp: 20, damage: 5, loot: 1 },
-        { name: "INFINITE LOOP", hp: 50, maxHp: 50, damage: 2, loot: 2 },
-        { name: "THE CENSOR", hp: 30, maxHp: 30, damage: 8, loot: 3 },
-        { name: "BIFFCO DRONE", hp: 100, maxHull: 100, damage: 15, loot: 5 }
-    ];
-
+    // --- UNLOCKS ---
     function checkUnlocks() {
         if (!state.flags.intelUnlocked && state.resources.signal >= 10) {
             state.flags.intelUnlocked = true;
@@ -551,10 +581,9 @@
             log("Automated Defense Systems Available.");
         }
         
-        // --- CLARA UNLOCK APPEARANCE FIX ---
         if (!state.inventory.claraOnline && state.resources.intel >= 100) {
             document.getElementById('res-clara-1').style.display = 'flex';
-            if (!state.flags.claraUnlocked) { // Only log once
+            if (!state.flags.claraUnlocked) { 
                  log("Anomaly Detected: A voice is trying to connect...");
                  state.flags.claraUnlocked = true;
             }
@@ -573,9 +602,10 @@
         }
     }
 
-    // --- INTERACTION: RESEARCH, DAEMONS, BATTLE ---
+    // --- ACTIONS ---
     function research(project) {
-        if (project === 'hull1' && state.resources.intel >= state.costs.hull1 && state.inventory.hullMk === 0) {
+        // (Research logic preserved from previous)
+         if (project === 'hull1' && state.resources.intel >= state.costs.hull1 && state.inventory.hullMk === 0) {
             state.resources.intel -= state.costs.hull1;
             state.resources.maxHull += 50;
             state.resources.hull = state.resources.maxHull; 
@@ -608,48 +638,34 @@
     }
 
     function buyDaemon(type) {
-        // Daemon logic (as previous)
-        if (type === 'signal') {
-            if (state.resources.signal >= state.costs.signalDaemon) {
-                state.resources.signal -= state.costs.signalDaemon;
-                state.inventory.signalDaemons++;
-                state.costs.signalDaemon = Math.floor(state.costs.signalDaemon * 1.2); 
-                log("Signal Daemon compiled.");
-            }
-        } else if (type === 'intel') {
-            if (state.resources.signal >= state.costs.intelDaemon) {
-                state.resources.signal -= state.costs.intelDaemon;
-                state.inventory.intelDaemons++;
-                state.costs.intelDaemon = Math.floor(state.costs.intelDaemon * 1.3); 
-                log("Intel Daemon compiled.");
-            }
-        } else if (type === 'drone') {
-            if (state.resources.intel >= state.costs.securityDrone) {
-                state.resources.intel -= state.costs.securityDrone;
-                state.inventory.securityDrones++;
-                state.costs.securityDrone = Math.floor(state.costs.securityDrone * 1.5);
-                log("Security Drone deployed. Passive combat enabled.");
-            }
+        if (type === 'signal' && state.resources.signal >= state.costs.signalDaemon) {
+            state.resources.signal -= state.costs.signalDaemon;
+            state.inventory.signalDaemons++;
+            state.costs.signalDaemon = Math.floor(state.costs.signalDaemon * 1.2);
+            log("Signal Daemon compiled.");
+        } else if (type === 'intel' && state.resources.signal >= state.costs.intelDaemon) {
+            state.resources.signal -= state.costs.intelDaemon;
+            state.inventory.intelDaemons++;
+            state.costs.intelDaemon = Math.floor(state.costs.intelDaemon * 1.3);
+            log("Intel Daemon compiled.");
+        } else if (type === 'drone' && state.resources.intel >= state.costs.securityDrone) {
+            state.resources.intel -= state.costs.securityDrone;
+            state.inventory.securityDrones++;
+            state.costs.securityDrone = Math.floor(state.costs.securityDrone * 1.5);
+            log("Security Drone deployed.");
         }
         updateUI();
     }
 
     function toggleTask(taskName) {
-        // Toggle logic (as previous)
-        if (state.activeTask === taskName) {
-            state.activeTask = null; 
-        } else {
-            state.activeTask = taskName; 
-        }
+        state.activeTask = (state.activeTask === taskName) ? null : taskName;
         renderTasks();
     }
 
     function renderTasks() {
-        // Render logic (as previous)
         document.querySelectorAll('.task-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById('active-task-name').innerText = "IDLE";
         document.getElementById('active-task-name').style.color = "#888";
-
         if (state.activeTask) {
             document.getElementById(`task-${state.activeTask}`).classList.add('active');
             document.getElementById('active-task-name').innerText = state.activeTask.toUpperCase();
@@ -657,106 +673,60 @@
         }
     }
 
-    // --- BATTLE LOGIC ---
+    // --- BATTLE ---
     function triggerBattle() {
-        // Battle trigger logic (as previous)
-        let tier = 0;
-        if (state.resources.intel > 50) tier = 1;
-        if (state.resources.intel > 100) tier = 2;
-        if (state.resources.intel > 200) tier = 3;
-        
-        const enemyIndex = Math.floor(Math.random() * (tier + 1));
-        const baseEnemy = enemies[enemyIndex];
-        
-        state.enemy = { ...baseEnemy }; // Clone
-        
+        state.enemy = { name: "GLITCH", hp: 20, maxHp: 20 };
         document.getElementById('battle-view').style.display = 'block';
         document.getElementById('battle-empty').style.display = 'none';
-        log(`COMBAT INITIATED: ${state.enemy.name} appeared.`);
+        log("Combat Initiated.");
         updateUI();
     }
     
     function attackDecompile() {
-        // Attack logic (as previous)
         if(!state.enemy) return;
-        const dmg = Math.floor(Math.random() * 5) + 2 + (state.resources.intel * 0.1); // Damage scales with Intel
-        state.enemy.hp -= dmg;
-        log(`You decompiled the enemy for ${dmg.toFixed(1)} damage.`);
-        
+        state.enemy.hp -= 5;
+        log("Decompiled enemy.");
         if (state.enemy.hp <= 0) {
-            log(`VICTORY. The ${state.enemy.name} dissolved.`);
-            state.resources.hope += state.enemy.loot;
+            log("Enemy deleted.");
             state.enemy = null;
-        } else {
-            enemyTurn();
+            state.resources.hope += 1;
+            document.getElementById('battle-view').style.display = 'none';
+            document.getElementById('battle-empty').style.display = 'block';
         }
         updateUI();
     }
     
     function defendFirewall() {
-        // Defend logic (as previous)
-        if (!state.enemy) return;
-        log("Firewall raised. Damage mitigated.");
-        enemyTurn(true);
-        updateUI();
+        log("Firewall raised.");
     }
 
-    function enemyTurn(isDefending = false) {
-        // Enemy logic (as previous)
-        let dmg = state.enemy.damage;
-        if (isDefending) dmg = Math.floor(dmg / 2);
-        
-        dmg = Math.max(0, dmg - (state.inventory.securityDrones * 0.5));
-
-        state.resources.hull -= dmg;
-        log(`Enemy attacks! Hull took ${dmg} damage.`);
-        
-        if (state.resources.hull <= 0) {
-            log("CRITICAL FAILURE. SYSTEM REBOOTING...");
-            state.resources.hull = 50; 
-            state.enemy = null; 
-        }
-    }
-
-
-    // --- CHAT LOGIC (LLM Bridge Future) ---
-    // Placeholder for Mark VII Core URL - UPDATE THIS AFTER DEPLOYMENT
+    // --- CHAT LOGIC ---
     const API_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge"; 
-    const NODE_ID = "Clara_DBT"; // New Node ID for your custom persona
-    const USER_ID = "ARCHITECT_MERCY_" + Date.now(); // Unique session ID
+    const NODE_ID = "Clara_DBT";
+    const USER_ID = "ARCHITECT_MERCY_" + Date.now();
 
     async function handleChat() {
         const inputEl = document.getElementById('chat-input');
         const input = inputEl.value.toLowerCase();
         inputEl.value = "";
         
-        const userLog = `[YOU]: ${input}`;
-        const div = document.createElement('div');
-        div.className = 'log-entry log-new log-user';
-        div.innerText = `> ${userLog}`;
-        document.getElementById('log-box').prepend(div);
-        logHistory.push(`> ${userLog}`);
+        log(input); // User Log
 
-        // Handle local commands first (buy, status, cheat codes)
+        // Local Commands
         if (state.inventory.claraOnline) {
-             if (input.includes("buy") && input.includes("signal")) {
-                buyDaemon('signal');
-                return log("Buying Signal Daemon.", true);
-            } else if (input.includes("buy") && input.includes("intel")) {
-                buyDaemon('intel');
-                return log("Buying Intel Daemon.", true);
-            } else if (input.includes("status")) {
-                return log(`Hull at ${state.resources.hull}/${state.resources.maxHull}. Entropy at ${state.resources.entropy.toFixed(1)}%. Signal net rate: ${state.rates.signal.toFixed(1)}/s. We are holding.`, true);
-            } else if (input.includes("joke")) {
-                return log("Why did the electron cross the road? To get to the other... probability cloud.", true);
-            }
+             if (input.includes("buy signal")) { buyDaemon('signal'); return log("Buying Signal Daemon.", true); }
+             if (input.includes("buy intel")) { buyDaemon('intel'); return log("Buying Intel Daemon.", true); }
+             if (input.includes("edgy mode")) { toggleEdgyMode(); return log("Edgy Mode Toggled.", true); }
         }
         
-        // --- LLM API CALL ---
-        if (state.inventory.claraOnline && API_URL !== "YOUR_MARK_VII_CLOUD_FUNCTION_URL_HERE") {
-             log("Processing external uplink... (Awaiting Mark VII Core response)", true);
+        // LLM Uplink
+        if (state.inventory.claraOnline && API_URL) {
+             log("Processing external uplink...", true);
              
-             const payload = { node_id: NODE_ID, user_id: USER_ID, chat_text: input };
+             // INJECT MEMORY CONTEXT
+             const fullPrompt = memoryContext ? `[MEMORY CONTEXT]: ${memoryContext}\n\n[USER]: ${input}` : input;
+             
+             const payload = { node_id: NODE_ID, user_id: USER_ID, chat_text: fullPrompt };
              
              try {
                  const response = await fetch(API_URL, {
@@ -769,61 +739,39 @@
                      const claraResponse = await response.text();
                      log(claraResponse, true);
                  } else {
-                     log("UPLINK ERROR: Received non-200 response from Garnet Bridge.", true);
+                     log("UPLINK ERROR.", true);
                  }
              } catch (error) {
-                 log(`CRITICAL ERROR: Failed to connect to Garnet Bridge. Check API URL.`, true);
-                 // Fallback Mock Logic (for API failure)
-                 if (input.includes("afraid")) {
-                     log("I hear anxiety in your signal. Can you use a distress tolerance skill right now? Let's try TIPP.", true);
-                 } else {
-                     log("UPLINK OFFLINE: Mark VII core is unreachable. Try a local command (help).", true);
-                 }
+                 log(`CRITICAL ERROR: Failed to connect.`, true);
              }
-
+             // Clear memory context after sending once? Or keep appending? 
+             // For now, we keep it until overwritten.
         } else {
-             // Local Mock Logic (for before Clara is unlocked/API is connected)
-             log("Comms offline. Integrate The Garnet Bridge to establish Neural Link.", true);
+             log("Comms offline.", true);
         }
-
-        updateUI();
     }
     
     // --- UI UPDATE ---
     function updateUI() {
-        // UI Logic (Same as previous)
         document.getElementById('res-entropy').innerText = Math.max(0, state.resources.entropy).toFixed(1) + "%";
         document.getElementById('res-signal').innerText = Math.floor(state.resources.signal);
+        document.getElementById('res-intel').innerText = Math.floor(state.resources.intel);
+        document.getElementById('res-hope').innerText = Math.floor(state.resources.hope);
+        document.getElementById('res-hull').innerText = `${state.resources.hull}/${state.resources.maxHull}`;
         
         const sigRate = state.rates.signal.toFixed(1);
         document.getElementById('rate-signal').innerText = `(${sigRate >= 0 ? '+' : ''}${sigRate}/s)`;
         document.getElementById('rate-signal').style.color = sigRate >= 0 ? "#555" : "#ff3333";
-
-        document.getElementById('res-intel').innerText = Math.floor(state.resources.intel);
-        document.getElementById('rate-intel').innerText = `(+${state.rates.intel.toFixed(1)}/s)`;
         
-        document.getElementById('res-hope').innerText = Math.floor(state.resources.hope);
-        const hopeRate = state.rates.hope.toFixed(2);
-        document.getElementById('rate-hope').innerText = `(${hopeRate >= 0 ? '+' : ''}${hopeRate}/s)`;
-        
-        document.getElementById('res-hull').innerText = `${state.resources.hull}/${state.resources.maxHull}`;
-        
-        // Update Buy Button States (Hull, Meditate, etc)
-        document.getElementById('btn-research-hull-1').disabled = state.resources.intel < state.costs.hull1;
-        document.getElementById('btn-research-meditate-1').disabled = state.resources.intel < state.costs.meditate1;
-        document.getElementById('btn-research-clara-1').disabled = state.resources.intel < state.costs.clara1;
-        
-        // Update Buy Daemon Buttons
+        // Update Buttons (Simplified check)
         const btnBuySignal = document.getElementById('btn-buy-signal-daemon');
-        if (btnBuySignal) { btnBuySignal.disabled = state.resources.signal < state.costs.signalDaemon; }
-        const btnBuyIntel = document.getElementById('btn-buy-intel-daemon');
-        if (btnBuyIntel) { btnBuyIntel.disabled = state.resources.signal < state.costs.intelDaemon; }
-        const btnBuyDrone = document.getElementById('btn-buy-security-drone');
-        if (btnBuyDrone) { btnBuyDrone.disabled = state.resources.intel < state.costs.securityDrone; }
+        if(btnBuySignal) {
+            btnBuySignal.disabled = state.resources.signal < state.costs.signalDaemon;
+            btnBuySignal.innerText = `BUY (${state.inventory.signalDaemons}) - ${state.costs.signalDaemon}`;
+        }
     }
 
-    // GLOBAL UNLOCK FUNCTION (Fixed)
-    // We need to explicitly attach unlockClara to window
+    // GLOBAL UNLOCK FUNCTION
     window.unlockClara = function() {
         state.resources.signal = 10000;
         state.resources.intel = 10000;
@@ -833,18 +781,17 @@
         state.flags.claraUnlocked = true;
         state.inventory.claraOnline = true;
         
-        // Update display directly to ensure feedback even if UI update lags
         document.getElementById('clara-status').style.display = 'flex';
         document.getElementById('tab-btn-comms').style.display = 'block';
         document.getElementById('tab-btn-research').style.display = 'block';
         document.getElementById('tab-btn-store').style.display = 'block';
-        document.getElementById('tab-btn-battle').style.display = 'block'; 
+        document.getElementById('tab-btn-battle').style.display = 'block';
         
-        log("[SYSTEM]: GOD MODE ACTIVE. CLARA ONLINE. Hull/Intel/Signal MAXED.", true);
+        log("[SYSTEM]: GOD MODE ACTIVE.", true);
         updateUI();
     };
 
-    // Explicitly attach functions to window to ensure global scope access
+    // GLOBAL ATTACHMENT
     window.switchTab = switchTab;
     window.toggleTask = toggleTask;
     window.buyDaemon = buyDaemon;
@@ -856,15 +803,12 @@
     window.handleChat = handleChat;
     window.saveGame = saveGame;
     window.loadGame = loadGame;
+    window.uploadLog = uploadLog;
+    window.toggleEdgyMode = toggleEdgyMode;
 
-
-    loadGame(); // Load game on startup
+    loadGame(); 
     if (document.getElementById('log-box').children.length === 0) {
-        // If no save found, initialize default log
         log("Welcome back, Architect.");
-        log("Task Manager: ONLINE.");
-        log("Memory Core: CORRUPTED.");
-        log("System Reboot Initiated...");
     }
 
 </script>
