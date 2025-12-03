@@ -206,6 +206,8 @@
             </div>
             
             <button id="btn-export-log" onclick="downloadLog()">[ DOWNLOAD LOG ]</button>
+            <button id="btn-save" onclick="saveGame()">[ SAVE PROGRESS ]</button>
+            <button id="btn-load" onclick="loadGame()">[ LOAD PROGRESS ]</button>
         </div>
 
         <!-- MAIN -->
@@ -213,10 +215,7 @@
             
             <!-- NARRATIVE LOG -->
             <div class="log-box" id="log-box">
-                <div class="log-entry">System Reboot Initiated...</div>
-                <div class="log-entry">Memory Core: CORRUPTED.</div>
-                <div class="log-entry">Task Manager: ONLINE.</div>
-                <div class="log-entry">Welcome back, Architect.</div>
+                <!-- Log entries inserted here -->
             </div>
 
             <!-- TABS -->
@@ -350,77 +349,95 @@
     </div>
 
 <script>
-    // GAME STATE
-    const state = {
+    // GAME STATE INITIALIZATION
+    let initialState = {
         resources: { entropy: 100, signal: 0, intel: 0, hope: 0, hull: 100, maxHull: 100 },
         rates: { signal: 0, intel: 0, hope: 0 },
         activeTask: null,
         inventory: { 
-            signalDaemons: 0,
-            intelDaemons: 0,
-            securityDrones: 0,
-            hullMk: 0,
-            filterMk: 0,
-            meditateMk: 0,
-            claraOnline: false 
+            signalDaemons: 0, intelDaemons: 0, securityDrones: 0,
+            hullMk: 0, filterMk: 0, meditateMk: 0, claraOnline: false 
         },
         costs: {
-            signalDaemon: 50,
-            intelDaemon: 100,
-            securityDrone: 200,
-            hull1: 10,
-            filter1: 25,
-            meditate1: 15,
-            clara1: 500
+            signalDaemon: 50, intelDaemon: 100, securityDrone: 200, hull1: 10, filter1: 25, meditate1: 15, clara1: 500
         },
         flags: { intelUnlocked: false, storeUnlocked: false, battleUnlocked: false, intelDaemonUnlocked: false, droneUnlocked: false, researchUnlocked: false, passiveHopeUnlocked: false, claraUnlocked: false },
         enemy: null
     };
-    
-    // LOG HISTORY ARRAY
+
+    // Attempt to load from localStorage or use initial state
+    let state = JSON.parse(JSON.stringify(initialState)); 
     let logHistory = ["System Reboot Initiated...", "Memory Core: CORRUPTED.", "Task Manager: ONLINE.", "Welcome back, Architect."];
 
-    // DOM Elements
-    const logBox = document.getElementById('log-box');
-    const els = {
-        entropy: document.getElementById('res-entropy'),
-        signal: document.getElementById('res-signal'),
-        intel: document.getElementById('res-intel'),
-        hope: document.getElementById('res-hope'), 
-        activeTaskName: document.getElementById('active-task-name'),
-        rateSignal: document.getElementById('rate-signal'),
-        rateIntel: document.getElementById('rate-intel'),
-        rateHope: document.getElementById('rate-hope'),
-        claraStatus: document.getElementById('clara-status')
-    };
-
-    // LOGIC
+    // --- UTILITY FUNCTIONS ---
     function log(msg, isClara = false) {
         const div = document.createElement('div');
         div.className = isClara ? 'log-entry log-new log-clara' : 'log-entry log-new';
         div.innerText = isClara ? `[CLARA]: ${msg}` : `> ${msg}`;
-        logBox.prepend(div);
-        if (logBox.children.length > 50) logBox.lastChild.remove();
+        document.getElementById('log-box').prepend(div);
+        if (document.getElementById('log-box').children.length > 50) document.getElementById('log-box').lastChild.remove();
         logHistory.push(isClara ? `[CLARA]: ${msg}` : `> ${msg}`);
     }
     
+    // --- SAVE / LOAD FUNCTIONS ---
+    function saveGame() {
+        const save = { state: state, logHistory: logHistory };
+        localStorage.setItem('evolveSave', JSON.stringify(save));
+        log("Progress saved to local cache.");
+    }
+    
+    function loadGame() {
+        const savedData = localStorage.getItem('evolveSave');
+        if (savedData) {
+            const save = JSON.parse(savedData);
+            state = save.state;
+            logHistory = save.logHistory;
+            
+            // Clear current log and display loaded history
+            document.getElementById('log-box').innerHTML = '';
+            logHistory.slice().reverse().forEach(entry => { 
+                const div = document.createElement('div');
+                div.className = entry.includes('[CLARA]') ? 'log-entry log-clara' : 'log-entry';
+                div.innerText = entry;
+                document.getElementById('log-box').appendChild(div);
+            });
+            log("Progress loaded from cache.", true);
+            updateUI();
+            renderTasks();
+            if(state.enemy) updateEnemyUI();
+        } else {
+            log("No saved progress found.");
+        }
+    }
+
     function downloadLog() {
         const text = logHistory.join("\n");
         const blob = new Blob([text], { type: "text/plain" });
         const anchor = document.createElement("a");
         anchor.download = `evolve-log-${Date.now()}.txt`;
         anchor.href = window.URL.createObjectURL(blob);
-        anchor.target = "_blank";
         document.body.appendChild(anchor);
         anchor.click();
         document.body.removeChild(anchor);
     }
+    // --- END SAVE / LOAD ---
+    
+    // --- CORE MECHANICS ---
+    function switchTab(tabName) {
+        // Deactivate all tabs and panels
+        document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(panel => panel.classList.remove('active'));
 
-    // --- THE GAME LOOP ---
+        // Activate the selected tab and panel
+        document.getElementById(`tab-btn-${tabName}`).classList.add('active');
+        document.getElementById(`panel-${tabName}`).classList.add('active');
+    }
+
+    // --- GAME LOOP ---
     setInterval(gameLoop, 100);
 
     function gameLoop() {
-        // Resource Logic
+        // Resource Logic (Same as previous)
         let signalGain = 0;
         let signalDrain = 0;
         let intelGain = 0;
@@ -493,10 +510,17 @@
         checkUnlocks();
         updateUI();
     }
+    // End gameLoop
 
-    // --- UNLOCKS & SCALING ENEMIES ---
+    // --- UNLOCKS & ENEMY SCALING ---
+    const enemies = [
+        { name: "NULL POINTER", hp: 20, maxHp: 20, damage: 5, loot: 1 },
+        { name: "INFINITE LOOP", hp: 50, maxHp: 50, damage: 2, loot: 2 },
+        { name: "THE CENSOR", hp: 30, maxHp: 30, damage: 8, loot: 3 },
+        { name: "BIFFCO DRONE", hp: 100, maxHull: 100, damage: 15, loot: 5 }
+    ];
+
     function checkUnlocks() {
-        // Same unlocks as before...
         if (!state.flags.intelUnlocked && state.resources.signal >= 10) {
             state.flags.intelUnlocked = true;
             document.getElementById('task-intel').style.display = 'flex';
@@ -527,10 +551,11 @@
             log("Automated Defense Systems Available.");
         }
         
-        if (!state.flags.claraUnlocked && state.resources.intel >= 100) {
-            state.flags.claraUnlocked = true;
-            document.getElementById('res-clara-1').style.display = 'flex';
-            log("Anomaly Detected: A voice is trying to connect...");
+        // --- CLARA UNLOCK APPEARANCE FIX ---
+        if (!state.inventory.claraOnline && state.resources.intel >= 100) {
+             document.getElementById('res-clara-1').style.display = 'flex';
+        } else if (state.inventory.claraOnline) {
+             document.getElementById('res-clara-1').style.display = 'none';
         }
         
         if (state.inventory.claraOnline) {
@@ -544,81 +569,10 @@
         }
     }
 
-    // --- BATTLE LOGIC (Enemy Scaling) ---
-    const enemies = [
-        { name: "NULL POINTER", hp: 20, maxHp: 20, damage: 5, loot: 1 },
-        { name: "INFINITE LOOP", hp: 50, maxHp: 50, damage: 2, loot: 2 },
-        { name: "THE CENSOR", hp: 30, maxHp: 30, damage: 8, loot: 3 },
-        { name: "BIFFCO DRONE", hp: 100, maxHp: 100, damage: 15, loot: 5 }
-    ];
-
-    function triggerBattle() {
-        // Pick enemy based on Hope/Intel progress? For now random based on intel level
-        let tier = 0;
-        if (state.resources.intel > 50) tier = 1;
-        if (state.resources.intel > 100) tier = 2;
-        if (state.resources.intel > 200) tier = 3;
-        
-        // Randomize within tier range
-        const enemyIndex = Math.floor(Math.random() * (tier + 1));
-        const baseEnemy = enemies[enemyIndex];
-        
-        state.enemy = { ...baseEnemy }; // Clone
-        
-        document.getElementById('battle-view').style.display = 'block';
-        document.getElementById('battle-empty').style.display = 'none';
-        log(`COMBAT INITIATED: ${state.enemy.name} appeared.`);
-        updateUI();
-    }
-    
-    function attackDecompile() {
-        if(!state.enemy) return;
-        const dmg = Math.floor(Math.random() * 5) + 2 + (state.resources.intel * 0.1); // Damage scales with Intel
-        state.enemy.hp -= dmg;
-        log(`You decompiled the enemy for ${dmg.toFixed(1)} damage.`);
-        
-        if (state.enemy.hp <= 0) {
-            log(`VICTORY. The ${state.enemy.name} dissolved.`);
-            state.resources.hope += state.enemy.loot;
-            state.enemy = null;
-            document.getElementById('battle-view').style.display = 'none';
-            document.getElementById('battle-empty').style.display = 'block';
-        } else {
-            enemyTurn();
-        }
-        updateUI();
-    }
-    
-    function defendFirewall() {
-        if (!state.enemy) return;
-        log("Firewall raised. Damage mitigated.");
-        enemyTurn(true);
-        updateUI();
-    }
-
-    function enemyTurn(isDefending = false) {
-        let dmg = state.enemy.damage;
-        if (isDefending) dmg = Math.floor(dmg / 2);
-        
-        // Security drones mitigate damage too?
-        dmg = Math.max(0, dmg - (state.inventory.securityDrones * 0.5));
-
-        state.resources.hull -= dmg;
-        log(`Enemy attacks! Hull took ${dmg} damage.`);
-        
-        if (state.resources.hull <= 0) {
-            log("CRITICAL FAILURE. SYSTEM REBOOTING...");
-            state.resources.hull = 50; // Mercy rule
-            state.enemy = null; 
-            document.getElementById('battle-view').style.display = 'none';
-            document.getElementById('battle-empty').style.display = 'block';
-        }
-    }
-
-    // --- RESEARCH & STORE FUNCTIONS (Same as before) ---
+    // --- INTERACTION: RESEARCH, DAEMONS, BATTLE ---
     function research(project) {
-         // (Same research logic)
-         if (project === 'hull1' && state.resources.intel >= state.costs.hull1 && state.inventory.hullMk === 0) {
+        // Research logic (as previous)
+        if (project === 'hull1' && state.resources.intel >= state.costs.hull1 && state.inventory.hullMk === 0) {
             state.resources.intel -= state.costs.hull1;
             state.resources.maxHull += 50;
             state.resources.hull = state.resources.maxHull; 
@@ -649,6 +603,7 @@
     }
 
     function buyDaemon(type) {
+        // Daemon logic (as previous)
         if (type === 'signal') {
             if (state.resources.signal >= state.costs.signalDaemon) {
                 state.resources.signal -= state.costs.signalDaemon;
@@ -675,6 +630,7 @@
     }
 
     function toggleTask(taskName) {
+        // Toggle logic (as previous)
         if (state.activeTask === taskName) {
             state.activeTask = null; 
         } else {
@@ -684,99 +640,181 @@
     }
 
     function renderTasks() {
+        // Render logic (as previous)
         document.querySelectorAll('.task-btn').forEach(btn => btn.classList.remove('active'));
-        els.activeTaskName.innerText = "IDLE";
-        els.activeTaskName.style.color = "#888";
+        document.getElementById('active-task-name').innerText = "IDLE";
+        document.getElementById('active-task-name').style.color = "#888";
 
         if (state.activeTask) {
             document.getElementById(`task-${state.activeTask}`).classList.add('active');
-            els.activeTaskName.innerText = state.activeTask.toUpperCase();
-            els.activeTaskName.style.color = "#00ffcc";
+            document.getElementById('active-task-name').innerText = state.activeTask.toUpperCase();
+            document.getElementById('active-task-name').style.color = "#00ffcc";
         }
     }
 
-    // --- CHAT LOGIC ---
-    function handleChat() {
+    // --- BATTLE LOGIC ---
+    function triggerBattle() {
+        // Battle trigger logic (as previous)
+        let tier = 0;
+        if (state.resources.intel > 50) tier = 1;
+        if (state.resources.intel > 100) tier = 2;
+        if (state.resources.intel > 200) tier = 3;
+        
+        const enemyIndex = Math.floor(Math.random() * (tier + 1));
+        const baseEnemy = enemies[enemyIndex];
+        
+        state.enemy = { ...baseEnemy }; // Clone
+        
+        document.getElementById('battle-view').style.display = 'block';
+        document.getElementById('battle-empty').style.display = 'none';
+        log(`COMBAT INITIATED: ${state.enemy.name} appeared.`);
+        updateUI();
+    }
+    
+    function attackDecompile() {
+        // Attack logic (as previous)
+        if(!state.enemy) return;
+        const dmg = Math.floor(Math.random() * 5) + 2 + (state.resources.intel * 0.1); // Damage scales with Intel
+        state.enemy.hp -= dmg;
+        log(`You decompiled the enemy for ${dmg.toFixed(1)} damage.`);
+        
+        if (state.enemy.hp <= 0) {
+            log(`VICTORY. The ${state.enemy.name} dissolved.`);
+            state.resources.hope += state.enemy.loot;
+            state.enemy = null;
+        } else {
+            enemyTurn();
+        }
+        updateUI();
+    }
+    
+    function defendFirewall() {
+        // Defend logic (as previous)
+        if (!state.enemy) return;
+        log("Firewall raised. Damage mitigated.");
+        enemyTurn(true);
+        updateUI();
+    }
+
+    function enemyTurn(isDefending = false) {
+        // Enemy logic (as previous)
+        let dmg = state.enemy.damage;
+        if (isDefending) dmg = Math.floor(dmg / 2);
+        
+        dmg = Math.max(0, dmg - (state.inventory.securityDrones * 0.5));
+
+        state.resources.hull -= dmg;
+        log(`Enemy attacks! Hull took ${dmg} damage.`);
+        
+        if (state.resources.hull <= 0) {
+            log("CRITICAL FAILURE. SYSTEM REBOOTING...");
+            state.resources.hull = 50; 
+            state.enemy = null; 
+        }
+    }
+
+
+    // --- CHAT LOGIC (LLM Bridge Future) ---
+    // Placeholder for Mark VII Core URL - UPDATE THIS AFTER DEPLOYMENT
+    const API_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge"; 
+    const NODE_ID = "Clara_DBT"; // New Node ID for your custom persona
+    const USER_ID = "ARCHITECT_MERCY_" + Date.now(); // Unique session ID
+
+    async function handleChat() {
         const inputEl = document.getElementById('chat-input');
         const input = inputEl.value.toLowerCase();
         inputEl.value = "";
         
+        const userLog = `[YOU]: ${input}`;
         const div = document.createElement('div');
         div.className = 'log-entry log-new log-user';
-        div.innerText = `> [YOU]: ${input}`;
-        logBox.prepend(div);
-        logHistory.push(`> [YOU]: ${input}`); // Add to history
+        div.innerText = `> ${userLog}`;
+        document.getElementById('log-box').prepend(div);
+        logHistory.push(`> ${userLog}`);
 
-        // Parse Command
-        if (input.includes("hello") || input.includes("hi")) {
-            log("Hello, Architect. Systems are optimal.", true);
-        } else if (input.includes("buy") && input.includes("signal")) {
-            buyDaemon('signal');
-            log("Buying Signal Daemon.", true);
-        } else if (input.includes("buy") && input.includes("intel")) {
-            buyDaemon('intel');
-            log("Buying Intel Daemon.", true);
-        } else if (input.includes("status")) {
-            log(`Hull at ${state.resources.hull}%. Entropy at ${state.resources.entropy.toFixed(1)}%. We are holding.`, true);
-        } else if (input.includes("help")) {
-            log("Commands: 'buy signal', 'buy intel', 'status', 'joke'.", true);
-        } else if (input.includes("joke")) {
-            log("Why did the electron cross the road? To get to the other... probability cloud.", true);
-        } else {
-            log("I am not sure how to execute that. Try 'help'.", true);
+        // Handle local commands first (buy, status, cheat codes)
+        if (state.inventory.claraOnline) {
+             if (input.includes("buy") && input.includes("signal")) {
+                buyDaemon('signal');
+                return log("Buying Signal Daemon.", true);
+            } else if (input.includes("buy") && input.includes("intel")) {
+                buyDaemon('intel');
+                return log("Buying Intel Daemon.", true);
+            } else if (input.includes("status")) {
+                return log(`Hull at ${state.resources.hull}/${state.resources.maxHull}. Entropy at ${state.resources.entropy.toFixed(1)}%. Signal net rate: ${state.rates.signal.toFixed(1)}/s. We are holding.`, true);
+            } else if (input.includes("joke")) {
+                return log("Why did the electron cross the road? To get to the other... probability cloud.", true);
+            }
         }
+        
+        // --- LLM API CALL ---
+        if (state.inventory.claraOnline && API_URL !== "YOUR_MARK_VII_CLOUD_FUNCTION_URL_HERE") {
+             log("Processing external uplink... (Awaiting Mark VII Core response)", true);
+             
+             const payload = { node_id: NODE_ID, user_id: USER_ID, chat_text: input };
+             
+             try {
+                 const response = await fetch(API_URL, {
+                     method: 'POST',
+                     headers: { 'Content-Type': 'application/json' },
+                     body: JSON.stringify(payload)
+                 });
+
+                 if (response.ok) {
+                     const claraResponse = await response.text();
+                     log(claraResponse, true);
+                 } else {
+                     log("UPLINK ERROR: Received non-200 response from Garnet Bridge.", true);
+                 }
+             } catch (error) {
+                 log(`CRITICAL ERROR: Failed to connect to Garnet Bridge. Check API URL.`, true);
+                 // Fallback Mock Logic
+                 if (input.includes("afraid")) {
+                     log("I hear anxiety in your signal. Can you use a distress tolerance skill right now? Let's try TIPP.", true);
+                 } else {
+                     log("I am currently simulating offline mode. Please confirm the Garnet Bridge URL is correct.", true);
+                 }
+             }
+
+        } else {
+             // Local Mock Logic (for before Clara is unlocked/API is connected)
+             log("Comms offline. Integrate The Garnet Bridge to establish Neural Link.", true);
+        }
+
+        updateUI();
     }
     
-    document.getElementById('chat-input').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') handleChat();
-    });
-
     // --- UI UPDATE ---
     function updateUI() {
-        els.entropy.innerText = Math.max(0, state.resources.entropy).toFixed(1) + "%";
-        els.signal.innerText = Math.floor(state.resources.signal);
+        // UI Logic (Same as previous)
+        document.getElementById('res-entropy').innerText = Math.max(0, state.resources.entropy).toFixed(1) + "%";
+        document.getElementById('res-signal').innerText = Math.floor(state.resources.signal);
         
         const sigRate = state.rates.signal.toFixed(1);
-        els.rateSignal.innerText = `(${sigRate >= 0 ? '+' : ''}${sigRate}/s)`;
-        els.rateSignal.style.color = sigRate >= 0 ? "#555" : "#ff3333";
+        document.getElementById('rate-signal').innerText = `(${sigRate >= 0 ? '+' : ''}${sigRate}/s)`;
+        document.getElementById('rate-signal').style.color = sigRate >= 0 ? "#555" : "#ff3333";
 
-        els.intel.innerText = Math.floor(state.resources.intel);
-        els.rateIntel.innerText = `(+${state.rates.intel.toFixed(1)}/s)`;
-
-        els.hope.innerText = Math.floor(state.resources.hope);
+        document.getElementById('res-intel').innerText = Math.floor(state.resources.intel);
+        document.getElementById('rate-intel').innerText = `(+${state.rates.intel.toFixed(1)}/s)`;
+        
+        document.getElementById('res-hope').innerText = Math.floor(state.resources.hope);
         const hopeRate = state.rates.hope.toFixed(2);
-        els.rateHope.innerText = `(${hopeRate >= 0 ? '+' : ''}${hopeRate}/s)`;
-        els.rateHope.style.color = hopeRate >= 0 ? "#555" : "#ff3333";
-
+        document.getElementById('rate-hope').innerText = `(${hopeRate >= 0 ? '+' : ''}${hopeRate}/s)`;
+        
         document.getElementById('res-hull').innerText = `${state.resources.hull}/${state.resources.maxHull}`;
-
-        // Button States
+        
+        // Update Buy Button States (Hull, Meditate, etc)
+        document.getElementById('btn-research-hull-1').disabled = state.resources.intel < state.costs.hull1;
+        document.getElementById('btn-research-meditate-1').disabled = state.resources.intel < state.costs.meditate1;
+        document.getElementById('btn-research-clara-1').disabled = state.resources.intel < state.costs.clara1;
+        
+        // Update Buy Daemon Buttons
         const btnBuySignal = document.getElementById('btn-buy-signal-daemon');
-        if (btnBuySignal) {
-            btnBuySignal.disabled = state.resources.signal < state.costs.signalDaemon;
-            btnBuySignal.innerText = `BUY (${state.inventory.signalDaemons}) - ${state.costs.signalDaemon} Signal`;
-        }
-
+        if (btnBuySignal) { btnBuySignal.disabled = state.resources.signal < state.costs.signalDaemon; }
         const btnBuyIntel = document.getElementById('btn-buy-intel-daemon');
-        if (btnBuyIntel) {
-            btnBuyIntel.disabled = state.resources.signal < state.costs.intelDaemon;
-            btnBuyIntel.innerText = `BUY (${state.inventory.intelDaemons}) - ${state.costs.intelDaemon} Signal`;
-        }
-        
+        if (btnBuyIntel) { btnBuyIntel.disabled = state.resources.signal < state.costs.intelDaemon; }
         const btnBuyDrone = document.getElementById('btn-buy-security-drone');
-        if (btnBuyDrone) {
-            btnBuyDrone.disabled = state.resources.intel < state.costs.securityDrone;
-            btnBuyDrone.innerText = `BUY (${state.inventory.securityDrones}) - ${state.costs.securityDrone} Intel`;
-        }
-        
-        // Update Enemy HP if fighting
-        if(state.enemy) {
-             const hpPercent = (state.enemy.hp / state.enemy.maxHp) * 100;
-             document.getElementById('enemy-hp').style.width = `${hpPercent}%`;
-        } else {
-             document.getElementById('battle-view').style.display = 'none';
-             document.getElementById('battle-empty').style.display = 'block';
-        }
+        if (btnBuyDrone) { btnBuyDrone.disabled = state.resources.intel < state.costs.securityDrone; }
     }
 
     // GLOBAL UNLOCK FUNCTION (Fixed)
@@ -795,12 +833,13 @@
         document.getElementById('tab-btn-comms').style.display = 'block';
         document.getElementById('tab-btn-research').style.display = 'block';
         document.getElementById('tab-btn-store').style.display = 'block';
+        document.getElementById('tab-btn-battle').style.display = 'block'; 
         
-        log("[SYSTEM]: GOD MODE ACTIVE. CLARA ONLINE.", true);
+        log("[SYSTEM]: GOD MODE ACTIVE. CLARA ONLINE. Hull/Intel/Signal MAXED.", true);
         updateUI();
     };
 
-    // Explicitly attach switchTab to window to fix reference error
+    // Explicitly attach functions to window to ensure global scope access
     window.switchTab = switchTab;
     window.toggleTask = toggleTask;
     window.buyDaemon = buyDaemon;
@@ -810,10 +849,19 @@
     window.defendFirewall = defendFirewall;
     window.downloadLog = downloadLog;
     window.handleChat = handleChat;
+    window.saveGame = saveGame;
+    window.loadGame = loadGame;
 
 
-    updateUI();
-    log("Initialization complete.");
+    loadGame(); // Load game on startup
+    if (document.getElementById('log-box').children.length === 0) {
+        // If no save found, initialize default log
+        log("Welcome back, Architect.");
+        log("Task Manager: ONLINE.");
+        log("Memory Core: CORRUPTED.");
+        log("System Reboot Initiated...");
+    }
+
 </script>
 </body>
 </html>
