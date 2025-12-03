@@ -53,6 +53,7 @@
         .log-entry { margin-bottom: 5px; border-bottom: 1px dashed #222; padding-bottom: 2px; }
         .log-new { color: #00ffcc; animation: flash 1s; }
         .log-clara { color: #bf00ff; font-weight: bold; } /* Clara speaks in Purple */
+        .log-user { color: #ffd700; font-style: italic; } /* User speaks in Gold */
 
         /* TABS */
         .tabs { display: flex; border-bottom: 1px solid #333; margin-bottom: 20px; }
@@ -132,6 +133,25 @@
         .hp-bar { width: 100%; height: 10px; background: #333; margin-top: 5px; }
         .hp-fill { height: 100%; background: #ff3333; width: 100%; transition: width 0.2s; }
 
+        /* CHAT INPUT */
+        .chat-input-container {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        #chat-input {
+            flex: 1;
+            background: #111;
+            border: 1px solid #555;
+            color: #00ffcc;
+            padding: 10px;
+            font-family: 'Share Tech Mono';
+        }
+        #chat-submit {
+            width: auto;
+            padding: 10px 20px;
+        }
+
         @keyframes flash { 0% { color: #fff; } 100% { color: #00ffcc; } }
     </style>
 </head>
@@ -195,6 +215,7 @@
                 <div class="tab" onclick="switchTab('store')" id="tab-store" style="display:none;">DAEMONS</div>
                 <div class="tab" onclick="switchTab('research')" id="tab-research" style="display:none;">RESEARCH</div>
                 <div class="tab" onclick="switchTab('battle')" id="tab-battle" style="display:none;">CONFLICT</div>
+                <div class="tab" onclick="switchTab('comms')" id="tab-comms" style="display:none; border-color: #bf00ff; color: #bf00ff;">COMMS</div>
             </div>
 
             <!-- PANEL: TASKS (The Arcanum Toggle System) -->
@@ -309,6 +330,17 @@
                 <div id="battle-empty">
                     <p>Sector Clear. No hostile processes.</p>
                     <button class="buy-btn" onclick="triggerBattle()">PROVOKE SYSTEM</button>
+                </div>
+            </div>
+            
+            <!-- PANEL: COMMS (CLARA CHAT) -->
+            <div class="panel" id="panel-comms">
+                <p style="color:#bf00ff;">// NEURAL LINK ESTABLISHED.</p>
+                <p>Talk to Clara. She controls the system.</p>
+                
+                <div class="chat-input-container">
+                    <input type="text" id="chat-input" placeholder="Type a command (e.g., 'help', 'buy signal')">
+                    <button class="buy-btn" id="chat-submit" onclick="handleChat()">SEND</button>
                 </div>
             </div>
 
@@ -485,6 +517,11 @@
             document.getElementById('res-clara-1').style.display = 'flex';
             log("Anomaly Detected: A voice is trying to connect...");
         }
+        
+        // CLARA COMMS UNLOCK (Requires Integration)
+        if (state.inventory.claraOnline) {
+             document.getElementById('tab-comms').style.display = 'block';
+        }
 
         if (!state.flags.battleUnlocked && state.resources.intel >= 20) {
             state.flags.battleUnlocked = true;
@@ -524,8 +561,38 @@
         updateUI();
     }
 
-    // ... (Task/Daemon/Battle Functions Remain Same) ...
-    
+    // --- INTERACTION: CHAT ---
+    function handleChat() {
+        const inputEl = document.getElementById('chat-input');
+        const input = inputEl.value.toLowerCase();
+        inputEl.value = "";
+        
+        // Add User Msg to Log
+        const div = document.createElement('div');
+        div.className = 'log-entry log-new log-user';
+        div.innerText = `> [YOU]: ${input}`;
+        logBox.prepend(div);
+
+        // Parse Command
+        if (input.includes("hello") || input.includes("hi")) {
+            log("Hello, Architect. Systems are optimal. Or at least, as optimal as they can be in a corrupted timeline.", true);
+        } else if (input.includes("buy") && input.includes("signal")) {
+            buyDaemon('signal');
+            log("Allocating resources. Buying Signal Daemon.", true);
+        } else if (input.includes("buy") && input.includes("intel")) {
+            buyDaemon('intel');
+            log("Expanding decryption capabilities. Buying Intel Daemon.", true);
+        } else if (input.includes("status")) {
+            log(`Hull at ${state.resources.hull}%. Entropy at ${state.resources.entropy.toFixed(1)}%. We are holding.`, true);
+        } else if (input.includes("help")) {
+            log("Commands: 'buy signal', 'buy intel', 'status', 'joke'.", true);
+        } else if (input.includes("joke")) {
+            log("Why did the electron cross the road? To get to the other... probability cloud.", true);
+        } else {
+            log("I am not sure how to execute that. Try 'help'.", true);
+        }
+    }
+
     // --- INTERACTION: TASKS & DAEMONS ---
     function toggleTask(taskName) {
         if (state.activeTask === taskName) {
@@ -679,6 +746,30 @@
         document.querySelector(`.tab[onclick="switchTab('${id}')"]`).classList.add('active');
         document.getElementById(`panel-${id}`).classList.add('active');
     }
+    
+    // Enter key listener for chat
+    document.getElementById('chat-input').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') handleChat();
+    });
+
+    // GLOBAL UNLOCK FUNCTION
+    window.unlockClara = function() {
+        state.resources.signal = 10000;
+        state.resources.intel = 10000;
+        state.flags.intelUnlocked = true;
+        state.flags.storeUnlocked = true;
+        state.flags.researchUnlocked = true;
+        state.flags.claraUnlocked = true;
+        state.inventory.claraOnline = true;
+        
+        document.getElementById('clara-status').style.display = 'flex';
+        document.getElementById('tab-comms').style.display = 'block';
+        document.getElementById('tab-research').style.display = 'block';
+        document.getElementById('tab-store').style.display = 'block';
+        
+        log("[SYSTEM]: GOD MODE ACTIVE. CLARA ONLINE.", true);
+        updateUI();
+    };
 
     // Quick init call to set up environment
     updateUI();
