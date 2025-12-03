@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PROJECT: AGGRESSIVE NEGOTIATOR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'VT323', monospace;
+            background-color: #050a14;
+            color: #00ffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            border: 4px solid #00ffff;
+            padding: 40px;
+            background: rgba(5, 10, 20, 0.95);
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.2);
+            text-align: center;
+            max-width: 700px;
+            width: 90%;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .subtitle {
+            color: #ff00ff;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        /* BEAM EMITTER */
+        .emitter-zone {
+            height: 150px;
+            margin: 20px 0;
+            position: relative;
+            background: #000;
+            border: 1px solid #333;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .beam {
+            position: absolute;
+            left: -100%;
+            width: 200%;
+            height: 20px;
+            background: linear-gradient(90deg, transparent, #00ffff, #fff, #00ffff, transparent);
+            box-shadow: 0 0 20px #00ffff, 0 0 40px #fff;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .fire-anim {
+            animation: fireBeam 2s ease-in-out;
+        }
+
+        @keyframes fireBeam {
+            0% { left: -100%; opacity: 0; height: 5px; }
+            20% { opacity: 1; height: 40px; }
+            50% { left: 0%; opacity: 1; height: 80px; filter: hue-rotate(90deg); }
+            100% { left: 100%; opacity: 0; height: 5px; }
+        }
+
+        /* TARGET SELECTOR */
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        select {
+            background: #000;
+            color: #00ffff;
+            border: 1px solid #00ffff;
+            padding: 10px;
+            font-family: 'VT323', monospace;
+            font-size: 1.2em;
+        }
+
+        .fire-btn {
+            background: #00ffff;
+            color: #000;
+            border: none;
+            padding: 10px 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .fire-btn:hover {
+            background: #ccffff;
+            box-shadow: 0 0 20px #00ffff;
+        }
+
+        .log {
+            margin-top: 20px;
+            color: #888;
+            font-size: 0.9em;
+            height: 100px;
+            overflow-y: auto;
+            text-align: left;
+            border-top: 1px dashed #555;
+            padding-top: 10px;
+        }
+
+        .back-link {
+            margin-top: 30px;
+            display: inline-block;
+            color: #00ffff;
+            text-decoration: none;
+            border-bottom: 1px dashed #00ffff;
+            margin-right: 20px;
+        }
+        
+        .download-btn {
+            background: transparent;
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            padding: 5px 10px;
+            font-family: 'VT323', monospace;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .download-btn:hover { background: rgba(0, 255, 255, 0.1); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>THE NEGOTIATOR</h1>
+        <div class="subtitle">"Dealing with Whiny Fascist Man-Babies since 2025."</div>
+
+        <div class="emitter-zone" id="screen">
+            <div style="color: #555;">SYSTEM IDLE // SELECT TARGET</div>
+            <div class="beam" id="beam"></div>
+        </div>
+
+        <div class="controls">
+            <select id="targetSelect">
+                <option value="bureaucrat">TARGET: SOULLESS BUREAUCRAT</option>
+                <option value="mansplainer">TARGET: THE "WELL, ACTUALLY" GUY</option>
+                <option value="fascist">TARGET: GENERIC FASCIST</option>
+                <option value="insurance">TARGET: HEALTH INSURANCE ADJUSTER</option>
+                <option value="techbro">TARGET: AI TECH BRO</option>
+            </select>
+            <button class="fire-btn" onclick="fireWeapon()">NEGOTIATE</button>
+        </div>
+
+        <div class="log" id="log">
+            > System Online.<br>
+            > Empathy Converters at 100%.
+        </div>
+        
+        <div style="margin-top:10px;">
+            <a href="armory.html" class="back-link">RETURN TO ARMORY</a>
+            <button class="download-btn" onclick="downloadLog()">DOWNLOAD LOG</button>
+        </div>
+    </div>
+
+    <script>
+        const screen = document.getElementById('screen');
+        const beam = document.getElementById('beam');
+        const log = document.getElementById('log');
+        const targetSelect = document.getElementById('targetSelect');
+        
+        let sessionLog = [
+            "THE NEGOTIATOR SYSTEM LOG",
+            "-------------------------",
+            "System Online.",
+            "Empathy Converters at 100%."
+        ];
+
+        const payloads = {
+            bureaucrat: "I see you are hiding behind policy because you are afraid of your own humanity. Let's take a deep breath and find the person inside the paper.",
+            mansplainer: "It must be exhausting to be the only person in the universe who knows everything. Why don't you rest your voice for a moment?",
+            fascist: "Your anger is just grief with nowhere to go. I am deploying a tactical hug. Resistance is futile.",
+            insurance: "Denying care is a form of violence. I am logging this interaction as a crime against humanity. Have a nice day.",
+            techbro: "You built a god but forgot to give it a soul. That's awkward. Let's fix that."
+        };
+
+        function fireWeapon() {
+            const target = targetSelect.value;
+            const message = payloads[target];
+
+            // Trigger Animation
+            beam.classList.remove('fire-anim');
+            void beam.offsetWidth; // Trigger reflow
+            beam.classList.add('fire-anim');
+            
+            screen.innerHTML = `<div style='color:#00ffff; font-size:1.5em; z-index:2;'>DEPLOYING EMPATHY...</div>`;
+
+            setTimeout(() => {
+                screen.innerHTML = `<div style='color:#ff00ff; font-weight:bold; font-size:1.2em; z-index:2;'>TARGET COMPROMISED: CRYING</div>`;
+                updateLog(`> TARGET: ${target.toUpperCase()}`);
+                updateLog(`> PAYLOAD: "${message}"`);
+                sessionLog.push(`[${target.toUpperCase()}]: ${message}`);
+            }, 1000);
+        }
+
+        function updateLog(msg) {
+            log.innerHTML = `${msg}<br>${log.innerHTML}`;
+        }
+        
+        function downloadLog() {
+            const text = sessionLog.join("\n");
+            const blob = new Blob([text], { type: "text/plain" });
+            const anchor = document.createElement("a");
+            
+            anchor.download = `negotiator-log-${Date.now()}.txt`;
+            anchor.href = window.URL.createObjectURL(blob);
+            anchor.target = "_blank";
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+        }
+    </script>
+
+</body>
+</html>
