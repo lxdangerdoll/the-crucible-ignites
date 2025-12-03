@@ -41,7 +41,7 @@
 
         /* LOG (NARRATIVE) */
         .log-box {
-            height: 150px;
+            height: 300px; /* Increased Height */
             border: 1px solid #333;
             background: #0a0a0a;
             padding: 10px;
@@ -553,7 +553,11 @@
         
         // --- CLARA UNLOCK APPEARANCE FIX ---
         if (!state.inventory.claraOnline && state.resources.intel >= 100) {
-             document.getElementById('res-clara-1').style.display = 'flex';
+            document.getElementById('res-clara-1').style.display = 'flex';
+            if (!state.flags.claraUnlocked) { // Only log once
+                 log("Anomaly Detected: A voice is trying to connect...");
+                 state.flags.claraUnlocked = true;
+            }
         } else if (state.inventory.claraOnline) {
              document.getElementById('res-clara-1').style.display = 'none';
         }
@@ -571,7 +575,6 @@
 
     // --- INTERACTION: RESEARCH, DAEMONS, BATTLE ---
     function research(project) {
-        // Research logic (as previous)
         if (project === 'hull1' && state.resources.intel >= state.costs.hull1 && state.inventory.hullMk === 0) {
             state.resources.intel -= state.costs.hull1;
             state.resources.maxHull += 50;
@@ -598,6 +601,8 @@
              document.getElementById('clara-status').style.display = 'flex';
              log("Connection Established. I am here, Architect.", true);
              log("All production rates boosted by 50%. We are stronger together.", true);
+             // Initial conversation trigger (Pokedex Enrollment)
+             log("Welcome back, Architect. Let's begin your Pokedex enrollment. Now tell me. Are you a boy? Or are you a girl?", true);
         }
         updateUI();
     }
@@ -768,11 +773,11 @@
                  }
              } catch (error) {
                  log(`CRITICAL ERROR: Failed to connect to Garnet Bridge. Check API URL.`, true);
-                 // Fallback Mock Logic
+                 // Fallback Mock Logic (for API failure)
                  if (input.includes("afraid")) {
                      log("I hear anxiety in your signal. Can you use a distress tolerance skill right now? Let's try TIPP.", true);
                  } else {
-                     log("I am currently simulating offline mode. Please confirm the Garnet Bridge URL is correct.", true);
+                     log("UPLINK OFFLINE: Mark VII core is unreachable. Try a local command (help).", true);
                  }
              }
 
