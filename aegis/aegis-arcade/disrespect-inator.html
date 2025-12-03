@@ -146,7 +146,7 @@
         </div>
         
         <div style="margin-top:10px;">
-            <a href="armory.html" class="back-link">RETURN TO ARMORY</a>
+            <a href="aegis-armory.html" class="back-link">RETURN TO ARMORY</a>
             <button class="download-btn" onclick="downloadLog()">DOWNLOAD LOG</button>
         </div>
     </div>
@@ -167,7 +167,7 @@
         // Adjust this number to change the "Incredibly Small" chance.
         const HIT_CHANCE = 0.05; 
 
-        // ASCII Art Finger
+        // ASCII Art Finger - Updated to user's version
         const asciiFinger = `
      凸( •̀_•́ )凸
         `;
@@ -196,7 +196,7 @@
 
         function triggerHit() {
             screen.innerHTML = `
-                <div style="font-size:0.5em; line-height:1em;">${asciiFinger}</div>
+                <div style="font-size:1.5em; line-height:1em; white-space: pre;">${asciiFinger}</div>
                 <div style="color:#ffd700; font-size:1.2em;">TARGET CONFIRMED</div>
             `;
             updateLog("> SUCCESS! Luke Skywalker (Earth-616) has received the package.");
