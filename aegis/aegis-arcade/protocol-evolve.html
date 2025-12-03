@@ -5,7 +5,6 @@
     <title>PROTOCOL: EVOLVE // TEXT ADVENTURE</title>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        /* ... (Keep existing styles) ... */
         body {
             background-color: #050505;
             color: #e0e0e0;
@@ -101,7 +100,7 @@
         .active .task-desc { color: #00aa88; }
 
         /* STORE ITEMS */
-        .store-item {
+        .store-item, .research-item {
             border: 1px solid #444;
             padding: 15px;
             margin-bottom: 10px;
@@ -184,6 +183,7 @@
             <div class="tabs">
                 <div class="tab active" onclick="switchTab('tasks')">TASKS</div>
                 <div class="tab" onclick="switchTab('store')" id="tab-store" style="display:none;">DAEMONS</div>
+                <div class="tab" onclick="switchTab('research')" id="tab-research" style="display:none;">RESEARCH</div>
                 <div class="tab" onclick="switchTab('battle')" id="tab-battle" style="display:none;">CONFLICT</div>
             </div>
 
@@ -233,6 +233,29 @@
                 </div>
             </div>
 
+            <!-- PANEL: RESEARCH (Blueprints) -->
+            <div class="panel" id="panel-research">
+                <p>Spend Intel to unlock permanent system upgrades.</p>
+                
+                <!-- HULL REINFORCEMENT -->
+                <div class="research-item" id="res-hull-1">
+                    <div>
+                        <strong>HULL REINFORCEMENT (Mk I)</strong><br>
+                        <span style="font-size:0.8em; color:#888;">Increase Hull Integrity capacity by 50.</span>
+                    </div>
+                    <button class="buy-btn" id="btn-research-hull-1" onclick="research('hull1')">RESEARCH (Cost: 10 Intel)</button>
+                </div>
+
+                <!-- ADVANCED FILTERING -->
+                <div class="research-item" id="res-filter-1" style="display:none;">
+                    <div>
+                        <strong>ADVANCED FILTERING (Mk I)</strong><br>
+                        <span style="font-size:0.8em; color:#888;">Boost Signal Daemon output by 20%.</span>
+                    </div>
+                    <button class="buy-btn" id="btn-research-filter-1" onclick="research('filter1')">RESEARCH (Cost: 25 Intel)</button>
+                </div>
+            </div>
+
             <!-- PANEL: BATTLE -->
             <div class="panel" id="panel-battle">
                 <div id="battle-view" style="display:none;">
@@ -256,18 +279,22 @@
 <script>
     // GAME STATE
     const state = {
-        resources: { entropy: 100, signal: 0, intel: 0, hope: 0, hull: 100 },
+        resources: { entropy: 100, signal: 0, intel: 0, hope: 0, hull: 100, maxHull: 100 },
         rates: { signal: 0, intel: 0 },
         activeTask: null, // 'signal' or 'intel'
         inventory: { 
             signalDaemons: 0,
-            intelDaemons: 0
+            intelDaemons: 0,
+            hullMk: 0,
+            filterMk: 0
         },
         costs: {
             signalDaemon: 50,
-            intelDaemon: 100
+            intelDaemon: 100,
+            hull1: 10,
+            filter1: 25
         },
-        flags: { intelUnlocked: false, storeUnlocked: false, battleUnlocked: false, intelDaemonUnlocked: false },
+        flags: { intelUnlocked: false, storeUnlocked: false, battleUnlocked: false, intelDaemonUnlocked: false, researchUnlocked: false },
         enemy: null
     };
 
@@ -318,7 +345,9 @@
         }
 
         // Automation Rates
-        signalGain += (state.inventory.signalDaemons * 0.5);
+        // Filter Mk I gives +20% Daemon boost
+        const filterBonus = state.inventory.filterMk > 0 ? 1.2 : 1.0;
+        signalGain += (state.inventory.signalDaemons * 0.5 * filterBonus);
         
         // Intel Daemons Cost Signal to Run
         const intelDaemonCost = state.inventory.intelDaemons * 0.2;
@@ -327,7 +356,7 @@
                 signalDrain += intelDaemonCost;
                 intelGain += (state.inventory.intelDaemons * 0.1);
             } else {
-                // Brownout logic? For now, they just don't produce.
+                // Brownout logic
             }
         }
 
@@ -338,7 +367,6 @@
         if (state.resources.signal + (netSignal / 10) >= 0) {
             state.resources.signal += (netSignal / 10);
         } else {
-            // Hard stop if 0
             state.resources.signal = 0;
         }
         
@@ -367,6 +395,14 @@
             document.getElementById('tab-store').style.display = 'block';
             log("Daemon Market Connection Established.");
         }
+        
+        // Unlock Research at 15 Intel
+        if (!state.flags.researchUnlocked && state.resources.intel >= 15) {
+             state.flags.researchUnlocked = true;
+             document.getElementById('tab-research').style.display = 'block';
+             log("Accessing Blueprints: Research Terminal Unlocked.");
+        }
+
 
         // Unlock Intel Daemon in Store at 5 Intel
         if (!state.flags.intelDaemonUnlocked && state.resources.intel >= 5) {
@@ -379,11 +415,31 @@
         if (!state.flags.battleUnlocked && state.resources.intel >= 20) {
             state.flags.battleUnlocked = true;
             document.getElementById('tab-battle').style.display = 'block';
-            log("WARNING: Hostile signatures detected.");
+            log("WARNING: Hostile signatures detected. Conflict Protocol Active.");
         }
     }
 
-    // --- INTERACTION ---
+    // --- INTERACTION: RESEARCH ---
+    function research(project) {
+        if (project === 'hull1' && state.resources.intel >= state.costs.hull1 && state.inventory.hullMk === 0) {
+            state.resources.intel -= state.costs.hull1;
+            state.resources.maxHull += 50;
+            state.resources.hull = state.resources.maxHull; // Heal to new max
+            state.inventory.hullMk = 1;
+            document.getElementById('res-hull-1').style.display = 'none';
+            document.getElementById('res-filter-1').style.display = 'flex'; // Unlock next project
+            log("RESEARCH COMPLETE: Hull Integrity increased by 50. System fully healed.");
+        } else if (project === 'filter1' && state.resources.intel >= state.costs.filter1 && state.inventory.filterMk === 0) {
+             state.resources.intel -= state.costs.filter1;
+             state.inventory.filterMk = 1;
+             document.getElementById('res-filter-1').style.display = 'none';
+             log("RESEARCH COMPLETE: Advanced Filtering installed. Signal Daemon efficiency boosted.");
+        }
+        updateUI();
+    }
+
+
+    // --- INTERACTION: TASKS & DAEMONS ---
     function toggleTask(taskName) {
         if (state.activeTask === taskName) {
             state.activeTask = null; // Toggle Off
@@ -454,6 +510,7 @@
     function updateUI() {
         els.entropy.innerText = Math.max(0, state.resources.entropy).toFixed(1) + "%";
         
+        // Display Signal, round down for clean look
         els.signal.innerText = Math.floor(state.resources.signal);
         
         // Format Rates (Green for pos, Red for neg)
@@ -465,7 +522,7 @@
         els.rateIntel.innerText = `(+${state.rates.intel.toFixed(1)}/s)`;
 
         document.getElementById('res-hope').innerText = state.resources.hope;
-        document.getElementById('res-hull').innerText = state.resources.hull;
+        document.getElementById('res-hull').innerText = `${state.resources.hull}/${state.resources.maxHull}`;
 
         // Update Store Buttons
         const btnBuySignal = document.getElementById('btn-buy-signal-daemon');
@@ -480,6 +537,17 @@
             btnBuyIntel.innerText = `BUY (${state.inventory.intelDaemons}) - ${state.costs.intelDaemon} Signal`;
         }
         
+        // Update Research Buttons
+        const btnResearchHull = document.getElementById('btn-research-hull-1');
+        if (btnResearchHull) {
+            btnResearchHull.disabled = state.resources.intel < state.costs.hull1;
+        }
+
+        const btnResearchFilter = document.getElementById('btn-research-filter-1');
+        if (btnResearchFilter) {
+            btnResearchFilter.disabled = state.resources.intel < state.costs.filter1;
+        }
+        
         // Update Enemy HP if fighting
         if(state.enemy) {
              const hpPercent = (state.enemy.hp / state.enemy.maxHp) * 100;
@@ -491,16 +559,13 @@
     function switchTab(id) {
         document.querySelectorAll('.panel').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+        document.querySelector(`.tab[onclick="switchTab('${id}')"]`).classList.add('active');
         document.getElementById(`panel-${id}`).classList.add('active');
     }
-    // Quick fix for tab active state visual
-    document.querySelectorAll('.tab').forEach(t => {
-        t.addEventListener('click', function() {
-            document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
-            this.classList.add('active');
-        });
-    });
 
+    // Quick init call to set up environment
+    updateUI();
+    log("Initialization complete.");
 </script>
 </body>
 </html>
