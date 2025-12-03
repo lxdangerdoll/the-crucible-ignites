@@ -780,8 +780,7 @@
     }
 
     // GLOBAL UNLOCK FUNCTION (Fixed)
-    window.switchTab = switchTab; // Ensure global scope access
-
+    // We need to explicitly attach unlockClara to window
     window.unlockClara = function() {
         state.resources.signal = 10000;
         state.resources.intel = 10000;
@@ -791,6 +790,7 @@
         state.flags.claraUnlocked = true;
         state.inventory.claraOnline = true;
         
+        // Update display directly to ensure feedback even if UI update lags
         document.getElementById('clara-status').style.display = 'flex';
         document.getElementById('tab-btn-comms').style.display = 'block';
         document.getElementById('tab-btn-research').style.display = 'block';
@@ -799,6 +799,18 @@
         log("[SYSTEM]: GOD MODE ACTIVE. CLARA ONLINE.", true);
         updateUI();
     };
+
+    // Explicitly attach switchTab to window to fix reference error
+    window.switchTab = switchTab;
+    window.toggleTask = toggleTask;
+    window.buyDaemon = buyDaemon;
+    window.research = research;
+    window.triggerBattle = triggerBattle;
+    window.attackDecompile = attackDecompile;
+    window.defendFirewall = defendFirewall;
+    window.downloadLog = downloadLog;
+    window.handleChat = handleChat;
+
 
     updateUI();
     log("Initialization complete.");
