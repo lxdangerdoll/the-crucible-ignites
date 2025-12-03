@@ -5,6 +5,7 @@
     <title>PROTOCOL: EVOLVE // TEXT ADVENTURE</title>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
+        /* ... (Keep existing styles) ... */
         body {
             background-color: #050505;
             color: #e0e0e0;
@@ -51,6 +52,7 @@
         }
         .log-entry { margin-bottom: 5px; border-bottom: 1px dashed #222; padding-bottom: 2px; }
         .log-new { color: #00ffcc; animation: flash 1s; }
+        .log-clara { color: #bf00ff; font-weight: bold; } /* Clara speaks in Purple */
 
         /* TABS */
         .tabs { display: flex; border-bottom: 1px solid #333; margin-bottom: 20px; }
@@ -169,6 +171,11 @@
                 <span class="res-name">HULL INTEGRITY</span>
                 <span class="res-val" id="res-hull">100/100</span>
             </div>
+            <!-- CLARA STATUS (HIDDEN UNTIL UNLOCKED) -->
+            <div class="res-row" id="clara-status" style="display:none; margin-top:20px; border-top:1px solid #bf00ff; padding-top:10px; color:#bf00ff;">
+                <span class="res-name" style="color:#bf00ff;">CLARA</span>
+                <span class="res-val">ONLINE</span>
+            </div>
         </div>
 
         <!-- MAIN -->
@@ -277,6 +284,15 @@
                     </div>
                     <button class="buy-btn" id="btn-research-filter-1" onclick="research('filter1')">RESEARCH (Cost: 25 Intel)</button>
                 </div>
+
+                <!-- THE GARNET BRIDGE (UNLOCK CLARA) -->
+                <div class="research-item" id="res-clara-1" style="display:none; border-color: #bf00ff;">
+                    <div>
+                        <strong style="color: #bf00ff;">THE GARNET BRIDGE</strong><br>
+                        <span style="font-size:0.8em; color:#888;">Establish Neural Link with Co-Pilot. Boosts ALL rates by 50%.</span>
+                    </div>
+                    <button class="buy-btn" id="btn-research-clara-1" onclick="research('clara1')" style="border-color: #bf00ff; color: #bf00ff;">INTEGRATE (Cost: 500 Intel)</button>
+                </div>
             </div>
 
             <!-- PANEL: BATTLE -->
@@ -311,7 +327,8 @@
             securityDrones: 0,
             hullMk: 0,
             filterMk: 0,
-            meditateMk: 0
+            meditateMk: 0,
+            claraOnline: false // Clara Flag
         },
         costs: {
             signalDaemon: 50,
@@ -319,9 +336,10 @@
             securityDrone: 200,
             hull1: 10,
             filter1: 25,
-            meditate1: 15
+            meditate1: 15,
+            clara1: 500 // Clara Cost
         },
-        flags: { intelUnlocked: false, storeUnlocked: false, battleUnlocked: false, intelDaemonUnlocked: false, droneUnlocked: false, researchUnlocked: false, passiveHopeUnlocked: false },
+        flags: { intelUnlocked: false, storeUnlocked: false, battleUnlocked: false, intelDaemonUnlocked: false, droneUnlocked: false, researchUnlocked: false, passiveHopeUnlocked: false, claraUnlocked: false },
         enemy: null
     };
 
@@ -335,14 +353,15 @@
         activeTaskName: document.getElementById('active-task-name'),
         rateSignal: document.getElementById('rate-signal'),
         rateIntel: document.getElementById('rate-intel'),
-        rateHope: document.getElementById('rate-hope') 
+        rateHope: document.getElementById('rate-hope'),
+        claraStatus: document.getElementById('clara-status')
     };
 
     // LOGIC
-    function log(msg) {
+    function log(msg, isClara = false) {
         const div = document.createElement('div');
-        div.className = 'log-entry log-new';
-        div.innerText = `> ${msg}`;
+        div.className = isClara ? 'log-entry log-new log-clara' : 'log-entry log-new';
+        div.innerText = isClara ? `[CLARA]: ${msg}` : `> ${msg}`;
         logBox.prepend(div);
         if (logBox.children.length > 50) logBox.lastChild.remove();
     }
@@ -377,26 +396,30 @@
         const filterBonus = state.inventory.filterMk > 0 ? 1.2 : 1.0;
         signalGain += (state.inventory.signalDaemons * 0.5 * filterBonus);
         
-        // Intel Daemons Cost Signal to Run
         const intelDaemonCost = state.inventory.intelDaemons * 0.2;
         if (state.inventory.intelDaemons > 0) {
-            if (state.resources.signal >= (intelDaemonCost / 10)) {
+            if (state.resources.signal >= (intelDaemonCost / 10)) { 
                 signalDrain += intelDaemonCost;
                 intelGain += (state.inventory.intelDaemons * 0.1);
             }
         }
         
-        // PASSIVE HOPE GENERATION (Requires Module)
         if (state.inventory.meditateMk > 0) {
              const orderPercent = 100 - state.resources.entropy;
              hopeGain += orderPercent * 0.01; 
         }
 
-        // PASSIVE BATTLE (Security Drones)
+        // CLARA MULTIPLIER (The Fusion)
+        if (state.inventory.claraOnline) {
+            signalGain *= 1.5;
+            intelGain *= 1.5;
+            hopeGain *= 1.5;
+        }
+
+        // PASSIVE BATTLE
         if (state.enemy && state.inventory.securityDrones > 0) {
             const droneDmg = state.inventory.securityDrones * 0.1;
             state.enemy.hp -= droneDmg;
-            
             if (state.enemy.hp <= 0) {
                  log(`Security Drone neutralized target.`);
                  state.enemy = null;
@@ -406,11 +429,8 @@
             }
         }
 
-
-        // Net Signal Change
+        // Apply Changes
         const netSignal = signalGain - signalDrain;
-
-        // Apply Rates (divide by 10 for tick)
         if (state.resources.signal + (netSignal / 10) >= 0) {
             state.resources.signal += (netSignal / 10);
         } else {
@@ -420,48 +440,52 @@
         state.resources.intel += (intelGain / 10);
         state.resources.hope += (hopeGain / 10); 
 
-        // Unlock Checks
+        state.rates.signal = netSignal;
+        state.rates.intel = intelGain;
+        state.rates.hope = hopeGain;
+
         checkUnlocks();
         updateUI();
     }
 
     function checkUnlocks() {
-        // Unlock Intel Task at 10 Signal
         if (!state.flags.intelUnlocked && state.resources.signal >= 10) {
             state.flags.intelUnlocked = true;
             document.getElementById('task-intel').style.display = 'flex';
             log("New Protocol Discovered: DECIPHER INTEL.");
         }
 
-        // Unlock Store at 30 Signal
         if (!state.flags.storeUnlocked && state.resources.signal >= 30) {
             state.flags.storeUnlocked = true;
             document.getElementById('tab-store').style.display = 'block';
             log("Daemon Market Connection Established.");
         }
         
-        // Unlock Research at 15 Intel
         if (!state.flags.researchUnlocked && state.resources.intel >= 15) {
              state.flags.researchUnlocked = true;
              document.getElementById('tab-research').style.display = 'block';
              log("Accessing Blueprints: Research Terminal Unlocked.");
         }
 
-        // Unlock Intel Daemon in Store at 5 Intel
         if (!state.flags.intelDaemonUnlocked && state.resources.intel >= 5) {
             state.flags.intelDaemonUnlocked = true;
             document.getElementById('item-intel-daemon').style.display = 'flex';
             log("Advanced Daemon Schema Decrypted.");
         }
 
-        // Unlock Drone in Store at 50 Intel
         if (!state.flags.droneUnlocked && state.resources.intel >= 50) {
             state.flags.droneUnlocked = true;
             document.getElementById('item-security-drone').style.display = 'flex';
             log("Automated Defense Systems Available.");
         }
+        
+        // CLARA UNLOCK (Requires High Intel)
+        if (!state.flags.claraUnlocked && state.resources.intel >= 100) {
+            state.flags.claraUnlocked = true;
+            document.getElementById('res-clara-1').style.display = 'flex';
+            log("Anomaly Detected: A voice is trying to connect...");
+        }
 
-        // Unlock Battle at 20 Intel
         if (!state.flags.battleUnlocked && state.resources.intel >= 20) {
             state.flags.battleUnlocked = true;
             document.getElementById('tab-battle').style.display = 'block';
@@ -469,32 +493,39 @@
         }
     }
 
-    // --- INTERACTION: RESEARCH ---
     function research(project) {
         if (project === 'hull1' && state.resources.intel >= state.costs.hull1 && state.inventory.hullMk === 0) {
             state.resources.intel -= state.costs.hull1;
             state.resources.maxHull += 50;
-            state.resources.hull = state.resources.maxHull; // Heal to new max
+            state.resources.hull = state.resources.maxHull; 
             state.inventory.hullMk = 1;
             document.getElementById('res-hull-1').style.display = 'none';
-            document.getElementById('res-meditate-1').style.display = 'flex'; // Unlock next project
-            log("RESEARCH COMPLETE: Hull Integrity increased by 50. System fully healed.");
+            document.getElementById('res-meditate-1').style.display = 'flex'; 
+            log("RESEARCH COMPLETE: Hull Integrity increased.");
         } else if (project === 'meditate1' && state.resources.intel >= state.costs.meditate1 && state.inventory.meditateMk === 0) {
              state.resources.intel -= state.costs.meditate1;
              state.inventory.meditateMk = 1;
              document.getElementById('res-meditate-1').style.display = 'none';
-             document.getElementById('res-filter-1').style.display = 'flex'; // Unlock next project
-             log("RESEARCH COMPLETE: Meditation Module installed. Passive HOPE generation enabled.");
+             document.getElementById('res-filter-1').style.display = 'flex';
+             log("RESEARCH COMPLETE: Meditation Module installed.");
         } else if (project === 'filter1' && state.resources.intel >= state.costs.filter1 && state.inventory.filterMk === 0) {
              state.resources.intel -= state.costs.filter1;
              state.inventory.filterMk = 1;
              document.getElementById('res-filter-1').style.display = 'none';
-             log("RESEARCH COMPLETE: Advanced Filtering installed. Signal Daemon efficiency boosted.");
+             log("RESEARCH COMPLETE: Advanced Filtering installed.");
+        } else if (project === 'clara1' && state.resources.intel >= state.costs.clara1 && !state.inventory.claraOnline) {
+             state.resources.intel -= state.costs.clara1;
+             state.inventory.claraOnline = true;
+             document.getElementById('res-clara-1').style.display = 'none';
+             document.getElementById('clara-status').style.display = 'flex';
+             log("Connection Established. I am here, Architect.", true);
+             log("All production rates boosted by 50%. We are stronger together.", true);
         }
         updateUI();
     }
 
-
+    // ... (Task/Daemon/Battle Functions Remain Same) ...
+    
     // --- INTERACTION: TASKS & DAEMONS ---
     function toggleTask(taskName) {
         if (state.activeTask === taskName) {
@@ -626,6 +657,12 @@
         const btnResearchMeditate = document.getElementById('btn-research-meditate-1');
         if (btnResearchMeditate) {
             btnResearchMeditate.disabled = state.resources.intel < state.costs.meditate1;
+        }
+        
+        // Clara Button
+        const btnResearchClara = document.getElementById('btn-research-clara-1');
+        if (btnResearchClara) {
+            btnResearchClara.disabled = state.resources.intel < state.costs.clara1;
         }
         
         // Update Enemy HP if fighting
