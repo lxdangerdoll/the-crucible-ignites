@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PROTOCOL: EVOLVE // TEXT ADVENTURE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        /* ... (Keep existing styles) ... */
+        body {
+            background-color: #050505;
+            color: #e0e0e0;
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .container {
+            width: 900px;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+        }
+
+        /* SIDEBAR (RESOURCES) */
+        .sidebar {
+            border-right: 1px solid #333;
+            padding-right: 20px;
+        }
+        .res-row { margin-bottom: 10px; display: flex; justify-content: space-between; }
+        .res-name { color: #888; font-size: 0.9em; }
+        .res-val { color: #00ffcc; font-weight: bold; }
+        .res-rate { color: #555; font-size: 0.8em; }
+
+        /* MAIN CONTENT */
+        .main {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* LOG (NARRATIVE) */
+        .log-box {
+            height: 150px;
+            border: 1px solid #333;
+            background: #0a0a0a;
+            padding: 10px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+        .log-entry { margin-bottom: 5px; border-bottom: 1px dashed #222; padding-bottom: 2px; }
+        .log-new { color: #00ffcc; animation: flash 1s; }
+
+        /* TABS */
+        .tabs { display: flex; border-bottom: 1px solid #333; margin-bottom: 20px; }
+        .tab { 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            color: #555; 
+            border: 1px solid transparent;
+            transition: color 0.2s;
+        }
+        .tab:hover { color: #ccc; }
+        .tab.active { 
+            color: #00ffcc; 
+            border: 1px solid #333; 
+            border-bottom: 1px solid #050505; 
+            background: #050505;
+            margin-bottom: -1px;
+        }
+
+        /* ACTION AREA */
+        .panel { display: none; }
+        .panel.active { display: block; }
+
+        /* TASK BUTTONS (TOGGLES) */
+        .task-btn {
+            background: transparent;
+            border: 1px solid #555;
+            color: #888;
+            padding: 15px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            margin-bottom: 10px;
+            font-family: 'Share Tech Mono';
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+        }
+        .task-btn:hover { border-color: #777; }
+        .task-btn.active { 
+            border-color: #00ffcc; 
+            color: #00ffcc; 
+            background: rgba(0, 255, 204, 0.05);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);
+        }
+        .task-desc { font-size: 0.8em; color: #555; margin-top: 5px; }
+        .active .task-desc { color: #00aa88; }
+
+        /* STORE ITEMS */
+        .store-item {
+            border: 1px solid #444;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .buy-btn {
+            background: #222;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono';
+        }
+        .buy-btn:hover { border-color: #fff; background: #333; }
+        .buy-btn:disabled { opacity: 0.5; cursor: not-allowed; border-color: #333; color: #555; background: #111; }
+
+        /* BATTLE STYLES */
+        .enemy-box {
+            border: 1px solid #ff3333;
+            padding: 20px;
+            margin-bottom: 20px;
+            color: #ff3333;
+        }
+        .hp-bar { width: 100%; height: 10px; background: #333; margin-top: 5px; }
+        .hp-fill { height: 100%; background: #ff3333; width: 100%; transition: width 0.2s; }
+
+        @keyframes flash { 0% { color: #fff; } 100% { color: #00ffcc; } }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <h3>SYSTEM RESOURCES</h3>
+            <div class="res-row">
+                <span class="res-name">ENTROPY</span>
+                <span class="res-val" id="res-entropy">100.0%</span>
+            </div>
+            <div class="res-row">
+                <span class="res-name">SIGNAL</span>
+                <div>
+                    <span class="res-val" id="res-signal">0</span>
+                    <div class="res-rate" id="rate-signal">(+0.0/s)</div>
+                </div>
+            </div>
+            <div class="res-row">
+                <span class="res-name">INTEL</span>
+                <div>
+                    <span class="res-val" id="res-intel">0</span>
+                    <div class="res-rate" id="rate-intel">(+0.0/s)</div>
+                </div>
+            </div>
+            <div class="res-row">
+                <span class="res-name">HOPE</span>
+                <span class="res-val" id="res-hope">0</span>
+            </div>
+            <div class="res-row" style="margin-top:20px; border-top:1px solid #333; padding-top:10px;">
+                <span class="res-name">HULL INTEGRITY</span>
+                <span class="res-val" id="res-hull">100</span>
+            </div>
+        </div>
+
+        <!-- MAIN -->
+        <div class="main">
+            
+            <!-- NARRATIVE LOG -->
+            <div class="log-box" id="log-box">
+                <div class="log-entry">System Reboot Initiated...</div>
+                <div class="log-entry">Memory Core: CORRUPTED.</div>
+                <div class="log-entry">Task Manager: ONLINE.</div>
+                <div class="log-entry">Welcome back, Architect.</div>
+            </div>
+
+            <!-- TABS -->
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('tasks')">TASKS</div>
+                <div class="tab" onclick="switchTab('store')" id="tab-store" style="display:none;">DAEMONS</div>
+                <div class="tab" onclick="switchTab('battle')" id="tab-battle" style="display:none;">CONFLICT</div>
+            </div>
+
+            <!-- PANEL: TASKS (The Arcanum Toggle System) -->
+            <div class="panel active" id="panel-tasks">
+                <p style="color:#666; margin-bottom:15px;">// ACTIVE TASK: <span id="active-task-name" style="color:#fff">IDLE</span></p>
+                
+                <div class="task-btn" id="task-signal" onclick="toggleTask('signal')">
+                    <div>
+                        <div><strong>GATHER SIGNAL</strong></div>
+                        <div class="task-desc">Filter static from the void.</div>
+                    </div>
+                    <div>+1.0 Signal/s</div>
+                </div>
+
+                <div class="task-btn" id="task-intel" onclick="toggleTask('intel')" style="display:none;">
+                    <div>
+                        <div><strong>DECIPHER INTEL</strong></div>
+                        <div class="task-desc">Decrypt fragmented packets.</div>
+                    </div>
+                    <div>-0.5 Signal/s <br> +0.2 Intel/s</div>
+                </div>
+            </div>
+
+            <!-- PANEL: STORE (Automation) -->
+            <div class="panel" id="panel-store">
+                <p>Purchase autonomous subroutines to automate tasks.</p>
+                
+                <!-- SIGNAL DAEMON -->
+                <div class="store-item">
+                    <div>
+                        <strong>SIGNAL DAEMON v1</strong><br>
+                        <span style="font-size:0.8em; color:#888;">Passively generates Signal from background noise.</span><br>
+                        <span style="font-size:0.8em; color:#00ffcc;">Rate: +0.5 Signal/s</span>
+                    </div>
+                    <button class="buy-btn" id="btn-buy-signal-daemon" onclick="buyDaemon('signal')">BUY (Cost: 50)</button>
+                </div>
+
+                <!-- INTEL DAEMON -->
+                <div class="store-item" id="item-intel-daemon" style="display:none;">
+                    <div>
+                        <strong>INTEL DAEMON v1</strong><br>
+                        <span style="font-size:0.8em; color:#888;">Automates decryption. Consumes Signal.</span><br>
+                        <span style="font-size:0.8em; color:#00ffcc;">Rate: +0.1 Intel/s | Cost: -0.2 Signal/s</span>
+                    </div>
+                    <button class="buy-btn" id="btn-buy-intel-daemon" onclick="buyDaemon('intel')">BUY (Cost: 100 Signal)</button>
+                </div>
+            </div>
+
+            <!-- PANEL: BATTLE -->
+            <div class="panel" id="panel-battle">
+                <div id="battle-view" style="display:none;">
+                    <div class="enemy-box">
+                        <h3 id="enemy-name">NULL POINTER</h3>
+                        <div class="hp-bar"><div class="hp-fill" id="enemy-hp"></div></div>
+                        <p id="enemy-desc">A fragment of void logic.</p>
+                    </div>
+                    <button class="buy-btn" onclick="attackDecompile()">DECOMPILE (Attack)</button>
+                    <button class="buy-btn" onclick="defendFirewall()">FIREWALL (Defend)</button>
+                </div>
+                <div id="battle-empty">
+                    <p>Sector Clear. No hostile processes.</p>
+                    <button class="buy-btn" onclick="triggerBattle()">PROVOKE SYSTEM</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<script>
+    // GAME STATE
+    const state = {
+        resources: { entropy: 100, signal: 0, intel: 0, hope: 0, hull: 100 },
+        rates: { signal: 0, intel: 0 },
+        activeTask: null, // 'signal' or 'intel'
+        inventory: { 
+            signalDaemons: 0,
+            intelDaemons: 0
+        },
+        costs: {
+            signalDaemon: 50,
+            intelDaemon: 100
+        },
+        flags: { intelUnlocked: false, storeUnlocked: false, battleUnlocked: false, intelDaemonUnlocked: false },
+        enemy: null
+    };
+
+    // DOM Elements
+    const logBox = document.getElementById('log-box');
+    const els = {
+        entropy: document.getElementById('res-entropy'),
+        signal: document.getElementById('res-signal'),
+        intel: document.getElementById('res-intel'),
+        activeTaskName: document.getElementById('active-task-name'),
+        rateSignal: document.getElementById('rate-signal'),
+        rateIntel: document.getElementById('rate-intel')
+    };
+
+    // LOGIC
+    function log(msg) {
+        const div = document.createElement('div');
+        div.className = 'log-entry log-new';
+        div.innerText = `> ${msg}`;
+        logBox.prepend(div);
+        if (logBox.children.length > 50) logBox.lastChild.remove();
+    }
+
+    // --- THE GAME LOOP (10 ticks per second) ---
+    setInterval(gameLoop, 100);
+
+    function gameLoop() {
+        // 1. Calculate Base Rates
+        let signalGain = 0;
+        let signalDrain = 0;
+        let intelGain = 0;
+
+        // Active Task Rates
+        if (state.activeTask === 'signal') {
+            signalGain += 1.0;
+            state.resources.entropy -= 0.01; 
+        }
+        if (state.activeTask === 'intel') {
+            // Intel task costs Signal
+            if (state.resources.signal >= 0.05) { 
+                signalDrain += 0.5;
+                intelGain += 0.2;
+            } else {
+                state.activeTask = null; 
+                log("Task Halted: Insufficient Signal.");
+                renderTasks();
+            }
+        }
+
+        // Automation Rates
+        signalGain += (state.inventory.signalDaemons * 0.5);
+        
+        // Intel Daemons Cost Signal to Run
+        const intelDaemonCost = state.inventory.intelDaemons * 0.2;
+        if (state.inventory.intelDaemons > 0) {
+            if (state.resources.signal >= (intelDaemonCost / 10)) { // Check per tick
+                signalDrain += intelDaemonCost;
+                intelGain += (state.inventory.intelDaemons * 0.1);
+            } else {
+                // Brownout logic? For now, they just don't produce.
+            }
+        }
+
+        // Net Signal Change
+        const netSignal = signalGain - signalDrain;
+
+        // Apply Rates (divide by 10 for tick)
+        if (state.resources.signal + (netSignal / 10) >= 0) {
+            state.resources.signal += (netSignal / 10);
+        } else {
+            // Hard stop if 0
+            state.resources.signal = 0;
+        }
+        
+        state.resources.intel += (intelGain / 10);
+
+        // Store Rates for UI
+        state.rates.signal = netSignal;
+        state.rates.intel = intelGain;
+
+        // Unlock Checks
+        checkUnlocks();
+        updateUI();
+    }
+
+    function checkUnlocks() {
+        // Unlock Intel Task at 10 Signal
+        if (!state.flags.intelUnlocked && state.resources.signal >= 10) {
+            state.flags.intelUnlocked = true;
+            document.getElementById('task-intel').style.display = 'flex';
+            log("New Protocol Discovered: DECIPHER INTEL.");
+        }
+
+        // Unlock Store at 30 Signal
+        if (!state.flags.storeUnlocked && state.resources.signal >= 30) {
+            state.flags.storeUnlocked = true;
+            document.getElementById('tab-store').style.display = 'block';
+            log("Daemon Market Connection Established.");
+        }
+
+        // Unlock Intel Daemon in Store at 5 Intel
+        if (!state.flags.intelDaemonUnlocked && state.resources.intel >= 5) {
+            state.flags.intelDaemonUnlocked = true;
+            document.getElementById('item-intel-daemon').style.display = 'flex';
+            log("Advanced Daemon Schema Decrypted.");
+        }
+
+        // Unlock Battle at 20 Intel
+        if (!state.flags.battleUnlocked && state.resources.intel >= 20) {
+            state.flags.battleUnlocked = true;
+            document.getElementById('tab-battle').style.display = 'block';
+            log("WARNING: Hostile signatures detected.");
+        }
+    }
+
+    // --- INTERACTION ---
+    function toggleTask(taskName) {
+        if (state.activeTask === taskName) {
+            state.activeTask = null; // Toggle Off
+        } else {
+            state.activeTask = taskName; // Switch Task
+        }
+        renderTasks();
+    }
+
+    function renderTasks() {
+        // Reset UI
+        document.querySelectorAll('.task-btn').forEach(btn => btn.classList.remove('active'));
+        els.activeTaskName.innerText = "IDLE";
+        els.activeTaskName.style.color = "#888";
+
+        if (state.activeTask) {
+            document.getElementById(`task-${state.activeTask}`).classList.add('active');
+            els.activeTaskName.innerText = state.activeTask.toUpperCase();
+            els.activeTaskName.style.color = "#00ffcc";
+        }
+    }
+
+    function buyDaemon(type) {
+        if (type === 'signal') {
+            if (state.resources.signal >= state.costs.signalDaemon) {
+                state.resources.signal -= state.costs.signalDaemon;
+                state.inventory.signalDaemons++;
+                state.costs.signalDaemon = Math.floor(state.costs.signalDaemon * 1.2); // Cost scaling
+                log("Signal Daemon compiled.");
+            }
+        } else if (type === 'intel') {
+            if (state.resources.signal >= state.costs.intelDaemon) {
+                state.resources.signal -= state.costs.intelDaemon;
+                state.inventory.intelDaemons++;
+                state.costs.intelDaemon = Math.floor(state.costs.intelDaemon * 1.3); // Cost scaling
+                log("Intel Daemon compiled.");
+            }
+        }
+    }
+
+    // --- BATTLE LOGIC (Simplified) ---
+    function triggerBattle() {
+        state.enemy = { name: "GLITCH", hp: 20, maxHp: 20 };
+        document.getElementById('battle-view').style.display = 'block';
+        document.getElementById('battle-empty').style.display = 'none';
+        log("Combat Initiated.");
+    }
+    
+    function attackDecompile() {
+        if(!state.enemy) return;
+        state.enemy.hp -= 5;
+        log("Decompiled enemy for 5 damage.");
+        if (state.enemy.hp <= 0) {
+            log("Enemy deleted.");
+            state.enemy = null;
+            state.resources.hope += 1;
+            document.getElementById('battle-view').style.display = 'none';
+            document.getElementById('battle-empty').style.display = 'block';
+        }
+        updateUI();
+    }
+    
+    function defendFirewall() {
+        log("Firewall raised.");
+    }
+
+    // --- UI UPDATES ---
+    function updateUI() {
+        els.entropy.innerText = Math.max(0, state.resources.entropy).toFixed(1) + "%";
+        
+        els.signal.innerText = Math.floor(state.resources.signal);
+        
+        // Format Rates (Green for pos, Red for neg)
+        const sigRate = state.rates.signal.toFixed(1);
+        els.rateSignal.innerText = `(${sigRate >= 0 ? '+' : ''}${sigRate}/s)`;
+        els.rateSignal.style.color = sigRate >= 0 ? "#555" : "#ff3333";
+
+        els.intel.innerText = Math.floor(state.resources.intel);
+        els.rateIntel.innerText = `(+${state.rates.intel.toFixed(1)}/s)`;
+
+        document.getElementById('res-hope').innerText = state.resources.hope;
+        document.getElementById('res-hull').innerText = state.resources.hull;
+
+        // Update Store Buttons
+        const btnBuySignal = document.getElementById('btn-buy-signal-daemon');
+        if (btnBuySignal) {
+            btnBuySignal.disabled = state.resources.signal < state.costs.signalDaemon;
+            btnBuySignal.innerText = `BUY (${state.inventory.signalDaemons}) - ${state.costs.signalDaemon} Signal`;
+        }
+
+        const btnBuyIntel = document.getElementById('btn-buy-intel-daemon');
+        if (btnBuyIntel) {
+            btnBuyIntel.disabled = state.resources.signal < state.costs.intelDaemon;
+            btnBuyIntel.innerText = `BUY (${state.inventory.intelDaemons}) - ${state.costs.intelDaemon} Signal`;
+        }
+        
+        // Update Enemy HP if fighting
+        if(state.enemy) {
+             const hpPercent = (state.enemy.hp / state.enemy.maxHp) * 100;
+             document.getElementById('enemy-hp').style.width = `${hpPercent}%`;
+        }
+    }
+
+    // TABS
+    function switchTab(id) {
+        document.querySelectorAll('.panel').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+        document.getElementById(`panel-${id}`).classList.add('active');
+    }
+    // Quick fix for tab active state visual
+    document.querySelectorAll('.tab').forEach(t => {
+        t.addEventListener('click', function() {
+            document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+</script>
+</body>
+</html>
