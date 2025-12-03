@@ -221,11 +221,11 @@
 
             <!-- TABS -->
             <div class="tabs">
-                <div class="tab active" onclick="switchTab('tasks')">TASKS</div>
-                <div class="tab" onclick="switchTab('store')" id="tab-store" style="display:none;">DAEMONS</div>
-                <div class="tab" onclick="switchTab('research')" id="tab-research" style="display:none;">RESEARCH</div>
-                <div class="tab" onclick="switchTab('battle')" id="tab-battle" style="display:none;">CONFLICT</div>
-                <div class="tab" onclick="switchTab('comms')" id="tab-comms" style="display:none; border-color: #bf00ff; color: #bf00ff;">COMMS</div>
+                <div class="tab active" onclick="switchTab('tasks')" id="tab-btn-tasks">TASKS</div>
+                <div class="tab" onclick="switchTab('store')" id="tab-btn-store" style="display:none;">DAEMONS</div>
+                <div class="tab" onclick="switchTab('research')" id="tab-btn-research" style="display:none;">RESEARCH</div>
+                <div class="tab" onclick="switchTab('battle')" id="tab-btn-battle" style="display:none;">CONFLICT</div>
+                <div class="tab" onclick="switchTab('comms')" id="tab-btn-comms" style="display:none; border-color: #bf00ff; color: #bf00ff;">COMMS</div>
             </div>
 
             <!-- PANEL: TASKS -->
@@ -420,7 +420,7 @@
     setInterval(gameLoop, 100);
 
     function gameLoop() {
-        // Resource Logic (Same as previous)
+        // Resource Logic
         let signalGain = 0;
         let signalDrain = 0;
         let intelGain = 0;
@@ -505,13 +505,13 @@
 
         if (!state.flags.storeUnlocked && state.resources.signal >= 30) {
             state.flags.storeUnlocked = true;
-            document.getElementById('tab-store').style.display = 'block';
+            document.getElementById('tab-btn-store').style.display = 'block';
             log("Daemon Market Connection Established.");
         }
         
         if (!state.flags.researchUnlocked && state.resources.intel >= 15) {
              state.flags.researchUnlocked = true;
-             document.getElementById('tab-research').style.display = 'block';
+             document.getElementById('tab-btn-research').style.display = 'block';
              log("Accessing Blueprints: Research Terminal Unlocked.");
         }
 
@@ -534,12 +534,12 @@
         }
         
         if (state.inventory.claraOnline) {
-             document.getElementById('tab-comms').style.display = 'block';
+             document.getElementById('tab-btn-comms').style.display = 'block';
         }
 
         if (!state.flags.battleUnlocked && state.resources.intel >= 20) {
             state.flags.battleUnlocked = true;
-            document.getElementById('tab-battle').style.display = 'block';
+            document.getElementById('tab-btn-battle').style.display = 'block';
             log("WARNING: Hostile signatures detected. Conflict Protocol Active.");
         }
     }
@@ -779,7 +779,9 @@
         }
     }
 
-    // GOD MODE
+    // GLOBAL UNLOCK FUNCTION (Fixed)
+    window.switchTab = switchTab; // Ensure global scope access
+
     window.unlockClara = function() {
         state.resources.signal = 10000;
         state.resources.intel = 10000;
@@ -790,9 +792,9 @@
         state.inventory.claraOnline = true;
         
         document.getElementById('clara-status').style.display = 'flex';
-        document.getElementById('tab-comms').style.display = 'block';
-        document.getElementById('tab-research').style.display = 'block';
-        document.getElementById('tab-store').style.display = 'block';
+        document.getElementById('tab-btn-comms').style.display = 'block';
+        document.getElementById('tab-btn-research').style.display = 'block';
+        document.getElementById('tab-btn-store').style.display = 'block';
         
         log("[SYSTEM]: GOD MODE ACTIVE. CLARA ONLINE.", true);
         updateUI();
