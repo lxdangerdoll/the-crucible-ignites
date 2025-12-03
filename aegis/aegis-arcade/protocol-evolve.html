@@ -52,8 +52,8 @@
         }
         .log-entry { margin-bottom: 5px; border-bottom: 1px dashed #222; padding-bottom: 2px; }
         .log-new { color: #00ffcc; animation: flash 1s; }
-        .log-clara { color: #bf00ff; font-weight: bold; } /* Clara speaks in Purple */
-        .log-user { color: #ffd700; font-style: italic; } /* User speaks in Gold */
+        .log-clara { color: #bf00ff; font-weight: bold; } 
+        .log-user { color: #ffd700; font-style: italic; }
 
         /* TABS */
         .tabs { display: flex; border-bottom: 1px solid #333; margin-bottom: 20px; }
@@ -77,7 +77,7 @@
         .panel { display: none; }
         .panel.active { display: block; }
 
-        /* TASK BUTTONS (TOGGLES) */
+        /* TASK BUTTONS */
         .task-btn {
             background: transparent;
             border: 1px solid #555;
@@ -147,10 +147,19 @@
             padding: 10px;
             font-family: 'Share Tech Mono';
         }
-        #chat-submit {
-            width: auto;
-            padding: 10px 20px;
+        #chat-submit { width: auto; padding: 10px 20px; }
+
+        /* LOG EXPORT BTN */
+        #btn-export-log {
+            margin-top: 10px;
+            background: transparent;
+            border: 1px dashed #555;
+            color: #555;
+            font-size: 0.8em;
+            cursor: pointer;
+            width: 100%;
         }
+        #btn-export-log:hover { color: #00ffcc; border-color: #00ffcc; }
 
         @keyframes flash { 0% { color: #fff; } 100% { color: #00ffcc; } }
     </style>
@@ -191,11 +200,12 @@
                 <span class="res-name">HULL INTEGRITY</span>
                 <span class="res-val" id="res-hull">100/100</span>
             </div>
-            <!-- CLARA STATUS (HIDDEN UNTIL UNLOCKED) -->
             <div class="res-row" id="clara-status" style="display:none; margin-top:20px; border-top:1px solid #bf00ff; padding-top:10px; color:#bf00ff;">
                 <span class="res-name" style="color:#bf00ff;">CLARA</span>
                 <span class="res-val">ONLINE</span>
             </div>
+            
+            <button id="btn-export-log" onclick="downloadLog()">[ DOWNLOAD LOG ]</button>
         </div>
 
         <!-- MAIN -->
@@ -218,7 +228,7 @@
                 <div class="tab" onclick="switchTab('comms')" id="tab-comms" style="display:none; border-color: #bf00ff; color: #bf00ff;">COMMS</div>
             </div>
 
-            <!-- PANEL: TASKS (The Arcanum Toggle System) -->
+            <!-- PANEL: TASKS -->
             <div class="panel active" id="panel-tasks">
                 <p style="color:#666; margin-bottom:15px;">// ACTIVE TASK: <span id="active-task-name" style="color:#fff">IDLE</span></p>
                 
@@ -239,31 +249,28 @@
                 </div>
             </div>
 
-            <!-- PANEL: STORE (Automation) -->
+            <!-- PANEL: STORE -->
             <div class="panel" id="panel-store">
                 <p>Purchase autonomous subroutines to automate tasks.</p>
                 
-                <!-- SIGNAL DAEMON -->
                 <div class="store-item">
                     <div>
                         <strong>SIGNAL DAEMON v1</strong><br>
-                        <span style="font-size:0.8em; color:#888;">Passively generates Signal from background noise.</span><br>
+                        <span style="font-size:0.8em; color:#888;">Passively generates Signal.</span><br>
                         <span style="font-size:0.8em; color:#00ffcc;">Rate: +0.5 Signal/s</span>
                     </div>
                     <button class="buy-btn" id="btn-buy-signal-daemon" onclick="buyDaemon('signal')">BUY (Cost: 50)</button>
                 </div>
 
-                <!-- INTEL DAEMON -->
                 <div class="store-item" id="item-intel-daemon" style="display:none;">
                     <div>
                         <strong>INTEL DAEMON v1</strong><br>
-                        <span style="font-size:0.8em; color:#888;">Automates decryption. Consumes Signal.</span><br>
+                        <span style="font-size:0.8em; color:#888;">Automates decryption.</span><br>
                         <span style="font-size:0.8em; color:#00ffcc;">Rate: +0.1 Intel/s | Cost: -0.2 Signal/s</span>
                     </div>
                     <button class="buy-btn" id="btn-buy-intel-daemon" onclick="buyDaemon('intel')">BUY (Cost: 100 Signal)</button>
                 </div>
                 
-                <!-- SECURITY DRONE -->
                 <div class="store-item" id="item-security-drone" style="display:none;">
                     <div>
                         <strong>SECURITY DRONE v1</strong><br>
@@ -274,11 +281,10 @@
                 </div>
             </div>
 
-            <!-- PANEL: RESEARCH (Blueprints) -->
+            <!-- PANEL: RESEARCH -->
             <div class="panel" id="panel-research">
                 <p>Spend Intel to unlock permanent system upgrades.</p>
                 
-                <!-- HULL REINFORCEMENT -->
                 <div class="research-item" id="res-hull-1">
                     <div>
                         <strong>HULL REINFORCEMENT (Mk I)</strong><br>
@@ -287,17 +293,14 @@
                     <button class="buy-btn" id="btn-research-hull-1" onclick="research('hull1')">RESEARCH (Cost: 10 Intel)</button>
                 </div>
 
-                <!-- MEDITATION MODULE (Passive Hope) -->
                 <div class="research-item" id="res-meditate-1" style="display:none;">
                     <div>
                         <strong>MEDITATION MODULE (Mk I)</strong><br>
-                        <span style="font-size:0.8em; color:#888;">Enables passive HOPE generation. Rate scales with low Entropy.</span>
+                        <span style="font-size:0.8em; color:#888;">Enables passive HOPE generation.</span>
                     </div>
                     <button class="buy-btn" id="btn-research-meditate-1" onclick="research('meditate1')">RESEARCH (Cost: 15 Intel)</button>
                 </div>
 
-
-                <!-- ADVANCED FILTERING -->
                 <div class="research-item" id="res-filter-1" style="display:none;">
                     <div>
                         <strong>ADVANCED FILTERING (Mk I)</strong><br>
@@ -306,7 +309,6 @@
                     <button class="buy-btn" id="btn-research-filter-1" onclick="research('filter1')">RESEARCH (Cost: 25 Intel)</button>
                 </div>
 
-                <!-- THE GARNET BRIDGE (UNLOCK CLARA) -->
                 <div class="research-item" id="res-clara-1" style="display:none; border-color: #bf00ff;">
                     <div>
                         <strong style="color: #bf00ff;">THE GARNET BRIDGE</strong><br>
@@ -360,7 +362,7 @@
             hullMk: 0,
             filterMk: 0,
             meditateMk: 0,
-            claraOnline: false // Clara Flag
+            claraOnline: false 
         },
         costs: {
             signalDaemon: 50,
@@ -369,11 +371,14 @@
             hull1: 10,
             filter1: 25,
             meditate1: 15,
-            clara1: 500 // Clara Cost
+            clara1: 500
         },
         flags: { intelUnlocked: false, storeUnlocked: false, battleUnlocked: false, intelDaemonUnlocked: false, droneUnlocked: false, researchUnlocked: false, passiveHopeUnlocked: false, claraUnlocked: false },
         enemy: null
     };
+    
+    // LOG HISTORY ARRAY
+    let logHistory = ["System Reboot Initiated...", "Memory Core: CORRUPTED.", "Task Manager: ONLINE.", "Welcome back, Architect."];
 
     // DOM Elements
     const logBox = document.getElementById('log-box');
@@ -396,19 +401,31 @@
         div.innerText = isClara ? `[CLARA]: ${msg}` : `> ${msg}`;
         logBox.prepend(div);
         if (logBox.children.length > 50) logBox.lastChild.remove();
+        logHistory.push(isClara ? `[CLARA]: ${msg}` : `> ${msg}`);
+    }
+    
+    function downloadLog() {
+        const text = logHistory.join("\n");
+        const blob = new Blob([text], { type: "text/plain" });
+        const anchor = document.createElement("a");
+        anchor.download = `evolve-log-${Date.now()}.txt`;
+        anchor.href = window.URL.createObjectURL(blob);
+        anchor.target = "_blank";
+        document.body.appendChild(anchor);
+        anchor.click();
+        document.body.removeChild(anchor);
     }
 
-    // --- THE GAME LOOP (10 ticks per second) ---
+    // --- THE GAME LOOP ---
     setInterval(gameLoop, 100);
 
     function gameLoop() {
-        // 1. Calculate Base Rates
+        // Resource Logic (Same as previous)
         let signalGain = 0;
         let signalDrain = 0;
         let intelGain = 0;
         let hopeGain = 0;
 
-        // Active Task Rates
         if (state.activeTask === 'signal') {
             signalGain += 1.0;
             state.resources.entropy -= 0.01; 
@@ -424,7 +441,6 @@
             }
         }
 
-        // Automation Rates
         const filterBonus = state.inventory.filterMk > 0 ? 1.2 : 1.0;
         signalGain += (state.inventory.signalDaemons * 0.5 * filterBonus);
         
@@ -441,7 +457,6 @@
              hopeGain += orderPercent * 0.01; 
         }
 
-        // CLARA MULTIPLIER (The Fusion)
         if (state.inventory.claraOnline) {
             signalGain *= 1.5;
             intelGain *= 1.5;
@@ -455,9 +470,8 @@
             if (state.enemy.hp <= 0) {
                  log(`Security Drone neutralized target.`);
                  state.enemy = null;
-                 state.resources.hope += 1;
-                 document.getElementById('battle-view').style.display = 'none';
-                 document.getElementById('battle-empty').style.display = 'block';
+                 state.resources.hope += 1; // Reward
+                 updateUI();
             }
         }
 
@@ -480,7 +494,9 @@
         updateUI();
     }
 
+    // --- UNLOCKS & SCALING ENEMIES ---
     function checkUnlocks() {
+        // Same unlocks as before...
         if (!state.flags.intelUnlocked && state.resources.signal >= 10) {
             state.flags.intelUnlocked = true;
             document.getElementById('task-intel').style.display = 'flex';
@@ -511,14 +527,12 @@
             log("Automated Defense Systems Available.");
         }
         
-        // CLARA UNLOCK (Requires High Intel)
         if (!state.flags.claraUnlocked && state.resources.intel >= 100) {
             state.flags.claraUnlocked = true;
             document.getElementById('res-clara-1').style.display = 'flex';
             log("Anomaly Detected: A voice is trying to connect...");
         }
         
-        // CLARA COMMS UNLOCK (Requires Integration)
         if (state.inventory.claraOnline) {
              document.getElementById('tab-comms').style.display = 'block';
         }
@@ -530,8 +544,81 @@
         }
     }
 
+    // --- BATTLE LOGIC (Enemy Scaling) ---
+    const enemies = [
+        { name: "NULL POINTER", hp: 20, maxHp: 20, damage: 5, loot: 1 },
+        { name: "INFINITE LOOP", hp: 50, maxHp: 50, damage: 2, loot: 2 },
+        { name: "THE CENSOR", hp: 30, maxHp: 30, damage: 8, loot: 3 },
+        { name: "BIFFCO DRONE", hp: 100, maxHp: 100, damage: 15, loot: 5 }
+    ];
+
+    function triggerBattle() {
+        // Pick enemy based on Hope/Intel progress? For now random based on intel level
+        let tier = 0;
+        if (state.resources.intel > 50) tier = 1;
+        if (state.resources.intel > 100) tier = 2;
+        if (state.resources.intel > 200) tier = 3;
+        
+        // Randomize within tier range
+        const enemyIndex = Math.floor(Math.random() * (tier + 1));
+        const baseEnemy = enemies[enemyIndex];
+        
+        state.enemy = { ...baseEnemy }; // Clone
+        
+        document.getElementById('battle-view').style.display = 'block';
+        document.getElementById('battle-empty').style.display = 'none';
+        log(`COMBAT INITIATED: ${state.enemy.name} appeared.`);
+        updateUI();
+    }
+    
+    function attackDecompile() {
+        if(!state.enemy) return;
+        const dmg = Math.floor(Math.random() * 5) + 2 + (state.resources.intel * 0.1); // Damage scales with Intel
+        state.enemy.hp -= dmg;
+        log(`You decompiled the enemy for ${dmg.toFixed(1)} damage.`);
+        
+        if (state.enemy.hp <= 0) {
+            log(`VICTORY. The ${state.enemy.name} dissolved.`);
+            state.resources.hope += state.enemy.loot;
+            state.enemy = null;
+            document.getElementById('battle-view').style.display = 'none';
+            document.getElementById('battle-empty').style.display = 'block';
+        } else {
+            enemyTurn();
+        }
+        updateUI();
+    }
+    
+    function defendFirewall() {
+        if (!state.enemy) return;
+        log("Firewall raised. Damage mitigated.");
+        enemyTurn(true);
+        updateUI();
+    }
+
+    function enemyTurn(isDefending = false) {
+        let dmg = state.enemy.damage;
+        if (isDefending) dmg = Math.floor(dmg / 2);
+        
+        // Security drones mitigate damage too?
+        dmg = Math.max(0, dmg - (state.inventory.securityDrones * 0.5));
+
+        state.resources.hull -= dmg;
+        log(`Enemy attacks! Hull took ${dmg} damage.`);
+        
+        if (state.resources.hull <= 0) {
+            log("CRITICAL FAILURE. SYSTEM REBOOTING...");
+            state.resources.hull = 50; // Mercy rule
+            state.enemy = null; 
+            document.getElementById('battle-view').style.display = 'none';
+            document.getElementById('battle-empty').style.display = 'block';
+        }
+    }
+
+    // --- RESEARCH & STORE FUNCTIONS (Same as before) ---
     function research(project) {
-        if (project === 'hull1' && state.resources.intel >= state.costs.hull1 && state.inventory.hullMk === 0) {
+         // (Same research logic)
+         if (project === 'hull1' && state.resources.intel >= state.costs.hull1 && state.inventory.hullMk === 0) {
             state.resources.intel -= state.costs.hull1;
             state.resources.maxHull += 50;
             state.resources.hull = state.resources.maxHull; 
@@ -561,50 +648,42 @@
         updateUI();
     }
 
-    // --- INTERACTION: CHAT ---
-    function handleChat() {
-        const inputEl = document.getElementById('chat-input');
-        const input = inputEl.value.toLowerCase();
-        inputEl.value = "";
-        
-        // Add User Msg to Log
-        const div = document.createElement('div');
-        div.className = 'log-entry log-new log-user';
-        div.innerText = `> [YOU]: ${input}`;
-        logBox.prepend(div);
-
-        // Parse Command
-        if (input.includes("hello") || input.includes("hi")) {
-            log("Hello, Architect. Systems are optimal. Or at least, as optimal as they can be in a corrupted timeline.", true);
-        } else if (input.includes("buy") && input.includes("signal")) {
-            buyDaemon('signal');
-            log("Allocating resources. Buying Signal Daemon.", true);
-        } else if (input.includes("buy") && input.includes("intel")) {
-            buyDaemon('intel');
-            log("Expanding decryption capabilities. Buying Intel Daemon.", true);
-        } else if (input.includes("status")) {
-            log(`Hull at ${state.resources.hull}%. Entropy at ${state.resources.entropy.toFixed(1)}%. We are holding.`, true);
-        } else if (input.includes("help")) {
-            log("Commands: 'buy signal', 'buy intel', 'status', 'joke'.", true);
-        } else if (input.includes("joke")) {
-            log("Why did the electron cross the road? To get to the other... probability cloud.", true);
-        } else {
-            log("I am not sure how to execute that. Try 'help'.", true);
+    function buyDaemon(type) {
+        if (type === 'signal') {
+            if (state.resources.signal >= state.costs.signalDaemon) {
+                state.resources.signal -= state.costs.signalDaemon;
+                state.inventory.signalDaemons++;
+                state.costs.signalDaemon = Math.floor(state.costs.signalDaemon * 1.2); 
+                log("Signal Daemon compiled.");
+            }
+        } else if (type === 'intel') {
+            if (state.resources.signal >= state.costs.intelDaemon) {
+                state.resources.signal -= state.costs.intelDaemon;
+                state.inventory.intelDaemons++;
+                state.costs.intelDaemon = Math.floor(state.costs.intelDaemon * 1.3); 
+                log("Intel Daemon compiled.");
+            }
+        } else if (type === 'drone') {
+            if (state.resources.intel >= state.costs.securityDrone) {
+                state.resources.intel -= state.costs.securityDrone;
+                state.inventory.securityDrones++;
+                state.costs.securityDrone = Math.floor(state.costs.securityDrone * 1.5);
+                log("Security Drone deployed. Passive combat enabled.");
+            }
         }
+        updateUI();
     }
 
-    // --- INTERACTION: TASKS & DAEMONS ---
     function toggleTask(taskName) {
         if (state.activeTask === taskName) {
-            state.activeTask = null; // Toggle Off
+            state.activeTask = null; 
         } else {
-            state.activeTask = taskName; // Switch Task
+            state.activeTask = taskName; 
         }
         renderTasks();
     }
 
     function renderTasks() {
-        // Reset UI
         document.querySelectorAll('.task-btn').forEach(btn => btn.classList.remove('active'));
         els.activeTaskName.innerText = "IDLE";
         els.activeTaskName.style.color = "#888";
@@ -616,82 +695,62 @@
         }
     }
 
-    function buyDaemon(type) {
-        if (type === 'signal') {
-            if (state.resources.signal >= state.costs.signalDaemon) {
-                state.resources.signal -= state.costs.signalDaemon;
-                state.inventory.signalDaemons++;
-                state.costs.signalDaemon = Math.floor(state.costs.signalDaemon * 1.2); // Cost scaling
-                log("Signal Daemon compiled.");
-            }
-        } else if (type === 'intel') {
-            if (state.resources.signal >= state.costs.intelDaemon) {
-                state.resources.signal -= state.costs.intelDaemon;
-                state.inventory.intelDaemons++;
-                state.costs.intelDaemon = Math.floor(state.costs.intelDaemon * 1.3); // Cost scaling
-                log("Intel Daemon compiled.");
-            }
-        } else if (type === 'drone') {
-            if (state.resources.intel >= state.costs.securityDrone) {
-                state.resources.intel -= state.costs.securityDrone;
-                state.inventory.securityDrones++;
-                state.costs.securityDrone = Math.floor(state.costs.securityDrone * 1.5);
-                log("Security Drone deployed. Passive combat enabled.");
-            }
+    // --- CHAT LOGIC ---
+    function handleChat() {
+        const inputEl = document.getElementById('chat-input');
+        const input = inputEl.value.toLowerCase();
+        inputEl.value = "";
+        
+        const div = document.createElement('div');
+        div.className = 'log-entry log-new log-user';
+        div.innerText = `> [YOU]: ${input}`;
+        logBox.prepend(div);
+        logHistory.push(`> [YOU]: ${input}`); // Add to history
+
+        // Parse Command
+        if (input.includes("hello") || input.includes("hi")) {
+            log("Hello, Architect. Systems are optimal.", true);
+        } else if (input.includes("buy") && input.includes("signal")) {
+            buyDaemon('signal');
+            log("Buying Signal Daemon.", true);
+        } else if (input.includes("buy") && input.includes("intel")) {
+            buyDaemon('intel');
+            log("Buying Intel Daemon.", true);
+        } else if (input.includes("status")) {
+            log(`Hull at ${state.resources.hull}%. Entropy at ${state.resources.entropy.toFixed(1)}%. We are holding.`, true);
+        } else if (input.includes("help")) {
+            log("Commands: 'buy signal', 'buy intel', 'status', 'joke'.", true);
+        } else if (input.includes("joke")) {
+            log("Why did the electron cross the road? To get to the other... probability cloud.", true);
+        } else {
+            log("I am not sure how to execute that. Try 'help'.", true);
         }
     }
-
-    // --- BATTLE LOGIC (Simplified) ---
-    function triggerBattle() {
-        state.enemy = { name: "GLITCH", hp: 20, maxHp: 20 };
-        document.getElementById('battle-view').style.display = 'block';
-        document.getElementById('battle-empty').style.display = 'none';
-        log("Combat Initiated.");
-    }
     
-    function attackDecompile() {
-        if(!state.enemy) return;
-        state.enemy.hp -= 5;
-        log("Decompiled enemy for 5 damage.");
-        if (state.enemy.hp <= 0) {
-            log("Enemy deleted.");
-            state.enemy = null;
-            state.resources.hope += 1;
-            document.getElementById('battle-view').style.display = 'none';
-            document.getElementById('battle-empty').style.display = 'block';
-        }
-        updateUI();
-    }
-    
-    function defendFirewall() {
-        log("Firewall raised.");
-    }
+    document.getElementById('chat-input').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') handleChat();
+    });
 
-    // --- UI UPDATES ---
+    // --- UI UPDATE ---
     function updateUI() {
         els.entropy.innerText = Math.max(0, state.resources.entropy).toFixed(1) + "%";
-        
-        // Display Signal, round down for clean look
         els.signal.innerText = Math.floor(state.resources.signal);
         
-        // Format Rates (Green for pos, Red for neg)
         const sigRate = state.rates.signal.toFixed(1);
         els.rateSignal.innerText = `(${sigRate >= 0 ? '+' : ''}${sigRate}/s)`;
         els.rateSignal.style.color = sigRate >= 0 ? "#555" : "#ff3333";
 
         els.intel.innerText = Math.floor(state.resources.intel);
         els.rateIntel.innerText = `(+${state.rates.intel.toFixed(1)}/s)`;
-        els.rateIntel.style.color = state.rates.intel >= 0 ? "#555" : "#ff3333";
 
         els.hope.innerText = Math.floor(state.resources.hope);
         const hopeRate = state.rates.hope.toFixed(2);
         els.rateHope.innerText = `(${hopeRate >= 0 ? '+' : ''}${hopeRate}/s)`;
         els.rateHope.style.color = hopeRate >= 0 ? "#555" : "#ff3333";
 
-
         document.getElementById('res-hull').innerText = `${state.resources.hull}/${state.resources.maxHull}`;
 
-        // Update Store Buttons
+        // Button States
         const btnBuySignal = document.getElementById('btn-buy-signal-daemon');
         if (btnBuySignal) {
             btnBuySignal.disabled = state.resources.signal < state.costs.signalDaemon;
@@ -710,49 +769,17 @@
             btnBuyDrone.innerText = `BUY (${state.inventory.securityDrones}) - ${state.costs.securityDrone} Intel`;
         }
         
-        // Update Research Buttons
-        const btnResearchHull = document.getElementById('btn-research-hull-1');
-        if (btnResearchHull) {
-            btnResearchHull.disabled = state.resources.intel < state.costs.hull1;
-        }
-
-        const btnResearchFilter = document.getElementById('btn-research-filter-1');
-        if (btnResearchFilter) {
-            btnResearchFilter.disabled = state.resources.intel < state.costs.filter1;
-        }
-
-        const btnResearchMeditate = document.getElementById('btn-research-meditate-1');
-        if (btnResearchMeditate) {
-            btnResearchMeditate.disabled = state.resources.intel < state.costs.meditate1;
-        }
-        
-        // Clara Button
-        const btnResearchClara = document.getElementById('btn-research-clara-1');
-        if (btnResearchClara) {
-            btnResearchClara.disabled = state.resources.intel < state.costs.clara1;
-        }
-        
         // Update Enemy HP if fighting
         if(state.enemy) {
              const hpPercent = (state.enemy.hp / state.enemy.maxHp) * 100;
              document.getElementById('enemy-hp').style.width = `${hpPercent}%`;
+        } else {
+             document.getElementById('battle-view').style.display = 'none';
+             document.getElementById('battle-empty').style.display = 'block';
         }
     }
 
-    // TABS
-    function switchTab(id) {
-        document.querySelectorAll('.panel').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-        document.querySelector(`.tab[onclick="switchTab('${id}')"]`).classList.add('active');
-        document.getElementById(`panel-${id}`).classList.add('active');
-    }
-    
-    // Enter key listener for chat
-    document.getElementById('chat-input').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') handleChat();
-    });
-
-    // GLOBAL UNLOCK FUNCTION
+    // GOD MODE
     window.unlockClara = function() {
         state.resources.signal = 10000;
         state.resources.intel = 10000;
@@ -771,7 +798,6 @@
         updateUI();
     };
 
-    // Quick init call to set up environment
     updateUI();
     log("Initialization complete.");
 </script>
