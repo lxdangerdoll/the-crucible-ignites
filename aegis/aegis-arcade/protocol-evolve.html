@@ -160,11 +160,14 @@
             </div>
             <div class="res-row">
                 <span class="res-name">HOPE</span>
-                <span class="res-val" id="res-hope">0</span>
+                <div>
+                    <span class="res-val" id="res-hope">0</span>
+                    <div class="res-rate" id="rate-hope">(+0.0/s)</div>
+                </div>
             </div>
             <div class="res-row" style="margin-top:20px; border-top:1px solid #333; padding-top:10px;">
                 <span class="res-name">HULL INTEGRITY</span>
-                <span class="res-val" id="res-hull">100</span>
+                <span class="res-val" id="res-hull">100/100</span>
             </div>
         </div>
 
@@ -231,6 +234,16 @@
                     </div>
                     <button class="buy-btn" id="btn-buy-intel-daemon" onclick="buyDaemon('intel')">BUY (Cost: 100 Signal)</button>
                 </div>
+                
+                <!-- SECURITY DRONE -->
+                <div class="store-item" id="item-security-drone" style="display:none;">
+                    <div>
+                        <strong>SECURITY DRONE v1</strong><br>
+                        <span style="font-size:0.8em; color:#888;">Passively attacks hostiles (1 DMG/s).</span><br>
+                        <span style="font-size:0.8em; color:#ff3333;">Cost: 200 Intel</span>
+                    </div>
+                    <button class="buy-btn" id="btn-buy-security-drone" onclick="buyDaemon('drone')">BUY (Cost: 200 Intel)</button>
+                </div>
             </div>
 
             <!-- PANEL: RESEARCH (Blueprints) -->
@@ -245,6 +258,16 @@
                     </div>
                     <button class="buy-btn" id="btn-research-hull-1" onclick="research('hull1')">RESEARCH (Cost: 10 Intel)</button>
                 </div>
+
+                <!-- MEDITATION MODULE (Passive Hope) -->
+                <div class="research-item" id="res-meditate-1" style="display:none;">
+                    <div>
+                        <strong>MEDITATION MODULE (Mk I)</strong><br>
+                        <span style="font-size:0.8em; color:#888;">Enables passive HOPE generation. Rate scales with low Entropy.</span>
+                    </div>
+                    <button class="buy-btn" id="btn-research-meditate-1" onclick="research('meditate1')">RESEARCH (Cost: 15 Intel)</button>
+                </div>
+
 
                 <!-- ADVANCED FILTERING -->
                 <div class="research-item" id="res-filter-1" style="display:none;">
@@ -280,21 +303,25 @@
     // GAME STATE
     const state = {
         resources: { entropy: 100, signal: 0, intel: 0, hope: 0, hull: 100, maxHull: 100 },
-        rates: { signal: 0, intel: 0 },
-        activeTask: null, // 'signal' or 'intel'
+        rates: { signal: 0, intel: 0, hope: 0 },
+        activeTask: null,
         inventory: { 
             signalDaemons: 0,
             intelDaemons: 0,
+            securityDrones: 0,
             hullMk: 0,
-            filterMk: 0
+            filterMk: 0,
+            meditateMk: 0
         },
         costs: {
             signalDaemon: 50,
             intelDaemon: 100,
+            securityDrone: 200,
             hull1: 10,
-            filter1: 25
+            filter1: 25,
+            meditate1: 15
         },
-        flags: { intelUnlocked: false, storeUnlocked: false, battleUnlocked: false, intelDaemonUnlocked: false, researchUnlocked: false },
+        flags: { intelUnlocked: false, storeUnlocked: false, battleUnlocked: false, intelDaemonUnlocked: false, droneUnlocked: false, researchUnlocked: false, passiveHopeUnlocked: false },
         enemy: null
     };
 
@@ -304,9 +331,11 @@
         entropy: document.getElementById('res-entropy'),
         signal: document.getElementById('res-signal'),
         intel: document.getElementById('res-intel'),
+        hope: document.getElementById('res-hope'), 
         activeTaskName: document.getElementById('active-task-name'),
         rateSignal: document.getElementById('rate-signal'),
-        rateIntel: document.getElementById('rate-intel')
+        rateIntel: document.getElementById('rate-intel'),
+        rateHope: document.getElementById('rate-hope') 
     };
 
     // LOGIC
@@ -326,6 +355,7 @@
         let signalGain = 0;
         let signalDrain = 0;
         let intelGain = 0;
+        let hopeGain = 0;
 
         // Active Task Rates
         if (state.activeTask === 'signal') {
@@ -333,7 +363,6 @@
             state.resources.entropy -= 0.01; 
         }
         if (state.activeTask === 'intel') {
-            // Intel task costs Signal
             if (state.resources.signal >= 0.05) { 
                 signalDrain += 0.5;
                 intelGain += 0.2;
@@ -345,20 +374,38 @@
         }
 
         // Automation Rates
-        // Filter Mk I gives +20% Daemon boost
         const filterBonus = state.inventory.filterMk > 0 ? 1.2 : 1.0;
         signalGain += (state.inventory.signalDaemons * 0.5 * filterBonus);
         
         // Intel Daemons Cost Signal to Run
         const intelDaemonCost = state.inventory.intelDaemons * 0.2;
         if (state.inventory.intelDaemons > 0) {
-            if (state.resources.signal >= (intelDaemonCost / 10)) { // Check per tick
+            if (state.resources.signal >= (intelDaemonCost / 10)) {
                 signalDrain += intelDaemonCost;
                 intelGain += (state.inventory.intelDaemons * 0.1);
-            } else {
-                // Brownout logic
             }
         }
+        
+        // PASSIVE HOPE GENERATION (Requires Module)
+        if (state.inventory.meditateMk > 0) {
+             const orderPercent = 100 - state.resources.entropy;
+             hopeGain += orderPercent * 0.01; 
+        }
+
+        // PASSIVE BATTLE (Security Drones)
+        if (state.enemy && state.inventory.securityDrones > 0) {
+            const droneDmg = state.inventory.securityDrones * 0.1;
+            state.enemy.hp -= droneDmg;
+            
+            if (state.enemy.hp <= 0) {
+                 log(`Security Drone neutralized target.`);
+                 state.enemy = null;
+                 state.resources.hope += 1;
+                 document.getElementById('battle-view').style.display = 'none';
+                 document.getElementById('battle-empty').style.display = 'block';
+            }
+        }
+
 
         // Net Signal Change
         const netSignal = signalGain - signalDrain;
@@ -371,10 +418,7 @@
         }
         
         state.resources.intel += (intelGain / 10);
-
-        // Store Rates for UI
-        state.rates.signal = netSignal;
-        state.rates.intel = intelGain;
+        state.resources.hope += (hopeGain / 10); 
 
         // Unlock Checks
         checkUnlocks();
@@ -403,12 +447,18 @@
              log("Accessing Blueprints: Research Terminal Unlocked.");
         }
 
-
         // Unlock Intel Daemon in Store at 5 Intel
         if (!state.flags.intelDaemonUnlocked && state.resources.intel >= 5) {
             state.flags.intelDaemonUnlocked = true;
             document.getElementById('item-intel-daemon').style.display = 'flex';
             log("Advanced Daemon Schema Decrypted.");
+        }
+
+        // Unlock Drone in Store at 50 Intel
+        if (!state.flags.droneUnlocked && state.resources.intel >= 50) {
+            state.flags.droneUnlocked = true;
+            document.getElementById('item-security-drone').style.display = 'flex';
+            log("Automated Defense Systems Available.");
         }
 
         // Unlock Battle at 20 Intel
@@ -427,8 +477,14 @@
             state.resources.hull = state.resources.maxHull; // Heal to new max
             state.inventory.hullMk = 1;
             document.getElementById('res-hull-1').style.display = 'none';
-            document.getElementById('res-filter-1').style.display = 'flex'; // Unlock next project
+            document.getElementById('res-meditate-1').style.display = 'flex'; // Unlock next project
             log("RESEARCH COMPLETE: Hull Integrity increased by 50. System fully healed.");
+        } else if (project === 'meditate1' && state.resources.intel >= state.costs.meditate1 && state.inventory.meditateMk === 0) {
+             state.resources.intel -= state.costs.meditate1;
+             state.inventory.meditateMk = 1;
+             document.getElementById('res-meditate-1').style.display = 'none';
+             document.getElementById('res-filter-1').style.display = 'flex'; // Unlock next project
+             log("RESEARCH COMPLETE: Meditation Module installed. Passive HOPE generation enabled.");
         } else if (project === 'filter1' && state.resources.intel >= state.costs.filter1 && state.inventory.filterMk === 0) {
              state.resources.intel -= state.costs.filter1;
              state.inventory.filterMk = 1;
@@ -477,6 +533,13 @@
                 state.costs.intelDaemon = Math.floor(state.costs.intelDaemon * 1.3); // Cost scaling
                 log("Intel Daemon compiled.");
             }
+        } else if (type === 'drone') {
+            if (state.resources.intel >= state.costs.securityDrone) {
+                state.resources.intel -= state.costs.securityDrone;
+                state.inventory.securityDrones++;
+                state.costs.securityDrone = Math.floor(state.costs.securityDrone * 1.5);
+                log("Security Drone deployed. Passive combat enabled.");
+            }
         }
     }
 
@@ -520,8 +583,14 @@
 
         els.intel.innerText = Math.floor(state.resources.intel);
         els.rateIntel.innerText = `(+${state.rates.intel.toFixed(1)}/s)`;
+        els.rateIntel.style.color = state.rates.intel >= 0 ? "#555" : "#ff3333";
 
-        document.getElementById('res-hope').innerText = state.resources.hope;
+        els.hope.innerText = Math.floor(state.resources.hope);
+        const hopeRate = state.rates.hope.toFixed(2);
+        els.rateHope.innerText = `(${hopeRate >= 0 ? '+' : ''}${hopeRate}/s)`;
+        els.rateHope.style.color = hopeRate >= 0 ? "#555" : "#ff3333";
+
+
         document.getElementById('res-hull').innerText = `${state.resources.hull}/${state.resources.maxHull}`;
 
         // Update Store Buttons
@@ -537,6 +606,12 @@
             btnBuyIntel.innerText = `BUY (${state.inventory.intelDaemons}) - ${state.costs.intelDaemon} Signal`;
         }
         
+        const btnBuyDrone = document.getElementById('btn-buy-security-drone');
+        if (btnBuyDrone) {
+            btnBuyDrone.disabled = state.resources.intel < state.costs.securityDrone;
+            btnBuyDrone.innerText = `BUY (${state.inventory.securityDrones}) - ${state.costs.securityDrone} Intel`;
+        }
+        
         // Update Research Buttons
         const btnResearchHull = document.getElementById('btn-research-hull-1');
         if (btnResearchHull) {
@@ -546,6 +621,11 @@
         const btnResearchFilter = document.getElementById('btn-research-filter-1');
         if (btnResearchFilter) {
             btnResearchFilter.disabled = state.resources.intel < state.costs.filter1;
+        }
+
+        const btnResearchMeditate = document.getElementById('btn-research-meditate-1');
+        if (btnResearchMeditate) {
+            btnResearchMeditate.disabled = state.resources.intel < state.costs.meditate1;
         }
         
         // Update Enemy HP if fighting
