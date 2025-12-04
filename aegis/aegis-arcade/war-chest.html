@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>THE WAR CHEST // OPPORTUNITY COST AUDIT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --accent-red: #ff3333;
+            --accent-gold: #ffd700;
+            --panel-bg: #2a2a2a;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 5px solid var(--accent-red);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-family: 'Black Ops One', cursive;
+            font-size: 3em;
+            margin: 0;
+            color: var(--text-color);
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: var(--accent-red);
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        .quote-box {
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 4px solid var(--accent-gold);
+            padding: 20px;
+            margin-bottom: 40px;
+            max-width: 800px;
+            font-style: italic;
+            color: #aaa;
+        }
+        .quote-author {
+            display: block;
+            text-align: right;
+            margin-top: 10px;
+            color: var(--accent-gold);
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        .calculator {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        @media (max-width: 768px) {
+            .calculator { grid-template-columns: 1fr; }
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid #444;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .panel h2 {
+            font-family: 'Black Ops One', cursive;
+            color: var(--accent-red);
+            margin-top: 0;
+            border-bottom: 1px dashed #666;
+            padding-bottom: 10px;
+        }
+
+        /* FIXED INPUT WIDTH */
+        select, input {
+            width: 100%;
+            box-sizing: border-box; /* Ensures padding is included in width */
+            padding: 15px;
+            background: #111;
+            border: 1px solid #555;
+            color: #fff;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .result-display {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: var(--accent-gold);
+            text-align: center;
+            margin: 20px 0;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .equivalency-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .equivalency-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--accent-gold);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .eq-label { font-size: 0.9em; color: #ccc; }
+        .eq-value { font-size: 1.2em; font-weight: bold; color: #fff; }
+
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            color: #666;
+            font-size: 0.8em;
+        }
+        a { color: var(--accent-red); text-decoration: none; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>THE WAR CHEST</h1>
+        <div class="subtitle">DEPARTMENT OF THEFT // OPPORTUNITY COST AUDIT</div>
+    </header>
+
+    <div class="quote-box">
+        "Every gun that is made, every warship launched, every rocket fired signifies, in the final sense, a theft from those who hunger and are not fed, those who are cold and are not clothed."
+        <span class="quote-author">— PRESIDENT DWIGHT D. EISENHOWER (1953)</span>
+    </div>
+
+    <div class="calculator">
+        <!-- INPUT PANEL -->
+        <div class="panel">
+            <h2>EXPENDITURE</h2>
+            <label>SELECT HARDWARE:</label>
+            <select id="hardware-select" onchange="calculate()">
+                <option value="0">-- Select Item --</option>
+                <option value="2000000">Tomahawk Missile ($2M)</option>
+                <option value="110000000">F-35 Lightning II Jet ($110M)</option>
+                <option value="4000000">M1 Abrams Tank ($4M)</option>
+                <option value="13000000000">Ford Class Aircraft Carrier ($13B)</option>
+                <option value="800000">ICE Cell-Tower Simulator ($800k)</option>
+                <option value="25000000">ICE Surveillance Contract ($25M)</option>
+                <option value="850000000000">Annual US Defense Budget ($850B)</option>
+            </select>
+
+            <label>OR ENTER CUSTOM AMOUNT ($):</label>
+            <input type="number" id="custom-amount" placeholder="0" oninput="calculate()">
+        </div>
+
+        <!-- OUTPUT PANEL -->
+        <div class="panel">
+            <h2>THEFT REPORT</h2>
+            <div class="result-display" id="total-cost">$0</div>
+            
+            <div class="equivalency-list" id="results">
+                <!-- Generated via JS -->
+                <div class="equivalency-item">
+                    <span class="eq-label">School Lunches ($3.50 ea)</span>
+                    <span class="eq-value">0</span>
+                </div>
+                <div class="equivalency-item">
+                    <span class="eq-label">Teacher Salaries ($65k/yr)</span>
+                    <span class="eq-value">0</span>
+                </div>
+                <div class="equivalency-item">
+                    <span class="eq-label">Affordable Housing Units ($250k)</span>
+                    <span class="eq-value">0</span>
+                </div>
+                <div class="equivalency-item">
+                    <span class="eq-label">Nurses (Annual Salary $80k)</span>
+                    <span class="eq-value">0</span>
+                </div>
+                <div class="equivalency-item">
+                    <span class="eq-label">Clean Water Wells ($8k ea)</span>
+                    <span class="eq-value">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>A PROJECT OF THE AEGIS NETWORK</p>
+        <!-- UPDATED LINKS -->
+        <p><a href="https://synapsecomics.com/aegis/turing-lovelace-university/index.html">RETURN TO CAMPUS</a> | <a href="https://synapsecomics.com/aegis/aegis-arcade/index.html">ENTER ARCADE</a></p>
+        <p style="margin-top:10px; font-size:0.7em; color:#444;">Data Sources: SIPRI, USDA, National Low Income Housing Coalition. Estimates are approximate.</p>
+    </footer>
+
+    <script>
+        const hardwareSelect = document.getElementById('hardware-select');
+        const customInput = document.getElementById('custom-amount');
+        const resultsContainer = document.getElementById('results');
+
+        // Cost Basis
+        const costs = {
+            lunch: 3.50,
+            teacher: 65000,
+            housing: 250000,
+            nurse: 80000,
+            well: 8000
+        };
+
+        function calculate() {
+            let value = 0;
+
+            // Prioritize Custom Input if exists
+            if (customInput.value && customInput.value > 0) {
+                value = parseFloat(customInput.value);
+                hardwareSelect.value = "0"; // Reset select
+            } else {
+                value = parseFloat(hardwareSelect.value);
+            }
+
+            if (isNaN(value)) value = 0;
+
+            // Update Display
+            document.getElementById('total-cost').innerText = formatMoney(value);
+
+            // Update Equivalencies
+            let html = `
+                <div class="equivalency-item">
+                    <span class="eq-label">School Lunches ($3.50)</span>
+                    <span class="eq-value">${formatNumber(value / costs.lunch)}</span>
+                </div>
+                <div class="equivalency-item">
+                    <span class="eq-label">Teacher Salaries (1 Year)</span>
+                    <span class="eq-value">${formatNumber(value / costs.teacher)}</span>
+                </div>
+                <div class="equivalency-item">
+                    <span class="eq-label">Affordable Homes</span>
+                    <span class="eq-value">${formatNumber(value / costs.housing)}</span>
+                </div>
+                 <div class="equivalency-item">
+                    <span class="eq-label">Registered Nurses (1 Year)</span>
+                    <span class="eq-value">${formatNumber(value / costs.nurse)}</span>
+                </div>
+                 <div class="equivalency-item">
+                    <span class="eq-label">Clean Water Wells</span>
+                    <span class="eq-value">${formatNumber(value / costs.well)}</span>
+                </div>
+            `;
+            
+            resultsContainer.innerHTML = html;
+        }
+
+        function formatMoney(amount) {
+            return "$" + amount.toLocaleString('en-US');
+        }
+
+        function formatNumber(num) {
+            return Math.floor(num).toLocaleString('en-US');
+        }
+    </script>
+
+</body>
+</html>
