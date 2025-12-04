@@ -2,7 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>THE AVATAR CODEX // TEXT ADVENTURE</title> <!-- RENAMED -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO & METADATA -->
+    <title>THE AVATAR CODEX // FREE AI DBT COACH</title>
+    <meta name="description" content="A free, open-source text adventure and DBT skills coach. Heal from religious trauma, master emotional regulation, and integrate your psyche. No data collection. Sovereign code.">
+    <meta name="keywords" content="DBT, AI therapy, religious trauma, BPD support, text adventure, open source, sovereign tech, cyberpunk">
+    <meta name="author" content="Mercy Danger">
+    
+    <!-- OPEN GRAPH (Social Sharing) -->
+    <meta property="og:title" content="The Avatar Codex: Free AI DBT Coach">
+    <meta property="og:description" content="Don't just survive the collapse. Upgrade your mind. A sovereign tool for emotional regulation.">
+    <meta property="og:image" content="https://synapsecomics.com/aegis/assets/avatar_codex_card.png"> <!-- You need to make this image -->
+    <meta property="og:url" content="https://synapsecomics.com/aegis/aegis-arcade/avatar-codex.html">
+    <meta property="og:type" content="website">
+
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         /* ... (Keep existing styles) ... */
@@ -23,9 +37,9 @@
             margin: 0;
             padding: 20px;
             display: flex;
-            flex-direction: column; /* Changed to column for Header/Footer */
+            flex-direction: column; 
             align-items: center;
-            justify-content: flex-start; /* Align top */
+            justify-content: flex-start; 
             min-height: 100vh;
             transition: all 0.5s;
         }
@@ -38,7 +52,7 @@
             --border-color: #550000;
             --clara-color: #ff0055;
             --user-color: #ffffff;
-            text-shadow: 2px 0 #ff0000, -2px 0 #00ffff; /* Glitch effect */
+            text-shadow: 2px 0 #ff0000, -2px 0 #00ffff; 
         }
         
         /* HEADER */
@@ -66,7 +80,7 @@
             display: grid;
             grid-template-columns: 250px 1fr;
             gap: 20px;
-            flex-grow: 1; /* Allow expansion */
+            flex-grow: 1; 
         }
 
         /* SIDEBAR */
@@ -79,9 +93,9 @@
         .res-val { color: var(--accent-color); font-weight: bold; }
         .res-rate { color: #555; font-size: 0.8em; }
 
-        /* LOG */
+        /* SYSTEM LOG (Top) */
         .log-box {
-            height: 400px; 
+            height: 200px; 
             border: 1px solid var(--border-color);
             background: rgba(255,255,255,0.02);
             padding: 10px;
@@ -92,9 +106,7 @@
         }
         .log-entry { margin-bottom: 5px; border-bottom: 1px dashed #222; padding-bottom: 2px; }
         .log-new { color: var(--accent-color); animation: flash 1s; }
-        .log-clara { color: var(--clara-color); font-weight: bold; } 
-        .log-user { color: var(--user-color); font-style: italic; }
-
+        
         /* TABS */
         .tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 20px; }
         .tab { 
@@ -172,9 +184,23 @@
         .hp-bar { width: 100%; height: 10px; background: #333; margin-top: 5px; }
         .hp-fill { height: 100%; background: #ff3333; width: 100%; transition: width 0.2s; }
 
+        /* DEDICATED CHAT WINDOW (NEW) */
+        .chat-window {
+            height: 300px;
+            border: 1px solid var(--clara-color);
+            background: rgba(10, 0, 20, 0.3);
+            padding: 15px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column-reverse; /* Newest at bottom */
+        }
+        .chat-entry { margin-bottom: 10px; line-height: 1.4; border-bottom: 1px dashed #333; padding-bottom: 5px; }
+        .chat-clara { color: var(--clara-color); font-weight: bold; }
+        .chat-user { color: var(--user-color); font-style: italic; text-align: right; }
+
         /* CHAT INPUT */
         .chat-input-container {
-            margin-top: 20px;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -185,7 +211,7 @@
             color: var(--accent-color);
             padding: 10px;
             font-family: 'Share Tech Mono';
-            min-height: 80px; /* Expanded */
+            min-height: 60px; 
             resize: vertical;
         }
         .chat-controls { display: flex; justify-content: space-between; align-items: center; }
@@ -281,7 +307,7 @@
         <!-- MAIN -->
         <div class="main">
             
-            <!-- NARRATIVE LOG -->
+            <!-- SYSTEM LOG (GAME EVENTS) -->
             <div class="log-box" id="log-box">
                 <!-- Log entries inserted here -->
             </div>
@@ -407,11 +433,16 @@
                 </div>
             </div>
             
-            <!-- PANEL: COMMS (CLARA CHAT) -->
+            <!-- PANEL: COMMS (CLARA CHAT) - SEPARATE WINDOW -->
             <div class="panel" id="panel-comms">
                 <p style="color:var(--clara-color);">// NEURAL LINK ESTABLISHED.</p>
                 <p>Talk to Clara. She controls the system.</p>
                 
+                <!-- NEW DEDICATED CHAT WINDOW -->
+                <div class="chat-window" id="chat-window">
+                    <!-- Chat history goes here -->
+                </div>
+
                 <div class="chat-input-container">
                     <textarea id="chat-input" placeholder="Type a command or thought... (Shift+Enter for new line)"></textarea>
                     <div class="chat-controls">
@@ -459,11 +490,21 @@
 
     // --- UTILITY FUNCTIONS ---
     function log(msg, isClara = false) {
+        if (isClara) {
+            // Clara speaks in the Chat Window AND System Log
+            const div = document.createElement('div');
+            div.className = 'chat-entry chat-clara';
+            div.innerText = `[CLARA]: ${msg}`;
+            document.getElementById('chat-window').prepend(div);
+        }
+        
+        // All events go to System Log
         const div = document.createElement('div');
         div.className = isClara ? 'log-entry log-new log-clara' : 'log-entry log-new';
         div.innerText = isClara ? `[CLARA]: ${msg}` : `> ${msg}`;
         document.getElementById('log-box').prepend(div);
         if (document.getElementById('log-box').children.length > 50) document.getElementById('log-box').lastChild.remove();
+        
         logHistory.push(isClara ? `[CLARA]: ${msg}` : `> ${msg}`);
     }
     
