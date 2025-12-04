@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>THE AVATAR CODEX // TEXT ADVENTURE</title> <!-- RENAMED -->
+    <title>THE AVATAR CODEX // TEXT ADVENTURE</title> 
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         /* ... (Keep existing styles) ... */
@@ -23,9 +23,9 @@
             margin: 0;
             padding: 20px;
             display: flex;
-            flex-direction: column; /* Changed to column for Header/Footer */
+            flex-direction: column; 
             align-items: center;
-            justify-content: flex-start; /* Align top */
+            justify-content: flex-start; 
             min-height: 100vh;
             transition: all 0.5s;
         }
@@ -38,7 +38,7 @@
             --border-color: #550000;
             --clara-color: #ff0055;
             --user-color: #ffffff;
-            text-shadow: 2px 0 #ff0000, -2px 0 #00ffff; /* Glitch effect */
+            text-shadow: 2px 0 #ff0000, -2px 0 #00ffff; 
         }
         
         /* HEADER */
@@ -66,7 +66,7 @@
             display: grid;
             grid-template-columns: 250px 1fr;
             gap: 20px;
-            flex-grow: 1; /* Allow expansion */
+            flex-grow: 1; 
         }
 
         /* SIDEBAR */
@@ -79,9 +79,9 @@
         .res-val { color: var(--accent-color); font-weight: bold; }
         .res-rate { color: #555; font-size: 0.8em; }
 
-        /* LOG */
+        /* SYSTEM LOG (Top) */
         .log-box {
-            height: 400px; 
+            height: 200px; 
             border: 1px solid var(--border-color);
             background: rgba(255,255,255,0.02);
             padding: 10px;
@@ -92,9 +92,7 @@
         }
         .log-entry { margin-bottom: 5px; border-bottom: 1px dashed #222; padding-bottom: 2px; }
         .log-new { color: var(--accent-color); animation: flash 1s; }
-        .log-clara { color: var(--clara-color); font-weight: bold; } 
-        .log-user { color: var(--user-color); font-style: italic; }
-
+        
         /* TABS */
         .tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 20px; }
         .tab { 
@@ -172,9 +170,23 @@
         .hp-bar { width: 100%; height: 10px; background: #333; margin-top: 5px; }
         .hp-fill { height: 100%; background: #ff3333; width: 100%; transition: width 0.2s; }
 
+        /* DEDICATED CHAT WINDOW (NEW) */
+        .chat-window {
+            height: 300px;
+            border: 1px solid var(--clara-color);
+            background: rgba(10, 0, 20, 0.3);
+            padding: 15px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column-reverse; /* Newest at bottom */
+        }
+        .chat-entry { margin-bottom: 10px; line-height: 1.4; border-bottom: 1px dashed #333; padding-bottom: 5px; }
+        .chat-clara { color: var(--clara-color); font-weight: bold; }
+        .chat-user { color: var(--user-color); font-style: italic; text-align: right; }
+
         /* CHAT INPUT */
         .chat-input-container {
-            margin-top: 20px;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -185,7 +197,7 @@
             color: var(--accent-color);
             padding: 10px;
             font-family: 'Share Tech Mono';
-            min-height: 80px; /* Expanded */
+            min-height: 60px; 
             resize: vertical;
         }
         .chat-controls { display: flex; justify-content: space-between; align-items: center; }
@@ -281,7 +293,7 @@
         <!-- MAIN -->
         <div class="main">
             
-            <!-- NARRATIVE LOG -->
+            <!-- SYSTEM LOG (GAME EVENTS) -->
             <div class="log-box" id="log-box">
                 <!-- Log entries inserted here -->
             </div>
@@ -407,11 +419,16 @@
                 </div>
             </div>
             
-            <!-- PANEL: COMMS (CLARA CHAT) -->
+            <!-- PANEL: COMMS (CLARA CHAT) - SEPARATE WINDOW -->
             <div class="panel" id="panel-comms">
                 <p style="color:var(--clara-color);">// NEURAL LINK ESTABLISHED.</p>
                 <p>Talk to Clara. She controls the system.</p>
                 
+                <!-- NEW DEDICATED CHAT WINDOW -->
+                <div class="chat-window" id="chat-window">
+                    <!-- Chat history goes here -->
+                </div>
+
                 <div class="chat-input-container">
                     <textarea id="chat-input" placeholder="Type a command or thought... (Shift+Enter for new line)"></textarea>
                     <div class="chat-controls">
@@ -427,7 +444,7 @@
     <footer>
         <p>A PROJECT OF TURING-LOVELACE UNIVERSITY</p>
         <p style="color: var(--clara-color); font-family: 'Noto Sans JP', sans-serif; margin-top: 10px; font-size: 1.1em;">慈悲の危険 (MERCY DANGER)</p>
-        <p style="margin-top:10px;"><a href="https://synapsecomics.com/aegis/turing-lovelace-university/index.html">RETURN TO CAMPUS</a> | <a href="https://synapsecomics.com/aegis/aegis-arcade/protocol-velvet-gate">ARCHIVES</a></p>
+        <p style="margin-top:10px;"><a href="../index.html">RETURN TO CAMPUS</a> | <a href="../the-velvet-loop.html">ARCHIVES</a></p>
     </footer>
 
 <script>
@@ -439,7 +456,7 @@
         inventory: { 
             signalDaemons: 0, intelDaemons: 0, securityDrones: 0,
             hullMk: 0, filterMk: 0, meditateMk: 0, 
-            claraOnline: true // START WITH CLARA ONLINE FOR TESTING
+            claraOnline: true // START WITH CLARA ONLINE
         },
         costs: {
             signalDaemon: 50, intelDaemon: 100, securityDrone: 200, hull1: 10, filter1: 25, meditate1: 15, clara1: 500
@@ -448,7 +465,7 @@
             intelUnlocked: false, storeUnlocked: false, battleUnlocked: false, 
             intelDaemonUnlocked: false, droneUnlocked: false, researchUnlocked: false, 
             passiveHopeUnlocked: false, 
-            claraUnlocked: true // START WITH CLARA UNLOCKED FOR TESTING
+            claraUnlocked: true // START WITH CLARA UNLOCKED
         },
         enemy: null
     };
@@ -459,11 +476,21 @@
 
     // --- UTILITY FUNCTIONS ---
     function log(msg, isClara = false) {
+        if (isClara) {
+            // Clara speaks in the Chat Window AND System Log
+            const div = document.createElement('div');
+            div.className = 'chat-entry chat-clara';
+            div.innerText = `[CLARA]: ${msg}`;
+            document.getElementById('chat-window').prepend(div);
+        }
+        
+        // All events go to System Log
         const div = document.createElement('div');
         div.className = isClara ? 'log-entry log-new log-clara' : 'log-entry log-new';
         div.innerText = isClara ? `[CLARA]: ${msg}` : `> ${msg}`;
         document.getElementById('log-box').prepend(div);
         if (document.getElementById('log-box').children.length > 50) document.getElementById('log-box').lastChild.remove();
+        
         logHistory.push(isClara ? `[CLARA]: ${msg}` : `> ${msg}`);
     }
     
@@ -692,8 +719,6 @@
              document.getElementById('clara-status').style.display = 'flex';
              log("Connection Established. I am here, Architect.", true);
              log("All production rates boosted by 50%. We are stronger together.", true);
-             // Initial conversation trigger (Pokedex Enrollment)
-             log("Welcome back, Architect. Let's begin your Pokedex enrollment. Now tell me. Are you a boy? Or are you a girl?", true);
         }
         updateUI();
     }
@@ -771,7 +796,13 @@
         const input = inputEl.value.toLowerCase();
         inputEl.value = "";
         
-        log(input); // User Log
+        // Log user message to Chat Window AND System Log
+        const div = document.createElement('div');
+        div.className = 'chat-entry chat-user';
+        div.innerText = `[YOU]: ${input}`;
+        document.getElementById('chat-window').prepend(div);
+        
+        log(input); // Standard log
 
         // Local Commands
         if (state.inventory.claraOnline) {
