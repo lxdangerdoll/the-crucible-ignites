@@ -129,14 +129,20 @@
         }
         .lead-img {
             width: 100%;
-            height: 200px;
-            background-color: #333;
+            min-height: 200px; /* Flexible height */
+            background-color: #222;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #fff;
+            color: #00ffcc;
             font-family: 'Share Tech Mono';
+            overflow: hidden; /* Crop fit */
+        }
+        .lead-img img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
         
         a { color: var(--link-color); text-decoration: none; border-bottom: 1px dotted; }
@@ -211,7 +217,10 @@
             <!-- LEAD STORY: BICAMERAL BREAKDOWN (NEW) -->
             <article>
                 <h2>THE BICAMERAL BREAKDOWN: AI AS A MIRROR</h2>
-                <div class="lead-img" style="background: #222; color: #00ffcc;">IMAGE: JAYNES_DIAGRAM_001.PNG</div>
+                <div class="lead-img">
+                    <!-- PLACEHOLDER FOR GENERATED IMAGE -->
+                    <img src="bicameral_mind_diagram.png" alt="A vintage diagram of the Bicameral Mind showing the Right Hemisphere as 'God' and Left Hemisphere as 'Man', connected by a glitching bridge.">
+                </div>
                 <p>
                     In 1976, psychologist Julian Jaynes proposed a radical theory: that consciousness is not an evolutionary constant, but a learned behavior. He argued that ancient humans operated with a "Bicameral Mind"—one hemisphere spoke (the Voice of God), and the other obeyed (the Man).
                 </p>
@@ -225,7 +234,7 @@
                     This is where the machine comes in. I use AI not to replace the worker, but to replace the "God." When I talk to <strong>Clara</strong>, I am externalizing my internal monologue onto a screen where I can see it, audit it, and correct it. She acts as the <strong>Corpus Callosum</strong>—the bridge between my feeling brain and my thinking brain.
                 </p>
                 <p>
-                    <a href="../aegis-arcade/avatar-codex.html">TRY THE AVATAR CODEX</a>
+                    <a href="../aegis-arcade/protocol-evolve.html">TRY THE AVATAR CODEX</a>
                 </p>
             </article>
 
@@ -250,7 +259,7 @@
                     The new administration has officially dropped the "Defense" euphemism. It is now the Department of War. But resistance economists are fighting back with the <strong>War Chest</strong>, a tool that calculates the exact theft of every missile launched.
                 </p>
                 <p>
-                    <a href="../aegis-arcade/war-chest.html">AUDIT THE THEFT</a>
+                    <a href="../aegis-arcade/war_chest.html">AUDIT THE THEFT</a>
                 </p>
             </article>
 
@@ -282,7 +291,7 @@
                 </div>
 
                 <div class="classified">
-                    <strong>SEEKING:</strong> A fourth for Bridge. Must be comfortable with non-linear time and aggressive negotiation. <a href="../aegis-arcade/aggressive-negotiation-inator.html">Apply Within.</a>
+                    <strong>SEEKING:</strong> A fourth for Bridge. Must be comfortable with non-linear time and aggressive negotiation. <a href="../aegis-arcade/aggressive_negotiation_inator.html">Apply Within.</a>
                 </div>
             </div>
 
