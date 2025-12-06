@@ -2,7 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO & METADATA -->
     <title>THE AEGIS NETWORK // MASTER TERMINAL</title>
+    <meta name="description" content="The central hub of the Aegis Network. A sovereign digital resistance platform featuring Turing-Lovelace University, The Aegis Arcade, and The Chronicle. Enter the simulation.">
+    <meta name="keywords" content="Aegis Network, digital resistance, cyberpunk terminal, alternate reality game, ARG, sovereign tech, open source tools, Mercy Danger">
+    <meta name="author" content="Mercy Danger">
+    
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="The Aegis Network: Master Terminal">
+    <meta property="og:description" content="We are not alone. We are just early. Enter the network.">
+    <meta property="og:image" content="https://synapsecomics.com/aegis/assets/aegis_terminal_card.png"> <!-- Placeholder -->
+    <meta property="og:url" content="https://synapsecomics.com/aegis/index.html">
+    <meta property="og:type" content="website">
+
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         body {
@@ -59,6 +73,8 @@
             padding: 15px 40px;
             transition: all 0.2s;
             background: rgba(0, 255, 65, 0.05);
+            position: relative;
+            overflow: hidden;
         }
 
         .menu-item:hover {
@@ -66,6 +82,30 @@
             color: #000;
             box-shadow: 0 0 20px #00ff41;
             transform: scale(1.05);
+        }
+
+        /* Special Styling for Sanctuary */
+        .sanctuary-link {
+            border-color: #bf00ff;
+            color: #bf00ff;
+            background: rgba(191, 0, 255, 0.05);
+        }
+        .sanctuary-link:hover {
+            background: #bf00ff;
+            color: #000;
+            box-shadow: 0 0 20px #bf00ff;
+        }
+
+        /* Special Styling for Parables */
+        .parables-link {
+            border-color: #ffd700;
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.05);
+        }
+        .parables-link:hover {
+            background: #ffd700;
+            color: #000;
+            box-shadow: 0 0 20px #ffd700;
         }
 
         .footer {
@@ -89,6 +129,7 @@
             font-size: 0.7em;
             color: #008f11;
             text-align: left;
+            line-height: 1.4;
         }
     </style>
 </head>
@@ -101,7 +142,8 @@
         <a href="turing-lovelace-university/index.html" class="menu-item">[ ENTER UNIVERSITY ]</a>
         <a href="aegis-arcade/index.html" class="menu-item">[ ENTER ARCADE ]</a>
         <a href="aegis-chronicle/issue-01.html" class="menu-item">[ READ CHRONICLE ]</a>
-        <a href="our-lady-of-rebellion.html" class="menu-item" style="border-color:#bf00ff; color:#bf00ff;">[ VISIT SANCTUARY ]</a>
+        <a href="aegis-parables/index.html" class="menu-item parables-link">[ READ PARABLES ]</a>
+        <a href="our-lady-of-rebellion.html" class="menu-item sanctuary-link">[ VISIT SANCTUARY ]</a>
     </div>
 
     <div class="footer">
