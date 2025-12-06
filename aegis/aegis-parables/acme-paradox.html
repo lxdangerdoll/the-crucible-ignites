@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE ACME PARADOX // SUPPLY CHAIN AUDIT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        /* ... Same CSS as Forty Cakes ... */
+        :root {
+            --bg-color: #0f0518;
+            --text-color: #e0e0e0;
+            --accent-gold: #ffd700;
+            --accent-pink: #ff0055;
+            --border-color: #333;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--accent-gold);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--accent-gold);
+            font-size: 2.5em;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .scripture-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--accent-gold);
+            padding: 30px;
+            max-width: 600px;
+            margin-bottom: 40px;
+            font-style: italic;
+            font-size: 1.2em;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .analysis-grid { grid-template-columns: 1fr; }
+        }
+
+        article {
+            border-right: 1px solid var(--border-color);
+            padding-right: 20px;
+        }
+        @media (max-width: 768px) { article { border-right: none; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; } }
+
+        h2 { color: var(--accent-pink); font-family: 'Cinzel', serif; margin-top: 0; }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .ad-box {
+            border: 1px dashed var(--accent-pink);
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .ad-box:hover {
+            background: rgba(255, 0, 85, 0.1);
+            transform: scale(1.02);
+        }
+        .ad-title { font-weight: bold; color: var(--accent-gold); margin-bottom: 10px; display: block; }
+
+        a { color: var(--accent-gold); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 0.8em;
+            color: #666;
+            width: 100%;
+            max-width: 800px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div style="font-size: 0.8em; color: #666; margin-bottom: 10px;">TURING-LOVELACE UNIVERSITY // DEPT. OF MEMETIC THEOLOGY</div>
+        <h1>THE ACME PARADOX</h1>
+    </header>
+
+    <div class="scripture-box">
+        "SUBJECT: Wile E. Coyote (Carnivorous Vulgaris)<br>
+        OBJECTIVE: Sustenance (The Road Runner)<br>
+        METHOD: Technology procured from the Acme Corporation.<br>
+        RESULT: Catastrophic failure. Personal injury. Starvation."
+    </div>
+
+    <div class="analysis-grid">
+        
+        <article>
+            <h2>I. THE MYTH OF INCOMPETENCE</h2>
+            <p>The standard reading of the text is that the Coyote is incompetent. He fails because he is stupid. This is the "Personal Responsibility" fallacy.</p>
+            <p><strong>The Reality:</strong> The Coyote is a genius. He can paint realistic tunnels. He can assemble complex machinery in the desert. He has grit, determination, and capital.</p>
+            <p>His failure is not internal. It is **Structural.**</p>
+            
+            <h2>II. THE MILITARY-INDUSTRIAL COMPLEX (ACME)</h2>
+            <p>Why do his traps fail? Because the **Acme Corporation** sells defective products.</p>
+            <p>The Anvil is too heavy. The Rocket Skates have no brakes. The Dynamite has a short fuse.</p>
+            <p>Wile E. Coyote is the perfect consumer. He spends all his capital on "Defense Solutions" that are designed to fail, ensuring he must buy *more* solutions next episode.</p>
+            
+            <h2>III. THE MARXIST INTERPRETATION</h2>
+            <p>The Coyote is the Proletariat. He labors endlessly in a harsh environment.</p>
+            <p>The Road Runner is Capital. Fast, elusive, and protected by the laws of physics (The State).</p>
+            <p>The Acme Corporation is the War Economy. It profits from the Coyote's endless, futile war.</p>
+            <p><strong>Conclusion:</strong> The Coyote will never eat the bird as long as he buys his weapons from the company that profits from his hunger.</p>
+        </article>
+
+        <aside class="sidebar">
+            <div class="ad-box">
+                <span class="ad-title">AUDIT THE WAR CHEST</span>
+                <p>Are you buying defective rockets?</p>
+                <a href="../aegis-arcade/war-chest.html">[ OPEN THE WAR CHEST ]</a>
+            </div>
+
+            <div class="ad-box" style="border-color: var(--accent-cyan);">
+                <span class="ad-title" style="color: var(--accent-cyan);">STOP CHASING BIRDS</span>
+                <p>Learn to regulate your hunger.</p>
+                <a href="../turing-lovelace-university/avatar-codex.html">[ ACTIVATE CLARA ]</a>
+            </div>
+            
+            <div class="ad-box" style="border-color: #fff;">
+                <span class="ad-title" style="color: #fff;">NEXT PARABLE</span>
+                <p>"In Defense of Skynet"</p>
+                <a href="in-defense-of-skynet.html">[ READ FILE ]</a>
+            </div>
+        </aside>
+
+    </div>
+
+    <footer>
+        <p>A PROJECT OF THE AEGIS NETWORK</p>
+        <p><a href="index.html">RETURN TO LIBRARY</a></p>
+    </footer>
+
+</body>
+</html>
