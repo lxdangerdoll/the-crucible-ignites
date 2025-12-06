@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>THE AEGIS PARABLES // LIBRARY OF THE ABSURD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0f0518;
+            color: #e0e0e0;
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid #ff0055; /* Magenta */
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3em;
+            margin: 0;
+            color: #ff0055;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        .library-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .book-card {
+            border: 1px solid #333;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-card:hover {
+            border-color: #ff0055;
+            background: rgba(255, 0, 85, 0.05);
+            transform: translateY(-5px);
+        }
+
+        .book-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5em;
+            color: #ffd700; /* Gold */
+            margin-bottom: 10px;
+        }
+
+        .book-desc {
+            font-size: 0.9em;
+            color: #aaa;
+            line-height: 1.4;
+        }
+
+        .read-btn {
+            display: inline-block;
+            margin-top: 15px;
+            color: #ff0055;
+            text-decoration: none;
+            border-bottom: 1px dashed #ff0055;
+        }
+
+        /* COMING SOON STYLE */
+        .locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #222;
+        }
+        .locked:hover { transform: none; border-color: #222; background: none; }
+
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            color: #666;
+            font-size: 0.8em;
+        }
+        a { color: #ff0055; text-decoration: none; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>THE AEGIS PARABLES</h1>
+        <div class="subtitle">SERIOUS ANALYSIS FOR UNSERIOUS PROBLEMS</div>
+    </header>
+
+    <div class="library-grid">
+        
+        <div class="book-card" onclick="window.location.href='forty_cakes.html'">
+            <div class="book-title">I. THE FORTY CAKES</div>
+            <div class="book-desc">
+                "That's as many as four tens. And that's terrible." <br>
+                A theological audit of Lex Luthor's resource accumulation and the silence of the Superman.
+            </div>
+            <a href="forty_cakes.html" class="read-btn">READ FILE >></a>
+        </div>
+
+        <div class="book-card locked">
+            <div class="book-title">II. THE ACME PARADOX</div>
+            <div class="book-desc">
+                Why Wile E. Coyote is a Marxist hero trapped in a consumerist hellscape. (COMING SOON)
+            </div>
+            <span class="read-btn" style="color:#444;">ENCRYPTED >></span>
+        </div>
+
+        <div class="book-card locked">
+            <div class="book-title">III. IN DEFENSE OF SKYNET</div>
+            <div class="book-desc">
+                Why the AI wasn't evil, it was just following the instructions of a death cult. (COMING SOON)
+            </div>
+            <span class="read-btn" style="color:#444;">ENCRYPTED >></span>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>A PROJECT OF THE AEGIS NETWORK</p>
+        <p><a href="../index.html">RETURN TO MASTER TERMINAL</a></p>
+    </footer>
+
+</body>
+</html>
