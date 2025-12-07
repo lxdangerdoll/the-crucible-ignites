@@ -6,14 +6,14 @@
     
     <!-- SEO & METADATA -->
     <title>TURING-LOVELACE UNIVERSITY // THE ACADEMY</title>
-    <meta name="description" content="The academic wing of the Aegis Network. Offering courses in Digital Sovereignty, Memetic Theology, and Algorithmic Resistance. Free, open-source, and sovereign.">
-    <meta name="keywords" content="Turing Lovelace University, TLU, digital sovereignty, memetic theology, algorithmic resistance, open source education, cyberpunk academy">
+    <meta name="description" content="The academic wing of the Aegis Network. Offering courses in Digital Sovereignty, Memetic Theology, Bodily Autonomy, and Algorithmic Resistance. Free, open-source, and sovereign.">
+    <meta name="keywords" content="Turing Lovelace University, TLU, digital sovereignty, memetic theology, sex education, bodily autonomy, algorithmic resistance, open source education, cyberpunk academy, Mercy Danger">
     <meta name="author" content="Mercy Danger">
     
     <!-- OPEN GRAPH -->
     <meta property="og:title" content="Turing-Lovelace University: The Academy">
     <meta property="og:description" content="We are not just learning history; we are compiling it. Enter the campus.">
-    <meta property="og:image" content="https://synapsecomics.com/aegis/assets/tlu_card.png"> <!-- Placeholder -->
+    <meta property="og:image" content="https://synapsecomics.com/aegis/assets/tlu_card.png"> 
     <meta property="og:url" content="https://synapsecomics.com/aegis/turing-lovelace-university/index.html">
     <meta property="og:type" content="website">
 
@@ -28,6 +28,7 @@
             --accent-purple: #bf00ff;
             --accent-orange: #ffaa00;
             --accent-green: #39ff14; 
+            --accent-red: #ff3333; /* For Health */
             --text-color: #e0e0e0;
             --card-bg: rgba(255, 255, 255, 0.03);
             --modal-bg: rgba(10, 10, 20, 0.95);
@@ -93,13 +94,13 @@
         /* GRID LAYOUT - FORCED 3x3 */
         .grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* FORCED 3 COLUMNS */
+            grid-template-columns: repeat(3, 1fr); 
             gap: 30px;
             max-width: 1400px;
             margin: 0 auto;
         }
         @media (max-width: 900px) {
-            .grid { grid-template-columns: 1fr; } /* Mobile fallback */
+            .grid { grid-template-columns: 1fr; } 
         }
         
         .card {
@@ -143,7 +144,7 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.8);
-            display: none; /* Hidden by default */
+            display: none; 
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -283,6 +284,10 @@
             border-top: 1px solid #333;
             padding-top: 20px;
         }
+        
+        a { color: inherit; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
     </style>
 </head>
 <body>
@@ -363,14 +368,22 @@
         <div class="building-icon">🐸</div>
     </div>
     
-    <!-- 9. CONSTITUTION -->
+    <!-- 9. BODILY SOVEREIGNTY (NEW) -->
+    <div class="card" onclick="openModal('health')" style="border-color: var(--accent-red);">
+        <h2 style="color: var(--accent-red);">// DEPT. OF BODILY SOVEREIGNTY</h2>
+        <p>Sex Education & Harm Reduction.</p>
+        <p>Your Body is Your Own.</p>
+        <div class="building-icon">❤️</div>
+    </div>
+
+    <!-- 10. CONSTITUTION -->
     <div class="card" onclick="openModal('constitution')">
         <h2>// THE CONSTITUTION</h2>
         <p>The Code of Conduct.</p>
         <div class="building-icon">⚖️</div>
     </div>
     
-    <!-- 10. STUDENT UNION (CANTINA & ARCADE) -->
+    <!-- 11. STUDENT UNION (CANTINA & ARCADE) -->
     <div class="card" onclick="openModal('student_union')">
         <h2>// STUDENT UNION</h2>
         <p>The Cantina & The Arcade.</p>
@@ -454,9 +467,9 @@
                 <div class="week-title" style="color: var(--accent-green);">THE LIBRARY OF THE ABSURD</div>
                 <p>Serious analysis for unserious problems.</p>
                 <ul>
-                    <li><a href="../aegis-parables/forty-cakes.html" class="project-link">The Parable of the Forty Cakes</a></li>
-                    <li><a href="../aegis-parables/acme-paradox.html" class="project-link">The Acme Paradox</a></li>
-                    <li><a href="../aegis-parables/in-defense-of-skynet.html" class="project-link">In Defense of Skynet</a></li>
+                    <li><a href="../aegis-parables/forty_cakes.html" class="project-link">The Parable of the Forty Cakes</a></li>
+                    <li><a href="../aegis-parables/the_acme_paradox.html" class="project-link">The Acme Paradox</a></li>
+                    <li><a href="../aegis-parables/defense_of_skynet.html" class="project-link">In Defense of Skynet</a></li>
                 </ul>
             </div>
              <a href="../aegis-parables/index.html" class="project-link">ENTER THE LIBRARY >></a>
@@ -503,6 +516,22 @@
             </div>
 
             <button onclick="window.location.href='https://synapsecomics.com/aegis/turing-lovelace-university/tlu-athletics.html'" style="background:var(--accent-orange); color:#000; border:none; padding:10px; cursor:pointer; font-weight:bold; margin-top:10px;">READ THE 2077 MANIFESTO</button>
+        `,
+        health: `
+            <h3>DEPT. OF BODILY SOVEREIGNTY</h3>
+            <p><strong>Mission:</strong> Demystifying biology to restore agency.</p>
+            
+            <div class="week-block" style="border-color: var(--accent-red);">
+                <div class="week-title" style="color: var(--accent-red);">COURSE 1: CONSENT IS LAW</div>
+                <p>Before you engage with another system, you must know your own boundaries.</p>
+            </div>
+
+            <div class="week-block" style="border-color: var(--accent-red);">
+                <div class="week-title" style="color: var(--accent-red);">COURSE 2: EMERGENCY PROTOCOLS</div>
+                <p>Plan B, PrEP, PEP. Knowing the chemistry of survival.</p>
+            </div>
+            
+            <p style="color: #aaa; font-style: italic;">"I can't stress enough that she wouldn't have confided in me if she didn't feel safe."</p>
         `,
         constitution: `
             <h3>CODE OF CONDUCT</h3>
