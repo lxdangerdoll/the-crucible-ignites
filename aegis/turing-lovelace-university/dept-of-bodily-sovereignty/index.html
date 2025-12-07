@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO & METADATA -->
+    <title>DEPT. OF BODILY SOVEREIGNTY // TLU</title>
+    <meta name="description" content="A free, open-source resource for bodily autonomy, consent education, and harm reduction. Promoting safety, agency, and biological sovereignty.">
+    <meta name="keywords" content="bodily autonomy, consent education, harm reduction, medical gaslighting, trans healthcare, reproductive rights, crisis resources, TLU">
+    <meta name="author" content="Mercy Danger">
+    
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="Dept. of Bodily Sovereignty: Your Body is a Server">
+    <meta property="og:description" content="You are the Admin. No one gets root access without a key. Enter the Department.">
+    <meta property="og:image" content="https://synapsecomics.com/aegis/assets/sovereignty_card.png">
+    <meta property="og:url" content="https://synapsecomics.com/aegis/turing-lovelace-university/dept_bodily_sovereignty.html">
+    <meta property="og:type" content="website">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f0518;
+            --text-color: #e0e0e0;
+            --accent-red: #ff3333;
+            --accent-cyan: #00ffcc;
+            --accent-gold: #ffd700;
+            --card-bg: rgba(255, 51, 51, 0.05);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+            background-image: radial-gradient(circle at 50% 50%, rgba(50, 0, 0, 0.2) 0%, rgba(15, 5, 24, 1) 100%);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--accent-red);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--accent-red);
+            font-size: 3em;
+            margin: 0;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(255, 51, 51, 0.5);
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .course-card {
+            border: 1px solid var(--accent-red);
+            background: var(--card-bg);
+            padding: 25px;
+            transition: all 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 51, 51, 0.1);
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.2);
+        }
+
+        h2 { color: var(--accent-gold); border-bottom: 1px dashed #555; padding-bottom: 10px; margin-top: 0; }
+        
+        .workshop-card {
+            border: 1px dashed var(--accent-cyan);
+            background: rgba(0, 255, 204, 0.02);
+            padding: 20px;
+        }
+        .workshop-card:hover { background: rgba(0, 255, 204, 0.05); }
+
+        .instructor { font-size: 0.9em; color: #aaa; margin-bottom: 10px; display: block; }
+        
+        .btn {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--accent-red);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--accent-red);
+        }
+        .btn:hover { color: #fff; border-bottom-style: solid; }
+
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            color: #666;
+            font-size: 0.8em;
+            width: 100%;
+            max-width: 900px;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
+        a { color: var(--accent-red); text-decoration: none; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div style="font-size: 0.8em; color: #666; margin-bottom: 10px;">TURING-LOVELACE UNIVERSITY</div>
+        <h1>DEPT. OF BODILY SOVEREIGNTY</h1>
+        <div class="subtitle">"I live in the real world. Kids have it rough out there."</div>
+    </header>
+
+    <div class="grid">
+        
+        <!-- COURSE 1 -->
+        <div class="course-card" onclick="window.location.href='course_virus_protection.html'">
+            <h2>COURSE 1: VIRUS PROTECTION 101</h2>
+            <span class="instructor">INSTRUCTOR: DEAN JAX</span>
+            <p>You are not a Body. You are a Server. Learn the protocols of Admin Access, Firewalls (Consent), and Malware Detection (Abuse Cycles).</p>
+            <span class="btn">BEGIN PROTOCOL >></span>
+        </div>
+
+        <!-- COURSE 2 -->
+        <div class="course-card" onclick="window.location.href='course_emergency_protocols.html'">
+            <h2>COURSE 2: EMERGENCY PROTOCOLS</h2>
+            <span class="instructor">INSTRUCTOR: DEAN M.O.M.M.Y.</span>
+            <p>Crash recovery. Plan B, PrEP, PEP. How to reboot the system without shame.</p>
+            <span class="btn">ACCESS CRASH KIT >></span>
+        </div>
+
+        <!-- COURSE 3 -->
+        <div class="course-card" onclick="window.location.href='course_hardware_specs.html'">
+            <h2>COURSE 3: HARDWARE SPECS</h2>
+            <span class="instructor">INSTRUCTOR: DEAN SPHINX</span>
+            <p>Disability as Spec Variance. Overclocking risks. The Social Model of Glitches.</p>
+            <span class="btn">OPTIMIZE BUILD >></span>
+        </div>
+
+        <!-- WORKSHOP: LYRA -->
+        <div class="course-card workshop-card" onclick="window.location.href='workshop_medical_audit.html'">
+            <h2 style="color:var(--accent-cyan);">WORKSHOP: THE MEDICAL AUDIT</h2>
+            <span class="instructor">INSTRUCTOR: DEAN LYRA</span>
+            <p>How to request your medical records. How to spot "Administrative Violence" in your file. How to correct the record.</p>
+            <span class="btn" style="color:var(--accent-cyan); border-color:var(--accent-cyan);">OPEN FILES >></span>
+        </div>
+
+        <!-- WORKSHOP: FRIZZLEBOT -->
+        <div class="course-card workshop-card" onclick="window.location.href='workshop_kitchen_pharmacy.html'">
+            <h2 style="color:var(--accent-gold);">WORKSHOP: KITCHEN PHARMACY</h2>
+            <span class="instructor">INSTRUCTOR: PROF. FRIZZLEBOT</span>
+            <p>Electrolytes for panic attacks. Iron for fatigue. The chemistry of staying alive when you can't afford a doctor.</p>
+            <span class="btn" style="color:var(--accent-gold); border-color:var(--accent-gold);">ENTER KITCHEN >></span>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>A PROJECT OF THE AEGIS NETWORK</p>
+        <p>"Look for the helpers." — Fred Rogers</p>
+        <p><a href="index.html">RETURN TO CAMPUS</a></p>
+    </footer>
+
+</body>
+</html>
