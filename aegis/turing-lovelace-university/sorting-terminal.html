@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SORTING ALGORITHM // TASK TERMINAL</title>
+    <!-- SEO -->
+    <meta name="description" content="A gamified task manager for the neurodivergent brain. Frame your chores as mandatory assignments from The Governess. Executive function prosthesis.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #1a1a00; /* Dark Amber/Black */
+            color: #ffcc00; /* Amber Monitor */
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            background-image: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+        }
+        .crt-flicker { animation: flicker 0.15s infinite; opacity: 0.95; }
+        @keyframes flicker { 0% { opacity: 0.9; } 50% { opacity: 1.0; } 100% { opacity: 0.9; } }
+        
+        input, textarea {
+            background: #000;
+            border: 1px solid #ffcc00;
+            color: #ffcc00;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+        }
+        input:focus, textarea:focus { outline: none; box-shadow: 0 0 10px #ffcc00; }
+        
+        .paper-sheet {
+            background-color: #f4f1ea;
+            color: #1a1a1a;
+            font-family: 'Courier New', serif;
+            padding: 2rem;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+            transform: rotate(-1deg);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <header class="mb-8 text-center crt-flicker">
+        <h1 class="text-4xl md:text-6xl font-bold uppercase tracking-widest">The Sorting Terminal</h1>
+        <p class="text-xl opacity-80">// GOVERNESS PROTOCOL: ENGAGED //</p>
+    </header>
+
+    <main class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- CONTROL PANEL -->
+        <section class="border-2 border-amber-500 p-6 rounded bg-black/80 shadow-[0_0_20px_rgba(255,204,0,0.2)]">
+            <h2 class="text-2xl mb-4 border-b border-amber-500/50 pb-2">INPUT PARAMETERS</h2>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block mb-1 opacity-70">SUBJECT DESIGNATION</label>
+                    <input type="text" id="subject" value="Subject 8" class="w-full p-2">
+                </div>
+                
+                <div>
+                    <label class="block mb-1 opacity-70">ASSIGNMENT DETAILS (THE CHORE)</label>
+                    <textarea id="task" rows="3" class="w-full p-2" placeholder="e.g. Wash the dishes..."></textarea>
+                </div>
+                
+                <div>
+                    <label class="block mb-1 opacity-70">ENRICHMENT PROTOCOL (THE TWIST)</label>
+                    <textarea id="enrichment" rows="3" class="w-full p-2" placeholder="e.g. While listening to Opera..."></textarea>
+                    <button id="btn-randomize" class="text-sm mt-1 underline hover:text-white" onclick="randomizeTwist()">[ RANDOMIZE PROTOCOL ]</button>
+                </div>
+                
+                <div>
+                    <label class="block mb-1 opacity-70">DEADLINE</label>
+                    <input type="date" id="deadline" class="w-full p-2 accent-amber-500">
+                </div>
+
+                <button id="generateBtn" class="w-full bg-amber-600 hover:bg-amber-500 text-black font-bold py-3 mt-4 text-xl uppercase tracking-widest transition">ISSUE ORDER</button>
+            </div>
+        </section>
+
+        <!-- PREVIEW PANE (THE PAPER) -->
+        <section class="flex items-center justify-center">
+            <div class="paper-sheet w-full max-w-md relative">
+                <!-- Tape effect -->
+                <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-32 h-8 bg-yellow-100/50 rotate-1 shadow-sm"></div>
+                
+                <div id="letter-content">
+                    <p class="font-bold mb-4">TO: <span id="out-subject">Subject 8</span></p>
+                    <p class="mb-4"><strong>FROM:</strong> The Governess</p>
+                    <p class="mb-6"><strong>RE:</strong> Coursework Assignment</p>
+                    
+                    <hr class="border-black mb-6">
+                    
+                    <p class="mb-4">You have been assigned the following task for this cycle:</p>
+                    <p class="mb-4 pl-4 border-l-2 border-black italic" id="out-task">[Waiting for Input...]</p>
+                    
+                    <p class="mb-4">Your work must adhere to the following <strong>Enrichment Protocol:</strong></p>
+                    <p class="mb-6 pl-4 border-l-2 border-black italic" id="out-enrichment">[Waiting...]</p>
+                    
+                    <p class="mb-8">Deposit your completed work in the submission box no later than <span id="out-deadline">IMMEDIATELY</span>.</p>
+                    
+                    <p class="font-bold">Do not disappoint me.</p>
+                    <p class="mt-4 signature font-serif text-xl">-- Governess</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-12 text-center opacity-50 text-sm">
+        <p>A PROJECT OF THE AEGIS ARCADE</p>
+        <p><a href="../index.html" class="hover:underline">RETURN TO MASTER TERMINAL</a></p>
+    </footer>
+
+    <script>
+        const btn = document.getElementById('generateBtn');
+        const twists = [
+            "Must be performed while listening to Baroque Classical music.",
+            "Must be completed in total silence.",
+            "Subject must wear formal attire (or closest approximation).",
+            "Must be completed in 15 minute sprints.",
+            "Subject is forbidden from checking comms during execution.",
+            "Must narrate actions like a Noir Detective."
+        ];
+
+        function randomizeTwist() {
+            document.getElementById('enrichment').value = twists[Math.floor(Math.random() * twists.length)];
+        }
+
+        btn.addEventListener('click', () => {
+            document.getElementById('out-subject').innerText = document.getElementById('subject').value || "Subject";
+            document.getElementById('out-task').innerText = document.getElementById('task').value || "Stand by...";
+            document.getElementById('out-enrichment').innerText = document.getElementById('enrichment').value || "None.";
+            document.getElementById('out-deadline').innerText = document.getElementById('deadline').value || "END OF CYCLE";
+        });
+        
+        // Init
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('deadline').value = today;
+    </script>
+
+</body>
+</html>
