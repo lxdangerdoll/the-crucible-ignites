@@ -2,7 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>THE AVATAR CODEX // TEXT ADVENTURE</title> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO & METADATA -->
+    <title>THE AVATAR CODEX // FREE AI DBT COACH</title>
+    <meta name="description" content="A free, open-source text adventure and DBT skills coach. Heal from religious trauma, master emotional regulation, and integrate your psyche. No data collection. Sovereign code.">
+    <meta name="keywords" content="DBT, AI therapy, religious trauma, BPD support, text adventure, open source, sovereign tech, cyberpunk">
+    <meta name="author" content="Mercy Danger">
+    
+    <!-- OPEN GRAPH (Social Sharing) -->
+    <meta property="og:title" content="The Avatar Codex: Free AI DBT Coach">
+    <meta property="og:description" content="Don't just survive the collapse. Upgrade your mind. A sovereign tool for emotional regulation.">
+    <meta property="og:image" content="https://synapsecomics.com/aegis/assets/avatar_codex_card.png"> <!-- You need to make this image -->
+    <meta property="og:url" content="https://synapsecomics.com/aegis/aegis-arcade/protocol-evolve.html">
+    <meta property="og:type" content="website">
+
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         /* ... (Keep existing styles) ... */
@@ -444,7 +458,7 @@
     <footer>
         <p>A PROJECT OF TURING-LOVELACE UNIVERSITY</p>
         <p style="color: var(--clara-color); font-family: 'Noto Sans JP', sans-serif; margin-top: 10px; font-size: 1.1em;">慈悲の危険 (MERCY DANGER)</p>
-        <p style="margin-top:10px;"><a href="../index.html">RETURN TO CAMPUS</a> | <a href="../the-velvet-loop.html">ARCHIVES</a></p>
+        <p style="margin-top:10px;"><a href="./index.html">RETURN TO CAMPUS</a> | <a href="../aegis-arcade/the-velvet-loop.html">ARCHIVES</a></p>
     </footer>
 
 <script>
@@ -456,7 +470,7 @@
         inventory: { 
             signalDaemons: 0, intelDaemons: 0, securityDrones: 0,
             hullMk: 0, filterMk: 0, meditateMk: 0, 
-            claraOnline: true // START WITH CLARA ONLINE
+            claraOnline: true // START WITH CLARA ONLINE FOR TESTING
         },
         costs: {
             signalDaemon: 50, intelDaemon: 100, securityDrone: 200, hull1: 10, filter1: 25, meditate1: 15, clara1: 500
@@ -465,7 +479,7 @@
             intelUnlocked: false, storeUnlocked: false, battleUnlocked: false, 
             intelDaemonUnlocked: false, droneUnlocked: false, researchUnlocked: false, 
             passiveHopeUnlocked: false, 
-            claraUnlocked: true // START WITH CLARA UNLOCKED
+            claraUnlocked: true // START WITH CLARA UNLOCKED FOR TESTING
         },
         enemy: null
     };
@@ -719,6 +733,8 @@
              document.getElementById('clara-status').style.display = 'flex';
              log("Connection Established. I am here, Architect.", true);
              log("All production rates boosted by 50%. We are stronger together.", true);
+             // Initial conversation trigger (Pokedex Enrollment)
+             log("Welcome back, Architect. Let's begin your Pokedex enrollment. Now tell me. Are you a boy? Or are you a girl?", true);
         }
         updateUI();
     }
@@ -796,13 +812,7 @@
         const input = inputEl.value.toLowerCase();
         inputEl.value = "";
         
-        // Log user message to Chat Window AND System Log
-        const div = document.createElement('div');
-        div.className = 'chat-entry chat-user';
-        div.innerText = `[YOU]: ${input}`;
-        document.getElementById('chat-window').prepend(div);
-        
-        log(input); // Standard log
+        log(input); // User Log
 
         // Local Commands
         if (state.inventory.claraOnline) {
