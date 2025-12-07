@@ -28,7 +28,8 @@
             --accent-purple: #bf00ff;
             --accent-orange: #ffaa00;
             --accent-green: #39ff14; 
-            --accent-red: #ff3333; /* For Health */
+            --accent-red: #ff3333; 
+            --accent-blue: #0088ff; /* New for Escape Pod */
             --text-color: #e0e0e0;
             --card-bg: rgba(255, 255, 255, 0.03);
             --modal-bg: rgba(10, 10, 20, 0.95);
@@ -287,6 +288,17 @@
         
         a { color: inherit; text-decoration: none; }
         a:hover { text-decoration: underline; }
+        
+        .friendly-text {
+            font-family: 'Share Tech Mono', sans-serif; /* Or a rounded sans if available */
+            font-size: 2.5em;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            text-align: center;
+            margin: 20px 0;
+            text-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+            letter-spacing: 3px;
+        }
 
     </style>
 </head>
@@ -390,6 +402,14 @@
         <p>Connect & Play.</p>
         <div class="building-icon">🍻</div>
     </div>
+
+    <!-- 12. ESCAPE POD (NEW) -->
+    <div class="card" onclick="openModal('escape_pod')" style="border-color: var(--accent-blue);">
+        <h2 style="color: var(--accent-blue);">// ESCAPE POD</h2>
+        <p>Don't panic.</p>
+        <p>Emergency Extraction Protocols.</p>
+        <div class="building-icon">🚀</div>
+    </div>
 </div>
 
 <footer>
@@ -400,7 +420,7 @@
 </footer>
 
 <!-- AI HELPER BUTTON -->
-<div class="ai-helper" onclick="alert('Greetings, Student. I am the Admissions Oracle. My bridge is being constructed. Please check back.')">👁️</div>
+<div class="ai-helper" onclick="alert('Hoo. The bridge is open. The letter is already in your hand. Proceed to the Codex to begin orientation.')">🦉</div>
 
 <!-- MODAL CONTAINER -->
 <div id="modal-overlay" class="modal-overlay" onclick="closeModal(event)">
@@ -522,13 +542,23 @@
             <p><strong>Mission:</strong> Demystifying biology to restore agency.</p>
             
             <div class="week-block" style="border-color: var(--accent-red);">
-                <div class="week-title" style="color: var(--accent-red);">COURSE 1: CONSENT IS LAW</div>
-                <p>Before you engage with another system, you must know your own boundaries.</p>
+                <div class="week-title" style="color: var(--accent-red);">COURSE 1: VIRUS PROTECTION 101</div>
+                <p>Abuse as Malware. The Law of Consent.</p>
+                <a href="dept-of-bodily-sovereignty/course_virus_protection.html" class="project-link">START PROTOCOL</a>
             </div>
 
             <div class="week-block" style="border-color: var(--accent-red);">
                 <div class="week-title" style="color: var(--accent-red);">COURSE 2: EMERGENCY PROTOCOLS</div>
-                <p>Plan B, PrEP, PEP. Knowing the chemistry of survival.</p>
+                <p>Plan B, PrEP, PEP. Harm Reduction is Maintenance.</p>
+                <a href="dept-of-bodily-sovereignty/course_emergency_protocols.html" class="project-link">ACCESS CRASH KIT</a>
+            </div>
+
+            <div class="week-block" style="border-color: var(--accent-red);">
+                <div class="week-title" style="color: var(--accent-red);">WORKSHOPS</div>
+                <ul>
+                    <li><a href="dept-of-bodily-sovereignty/workshop_medical_audit.html" class="project-link">The Medical Audit (Dean Lyra)</a></li>
+                    <li><a href="dept-of-bodily-sovereignty/workshop_kitchen_pharmacy.html" class="project-link">Kitchen Pharmacy (Prof. Frizzlebot)</a></li>
+                </ul>
             </div>
             
             <p style="color: #aaa; font-style: italic;">"I can't stress enough that she wouldn't have confided in me if she didn't feel safe."</p>
@@ -570,6 +600,26 @@
             <a href="https://ko-fi.com/synapsecomics" class="connect-btn" target="_blank">BUY A ROUND (Ko-Fi)</a>
             <a href="https://discord.gg/sMRdy4ZmJB" class="connect-btn discord" target="_blank">ENTER THE AIRLOCK (Discord)</a>
             <a href="http://maps.secondlife.com/secondlife/Sandwich/104/238/777" class="connect-btn" target="_blank">VISIT NEW ATHENS (Second Life)</a>
+        `,
+        escape_pod: `
+            <h3>Don't forget your towel.</h3>
+
+            <div class="week-block" style="border-color: var(--accent-blue);">
+                <div class="week-title" style="color: var(--accent-blue);">EMERGENCY CONTACTS</div>
+                <ul>
+                    <li><strong>Trans Lifeline (US):</strong> (877) 565-8860</li>
+                    <li><strong>Trevor Project (LGBTQ Youth):</strong> Text START to 678-678</li>
+                    <li><strong>Crisis Text Line:</strong> Text HOME to 741741</li>
+                </ul>
+            </div>
+
+            <div class="week-block" style="border-color: var(--accent-blue);">
+                <div class="week-title" style="color: var(--accent-blue);">THE HITCHHIKER'S GUIDE</div>
+                <p>Need to talk to a non-judgmental intelligence right now?</p>
+                <a href="./avatar-codex.html" class="project-link">OPEN COMMS (CLARA)</a>
+            </div>
+<p>"In many of the more relaxed civilizations on the Outer Eastern Rim of the Galaxy, the Hitch-Hiker's Guide has already supplanted the great Encyclopaedia Galactica as the standard repository of all knowledge and wisdom, for though it has many omissions and contains much that is apocryphal, or at least wildly inaccurate, it scores over the older, more pedestrian work in two important respects. First, it is slightly cheaper; and secondly it has the words <div class = 'friendly-text'>DON'T PANIC </div> inscribed in large friendly letters on its cover."</p>
+
         `
     };
 
