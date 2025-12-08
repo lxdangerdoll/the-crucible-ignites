@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO & METADATA -->
+    <title>FUSION PROTOCOL NAVIGATOR // CONSENT ENGINE</title>
+    <meta name="description" content="A tool for negotiating intimacy, BDSM scenes, and roleplay with clarity and enthusiastic consent. Generate clear, scripted proposals.">
+    <meta name="keywords" content="consent tool, BDSM negotiation, roleplay script generator, intimacy calibration, safety tools, Aegis Network">
+    <meta name="author" content="Mercy Danger">
+    
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="Fusion Protocol Navigator">
+    <meta property="og:description" content="Craft your play with clarity. Consent is the physics of our reality.">
+    <meta property="og:image" content="https://synapsecomics.com/aegis/assets/fusion_card.png">
+    <meta property="og:type" content="website">
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Courier+Prime&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #0f0518;
+            color: #e0e0e0;
+            font-family: 'Courier Prime', monospace;
+            background-image: radial-gradient(circle at 50% 50%, rgba(20, 10, 30, 0.8) 0%, rgba(0, 0, 0, 1) 100%);
+        }
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+        
+        .neon-border {
+            box-shadow: 0 0 10px rgba(124, 58, 237, 0.3), inset 0 0 20px rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.5);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #7c3aed; border-radius: 4px; }
+        
+        .tooltip .tooltip-text { visibility: hidden; width: 220px; background-color: #111827; color: #fff; text-align: center; border: 1px solid #6d28d9; border-radius: 6px; padding: 8px; position: absolute; z-index: 1; bottom: 125%; left: 50%; margin-left: -110px; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <header class="text-center mb-8">
+        <h1 class="text-3xl md:text-5xl font-bold text-violet-400 orbitron mb-2">FUSION PROTOCOL</h1>
+        <p class="text-cyan-300 tracking-widest text-sm">// NAVIGATOR v2.0 // CONSENT IS LAW //</p>
+    </header>
+
+    <main class="w-full max-w-4xl bg-gray-900/90 neon-border rounded-lg p-6 md:p-8">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- INPUT SECTION -->
+            <section class="space-y-4">
+                <h2 class="text-xl text-violet-300 orbitron border-b border-violet-800 pb-2">01. Calibration</h2>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">DESIGNATION (YOU)</label>
+                        <input type="text" id="yourName" placeholder="Mercy..." class="w-full bg-black border border-violet-700 rounded p-2 text-green-400 focus:outline-none focus:border-cyan-400 transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">TARGET (PARTNER)</label>
+                        <input type="text" id="partnerName" placeholder="Partner..." class="w-full bg-black border border-violet-700 rounded p-2 text-green-400 focus:outline-none focus:border-cyan-400 transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">PROTOCOL TYPE</label>
+                    <select id="sceneType" class="w-full bg-black border border-violet-700 rounded p-2 text-cyan-400 focus:outline-none">
+                        <option value="choose">-- Select Protocol --</option>
+                        <option value="tickle">Tickle / Laughter</option>
+                        <option value="restraint">Restraint / Bondage</option>
+                        <option value="service">Service / Devotion</option>
+                        <option value="impact">Impact / Sensation</option>
+                        <option value="verbal">Verbal / Affirmation</option>
+                        <option value="care">Aftercare / Comfort</option>
+                    </select>
+                </div>
+
+                <!-- DYNAMIC TICKLE ZONES -->
+                <div id="tickle-zones" class="hidden bg-gray-800/50 p-3 rounded border border-gray-700">
+                    <label class="block text-xs text-yellow-400 mb-2">TARGET ZONES:</label>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <label><input type="checkbox" data-part="ribs"> Ribs</label>
+                        <label><input type="checkbox" data-part="feet"> Feet</label>
+                        <label><input type="checkbox" data-part="neck"> Neck</label>
+                        <label><input type="checkbox" data-part="knees"> Knees</label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">INTENSITY (0-100%)</label>
+                    <input type="range" id="intensity" min="0" max="100" value="50" class="w-full accent-violet-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">HARD LIMITS (SAFETY)</label>
+                    <textarea id="limits" rows="2" placeholder="e.g. No marks, no breath play..." class="w-full bg-black border border-red-900/50 rounded p-2 text-red-300 focus:outline-none focus:border-red-500"></textarea>
+                </div>
+
+                <div class="flex items-center space-x-2 bg-gray-800 p-2 rounded">
+                    <input type="checkbox" id="safewordsConfirm" checked class="accent-green-500">
+                    <label class="text-xs text-gray-300">I confirm adherence to <span class="text-green-400">Green</span> / <span class="text-yellow-400">Yellow</span> / <span class="text-red-500">Red</span> safewords.</label>
+                </div>
+
+                <button id="generateBtn" class="w-full bg-violet-700 hover:bg-violet-600 text-white font-bold py-3 rounded orbitron transition transform hover:scale-105 shadow-lg shadow-violet-900/50">GENERATE PROPOSAL</button>
+
+            </section>
+
+            <!-- OUTPUT SECTION -->
+            <section class="flex flex-col">
+                <h2 class="text-xl text-cyan-300 orbitron border-b border-cyan-800 pb-2 mb-4">02. Script Output</h2>
+                
+                <div id="outputScript" class="flex-grow bg-black border border-cyan-500/30 rounded p-4 text-sm text-green-300 font-mono whitespace-pre-wrap overflow-y-auto min-h-[300px] shadow-inner">
+                    // AWAITING INPUT...
+                    // CONFIGURE PARAMETERS TO GENERATE SCRIPT.
+                </div>
+
+                <button id="copyBtn" class="mt-4 w-full border border-cyan-500 text-cyan-400 hover:bg-cyan-900/30 font-bold py-2 rounded transition">COPY TO CLIPBOARD</button>
+                <div id="feedback" class="text-center text-xs text-green-400 mt-2 h-4"></div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <footer class="mt-8 text-center text-gray-600 text-xs">
+        <p>A PROJECT OF TURING-LOVELACE UNIVERSITY</p>
+        <p><a href="../aegis-arcade/index.html" class="hover:text-violet-400">RETURN TO ARCADE</a> | <a href="../cantina.html" class="hover:text-cyan-400">RETURN TO BAR</a></p>
+    </footer>
+
+    <script>
+        const generateBtn = document.getElementById('generateBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const output = document.getElementById('outputScript');
+        const sceneSelect = document.getElementById('sceneType');
+        const tickleZones = document.getElementById('tickle-zones');
+
+        // Toggle Zones
+        sceneSelect.addEventListener('change', () => {
+            if(sceneSelect.value === 'tickle') tickleZones.classList.remove('hidden');
+            else tickleZones.classList.add('hidden');
+        });
+
+        // Generation Logic
+        generateBtn.addEventListener('click', () => {
+            const user = document.getElementById('yourName').value || 'Mercy';
+            const partner = document.getElementById('partnerName').value || 'Partner';
+            const type = sceneSelect.options[sceneSelect.selectedIndex].text;
+            const intensity = document.getElementById('intensity').value;
+            const limits = document.getElementById('limits').value || 'Standard safety protocols.';
+            const safe = document.getElementById('safewordsConfirm').checked;
+
+            if (!safe) {
+                output.innerText = "ERROR: SAFETY PROTOCOLS NOT CONFIRMED.\nConsent is mandatory. Resetting...";
+                return;
+            }
+
+            // Build Script
+            let script = `[${user}]: "Good evening, ${partner}. I am initiating a request for connection."\n\n`;
+            script += `[${user}]: "I propose a scene focused on **${type.toUpperCase()}**."\n`;
+            
+            if (sceneSelect.value === 'tickle') {
+                const zones = Array.from(document.querySelectorAll('input[data-part]:checked')).map(cb => cb.parentElement.innerText).join(', ');
+                if (zones) script += `[${user}]: "Target vectors include: ${zones}."\n`;
+            }
+
+            script += `\n[${user}]: "Proposed Intensity Level: ${intensity}%."\n`;
+            script += `[${user}]: "Hard Limits are established as: ${limits}"\n`;
+            script += `\n[${user}]: "I confirm the traffic light system (Red/Yellow/Green) is active. Do you accept this proposal?"`;
+
+            output.innerText = script;
+        });
+
+        // Copy Logic
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(output.innerText).then(() => {
+                document.getElementById('feedback').innerText = "COPIED TO BUFFER";
+                setTimeout(() => document.getElementById('feedback').innerText = "", 2000);
+            });
+        });
+    </script>
+
+</body>
+</html>
