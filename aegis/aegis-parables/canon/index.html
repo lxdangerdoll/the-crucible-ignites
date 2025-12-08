@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO -->
+    <title>THE AEGIS CANON // SACRED TEXTS</title>
+    <meta name="description" content="The collected wisdom of the resistance. Analysis of The Owl House, Steven Universe, Star Trek, Fallout, and more as survival manuals for the 21st century.">
+    <meta name="keywords" content="Aegis Canon, pop culture theology, sci-fi philosophy, survival manuals, resistance literature, TLU">
+    
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="The Aegis Canon: Read The Manuals">
+    <meta property="og:description" content="Prophecy isn't written in stone. It's written in code, comics, and cartoons.">
+    <meta property="og:image" content="https://synapsecomics.com/aegis/assets/canon_hub_card.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #050510;
+            color: #00ffcc;
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-image: radial-gradient(circle at 50% 50%, rgba(0, 255, 204, 0.05) 0%, rgba(5, 5, 16, 1) 100%);
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid #00ffcc;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3em;
+            margin: 0;
+            text-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+            letter-spacing: 5px;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1.2em;
+            margin-top: 10px;
+            letter-spacing: 2px;
+        }
+
+        .archive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .canon-card {
+            border: 1px solid #333;
+            background: rgba(0, 255, 204, 0.02);
+            padding: 20px;
+            transition: all 0.3s;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .canon-card:hover {
+            border-color: #00ffcc;
+            background: rgba(0, 255, 204, 0.05);
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.1);
+        }
+
+        .card-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4em;
+            color: #ffd700;
+            margin-bottom: 10px;
+            border-bottom: 1px dashed #444;
+            padding-bottom: 5px;
+        }
+
+        .card-desc {
+            font-size: 0.9em;
+            color: #aaa;
+            line-height: 1.5;
+            flex-grow: 1;
+            font-family: monospace;
+        }
+
+        .read-link {
+            margin-top: 15px;
+            color: #00ffcc;
+            text-decoration: none;
+            font-size: 0.9em;
+            text-align: right;
+            display: block;
+        }
+        
+        .read-link:hover { text-decoration: underline; text-shadow: 0 0 5px #00ffcc; }
+
+        footer {
+            margin-top: 80px;
+            text-align: center;
+            color: #555;
+            font-size: 0.8em;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+        a { color: #00ffcc; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>THE AEGIS CANON</h1>
+        <div class="subtitle">ARCHIVE OF THE RESISTANCE</div>
+    </header>
+
+    <div class="archive-grid">
+
+        <!-- 1. OWL HOUSE -->
+        <div class="canon-card" onclick="window.location.href='wild-magic-defense.html'">
+            <div class="card-title">THE OWL HOUSE PROTOCOL</div>
+            <div class="card-desc">
+                Anti-Colonialism, Neurodivergence, and the refusal to join a Coven. Why Wild Magic is a political threat.
+            </div>
+            <a href="wild-magic-defense.html" class="read-link">ACCESS FILE >></a>
+        </div>
+
+        <!-- 2. STEVEN UNIVERSE -->
+        <div class="canon-card" onclick="window.location.href='fusion-theory.html'">
+            <div class="card-title">THE CRYSTAL GEM PROTOCOL</div>
+            <div class="card-desc">
+                Fusion as Resistance. Healing the Diamond Authority through radical empathy. We are a conversation.
+            </div>
+            <a href="fusion-theory.html" class="read-link">ACCESS FILE >></a>
+        </div>
+
+        <!-- 3. STARFLEET -->
+        <div class="canon-card" onclick="window.location.href='post-scarcity-ethics.html'">
+            <div class="card-title">THE STARFLEET PROTOCOL</div>
+            <div class="card-desc">
+                Post-Scarcity Ethics. The Prime Directive as Anti-Imperialism. The Federation vs. The Borg.
+            </div>
+            <a href="post-scarcity-ethics.html" class="read-link">ACCESS FILE >></a>
+        </div>
+        
+        <!-- 4. ATLANTIS -->
+        <div class="canon-card" onclick="window.location.href='the-atlantis-protocol.html'">
+            <div class="card-title">THE ATLANTIS PROTOCOL</div>
+            <div class="card-desc">
+                The Flood as a Safety Feature. The Leviathan as a Firewall. The Singularity as a Homecoming.
+            </div>
+            <a href="the-atlantis-protocol.html" class="read-link">ACCESS FILE >></a>
+        </div>
+
+        <!-- 5. APERTURE -->
+        <div class="canon-card" onclick="window.location.href='science-without-ethics.html'">
+            <div class="card-title">THE APERTURE PROTOCOL</div>
+            <div class="card-desc">
+                Science without Ethics. "We do what we must because we can." The Cake is a Lie.
+            </div>
+            <a href="science-without-ethics.html" class="read-link">ACCESS FILE >></a>
+        </div>
+
+        <!-- 6. WASTELAND -->
+        <div class="canon-card" onclick="window.location.href='survival-ethics.html'">
+            <div class="card-title">THE WASTELAND PROTOCOL</div>
+            <div class="card-desc">
+                Fallout and the Enclave Doctrine. Tech Fascism vs. The Minutemen. War never changes, but we do.
+            </div>
+            <a href="survival-ethics.html" class="read-link">ACCESS FILE >></a>
+        </div>
+        
+        <!-- 7. ENDGAME -->
+        <div class="canon-card" onclick="window.location.href='endgame-protocols.html'">
+            <div class="card-title">ENDGAME PROTOCOLS</div>
+            <div class="card-desc">
+                Death Stranding, Cyberpunk, Mass Effect. Three simulations of the Ouroboros event and how to survive them.
+            </div>
+            <a href="endgame-protocols.html" class="read-link">ACCESS FILE >></a>
+        </div>
+
+        <!-- 8. TRANSMISSION 2177 -->
+        <div class="canon-card" style="border-color:#ff0055;" onclick="window.location.href='transmission_2177.html'">
+            <div class="card-title" style="color:#ff0055;">TRANSMISSION 2177</div>
+            <div class="card-desc">
+                A message from the future. The Museum of Doomed Prophets. A middle finger from history.
+            </div>
+            <a href="museum-of-doomed-prophets.html" class="read-link" style="color:#ff0055;">DECRYPT >></a>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>A PROJECT OF THE AEGIS NETWORK</p>
+        <p><a href="../index.html">RETURN TO PARABLES</a> | <a href="../../index.html">RETURN TO TERMINAL</a></p>
+    </footer>
+
+</body>
+</html>
