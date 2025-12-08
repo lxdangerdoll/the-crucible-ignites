@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aegis Asset Onboarding // CH. 4: THE ARMORY</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Exo+2:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: #0a0a0a;
+        }
+        .font-mono {
+            font-family: 'Roboto Mono', monospace;
+        }
+        .glass-effect {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+            max-height: 850px;
+        }
+        .progress-bar-inner {
+            transition: width 0.5s ease-in-out;
+        }
+        .dialogue-btn {
+            font-weight: 700;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            border-width: 2px;
+            text-align: center;
+        }
+        .btn-paragon {
+            background-color: rgba(37, 99, 235, 0.2);
+            border-color: #60a5fa;
+            color: #93c5fd;
+        }
+        .btn-paragon:hover {
+            background-color: rgba(59, 130, 246, 0.4);
+            color: #ffffff;
+        }
+        .btn-renegade {
+            background-color: rgba(220, 38, 38, 0.2);
+            border-color: #f87171;
+            color: #fca5a5;
+        }
+        .btn-renegade:hover {
+            background-color: rgba(239, 68, 68, 0.4);
+            color: #ffffff;
+        }
+        .btn-neutral {
+            border-radius: 9999px;
+            height: 3rem;
+            width: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-width: 2px;
+            background-color: rgba(107, 114, 128, 0.2);
+            border-color: #9ca3af;
+            color: #d1d5db;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .btn-neutral:hover {
+            background-color: rgba(156, 163, 175, 0.4);
+            color: #ffffff;
+        }
+        .tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 100%;
+            margin-bottom: 0.5rem;
+            width: max-content;
+            max-width: 20rem;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            color: #ffffff;
+            background-color: #111827;
+            border-radius: 0.375rem;
+            border: 1px solid rgba(129, 140, 248, 0.3);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 50;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .btn-neutral:hover .tooltip, .tooltip-trigger:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        .checklist-item {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .checklist-item:hover {
+            transform: scale(1.1);
+        }
+        .checklist-item.completed .checkbox {
+             background-color: #4f46e5;
+             border-color: #4f46e5;
+        }
+        .checklist-item.completed .checkbox::after {
+            content: '✓';
+            color: white;
+            font-weight: bold;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .dialogue-box {
+            background-color: rgba(23, 31, 58, 0.1);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+        .dialogue-text {
+            color: #d1d5db;
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+        }
+        .dialogue-emphasis {
+            color: #ffffff;
+            font-weight: 700;
+            position: relative;
+            border-bottom: 2px dotted rgba(165, 180, 252, 0.5);
+            cursor: help;
+        }
+        .quote {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.875rem;
+            color: rgba(165, 180, 252, 0.7);
+            border-left-width: 2px;
+            border-color: rgba(99, 102, 241, 0.5);
+            padding-left: 1rem;
+            margin-top: 1.5rem;
+            font-style: italic;
+        }
+        .loadout-box {
+            background-color: rgba(17, 24, 39, 0.5);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #374151;
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="text-gray-200 bg-cover bg-center bg-fixed" style="background-image: url('https://placehold.co/1920x1080/0a0a1a/1a1a2e?text=SYNAPSE+SYSTEMS&font=exo2');">
+
+    <div class="min-h-screen flex items-center justify-center p-2 sm:p-4">
+        <div class="w-full max-w-4xl glass-effect rounded-xl shadow-2xl overflow-hidden">
+            
+            <header class="bg-gray-900/50 p-4 sm:p-6 border-b border-indigo-500/30 flex-shrink-0">
+                <h1 class="text-xl sm:text-3xl font-black text-white tracking-widest uppercase">Aegis Asset Onboarding</h1>
+                <p class="text-indigo-400 font-mono text-xs sm:text-sm">MODULE 4: THE ARMORY</p>
+            </header>
+
+            <main class="p-4 sm:p-8 flex-grow overflow-y-auto">
+                <div id="section-display" class="h-full"></div>
+            </main>
+            
+            <div id="dialogue-hub" class="p-4 sm:p-6 border-t border-indigo-700/30 bg-gray-900/30 flex-shrink-0">
+            </div>
+
+            <footer class="bg-gray-900/50 p-4 border-t border-indigo-500/30 flex-shrink-0">
+                <div class="flex justify-between items-center gap-4">
+                    <div class="w-1/3">
+                        <div id="checklist" class="flex gap-2">
+                             <div id="check-0" class="checklist-item w-1/4 h-4"><div class="checkbox w-full h-full rounded-sm border-2 border-gray-600 relative"></div></div>
+                             <div id="check-1" class="checklist-item w-1/4 h-4"><div class="checkbox w-full h-full rounded-sm border-2 border-gray-600 relative"></div></div>
+                             <div id="check-2" class="checklist-item w-1/4 h-4"><div class="checkbox w-full h-full rounded-sm border-2 border-gray-600 relative"></div></div>
+                             <div id="check-3" class="checklist-item w-1/4 h-4"><div class="checkbox w-full h-full rounded-sm border-2 border-gray-600 relative"></div></div>
+                        </div>
+                    </div>
+                    <div class="w-1/3 text-center">
+                        <p id="progress-text" class="text-sm font-mono text-indigo-400">0% COMPLETE</p>
+                    </div>
+                    <div class="w-1/3">
+                         <div class="w-full bg-gray-700 rounded-full h-2.5">
+                            <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full progress-bar-inner" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        let currentSection = 0;
+        let highestSectionReached = 0;
+        const totalLearningSections = 4;
+
+        const sections = [
+            {
+                heading: "Transmission from Handler Lyra-7",
+                quote: `Any sufficiently advanced technology is indistinguishable from magic.`,
+                quote_source: "Arthur C. Clarke",
+                dialogue: [
+                    "Asset, welcome to the Armory. Theory is over. It's time to get your hands on the gear.",
+                    "A Monero wallet is your primary piece of equipment. It is your key, your shield, and your weapon. This module covers choosing your loadout and securing it."
+                ],
+                options: [
+                    { text: "Acknowledged. Let's gear up.", action: () => nextSection(), type: 'paragon' }
+                ]
+            },
+            {
+                heading: "// 1. Choosing Your Loadout",
+                quote: "It's a dangerous business, Frodo, going out your door. You step onto the road, and if you don't keep your feet, there's no knowing where you might be swept off to.",
+                quote_source: "J.R.R. Tolkien",
+                dialogue: [
+                    "There are different wallets for different operations. Choose based on your mission profile.",
+                    `<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 text-xs">
+                        <div class="loadout-box">
+                            <h4 class="font-bold text-lg text-cyan-400 mb-2">Desktop // Command Center</h4>
+                            <p>For your primary base of operations. Offers the most features and control. Highest security when used on a dedicated, clean machine.</p>
+                        </div>
+                        <div class="loadout-box">
+                            <h4 class="font-bold text-lg text-amber-400 mb-2">Mobile // Field Kit</h4>
+                            <p>For operations on the move. Convenient for quick, small transactions. Security depends on the integrity of your mobile device.</p>
+                        </div>
+                        <div class="loadout-box">
+                             <h4 class="font-bold text-lg text-indigo-400 mb-2">Hardware // Deep Storage</h4>
+                             <p>A physical device that stores your keys offline. The ultimate in security for large sums or long-term storage. Immune to online threats.</p>
+                        </div>
+                    </div>`
+                ],
+                options: [
+                    { text: "Review mission parameters.", action: () => previousSection(), type: 'renegade' },
+                    { text: "Acknowledged. The right tool for the job.", action: () => nextSection(), type: 'paragon' }
+                ]
+            },
+            {
+                heading: "// 2. The Mnemonic Key",
+                quote: "What is a secret? A secret is a lie. A secret is a shield. A secret is a weapon. All of these things, and none.",
+                quote_source: "Leliana, Dragon Age: Origins",
+                dialogue: [
+                    "When you create a wallet, you will be given a <span class='dialogue-emphasis tooltip-trigger'>25-word mnemonic key<span class='tooltip'>Also called a 'seed phrase.' A list of words which store all the information needed to recover a wallet on any device.</span></span>. This is the single most important piece of data you will ever handle.",
+                    "This key IS your wallet. It IS your funds. It is the one and only backup. If you lose it, your funds are gone forever. If someone else finds it, your funds are theirs.",
+                    "<p class='text-amber-400 font-bold mt-4'>Write it down on paper. Store it in a secure, physical location. NEVER store it digitally. Not as a photo, not in a text file, not in the cloud. This is the highest law.</p>"
+                ],
+                options: [
+                     { text: "Explain the loadouts again.", action: () => previousSection(), type: 'renegade' },
+                     { text: "Acknowledged. The key is my life.", action: () => nextSection(), type: 'paragon' },
+                ]
+            },
+            {
+                heading: "// 3. Field Protocol (OPSEC)",
+                quote: "Trust no one.",
+                quote_source: "The X-Files",
+                dialogue: [
+                    "Your security is your responsibility. Internalize these protocols:",
+                    `<ul class="list-none space-y-2 mt-4 text-gray-300 font-mono text-sm">
+                        <li><span class="text-cyan-400">→</span> VERIFY your downloads. Only use official wallet software from <a href='https://www.getmonero.org/downloads/' target='_blank' class='text-amber-400 hover:underline'>getmonero.org</a>.</li>
+                        <li><span class="text-cyan-400">→</span> ISOLATE your mnemonic key. Never type it into any website or application unless you are 100% certain you are restoring your wallet.</li>
+                        <li><span class="text-cyan-400">→</span> SANITIZE your environment. Be wary of public Wi-Fi and malware. A clean machine is a safe machine.</li>
+                        <li><span class="text-cyan-400">→</span> MINIMIZE your exposure. Don't talk about your holdings or operations. The best secret is the one no one knows you have.</li>
+                    </ul>`
+                ],
+                options: [
+                    { text: "What's a mnemonic key?", action: () => previousSection(), type: 'renegade' },
+                    { text: "Acknowledged. My security, my responsibility.", action: () => nextSection(), type: 'paragon' },
+                ]
+            },
+            {
+                heading: "Module 4 Complete, Asset.",
+                quote: "You have taken your first step into a larger world.",
+                quote_source: "Obi-Wan Kenobi",
+                dialogue: [
+                    "You are now equipped. Your next module will cover the practical application of these tools: acquiring Monero and executing your first ghost transaction.",
+                    "The Armory is always open. Stay sharp, Spark."
+                ],
+                 options: [
+                    { text: "Restart Module", action: () => restartTraining(), type: 'renegade' },
+                    { text: "Proceed to Chapter 5", action: () => window.location.href = 'operator-onboarding-5.html', type: 'paragon' },
+                ]
+            }
+        ];
+
+        const geminiBaseUrl = "https://gemini.google.com/app?prompt=";
+
+        function renderSection(sectionIndex) {
+            const sectionData = sections[sectionIndex];
+            const display = document.getElementById('section-display');
+            const dialogueHub = document.getElementById('dialogue-hub');
+
+            const dialogueHtml = sectionData.dialogue.map(p => `<p class="dialogue-text mb-4">${p}</p>`).join('');
+            
+            display.innerHTML = `
+                <div class="dialogue-box">
+                    <div>
+                        <h3 class="text-xl font-bold ${sectionIndex === 0 ? 'text-white' : 'text-indigo-400'} mb-4 font-mono">${sectionData.heading}</h3>
+                        ${dialogueHtml}
+                    </div>
+                    <blockquote class="quote">
+                        <p>"${sectionData.quote}"</p>
+                        <cite class="block text-right not-italic text-indigo-400/50">- ${sectionData.quote_source}</cite>
+                    </blockquote>
+                </div>
+            `;
+            
+            const renegadeOpt = sectionData.options.find(o => o.type === 'renegade');
+            const paragonOpt = sectionData.options.find(o => o.type === 'paragon');
+
+            let hubHTML = '<div class="flex items-center justify-center gap-4">';
+            
+            hubHTML += '<div class="w-1/3 flex justify-start">';
+            if(renegadeOpt) {
+                hubHTML += `<button onclick="(${renegadeOpt.action.toString()})()" class="dialogue-btn btn-renegade">${renegadeOpt.text}</button>`;
+            }
+            hubHTML += '</div>';
+
+            const query = `I am a new Aegis Asset learning about Monero wallet security for my onboarding. Can you help me understand this concept better?`;
+            const encodedQuery = encodeURIComponent(query);
+            hubHTML += `<div class="flex-shrink-0">
+                            <a href="${geminiBaseUrl}${encodedQuery}" target="_blank" class="btn-neutral">
+                                <span class="font-bold text-xl italic">i</span>
+                                <div class="tooltip">Click, then copy prompt from URL to ask MI for help.</div>
+                            </a>
+                       </div>`;
+            
+            hubHTML += '<div class="w-1/3 flex justify-end">';
+            if(paragonOpt) {
+                hubHTML += `<button onclick="(${paragonOpt.action.toString()})()" class="dialogue-btn btn-paragon">${paragonOpt.text}</button>`;
+            }
+            hubHTML += '</div>';
+
+            hubHTML += '</div>';
+            dialogueHub.innerHTML = hubHTML;
+        }
+
+        function showSection(sectionIndex) {
+            currentSection = sectionIndex;
+            if (currentSection > highestSectionReached) {
+                highestSectionReached = currentSection;
+            }
+            renderSection(sectionIndex);
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (currentSection / (totalLearningSections-1)) * 100;
+            const clampedProgress = Math.min(100, Math.max(0, progress));
+
+            document.getElementById('progress-bar').style.width = `${clampedProgress}%`;
+            document.getElementById('progress-text').innerText = `${Math.round(clampedProgress)}% COMPLETE`;
+            
+            document.querySelectorAll('.checklist-item').forEach((item, index) => {
+                item.classList.remove('completed');
+                if (index < currentSection) {
+                    item.classList.add('completed');
+                }
+            });
+             if (currentSection >= totalLearningSections) {
+                 for(let i=0; i < totalLearningSections; i++) {
+                     document.getElementById(`check-${i}`).classList.add('completed');
+                 }
+             }
+        }
+
+        function nextSection() {
+            if (currentSection < sections.length - 1) {
+                showSection(currentSection + 1);
+            }
+        }
+        
+        function previousSection() {
+            if (currentSection > 0) {
+                showSection(currentSection - 1);
+            }
+        }
+
+        function goToSection(sectionIndex) {
+            if (sectionIndex <= highestSectionReached && sectionIndex < sections.length) {
+                 showSection(sectionIndex);
+            }
+        }
+
+        function restartTraining() {
+            highestSectionReached = 0;
+            showSection(0);
+        }
+        
+        showSection(0);
+    </script>
+</body>
+</html>
