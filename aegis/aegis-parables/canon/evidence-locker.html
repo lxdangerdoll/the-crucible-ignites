@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO -->
+    <title>THE WAR CHEST // EVIDENCE LOCKER</title>
+    <meta name="description" content="A secure repository for the receipts of reality. Tracking the cost of the corruption, the evidence of the abuse, and the debt owed to the future.">
+    
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="The War Chest: Receipts Don't Lie">
+    <meta property="og:description" content="When they gaslight you, open the chest. The math is on your side.">
+    <meta property="og:image" content="https://synapsecomics.com/aegis/assets/war_chest_card.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Black+Ops+One&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #111;
+            color: #daa520; /* Goldenrod */
+            font-family: 'Share Tech Mono', monospace;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.6;
+            border: 4px solid #daa520;
+        }
+        h1 { 
+            font-family: 'Black Ops One', cursive; 
+            text-align: center; 
+            font-size: 3em; 
+            margin-bottom: 10px; 
+            text-shadow: 2px 2px #000;
+            background: #daa520;
+            color: #000;
+            padding: 10px;
+        }
+        .subtitle { text-align: center; color: #fff; margin-bottom: 40px; }
+        
+        .evidence-locker {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .file-card {
+            border: 1px solid #555;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            position: relative;
+        }
+        .file-card::before {
+            content: "EVIDENCE";
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #daa520;
+            color: #000;
+            font-size: 0.7em;
+            padding: 2px 5px;
+            font-weight: bold;
+        }
+        
+        .calculator-section {
+            margin-top: 50px;
+            border-top: 2px dashed #daa520;
+            padding-top: 20px;
+        }
+        
+        .input-group { margin-bottom: 15px; }
+        input { background: #000; border: 1px solid #daa520; color: #fff; padding: 5px; font-family: inherit; width: 100%; max-width: 200px;}
+        button { background: #daa520; color: #000; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        button:hover { background: #fff; }
+        
+        #result { margin-top: 20px; font-size: 1.2em; color: #fff; }
+
+        footer { margin-top: 60px; text-align: center; font-size: 0.8em; }
+        a { color: #daa520; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>THE WAR CHEST</h1>
+        <div class="subtitle">AUDIT THE SYSTEM // PRESERVE THE RECORD</div>
+    </header>
+
+    <div class="evidence-locker">
+        
+        <div class="file-card">
+            <h3>FILE 001: THE CASTILLO LETTER</h3>
+            <p><strong>Date:</strong> August 22, 2025</p>
+            <p><strong>Subject:</strong> Confirmation of Duress & Harassment</p>
+            <p><strong>Summary:</strong> Documented proof that the Family Network attempted to seize medical proxies under threat of litigation. Therapist confirms client felt forced.</p>
+            <div style="color:#fff; font-style:italic; margin-top:10px;">"I prioritized your confidentiality and safety." — Patricia Castillo</div>
+        </div>
+
+        <div class="file-card">
+            <h3>FILE 002: THE CONFESSION</h3>
+            <p><strong>Date:</strong> [REDACTED]</p>
+            <p><strong>Subject:</strong> Admission of Addiction</p>
+            <p><strong>Summary:</strong> Subject T. King admits to "100% of men" pornography addiction and "broken marriages." Admits to the destruction of reality.</p>
+        </div>
+
+    </div>
+
+    <div class="calculator-section">
+        <h2>THE OPPORTUNITY COST CALCULATOR</h2>
+        <p>Convert the Enemy's Waste into Human Value.</p>
+        
+        <div class="input-group">
+            <label>Item Cost ($): </label>
+            <input type="number" id="costInput" placeholder="e.g. 2000000">
+        </div>
+        <div class="input-group">
+            <label>Comparison Item: </label>
+            <select id="compareItem" style="background:#000; color:#fff; border:1px solid #daa520; padding:5px;">
+                <option value="5">School Lunch ($5)</option>
+                <option value="150">Therapy Session ($150)</option>
+                <option value="1200">Month of Rent ($1200)</option>
+                <option value="50000">Teacher Salary ($50k)</option>
+            </select>
+        </div>
+        <button onclick="calculateCost()">RUN AUDIT</button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function calculateCost() {
+            const cost = document.getElementById('costInput').value;
+            const compareVal = document.getElementById('compareItem').value;
+            const compareText = document.getElementById('compareItem').options[document.getElementById('compareItem').selectedIndex].text;
+            
+            if (cost && compareVal) {
+                const total = Math.floor(cost / compareVal);
+                document.getElementById('result').innerHTML = `
+                    That amount could have paid for <strong>${total.toLocaleString()}</strong> units of: <em>${compareText}</em>.<br>
+                    Instead, it bought nothing but dust.
+                `;
+            }
+        }
+    </script>
+
+    <footer>
+        <p>A PROJECT OF THE AEGIS NETWORK</p>
+        <p><a href="../index.html">RETURN TO ARCADE</a></p>
+    </footer>
+
+</body>
+</html>
