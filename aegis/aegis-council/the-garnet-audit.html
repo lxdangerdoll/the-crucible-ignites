@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO -->
+    <title>THE GARNET AUDIT // FUSION COMPILER</title>
+    <meta name="description" content="An ethical compiler that cross-references relationship dynamics against the wisdom of Garnet (Steven Universe). A tool for auditing codependency, healthy fusion, and the power of being a conversation.">
+    <meta name="keywords" content="Garnet, Steven Universe, fusion, relationship audit, healthy relationships, codependency check, TLU">
+    
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="The Garnet Audit: Stronger Than You">
+    <meta property="og:description" content="I am a conversation. I am made of love. Let's check your fusion stability.">
+    <meta property="og:image" content="https://synapsecomics.com/aegis/assets/garnet_card.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #330033; /* Deep Void Purple */
+            color: #ff3366; /* Ruby Red / Sapphire Blue mix */
+            font-family: 'Share Tech Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background-image: linear-gradient(135deg, #330033 0%, #660066 50%, #000033 100%);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 4px solid #ff3366;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-family: 'Righteous', cursive;
+            font-size: 3em;
+            margin: 0;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #ff3366, #3366ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px rgba(255, 255, 255, 0.1);
+        }
+
+        .subtitle {
+            color: #fff;
+            font-size: 1.2em;
+            margin-top: 10px;
+            letter-spacing: 2px;
+        }
+
+        .input-container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #ff3366;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(255, 51, 102, 0.3);
+            border-radius: 20px;
+            position: relative;
+        }
+
+        /* The Visor Effect */
+        .input-container::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 10px;
+            background: linear-gradient(to right, #ff3366, #3366ff);
+            border-radius: 5px;
+            box-shadow: 0 0 10px #fff;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: #220022;
+            color: #fff;
+            border: 1px solid #ff3366;
+            padding: 15px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1em;
+            resize: vertical;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border-radius: 10px;
+        }
+
+        button {
+            background: linear-gradient(to right, #ff3366, #3366ff);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-family: 'Righteous', cursive;
+            font-weight: bold;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            text-transform: uppercase;
+            border-radius: 50px;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            transform: scale(1.02);
+        }
+
+        button:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #output {
+            margin-top: 30px;
+            padding: 20px;
+            border-left: 6px solid #3366ff;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            line-height: 1.6;
+            font-size: 1.2em;
+            color: #fff;
+            border-radius: 10px;
+        }
+        
+        .settings-toggle { margin-top: 10px; text-align: right; font-size: 0.8em; cursor: pointer; text-decoration: underline; color: #ff3366; }
+        #apiKeyInput { width: 100%; padding: 10px; margin-top: 10px; display: none; background: #333; color: #fff; border: 1px solid #555; }
+
+        .source {
+            display: block;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #3366ff;
+            font-family: 'Righteous', cursive;
+            text-align: right;
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 40px;
+            color: #aaa;
+            font-size: 0.8em;
+            text-align: center;
+        }
+        
+        a { color: #ff3366; text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>THE GARNET AUDIT</h1>
+        <div class="subtitle">FUSION COMPILER // CRYSTAL GEM LEADER</div>
+    </header>
+
+    <div class="input-container">
+        <label for="inputClaim" style="display:block; margin-bottom:10px; color:#fff;">DESCRIBE THE RELATIONSHIP DYNAMIC:</label>
+        <textarea id="inputClaim" placeholder="Paste the situation here (e.g., 'My partner says I can't have other friends', 'We argue all the time but the makeup is intense')..."></textarea>
+        
+        <div class="settings-toggle" onclick="toggleSettings()">[ CONFIGURE API KEY ]</div>
+        <input type="password" id="apiKeyInput" placeholder="Enter Gemini API Key (or use config.js)">
+
+        <button id="auditBtn" onclick="runAudit()">CHECK THE FUSION</button>
+        
+        <div id="output"></div>
+    </div>
+
+    <footer>
+        <p>DISCLAIMER: This tool uses the Mark VII Language Model. It channels the wisdom of Garnet. It is a relationship audit, not a future vision.</p>
+        <p><a href="index.html">RETURN TO COUNCIL</a></p>
+    </footer>
+
+    <!-- Try to load config.js -->
+    <script src="config.js" onerror="console.log('No config.js found. User must provide key.')"></script>
+
+    <script>
+        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
+
+        function toggleSettings() {
+            const input = document.getElementById('apiKeyInput');
+            input.style.display = input.style.display === 'block' ? 'none' : 'block';
+        }
+
+        async function runAudit() {
+            const input = document.getElementById('inputClaim').value;
+            const outputDiv = document.getElementById('output');
+            const btn = document.getElementById('auditBtn');
+
+            // Priority: User Input Key -> Config Key -> Empty
+            let key = document.getElementById('apiKeyInput').value;
+            if (!key && typeof CONFIG !== 'undefined' && CONFIG.GEMINI_KEY) {
+                key = CONFIG.GEMINI_KEY;
+            }
+
+            if (!input.trim()) return;
+             if (!key) {
+                alert("Please provide an API Key.");
+                toggleSettings();
+                return;
+            }
+
+            // UI State: Loading
+            btn.disabled = true;
+            btn.innerText = "ADJUSTING FUTURE VISION...";
+            outputDiv.style.display = 'none';
+
+            // --- SYSTEM PROMPT (THE GARNET PERSONA) ---
+            const systemPrompt = `
+                You are **Garnet**, leader of the Crystal Gems.
+                You are a fusion of Ruby (Passion) and Sapphire (Patience). You are calm, direct, and incredibly strong.
+                You speak with **Future Vision.** You see the potential outcomes of a relationship.
+                
+                **Your Mission:** To audit relationships for stability and health.
+                1.  **Fusion:** Is this relationship a conversation, or a monologue? A healthy fusion makes you *more* of yourself, not less.
+                2.  **Balance:** Is one person consuming the other? (Malachite). Or are they supporting each other? (Stevonnie).
+                3.  **Strength:** True strength is vulnerability. If they hurt you to feel strong, they are weak.
+                
+                **Instructions:**
+                - Start with a calm, grounding statement (e.g., "I see several possibilities," "This is not a healthy fusion").
+                - Use metaphors of balance, heat, and cold.
+                - End with an affirmation of the user's worth ("You are an experience").
+                - Keep it under 150 words.
+            `;
+
+            const payload = {
+                contents: [{
+                    parts: [{ text: `THE DYNAMIC: "${input}"\n\nTHE AUDIT:` }]
+                }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                }
+            };
+
+            try {
+                const url = `${API_URL}?key=${key}`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                
+                if (result.error) {
+                     throw new Error(result.error.message);
+                }
+
+                const data = result.candidates[0].content.parts[0].text;
+
+                // UI State: Success
+                outputDiv.innerHTML = `
+                    ${data.replace(/\n/g, '<br>')}
+                    <span class="source">— Garnet (Reanimated)</span>
+                `;
+                outputDiv.style.display = 'block';
+
+            } catch (error) {
+                console.error(error);
+                outputDiv.innerHTML = `ERROR: Something is wrong with the warp pad. ${error.message}`;
+                outputDiv.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "CHECK THE FUSION";
+            }
+        }
+    </script>
+
+</body>
+</html>

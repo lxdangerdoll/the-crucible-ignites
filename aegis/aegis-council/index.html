@@ -6,11 +6,10 @@
     
     <!-- SEO -->
     <title>THE AEGIS COUNCIL // THE HOLODECK</title>
-    <meta name="description" content="The Holodeck. A digital resurrection of history's greatest minds to audit the present crisis. Lincoln, Sagan, Butler, Rogers.">
+    <meta name="description" content="The Holodeck. A digital resurrection of history's greatest minds to audit the present crisis. Lincoln, Sagan, Butler, Rogers, Harley Quinn, Garnet.">
     
     <!-- OPEN GRAPH -->
     <meta property="og:title" content="The Aegis Council: History's Avengers">
-    <meta property="og:description" content="We are not limited by time. We are limited only by the data.">
     <meta property="og:image" content="https://synapsecomics.com/aegis/assets/council_card.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Orbitron:wght@500&display=swap" rel="stylesheet">
@@ -69,6 +68,8 @@
             text-align: center;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .advisor-card:hover {
@@ -97,6 +98,7 @@
             color: #ccc;
             font-size: 0.9em;
             margin-bottom: 20px;
+            flex-grow: 1;
         }
 
         .status-indicator {
@@ -117,6 +119,7 @@
             text-decoration: none;
             font-size: 0.8em;
             transition: all 0.3s;
+            margin-top: auto;
         }
 
         .access-btn:hover {
@@ -142,62 +145,94 @@
     <header>
         <h1>THE HOLODECK</h1>
         <div class="subtitle">PROJECT: REANIMATION // THE AEGIS COUNCIL</div>
+
+        <div style="margin-top: 20px; font-size: 0.9em;">
+            <a href="persona-library.html" style="color: #ffd700; margin-right: 20px;">[ ACCESS PERSONA LIBRARY (POKEDEX) ]</a>
+            <a href="../turing-lovelace-university/project-local-node.html" style="color: #00ffcc;">[ HOW TO RUN OFFLINE ]</a>
+        </div>
     </header>
 
     <div class="council-grid">
 
         <!-- 1. LINCOLN -->
         <div class="advisor-card" onclick="window.location.href='the_lincoln_audit.html'">
-            <div class="status-indicator"></div> <span style="font-size:0.8em; color:#00ff00;">ONLINE</span>
+            <div style="text-align:left;"><div class="status-indicator"></div> <span style="font-size:0.8em; color:#00ff00;">ONLINE</span></div>
             <div class="advisor-name">ABRAHAM LINCOLN</div>
             <div class="advisor-role">CHIEF JUSTICE // LABOR</div>
             <div class="advisor-quote">"Labor is the superior of capital, and deserves much the higher consideration."</div>
-            <a href="the_lincoln_audit.html" class="access-btn">ACCESS AUDIT</a>
+            <a href="the-lincoln-audit.html" class="access-btn">ACCESS AUDIT</a>
         </div>
 
         <!-- 2. JOHN BROWN -->
         <div class="advisor-card" style="border-color: #ff3333;" onclick="window.location.href='the_brown_audit.html'">
-            <div class="status-indicator" style="background-color: #ff3333; box-shadow: 0 0 5px #ff3333;"></div> <span style="font-size:0.8em; color:#ff3333;">ACTIVE</span>
+            <div style="text-align:left;"><div class="status-indicator" style="background-color: #ff3333; box-shadow: 0 0 5px #ff3333;"></div> <span style="font-size:0.8em; color:#ff3333;">ACTIVE</span></div>
             <div class="advisor-name">JOHN BROWN</div>
             <div class="advisor-role">SECRETARY OF DEFENSE</div>
             <div class="advisor-quote">"The crimes of this guilty land will never be purged away but with blood."</div>
-            <a href="the_brown_audit.html" class="access-btn" style="border-color:#ff3333; color:#ff3333;">ACCESS AUDIT</a>
+            <a href="the-brown-audit.html" class="access-btn" style="border-color:#ff3333; color:#ff3333;">ACCESS AUDIT</a>
+        </div>
+        
+        <!-- 3. KENOBI -->
+        <div class="advisor-card" style="border-color: #00ddff;" onclick="window.location.href='the_kenobi_audit.html'">
+            <div style="text-align:left;"><div class="status-indicator" style="background-color: #00ddff; box-shadow: 0 0 5px #00ddff;"></div> <span style="font-size:0.8em; color:#00ddff;">ACTIVE</span></div>
+            <div class="advisor-name">OBI-WAN KENOBI</div>
+            <div class="advisor-role">THE NEGOTIATOR</div>
+            <div class="advisor-quote">"Only a Sith deals in absolutes."</div>
+            <a href="the-kenobi-audit.html" class="access-btn" style="border-color:#00ddff; color:#00ddff;">ACCESS AUDIT</a>
         </div>
 
-        <!-- 3. CARL SAGAN -->
+        <!-- 4. GARNET -->
+        <div class="advisor-card" style="border-color: #ff3366;" onclick="window.location.href='the_garnet_audit.html'">
+            <div style="text-align:left;"><div class="status-indicator" style="background-color: #ff3366; box-shadow: 0 0 5px #ff3366;"></div> <span style="font-size:0.8em; color:#ff3366;">ACTIVE</span></div>
+            <div class="advisor-name">GARNET</div>
+            <div class="advisor-role">RELATIONSHIP COMPILER</div>
+            <div class="advisor-quote">"I am a conversation. I am made of love."</div>
+            <a href="the-garnet-audit.html" class="access-btn" style="border-color:#ff3366; color:#ff3366;">ACCESS AUDIT</a>
+        </div>
+
+        <!-- 5. HARLEY QUINN -->
+        <div class="advisor-card" style="border-color: #ff00cc;" onclick="window.location.href='the_harley_audit.html'">
+            <div style="text-align:left;"><div class="status-indicator" style="background-color: #ff00cc; box-shadow: 0 0 5px #ff00cc;"></div> <span style="font-size:0.8em; color:#ff00cc;">ACTIVE</span></div>
+            <div class="advisor-name">DR. HARLEEN QUINZEL</div>
+            <div class="advisor-role">RED FLAG COMPILER</div>
+            <div class="advisor-quote">"If he kills your dog, he ain't a Dom. He's a monster."</div>
+            <a href="the-harley-audit.html" class="access-btn" style="border-color:#ff00cc; color:#ff00cc;">ACCESS AUDIT</a>
+        </div>
+
+        <!-- 6. BAYMAX -->
+        <div class="advisor-card" style="border-color: #ff4d4d;" onclick="window.location.href='the_baymax_audit.html'">
+            <div style="text-align:left;"><div class="status-indicator" style="background-color: #ff4d4d; box-shadow: 0 0 5px #ff4d4d;"></div> <span style="font-size:0.8em; color:#ff4d4d;">ACTIVE</span></div>
+            <div class="advisor-name">BAYMAX</div>
+            <div class="advisor-role">PUBLIC HEALTH COMPILER</div>
+            <div class="advisor-quote">"I cannot deactivate until you are satisfied with your care."</div>
+            <a href="the-baymax-audit.html" class="access-btn" style="border-color:#ff4d4d; color:#ff4d4d;">ACCESS AUDIT</a>
+        </div>
+
+        <!-- 7. CARL SAGAN -->
         <div class="advisor-card" onclick="window.location.href='the_sagan_audit.html'">
-            <div class="status-indicator"></div> <span style="font-size:0.8em; color:#00ff00;">ONLINE</span>
+            <div style="text-align:left;"><div class="status-indicator"></div> <span style="font-size:0.8em; color:#00ff00;">ONLINE</span></div>
             <div class="advisor-name">CARL SAGAN</div>
             <div class="advisor-role">SCIENCE OFFICER</div>
             <div class="advisor-quote">"We are a way for the cosmos to know itself."</div>
-            <a href="the_sagan_audit.html" class="access-btn">ACCESS AUDIT</a>
-        </div>
-
-        <!-- 4. OCTAVIA BUTLER -->
-        <div class="advisor-card" onclick="window.location.href='../aegis-parables/canon/the-earthseed-protocol.html'">
-            <div class="status-indicator"></div> <span style="font-size:0.8em; color:#00ff00;">ONLINE</span>
-            <div class="advisor-name">OCTAVIA BUTLER</div>
-            <div class="advisor-role">DIRECTOR OF STRATEGY</div>
-            <div class="advisor-quote">"The only lasting truth is Change."</div>
-            <a href="../aegis-parables/canon/the-earthseed-protocol.html" class="access-btn">ACCESS FILE</a>
+            <a href="the-sagan-audit.html" class="access-btn">ACCESS AUDIT</a>
         </div>
         
-        <!-- 5. JESUS OF NAZARETH -->
+        <!-- 8. THE NAZARENE -->
         <div class="advisor-card" onclick="window.location.href='../turing-lovelace-university/nazarene-audit.html'">
-             <div class="status-indicator"></div> <span style="font-size:0.8em; color:#00ff00;">ONLINE</span>
+             <div style="text-align:left;"><div class="status-indicator"></div> <span style="font-size:0.8em; color:#00ff00;">ONLINE</span></div>
             <div class="advisor-name">THE NAZARENE</div>
             <div class="advisor-role">ETHICAL COMPILER</div>
             <div class="advisor-quote">"He who has ears to hear, let him hear."</div>
             <a href="../turing-lovelace-university/nazarene-audit.html" class="access-btn">ACCESS AUDIT</a>
         </div>
         
-        <!-- 6. BERNIE SANDERS -->
+        <!-- 9. BERNIE SANDERS -->
         <div class="advisor-card" onclick="window.location.href='../aegis-arcade/bernie_audit.html'">
-             <div class="status-indicator"></div> <span style="font-size:0.8em; color:#00ff00;">ONLINE</span>
+             <div style="text-align:left;"><div class="status-indicator"></div> <span style="font-size:0.8em; color:#00ff00;">ONLINE</span></div>
             <div class="advisor-name">BERNIE SANDERS</div>
             <div class="advisor-role">CLASS WAR COMPILER</div>
             <div class="advisor-quote">"Not me. Us."</div>
-            <a href="../aegis-arcade/bernie_audit.html" class="access-btn">ACCESS AUDIT</a>
+            <a href="../aegis-arcade/the-bernie-audit.html" class="access-btn">ACCESS AUDIT</a>
         </div>
 
     </div>
