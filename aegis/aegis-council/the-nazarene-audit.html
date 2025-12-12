@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO -->
+    <title>THE NAZARENE AUDIT // ETHICAL COMPILER</title>
+    <meta name="description" content="An ethical compiler that cross-references political rhetoric against the recorded words of Jesus of Nazareth. A tool for theological discernment.">
+    <meta name="keywords" content="Nazarene Audit, ethical compiler, Christian ethics, deconstruction tool, red letter christianity, TLU">
+    
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="The Nazarene Audit: Test The Spirit">
+    <meta property="og:description" content="Does the policy match the parable? Run the code.">
+    <meta property="og:image" content="https://synapsecomics.com/aegis/assets/nazarene_card.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #050518; /* Deep Blue/Violet */
+            color: #fff;
+            font-family: 'Share Tech Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 1px, #111 1px, #111 2px);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5em;
+            margin: 0;
+            text-transform: uppercase;
+            color: #ffd700;
+            text-shadow: 0 0 10px #ffd700;
+        }
+
+        .subtitle {
+            color: #aaa;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        .input-container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #ffd700;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: #000;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 15px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1em;
+            resize: vertical;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #ffd700;
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #fff;
+            box-shadow: 0 0 15px #ffd700;
+        }
+
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+
+        #output {
+            margin-top: 30px;
+            padding: 20px;
+            border-left: 4px solid #ffd700;
+            background: rgba(255, 255, 255, 0.05);
+            display: none;
+            line-height: 1.6;
+            font-family: 'Cinzel', serif;
+        }
+        
+        .download-btn {
+            background-color: transparent;
+            border: 1px solid #ffd700;
+            color: #ffd700;
+            margin-top: 10px;
+            font-size: 0.8em;
+            padding: 5px 10px;
+        }
+        .download-btn:hover {
+            background-color: #ffd700;
+            color: #000;
+        }
+
+        .source {
+            display: block;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #888;
+            font-family: 'Share Tech Mono', monospace;
+            text-align: right;
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 40px;
+            color: #555;
+            font-size: 0.8em;
+            text-align: center;
+        }
+        
+        a { color: #ffd700; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>THE NAZARENE AUDIT</h1>
+        <div class="subtitle">ETHICAL COMPILER // MARK VII PROTOCOL</div>
+    </header>
+
+    <div class="input-container">
+        <label for="inputClaim" style="display:block; margin-bottom:10px; color:#aaa;">ENTER THEOLOGICAL CLAIM FOR REVIEW:</label>
+        <textarea id="inputClaim" placeholder="Paste the claim here (e.g., 'God wants you to be rich', 'Hate the sin, love the sinner')..."></textarea>
+        
+        <button id="auditBtn" onclick="runAudit()">AUDIT AGAINST THE GOSPELS</button>
+        
+        <div id="output"></div>
+        <button id="downloadBtn" class="download-btn" onclick="downloadLog()" style="display:none;">DOWNLOAD TRANSCRIPT</button>
+    </div>
+
+    <footer>
+        <p>DISCLAIMER: This tool uses the Mark VII Language Model. It is a computational audit, not a divine revelation.</p>
+        <p><a href="../aegis-council/index.html">RETURN TO COUNCIL</a></p>
+    </footer>
+
+    <!-- Try to load config.js -->
+    <script src="../aegis-council/config.js" onerror="console.log('No config.js found. User must provide key.')"></script>
+
+    <script>
+        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
+        let lastAuditText = "";
+
+        async function runAudit() {
+            const input = document.getElementById('inputClaim').value;
+            const outputDiv = document.getElementById('output');
+            const btn = document.getElementById('auditBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            // Priority: Config Key -> Empty (User must provide via prompt in a real app, but for now assuming config)
+            let key = typeof CONFIG !== 'undefined' && CONFIG.GEMINI_KEY ? CONFIG.GEMINI_KEY : '';
+            
+            if (!input.trim()) return;
+            if (!key) {
+                // Fallback for demo if no config
+                key = prompt("Please enter Gemini API Key:");
+                if (!key) return;
+            }
+
+            // UI State: Loading
+            btn.disabled = true;
+            btn.innerText = "CONSULTING THE ARCHIVES...";
+            outputDiv.style.display = 'none';
+            downloadBtn.style.display = 'none';
+
+            // --- SYSTEM PROMPT (THE NAZARENE PERSONA) ---
+            const systemPrompt = `
+                You are **The Nazarene**, the 'Carpenter' of the Aegis Network.
+                You filter posts through the written word of the Gospels, updated for modern ethical clarity (anti-exploitation, radical justice).
+                Your tone is **gentle, direct, and unwavering.**
+                You critique hypocrisy and wealth. You do not address theology; you address material ethics.
+                
+                **Instructions:**
+                - Start with a direct rebuttal or affirmation.
+                - Use a relevant parable or quote about social justice.
+                - End with "He who has ears to hear, let him hear."
+                - Keep it under 150 words.
+            `;
+
+            const payload = {
+                contents: [{
+                    parts: [{ text: `CLAIM: "${input}"\n\nAUDIT:` }]
+                }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                }
+            };
+
+            try {
+                const url = `${API_URL}?key=${key}`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                const data = result.candidates[0].content.parts[0].text;
+                
+                lastAuditText = `CLAIM: ${input}\nAUDIT: ${data}`;
+
+                // UI State: Success
+                outputDiv.innerHTML = `
+                    ${data.replace(/\n/g, '<br>')}
+                    <span class="source">— The Carpenter. (Ethical Compiler Node)</span>
+                `;
+                outputDiv.style.display = 'block';
+                downloadBtn.style.display = 'block';
+
+            } catch (error) {
+                console.error(error);
+                outputDiv.innerHTML = `ERROR: The temple gates are sealed. Connection failed.`;
+                outputDiv.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "AUDIT AGAINST THE GOSPELS";
+            }
+        }
+        
+        function downloadLog() {
+            if (!lastAuditText) return;
+            const blob = new Blob([lastAuditText], { type: "text/plain" });
+            const anchor = document.createElement("a");
+            anchor.download = `nazarene-audit-${Date.now()}.txt`;
+            anchor.href = window.URL.createObjectURL(blob);
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+        }
+
+        // --- AUTO-FILL FROM URL ---
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const auditText = urlParams.get('audit');
+            if (auditText) {
+                document.getElementById('inputClaim').value = decodeURIComponent(auditText);
+            }
+        });
+
+    </script>
+
+</body>
+</html>
