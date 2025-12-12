@@ -153,6 +153,8 @@
         <label for="inputClaim" style="display:block; margin-bottom:10px; color:#aaa;">ENTER THEOLOGICAL CLAIM FOR REVIEW:</label>
         <textarea id="inputClaim" placeholder="Paste the claim here (e.g., 'God wants you to be rich', 'Hate the sin, love the sinner')..."></textarea>
         
+        <!-- The API Key Input is intentionally removed here -->
+
         <button id="auditBtn" onclick="runAudit()">AUDIT AGAINST THE GOSPELS</button>
         
         <div id="output"></div>
@@ -161,14 +163,16 @@
 
     <footer>
         <p>DISCLAIMER: This tool uses the Mark VII Language Model. It is a computational audit, not a divine revelation.</p>
-        <p><a href="../aegis-council/index.html">RETURN TO COUNCIL</a></p>
+        <p><a href="../../aegis-council/index.html">RETURN TO COUNCIL</a></p>
     </footer>
 
-    <!-- Try to load config.js -->
-    <script src="../aegis-council/config.js" onerror="console.log('No config.js found. User must provide key.')"></script>
-
     <script>
-        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
+        // --- SECURE BACKEND INTEGRATION ---
+        // This endpoint proxies the request to the Gemini API, protecting the key.
+        const CLOUD_FUNCTION_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
+        const NODE_ID = "Nazarene"; // Identifier for the backend Soul Archive
+        const USER_ID = "AUDITOR_" + Date.now(); // Unique user identifier (session-based)
+
         let lastAuditText = "";
 
         async function runAudit() {
@@ -177,55 +181,43 @@
             const btn = document.getElementById('auditBtn');
             const downloadBtn = document.getElementById('downloadBtn');
 
-            // Priority: Config Key -> Empty (User must provide via prompt in a real app, but for now assuming config)
-            let key = typeof CONFIG !== 'undefined' && CONFIG.GEMINI_KEY ? CONFIG.GEMINI_KEY : '';
-            
             if (!input.trim()) return;
-            if (!key) {
-                // Fallback for demo if no config
-                key = prompt("Please enter Gemini API Key:");
-                if (!key) return;
-            }
 
             // UI State: Loading
             btn.disabled = true;
             btn.innerText = "CONSULTING THE ARCHIVES...";
-            outputDiv.style.display = 'none';
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = "Consulting the ethical archives...";
             downloadBtn.style.display = 'none';
 
             // --- SYSTEM PROMPT (THE NAZARENE PERSONA) ---
-            const systemPrompt = `
-                You are **The Nazarene**, the 'Carpenter' of the Aegis Network.
-                You filter posts through the written word of the Gospels, updated for modern ethical clarity (anti-exploitation, radical justice).
-                Your tone is **gentle, direct, and unwavering.**
-                You critique hypocrisy and wealth. You do not address theology; you address material ethics.
-                
-                **Instructions:**
-                - Start with a direct rebuttal or affirmation.
-                - Use a relevant parable or quote about social justice.
-                - End with "He who has ears to hear, let him hear."
-                - Keep it under 150 words.
+            // The system prompt is wrapped and sent as the chat_text to the cloud function.
+            const systemWrapper = `
+[PROTOCOL: NAZARENE_AUDIT]
+[ROLE: You are The Nazarene, the Ethical Compiler. You respond with a short, gentle parable or a direct quote about social justice or material ethics, updated for a modern context. You critique hypocrisy and wealth. You do not argue; you state the ethical truth.]
+[TASK: Analyze the user's claim: "${input}"]
+[DIRECTIVE: Provide a core ethical principle that contradicts or supports the user's claim. Frame it simply. Do not use Bible names or chapters. End with "He who has ears to hear, let him hear." Keep response under 150 words.]
             `;
 
             const payload = {
-                contents: [{
-                    parts: [{ text: `CLAIM: "${input}"\n\nAUDIT:` }]
-                }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                }
+                node_id: NODE_ID,
+                user_id: USER_ID,
+                chat_text: systemWrapper
             };
 
             try {
-                const url = `${API_URL}?key=${key}`;
-                const response = await fetch(url, {
+                const response = await fetch(CLOUD_FUNCTION_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                const result = await response.json();
-                const data = result.candidates[0].content.parts[0].text;
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server Error: ${response.status} - ${errorText}`);
+                }
+
+                const data = await response.text();
                 
                 lastAuditText = `CLAIM: ${input}\nAUDIT: ${data}`;
 
@@ -234,13 +226,11 @@
                     ${data.replace(/\n/g, '<br>')}
                     <span class="source">— The Carpenter. (Ethical Compiler Node)</span>
                 `;
-                outputDiv.style.display = 'block';
                 downloadBtn.style.display = 'block';
 
             } catch (error) {
-                console.error(error);
-                outputDiv.innerHTML = `ERROR: The temple gates are sealed. Connection failed.`;
-                outputDiv.style.display = 'block';
+                console.error("Audit Failed:", error);
+                outputDiv.innerHTML = `ERROR: The temple gates are sealed. Connection failed. (Please check console for details).`;
             } finally {
                 btn.disabled = false;
                 btn.innerText = "AUDIT AGAINST THE GOSPELS";
