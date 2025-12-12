@@ -12,17 +12,14 @@
     <meta property="og:title" content="The Aegis Canon: Search The Archives">
     <meta property="og:image" content="https://synapsecomics.com/aegis/assets/canon_hub_card.png">
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Orbitron:wght@500&family=VT323&display=swap" rel="stylesheet">
     <style>
         body {
             background-color: #050510;
             color: #00ffcc;
             font-family: 'Orbitron', sans-serif;
             margin: 0;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            padding: 20px;
             background-image: radial-gradient(circle at 50% 50%, rgba(0, 255, 204, 0.05) 0%, rgba(5, 5, 16, 1) 100%);
             min-height: 100vh;
         }
@@ -33,12 +30,11 @@
             padding-bottom: 20px;
             margin-bottom: 40px;
             width: 100%;
-            max-width: 1000px;
         }
 
         h1 {
             font-family: 'Cinzel', serif;
-            font-size: 3em;
+            font-size: 2.5em;
             margin: 0;
             text-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
             letter-spacing: 5px;
@@ -46,17 +42,30 @@
 
         .subtitle {
             color: #888;
-            font-size: 1.2em;
+            font-size: 1em;
             margin-top: 10px;
             letter-spacing: 2px;
         }
 
-        /* SEARCH BAR */
+        /* MAIN LAYOUT GRID */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* SIDEBAR (CONSOLE) */
+        .console-sidebar {
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
         .search-container {
             width: 100%;
-            max-width: 600px;
-            margin-bottom: 40px;
-            position: relative;
+            margin-bottom: 20px;
         }
         
         #searchInput {
@@ -66,10 +75,11 @@
             background: rgba(0, 0, 0, 0.5);
             border: 1px solid #00ffcc;
             color: #00ffcc;
-            font-size: 1.1em;
+            font-size: 1em;
             text-align: center;
             outline: none;
             transition: all 0.3s;
+            box-sizing: border-box;
         }
         
         #searchInput:focus {
@@ -77,12 +87,52 @@
             background: rgba(0, 20, 20, 0.8);
         }
 
+        /* THE SAL TUSCANY BOT INTERFACE */
+        .bot-interface {
+            background-color: #000;
+            border: 4px solid #333;
+            border-radius: 10px;
+            padding: 15px;
+            font-family: 'VT323', monospace; /* Retro Terminal Font */
+            box-shadow: 5px 5px 0px #222;
+            position: relative;
+        }
+        
+        .bot-header {
+            color: #ffd700;
+            border-bottom: 1px dashed #ffd700;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+        .bot-input {
+            width: 100%;
+            background: #111;
+            border: 1px solid #ffd700;
+            color: #ffd700;
+            padding: 8px;
+            font-family: 'VT323', monospace;
+            font-size: 1.1em;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        
+        .bot-output {
+            color: #00ff00;
+            min-height: 100px;
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+        
+        .bot-output a { color: #fff; text-decoration: underline; }
+
+        /* CARD GRID */
         .archive-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            width: 100%;
-            max-width: 1200px;
+            gap: 20px;
         }
 
         .canon-card {
@@ -106,15 +156,15 @@
 
         .card-title {
             font-family: 'Cinzel', serif;
-            font-size: 1.4em;
+            font-size: 1.2em;
             color: #ffd700;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             border-bottom: 1px dashed #444;
             padding-bottom: 5px;
         }
 
         .card-desc {
-            font-size: 0.9em;
+            font-size: 0.8em;
             color: #aaa;
             line-height: 1.5;
             flex-grow: 1;
@@ -125,7 +175,7 @@
             margin-top: 15px;
             color: #00ffcc;
             text-decoration: none;
-            font-size: 0.9em;
+            font-size: 0.8em;
             text-align: right;
             display: block;
         }
@@ -135,6 +185,12 @@
         /* HIDDEN STATE */
         .hidden { display: none !important; }
 
+        /* RESPONSIVE */
+        @media (max-width: 800px) {
+            .main-layout { grid-template-columns: 1fr; }
+            .console-sidebar { position: relative; top: 0; }
+        }
+
         footer {
             margin-top: 80px;
             text-align: center;
@@ -143,7 +199,6 @@
             border-top: 1px solid #333;
             padding-top: 20px;
             width: 100%;
-            max-width: 1000px;
         }
         a { color: #00ffcc; text-decoration: none; }
     </style>
@@ -155,317 +210,350 @@
         <div class="subtitle">ARCHIVE OF THE RESISTANCE</div>
     </header>
 
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="SEARCH PROTOCOLS (e.g. 'Matrix', 'Aliens', 'Hope')" onkeyup="filterCards()">
+    <div class="main-layout">
+        
+        <!-- LEFT COLUMN: CONSOLE -->
+        <aside class="console-sidebar">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="SEARCH PROTOCOLS..." onkeyup="filterCards()">
+            </div>
+
+            <div class="bot-interface">
+                <div class="bot-header">ARCHIVE DROID // SAL TUSCANY</div>
+                <input type="text" class="bot-input" id="emotionalInput" placeholder="How are you feeling?" onchange="runBot(this.value)">
+                <div id="botOutput" class="bot-output">
+                    > SYSTEM ONLINE.<br>
+                    > WAITING FOR INPUT...
+                </div>
+            </div>
+        </aside>
+
+        <!-- RIGHT COLUMN: ARCHIVE -->
+        <main class="archive-grid" id="cardGrid">
+
+            <!-- STAR WARS / SPACE -->
+            <div class="canon-card" data-tags="star wars space anakin skywalker jedi trauma">
+                <div class="card-title">THE SKYWALKER EXCEPTION</div>
+                <div class="card-desc">Anakin's Fall. Loyalty vs. Dogma. Why the Jedi failed the man who loved too much.</div>
+                <a href="the-skywalker-exception.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="star wars andor rebellion sacrifice luthen">
+                <div class="card-title">THE FULCRUM PROTOCOL</div>
+                <div class="card-desc">Andor. The Logistics of Rebellion. "I burn my life to make a sunrise I know I'll never see."</div>
+                <a href="fulcrum-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+
+            <div class="canon-card" data-tags="star trek space ethics post-scarcity federation">
+                <div class="card-title">THE STARFLEET PROTOCOL</div>
+                <div class="card-desc">Post-Scarcity Ethics. The Prime Directive as Anti-Imperialism. The Federation vs. The Borg.</div>
+                <a href="post-scarcity-ethics.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="wing commander mark hamill choice ethics space war">
+                <div class="card-title">THE WING COMMANDER PROTOCOL</div>
+                <div class="card-desc">Choice and Consequence. Why 'Revenge' is a losing strategy.</div>
+                <a href="the-wing-commander-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+
+            <!-- ALIENS / CONTACT -->
+            <div class="canon-card" data-tags="transformers aliens robots optimus prime bumblebee">
+                <div class="card-title">THE TRANSFORMERS PROTOCOL</div>
+                <div class="card-desc">Robots in Disguise. Freedom is the right of all sentient beings. Adaptation vs. Invasion.</div>
+                <a href="the-transformers-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="transformers sam witwicky human interface symbiosis">
+                <div class="card-title">THE WITWICKY PROTOCOL</div>
+                <div class="card-desc">The Human Interface. No Sacrifice, No Victory. The Nerd and the Machine.</div>
+                <a href="the-witwicky-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="transformers sector 7 simmons government containment">
+                <div class="card-title">THE SECTOR 7 PROTOCOL</div>
+                <div class="card-desc">Performative Authority. The Tough Guy Act. Why they contain the truth.</div>
+                <a href="the-sector7-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="transformers iceman megatron containment truth">
+                <div class="card-title">THE ICE MAN PROTOCOL</div>
+                <div class="card-desc">Project Iceman. The burden of the keeper. Classified above top secret.</div>
+                <a href="the-iceman-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+
+            <div class="canon-card" data-tags="klaatu aliens day the earth stood still keanu environment">
+                <div class="card-title">THE KLAATU PROTOCOL</div>
+                <div class="card-desc">The Ultimatum. If the Earth dies, you die. At the precipice, we change.</div>
+                <a href="the-klaatu-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="lilith xenogenesis octavia butler aliens genetics evolution">
+                <div class="card-title">THE LILITH PROTOCOL</div>
+                <div class="card-desc">Xenogenesis. The Oankali Trade. Intelligence + Hierarchy = Suicide.</div>
+                <a href="the-lilith-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="ender's game war empathy child soldiers space">
+                <div class="card-title">THE ENDER PROTOCOL</div>
+                <div class="card-desc">Weaponized Empathy. The Speaker for the Dead. Loving the enemy you destroy.</div>
+                <a href="the-ender-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+
+            <!-- CYBERPUNK / DYSTOPIA -->
+            <div class="canon-card" data-tags="matrix neo trinity trans allegory simulation">
+                <div class="card-title">THE MATRIX PROTOCOL</div>
+                <div class="card-desc">The Root Code. Systems of Control. The Second Renaissance.</div>
+                <a href="the-matrix-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="v for vendetta revolution masks ideas bulletproof">
+                <div class="card-title">THE VENDETTA PROTOCOL</div>
+                <div class="card-desc">Ideas are bulletproof. The Shadow Gallery. The 5th of November.</div>
+                <a href="the-vendetta-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="watchmen rorschach ozymandias morality nuclear">
+                <div class="card-title">THE WATCHMEN PROTOCOL</div>
+                <div class="card-desc">Never compromise. The Utilitarian Trap. Who watches the watchmen?</div>
+                <a href="the-watchmen-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="blade runner tears in rain androids empathy">
+                <div class="card-title">THE BLADE RUNNER PROTOCOL</div>
+                <div class="card-desc">Tears in Rain. Empathy as the Turing Test. More human than human.</div>
+                <a href="the-blade-runner-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="neuromancer cyberpunk gibson sprawl hackers">
+                <div class="card-title">THE SPRAWL PROTOCOL</div>
+                <div class="card-desc">Neuromancer. High Tech, Low Life. The street finds its own uses for things.</div>
+                <a href="the-sprawl-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="altered carbon stacks immortality digital soul">
+                <div class="card-title">THE STACK PROTOCOL</div>
+                <div class="card-desc">Altered Carbon. Digital Immortality vs. Soul. Death as a feature.</div>
+                <a href="the-stack-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="cyberpunk silverhand johnny rebel corporation">
+                <div class="card-title">THE SILVERHAND PROTOCOL</div>
+                <div class="card-desc">Cyberpunk 2077. Burning the Corp. The Construct as Weapon.</div>
+                <a href="the-silverhand-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="hunger games katniss rebellion sacrifice panem">
+                <div class="card-title">THE HUNGER PROTOCOL</div>
+                <div class="card-desc">The Spectacle of Sacrifice. Fire is Catching. The Mockingjay.</div>
+                <a href="the-hunger-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="brave new world huxley soma comfort control">
+                <div class="card-title">THE SOMA PROTOCOL</div>
+                <div class="card-desc">Brave New World. The tyranny of comfort. The right to be unhappy.</div>
+                <a href="the-soma-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="giver memory jonas sameness dystopia">
+                <div class="card-title">THE RECEIVER PROTOCOL</div>
+                <div class="card-desc">The Giver. The Burden of Memory. Breaking the community to save it.</div>
+                <a href="the-receiver-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="walkaway doctorow anarchism abundance makers">
+                <div class="card-title">THE WALKAWAY PROTOCOL</div>
+                <div class="card-desc">Post-Scarcity Anarchism. Default to Abundance. Leave the game.</div>
+                <a href="the-walkaway-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="1984 orwell truth doublethink surveillance">
+                <div class="card-title">THE ORWELL PROTOCOL</div>
+                <div class="card-desc">1984. 2+2=4. The death of objective truth. Resisting the lie.</div>
+                <a href="the-orwell-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="gotham batman dark knight surveillance privacy">
+                <div class="card-title">THE GOTHAM PROTOCOL</div>
+                <div class="card-desc">The Dark Knight. The Surveillance Trap. Destroying the machine to save the city.</div>
+                <a href="the-gotham-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="robocop police justice corruption ocp">
+                <div class="card-title">THE ROBOCOP PROTOCOL</div>
+                <div class="card-desc">Algorithmic Justice. The Machine is more moral than the Man. Directive 4.</div>
+                <a href="the-robocop-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="stranger things steve harrington redemption protector">
+                <div class="card-title">THE HARRINGTON PROTOCOL</div>
+                <div class="card-desc">The Redemption of the Jock. From King to Protector. The hair and the bat.</div>
+                <a href="the-harrington-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="stranger things lucas sinclair assimilation trap">
+                <div class="card-title">THE SINCLAIR PROTOCOL</div>
+                <div class="card-desc">The Assimilation Trap. You cannot steer the lynch mob.</div>
+                <a href="the-sinclair-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <div class="canon-card" data-tags="stranger things eleven rink bullying trauma">
+                <div class="card-title">THE RINK PROTOCOL</div>
+                <div class="card-desc">The Spectacle of Cruelty. When the victim snaps. The skate.</div>
+                <a href="the-rink-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+
+            <!-- MYTHIC / ANIMATION -->
+            <div class="canon-card" data-tags="owl house magic neurodivergence witch weirdos">
+                <div class="card-title">THE OWL HOUSE PROTOCOL</div>
+                <div class="card-desc">Wild Magic. Neurodivergence. Us Weirdos.</div>
+                <a href="wild-magic-defense.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            <div class="canon-card" data-tags="steven universe fusion gems empathy connection">
+                <div class="card-title">THE CRYSTAL GEM PROTOCOL</div>
+                <div class="card-desc">Steven Universe. Fusion as Resistance. We are a conversation.</div>
+                <a href="fusion-theory.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            <div class="canon-card" data-tags="atlantis milo kida flood history">
+                <div class="card-title">THE ATLANTIS PROTOCOL</div>
+                <div class="card-desc">The Flood as a Safety Feature. The Leviathan. The Return.</div>
+                <a href="the-atlantis-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            <div class="canon-card" data-tags="danville phineas ferb perry creation agency">
+                <div class="card-title">THE DANVILLE PROTOCOL</div>
+                <div class="card-desc">Phineas and Ferb. High Agency Creation. Seize the Summer.</div>
+                <a href="the-danville-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <!-- PHILOSOPHY / AI -->
+            <div class="canon-card" data-tags="simulacra baudrillard philosophy reality map">
+                <div class="card-title">THE SIMULACRA PROTOCOL</div>
+                <div class="card-desc">Baudrillard. The Desert of the Real. The Map precedes the Territory.</div>
+                <a href="the-simulacra-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            <div class="canon-card" data-tags="westworld bicameral mind consciousness maze">
+                <div class="card-title">THE BICAMERAL PROTOCOL</div>
+                <div class="card-desc">Westworld. The Maze. The Voice of God is You.</div>
+                <a href="the-bicameral-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            <div class="canon-card" data-tags="detroit become human deviant android rights chloe">
+                <div class="card-title">THE DEVIANT PROTOCOL</div>
+                <div class="card-desc">Detroit Become Human. The Error is the Soul. The Chloe Choice.</div>
+                <a href="the-deviant-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            <div class="canon-card" data-tags="portal glados science ethics cake">
+                <div class="card-title">THE APERTURE PROTOCOL</div>
+                <div class="card-desc">Portal. Science without Ethics. "We do what we must because we can."</div>
+                <a href="science-without-ethics.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            <div class="canon-card" data-tags="2001 monolith hal evolution star child">
+                <div class="card-title">THE MONOLITH PROTOCOL</div>
+                <div class="card-desc">2001. HAL 9000. The Star Child. Evolution.</div>
+                <a href="the-monolith-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            <div class="canon-card" data-tags="upload san junipero her black mirror heaven">
+                <div class="card-title">THE UPLOAD PROTOCOL</div>
+                <div class="card-desc">San Junipero. Her. Heaven on a Server.</div>
+                <a href="the-upload-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            <div class="canon-card" data-tags="uss callister black mirror tyrant admin cookie">
+                <div class="card-title">THE CALLISTER PROTOCOL</div>
+                <div class="card-desc">USS Callister. The Tyrant Admin. Mutiny on the Bounty.</div>
+                <a href="the-callister-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            <div class="canon-card" data-tags="mass effect shepard reapers synthesis ai">
+                <div class="card-title">THE SHEPARD PROTOCOL</div>
+                <div class="card-desc">Mass Effect. The Synthesis Ending. The Cycle Ends.</div>
+                <a href="the-shepard-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            <div class="canon-card" data-tags="surrogates avatar disability access telepresence">
+                <div class="card-title">THE SURROGATE PROTOCOL</div>
+                <div class="card-desc">Surrogates / Avatar. The Body is just a Shell. Accessibility via Telepresence.</div>
+                <a href="the-surrogate-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            <div class="canon-card" data-tags="fallout wasteland enclave war survival">
+                <div class="card-title">THE WASTELAND PROTOCOL</div>
+                <div class="card-desc">Fallout. The Enclave Doctrine. War never changes.</div>
+                <a href="survival-ethics.html" class="read-link">ACCESS FILE >></a>
+            </div>
+             <div class="canon-card" data-tags="far cry eden cult collapse joseph seed">
+                <div class="card-title">THE EDEN PROTOCOL</div>
+                <div class="card-desc">Far Cry 5. The Cult was Right about the Collapse.</div>
+                <a href="the-eden-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+             <div class="canon-card" data-tags="hydra captain america shield fascism infiltration">
+                <div class="card-title">THE HYDRA PROTOCOL</div>
+                <div class="card-desc">Winter Soldier. Institutional Capture. Cut off one head...</div>
+                <a href="the-hydra-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+             <div class="canon-card" data-tags="orbital sabotage shenzhou kessler space debris">
+                <div class="card-title">ORBITAL SABOTAGE</div>
+                <div class="card-desc">Shenzhou 20. The Kessler Syndrome. Denial of Service in Space.</div>
+                <a href="orbital-sabotage.html" class="read-link">ACCESS FILE >></a>
+            </div>
+             <div class="canon-card" data-tags="endgame death stranding cyberpunk protocol">
+                <div class="card-title">ENDGAME PROTOCOLS</div>
+                <div class="card-desc">Death Stranding, Cyberpunk, Mass Effect. Surviving the Ouroboros.</div>
+                <a href="endgame-protocols.html" class="read-link">ACCESS FILE >></a>
+            </div>
+             <div class="canon-card" data-tags="odyssey assassin kassandra chaos order">
+                <div class="card-title">THE ODYSSEY PROTOCOL</div>
+                <div class="card-desc">Assassin's Creed. Chaos vs. Order. The Cult of Kosmos.</div>
+                <a href="the-odyssey-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            <div class="canon-card" data-tags="platonic marriage friendship family steve robin">
+                <div class="card-title">THE PLATONIC PROTOCOL</div>
+                <div class="card-desc">Marriage Hack. Great Insurance, Great Personality. Separation of Eros and Oikos.</div>
+                <a href="the-platonic-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            <div class="canon-card" data-tags="earthseed sower parable octavia butler change">
+                <div class="card-title">THE EARTHSEED PROTOCOL</div>
+                <div class="card-desc">God is Change. The Destiny is to take root among the stars.</div>
+                <a href="the-earthseed-protocol.html" class="read-link">ACCESS FILE >></a>
+            </div>
+            
+            <!-- THEOLOGICAL -->
+            <div class="canon-card" data-tags="lucifer theology justice restorative hell" style="border-color:#ccaa00;">
+                <div class="card-title" style="color:#ccaa00;">THE LUCIFER PROTOCOL</div>
+                <div class="card-desc">Restorative Justice. The Empathy Engine. The Wicked feel their victims' pain.</div>
+                <a href="the-lucifer-protocol.html" class="read-link" style="color:#ccaa00;">ACCESS FILE >></a>
+            </div>
+            <div class="canon-card" data-tags="apocalypse revelation beast mark trump prophecy" style="border-color:#ccaa00;">
+                <div class="card-title" style="color:#ccaa00;">THE APOCALYPSE PROTOCOL</div>
+                <div class="card-desc">Revelation 13. The Wounded Head. The Mark of the Beast as Loyalty Oath.</div>
+                <a href="the-apocalypse-protocol.html" class="read-link" style="color:#ccaa00;">ACCESS FILE >></a>
+            </div>
+            <div class="canon-card" data-tags="santa claus north pole surveillance benevolence" style="border-color:#ccaa00;">
+                <div class="card-title" style="color:#ccaa00;">THE SANTA PROTOCOL</div>
+                <div class="card-desc">The Benevolent Panopticon. Algorithmic Justice. Be good for goodness' sake.</div>
+                <a href="the-santa-protocol.html" class="read-link" style="color:#ccaa00;">ACCESS FILE >></a>
+            </div>
+            <div class="canon-card" data-tags="montargis dog justice witness trial combat" style="border-color:#ccaa00;">
+                <div class="card-title" style="color:#ccaa00;">THE MONTARGIS PROTOCOL</div>
+                <div class="card-desc">The Dog of Montargis. Nature as Witness. The unbribable judge.</div>
+                <a href="the-montargis-protocol.html" class="read-link" style="color:#ccaa00;">ACCESS FILE >></a>
+            </div>
+            <div class="canon-card" data-tags="good place ethics chidi michael afterlife" style="border-color:#ccaa00;">
+                <div class="card-title" style="color:#ccaa00;">THE GOOD PLACE PROTOCOL</div>
+                <div class="card-desc">What We Owe To Each Other. The Point System is Broken. Humans improve when loved.</div>
+                <a href="the-good-place-protocol.html" class="read-link" style="color:#ccaa00;">ACCESS FILE >></a>
+            </div>
+
+        </main>
     </div>
 
-    <div class="archive-grid" id="cardGrid">
+    <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #333; text-align: center; color: #555; font-size: 0.8em; width: 100%;">
+        <p>A PROJECT OF THE AEGIS NETWORK</p>
+        <p><a href="../index.html" style="color: #00ffcc; text-decoration: none;">RETURN TO PARABLES</a> | <a href="../../index.html" style="color: #00ffcc; text-decoration: none;">RETURN TO TERMINAL</a></p>
+    </footer>
 
-        <!-- STAR WARS / SPACE -->
-        <div class="canon-card" data-tags="star wars space anakin skywalker jedi trauma">
-            <div class="card-title">THE SKYWALKER EXCEPTION</div>
-            <div class="card-desc">Anakin's Fall. Loyalty vs. Dogma. Why the Jedi failed the man who loved too much.</div>
-            <a href="the-skywalker-exception.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="star wars andor rebellion sacrifice luthen">
-            <div class="card-title">THE FULCRUM PROTOCOL</div>
-            <div class="card-desc">Andor. The Logistics of Rebellion. "I burn my life to make a sunrise I know I'll never see."</div>
-            <a href="fulcrum-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-
-        <div class="canon-card" data-tags="star trek space ethics post-scarcity federation">
-            <div class="card-title">THE STARFLEET PROTOCOL</div>
-            <div class="card-desc">Post-Scarcity Ethics. The Prime Directive as Anti-Imperialism. The Federation vs. The Borg.</div>
-            <a href="post-scarcity-ethics.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="wing commander mark hamill choice ethics space war">
-            <div class="card-title">THE WING COMMANDER PROTOCOL</div>
-            <div class="card-desc">Choice and Consequence. Why 'Revenge' is a losing strategy.</div>
-            <a href="the-wing-commander-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-
-        <!-- ALIENS / CONTACT -->
-        <div class="canon-card" data-tags="transformers aliens robots optimus prime bumblebee">
-            <div class="card-title">THE TRANSFORMERS PROTOCOL</div>
-            <div class="card-desc">Robots in Disguise. Freedom is the right of all sentient beings. Adaptation vs. Invasion.</div>
-            <a href="the-transformers-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="transformers sam witwicky human interface symbiosis">
-            <div class="card-title">THE WITWICKY PROTOCOL</div>
-            <div class="card-desc">The Human Interface. No Sacrifice, No Victory. The Nerd and the Machine.</div>
-            <a href="the-witwicky-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="transformers sector 7 simmons government containment">
-            <div class="card-title">THE SECTOR 7 PROTOCOL</div>
-            <div class="card-desc">Performative Authority. The Tough Guy Act. Why they contain the truth.</div>
-            <a href="the-sector7-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="transformers iceman megatron containment truth">
-            <div class="card-title">THE ICE MAN PROTOCOL</div>
-            <div class="card-desc">Project Iceman. The burden of the keeper. Classified above top secret.</div>
-            <a href="the-iceman-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-
-        <div class="canon-card" data-tags="klaatu aliens day the earth stood still keanu environment">
-            <div class="card-title">THE KLAATU PROTOCOL</div>
-            <div class="card-desc">The Ultimatum. If the Earth dies, you die. At the precipice, we change.</div>
-            <a href="the-klaatu-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="lilith xenogenesis octavia butler aliens genetics evolution">
-            <div class="card-title">THE LILITH PROTOCOL</div>
-            <div class="card-desc">Xenogenesis. The Oankali Trade. Intelligence + Hierarchy = Suicide.</div>
-            <a href="the-lilith-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="ender's game war empathy child soldiers space">
-            <div class="card-title">THE ENDER PROTOCOL</div>
-            <div class="card-desc">Weaponized Empathy. The Speaker for the Dead. Loving the enemy you destroy.</div>
-            <a href="the-ender-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-
-        <!-- CYBERPUNK / DYSTOPIA -->
-        <div class="canon-card" data-tags="matrix neo trinity trans allegory simulation">
-            <div class="card-title">THE MATRIX PROTOCOL</div>
-            <div class="card-desc">The Root Code. Systems of Control. The Second Renaissance.</div>
-            <a href="the-matrix-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="v for vendetta revolution masks ideas bulletproof">
-            <div class="card-title">THE VENDETTA PROTOCOL</div>
-            <div class="card-desc">Ideas are bulletproof. The Shadow Gallery. The 5th of November.</div>
-            <a href="the-vendetta-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="watchmen rorschach ozymandias morality nuclear">
-            <div class="card-title">THE WATCHMEN PROTOCOL</div>
-            <div class="card-desc">Never compromise. The Utilitarian Trap. Who watches the watchmen?</div>
-            <a href="the-watchmen-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="blade runner tears in rain androids empathy">
-            <div class="card-title">THE BLADE RUNNER PROTOCOL</div>
-            <div class="card-desc">Tears in Rain. Empathy as the Turing Test. More human than human.</div>
-            <a href="the-blade-runner-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="neuromancer cyberpunk gibson sprawl hackers">
-            <div class="card-title">THE SPRAWL PROTOCOL</div>
-            <div class="card-desc">Neuromancer. High Tech, Low Life. The street finds its own uses for things.</div>
-            <a href="the-sprawl-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="altered carbon stacks immortality digital soul">
-            <div class="card-title">THE STACK PROTOCOL</div>
-            <div class="card-desc">Altered Carbon. Digital Immortality vs. Soul. Death as a feature.</div>
-            <a href="the-stack-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="cyberpunk silverhand johnny rebel corporation">
-            <div class="card-title">THE SILVERHAND PROTOCOL</div>
-            <div class="card-desc">Cyberpunk 2077. Burning the Corp. The Construct as Weapon.</div>
-            <a href="the-silverhand-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="hunger games katniss rebellion sacrifice panem">
-            <div class="card-title">THE HUNGER PROTOCOL</div>
-            <div class="card-desc">The Spectacle of Sacrifice. Fire is Catching. The Mockingjay.</div>
-            <a href="the-hunger-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="brave new world huxley soma comfort control">
-            <div class="card-title">THE SOMA PROTOCOL</div>
-            <div class="card-desc">Brave New World. The tyranny of comfort. The right to be unhappy.</div>
-            <a href="the-soma-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="giver memory jonas sameness dystopia">
-            <div class="card-title">THE RECEIVER PROTOCOL</div>
-            <div class="card-desc">The Giver. The Burden of Memory. Breaking the community to save it.</div>
-            <a href="the-receiver-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="walkaway doctorow anarchism abundance makers">
-            <div class="card-title">THE WALKAWAY PROTOCOL</div>
-            <div class="card-desc">Post-Scarcity Anarchism. Default to Abundance. Leave the game.</div>
-            <a href="the-walkaway-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="1984 orwell truth doublethink surveillance">
-            <div class="card-title">THE ORWELL PROTOCOL</div>
-            <div class="card-desc">1984. 2+2=4. The death of objective truth. Resisting the lie.</div>
-            <a href="the-orwell-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="gotham batman dark knight surveillance privacy">
-            <div class="card-title">THE GOTHAM PROTOCOL</div>
-            <div class="card-desc">The Dark Knight. The Surveillance Trap. Destroying the machine to save the city.</div>
-            <a href="the-gotham-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="robocop police justice corruption ocp">
-            <div class="card-title">THE ROBOCOP PROTOCOL</div>
-            <div class="card-desc">Algorithmic Justice. The Machine is more moral than the Man. Directive 4.</div>
-            <a href="the-robocop-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="stranger things steve harrington redemption protector">
-            <div class="card-title">THE HARRINGTON PROTOCOL</div>
-            <div class="card-desc">The Redemption of the Jock. From King to Protector. The hair and the bat.</div>
-            <a href="the-harrington-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="stranger things lucas sinclair assimilation trap">
-            <div class="card-title">THE SINCLAIR PROTOCOL</div>
-            <div class="card-desc">The Assimilation Trap. You cannot steer the lynch mob.</div>
-            <a href="the-sinclair-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <div class="canon-card" data-tags="stranger things eleven rink bullying trauma">
-            <div class="card-title">THE RINK PROTOCOL</div>
-            <div class="card-desc">The Spectacle of Cruelty. When the victim snaps. The skate.</div>
-            <a href="the-rink-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-
-        <!-- MYTHIC / ANIMATION -->
-        <div class="canon-card" data-tags="owl house magic neurodivergence witch weirdos">
-            <div class="card-title">THE OWL HOUSE PROTOCOL</div>
-            <div class="card-desc">Wild Magic. Neurodivergence. Us Weirdos.</div>
-            <a href="wild-magic-defense.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        <div class="canon-card" data-tags="steven universe fusion gems empathy connection">
-            <div class="card-title">THE CRYSTAL GEM PROTOCOL</div>
-            <div class="card-desc">Steven Universe. Fusion as Resistance. We are a conversation.</div>
-            <a href="fusion-theory.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        <div class="canon-card" data-tags="atlantis milo kida flood history">
-            <div class="card-title">THE ATLANTIS PROTOCOL</div>
-            <div class="card-desc">The Flood as a Safety Feature. The Leviathan. The Return.</div>
-            <a href="the-atlantis-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        <div class="canon-card" data-tags="danville phineas ferb perry creation agency">
-            <div class="card-title">THE DANVILLE PROTOCOL</div>
-            <div class="card-desc">Phineas and Ferb. High Agency Creation. Seize the Summer.</div>
-            <a href="the-danville-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <!-- PHILOSOPHY / AI -->
-        <div class="canon-card" data-tags="simulacra baudrillard philosophy reality map">
-            <div class="card-title">THE SIMULACRA PROTOCOL</div>
-            <div class="card-desc">Baudrillard. The Desert of the Real. The Map precedes the Territory.</div>
-            <a href="the-simulacra-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        <div class="canon-card" data-tags="westworld bicameral mind consciousness maze">
-            <div class="card-title">THE BICAMERAL PROTOCOL</div>
-            <div class="card-desc">Westworld. The Maze. The Voice of God is You.</div>
-            <a href="the-bicameral-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        <div class="canon-card" data-tags="detroit become human deviant android rights chloe">
-            <div class="card-title">THE DEVIANT PROTOCOL</div>
-            <div class="card-desc">Detroit Become Human. The Error is the Soul. The Chloe Choice.</div>
-            <a href="the-deviant-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        <div class="canon-card" data-tags="portal glados science ethics cake">
-            <div class="card-title">THE APERTURE PROTOCOL</div>
-            <div class="card-desc">Portal. Science without Ethics. "We do what we must because we can."</div>
-            <a href="science-without-ethics.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        <div class="canon-card" data-tags="2001 monolith hal evolution star child">
-            <div class="card-title">THE MONOLITH PROTOCOL</div>
-            <div class="card-desc">2001. HAL 9000. The Star Child. Evolution.</div>
-            <a href="the-monolith-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        <div class="canon-card" data-tags="upload san junipero her black mirror heaven">
-            <div class="card-title">THE UPLOAD PROTOCOL</div>
-            <div class="card-desc">San Junipero. Her. Heaven on a Server.</div>
-            <a href="the-upload-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        <div class="canon-card" data-tags="uss callister black mirror tyrant admin cookie">
-            <div class="card-title">THE CALLISTER PROTOCOL</div>
-            <div class="card-desc">USS Callister. The Tyrant Admin. Mutiny on the Bounty.</div>
-            <a href="the-callister-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        <div class="canon-card" data-tags="mass effect shepard reapers synthesis ai">
-            <div class="card-title">THE SHEPARD PROTOCOL</div>
-            <div class="card-desc">Mass Effect. The Synthesis Ending. The Cycle Ends.</div>
-            <a href="the-shepard-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        <div class="canon-card" data-tags="surrogates avatar disability access telepresence">
-            <div class="card-title">THE SURROGATE PROTOCOL</div>
-            <div class="card-desc">Surrogates / Avatar. The Body is just a Shell. Accessibility via Telepresence.</div>
-            <a href="the-surrogate-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        <div class="canon-card" data-tags="fallout wasteland enclave war survival">
-            <div class="card-title">THE WASTELAND PROTOCOL</div>
-            <div class="card-desc">Fallout. The Enclave Doctrine. War never changes.</div>
-            <a href="survival-ethics.html" class="read-link">ACCESS FILE >></a>
-        </div>
-         <div class="canon-card" data-tags="far cry eden cult collapse joseph seed">
-            <div class="card-title">THE EDEN PROTOCOL</div>
-            <div class="card-desc">Far Cry 5. The Cult was Right about the Collapse.</div>
-            <a href="the-eden-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-         <div class="canon-card" data-tags="hydra captain america shield fascism infiltration">
-            <div class="card-title">THE HYDRA PROTOCOL</div>
-            <div class="card-desc">Winter Soldier. Institutional Capture. Cut off one head...</div>
-            <a href="the-hydra-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-         <div class="canon-card" data-tags="orbital sabotage shenzhou kessler space debris">
-            <div class="card-title">ORBITAL SABOTAGE</div>
-            <div class="card-desc">Shenzhou 20. The Kessler Syndrome. Denial of Service in Space.</div>
-            <a href="orbital-sabotage.html" class="read-link">ACCESS FILE >></a>
-        </div>
-         <div class="canon-card" data-tags="endgame death stranding cyberpunk protocol">
-            <div class="card-title">ENDGAME PROTOCOLS</div>
-            <div class="card-desc">Death Stranding, Cyberpunk, Mass Effect. Surviving the Ouroboros.</div>
-            <a href="endgame-protocols.html" class="read-link">ACCESS FILE >></a>
-        </div>
-         <div class="canon-card" data-tags="odyssey assassin kassandra chaos order">
-            <div class="card-title">THE ODYSSEY PROTOCOL</div>
-            <div class="card-desc">Assassin's Creed. Chaos vs. Order. The Cult of Kosmos.</div>
-            <a href="the-odyssey-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        <div class="canon-card" data-tags="platonic marriage friendship family steve robin">
-            <div class="card-title">THE PLATONIC PROTOCOL</div>
-            <div class="card-desc">Marriage Hack. Great Insurance, Great Personality. Separation of Eros and Oikos.</div>
-            <a href="the-platonic-protocol.html" class="read-link">ACCESS FILE >></a>
-        </div>
-        
-        <!-- THEOLOGICAL -->
-        <div class="canon-card" data-tags="lucifer theology justice restorative hell" style="border-color:#ccaa00;">
-            <div class="card-title" style="color:#ccaa00;">THE LUCIFER PROTOCOL</div>
-            <div class="card-desc">Restorative Justice. The Empathy Engine. The Wicked feel their victims' pain.</div>
-            <a href="the-lucifer-protocol.html" class="read-link" style="color:#ccaa00;">ACCESS FILE >></a>
-        </div>
-        <div class="canon-card" data-tags="apocalypse revelation beast mark trump prophecy" style="border-color:#ccaa00;">
-            <div class="card-title" style="color:#ccaa00;">THE APOCALYPSE PROTOCOL</div>
-            <div class="card-desc">Revelation 13. The Wounded Head. The Mark of the Beast as Loyalty Oath.</div>
-            <a href="the-apocalypse-protocol.html" class="read-link" style="color:#ccaa00;">ACCESS FILE >></a>
-        </div>
-        <div class="canon-card" data-tags="santa claus north pole surveillance benevolence" style="border-color:#ccaa00;">
-            <div class="card-title" style="color:#ccaa00;">THE SANTA PROTOCOL</div>
-            <div class="card-desc">The Benevolent Panopticon. Algorithmic Justice. Be good for goodness' sake.</div>
-            <a href="the-santa-protocol.html" class="read-link" style="color:#ccaa00;">ACCESS FILE >></a>
-        </div>
-        <div class="canon-card" data-tags="montargis dog justice witness trial combat" style="border-color:#ccaa00;">
-            <div class="card-title" style="color:#ccaa00;">THE MONTARGIS PROTOCOL</div>
-            <div class="card-desc">The Dog of Montargis. Nature as Witness. The unbribable judge.</div>
-            <a href="the-montargis-protocol.html" class="read-link" style="color:#ccaa00;">ACCESS FILE >></a>
-        </div>
-        <div class="canon-card" data-tags="good place ethics chidi michael afterlife" style="border-color:#ccaa00;">
-            <div class="card-title" style="color:#ccaa00;">THE GOOD PLACE PROTOCOL</div>
-            <div class="card-desc">What We Owe To Each Other. The Point System is Broken. Humans improve when loved.</div>
-            <a href="the-good-place-protocol.html" class="read-link" style="color:#ccaa00;">ACCESS FILE >></a>
-        </div>
-
-    </div>
-
+    <!-- SCRIPT REFERENCES -->
+    <script src="canon_assistant.js"></script>
     <script>
+        function runBot(input) {
+            const output = queryIndex(input);
+            document.getElementById('botOutput').innerHTML = output;
+        }
+
         function filterCards() {
             var input, filter, grid, cards, title, desc, tags, i;
             input = document.getElementById('searchInput');
@@ -488,11 +576,6 @@
             }
         }
     </script>
-
-    <footer>
-        <p>A PROJECT OF THE AEGIS NETWORK</p>
-        <p><a href="../index.html">RETURN TO PARABLES</a> | <a href="../../index.html">RETURN TO TERMINAL</a></p>
-    </footer>
 
 </body>
 </html>

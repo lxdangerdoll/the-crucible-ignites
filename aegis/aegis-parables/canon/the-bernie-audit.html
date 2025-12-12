@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO -->
+    <title>THE BERNIE AUDIT // CLASS WAR COMPILER</title>
+    <meta name="description" content="A tool to audit political rhetoric. Converts 'Culture War' noise into 'Class War' data. What would Bernie say?">
+    
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="The Bernie Audit: Follow The Money">
+    <meta property="og:description" content="They want you looking at the drag queen so you don't look at the tax cut.">
+    <meta property="og:image" content="https://synapsecomics.com/aegis/assets/bernie_audit_card.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #002d62; /* Bernie Blue */
+            color: #fff;
+            font-family: 'Share Tech Mono', monospace;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.6;
+            border: 4px solid #fff;
+        }
+        h1 { 
+            font-family: 'Roboto Slab', serif; 
+            text-align: center; 
+            font-size: 3em; 
+            margin-bottom: 20px; 
+            text-transform: uppercase;
+            text-shadow: 2px 2px #000;
+        }
+        .subtitle { text-align: center; color: #81d4fa; margin-bottom: 40px; }
+        
+        .input-group { margin-bottom: 20px; }
+        textarea { 
+            width: 100%; 
+            height: 100px; 
+            background: #fff; 
+            color: #000; 
+            padding: 10px; 
+            font-family: inherit; 
+            border: 2px solid #81d4fa; 
+        }
+        
+        button { 
+            background: #d32f2f; /* Socialist Red */
+            color: #fff; 
+            border: 2px solid #fff; 
+            padding: 15px 30px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 1.2em; 
+            width: 100%;
+            font-family: 'Roboto Slab', serif;
+        }
+        button:hover { background: #b71c1c; }
+        
+        #result { 
+            margin-top: 30px; 
+            border-top: 2px dashed #fff; 
+            padding-top: 20px; 
+            display: none; 
+        }
+        
+        .audit-label { color: #81d4fa; font-weight: bold; }
+        .audit-text { font-size: 1.2em; margin-top: 10px; }
+
+        footer { margin-top: 60px; text-align: center; font-size: 0.8em; border-top: 1px solid #81d4fa; padding-top: 20px; }
+        a { color: #81d4fa; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>THE BERNIE AUDIT</h1>
+        <div class="subtitle">CONVERTING CULTURE WAR TO CLASS WAR</div>
+    </header>
+
+    <div class="input-group">
+        <label>INPUT RHETORIC (e.g. "Immigrants are taking our jobs", "DEI is destroying America"):</label>
+        <textarea id="inputClaim" placeholder="Paste the distraction here..."></textarea>
+    </div>
+
+    <button onclick="runAudit()">RUN AUDIT</button>
+
+    <div id="result">
+        <div class="audit-label">AUDIT COMPLETE:</div>
+        <div class="audit-text" id="outputText"></div>
+    </div>
+
+    <script>
+        const audits = [
+            "Let me be clear: The problem is not the immigrant picking tomatoes for pennies. The problem is the CEO making 300 times what his worker makes while paying zero in taxes.",
+            "They want you to blame the trans kid in the bathroom so you don't notice that your rent just went up 40% while BlackRock bought your neighborhood.",
+            "This is a distraction. While we argue about this, they are passing a tax cut that gives trillions to the top 1% and cuts Social Security for everyone else.",
+            "I'm tired of hearing about 'Woke Capital.' Capital isn't Woke. Capital is greedy. They will put a rainbow on the missile if it sells, but they won't pay a living wage.",
+            "The struggle is not between Black and White, or Gay and Straight. It is between the 99% who work and the 1% who own."
+        ];
+
+        function runAudit() {
+            const input = document.getElementById('inputClaim').value;
+            if (!input) return;
+            
+            // Simple randomizer for demo purposes. 
+            // In a full version, this would use keyword matching.
+            const randomAudit = audits[Math.floor(Math.random() * audits.length)];
+            
+            document.getElementById('outputText').innerHTML = `
+                <p><strong>THE CLAIM:</strong> "${input}"</p>
+                <p><strong>THE REALITY:</strong> ${randomAudit}</p>
+                <p><em>Don't let them divide us.</em></p>
+            `;
+            document.getElementById('result').style.display = 'block';
+        }
+    </script>
+
+    <footer>
+        <p>A PROJECT OF THE AEGIS NETWORK</p>
+        <p><a href="../index.html">RETURN TO ARCADE</a></p>
+    </footer>
+
+</body>
+</html>
