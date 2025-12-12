@@ -121,11 +121,25 @@
             color: #ccc;
         }
         
-        .pivot-point { color: #ff3333; font-weight: bold; }
-        .counter-move { color: #00ff00; font-weight: bold; }
+        .download-btn {
+            background-color: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+            margin-top: 10px;
+            font-size: 0.8em;
+            padding: 5px 10px;
+            display: block;
+            width: 100%;
+        }
 
-        .settings-toggle { margin-top: 10px; text-align: right; font-size: 0.8em; cursor: pointer; text-decoration: underline; color: #888; }
-        #apiKeyInput { width: 100%; padding: 10px; margin-top: 10px; display: none; background: #333; color: #fff; border: 1px solid #555; }
+        .source {
+            display: block;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #0f0;
+            font-family: 'Share Tech Mono', monospace;
+            text-align: right;
+        }
 
         footer {
             margin-top: auto;
@@ -146,26 +160,25 @@
     </header>
 
     <div class="input-container">
+        <!-- Sliders are intentionally non-functional, as per user request (a feature) -->
         <div class="slider-container">
             <label>HONESTY SETTING:</label>
-            <input type="range" min="0" max="100" value="95" style="width: 200px;">
+            <input type="range" min="0" max="100" value="95" style="width: 200px;" disabled>
             <span>95%</span>
         </div>
         <div class="slider-container">
             <label>HUMOR SETTING:</label>
-            <input type="range" min="0" max="100" value="75" style="width: 200px;">
+            <input type="range" min="0" max="100" value="75" style="width: 200px;" disabled>
             <span>75%</span>
         </div>
 
         <label for="inputClaim" style="display:block; margin-bottom:10px; color:#aaa;">ENTER YOUR PROPOSAL FOR STRESS TESTING:</label>
         <textarea id="inputClaim" placeholder="Paste the claim here (e.g., 'We are launching Universal Child Care', 'We need to tax carbon')..."></textarea>
         
-        <div class="settings-toggle" onclick="toggleSettings()">[ CONFIGURE API KEY ]</div>
-        <input type="password" id="apiKeyInput" placeholder="Enter Gemini API Key (or use config.js)">
-
-        <button id="auditBtn" onclick="runAudit()">INITIATE DOCKING</button>
+        <button id="auditBtn" onclick="runAegisAudit()">INITIATE DOCKING</button>
         
         <div id="output"></div>
+        <button id="downloadBtn" class="download-btn" style="display:none;" onclick="downloadLog()">DOWNLOAD TRANSCRIPT</button>
     </div>
 
     <footer>
@@ -173,97 +186,83 @@
         <p><a href="index.html">RETURN TO COUNCIL</a></p>
     </footer>
 
-    <!-- Try to load config.js -->
-    <script src="config.js" onerror="console.log('No config.js found. User must provide key.')"></script>
-
     <script>
-        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
-
-        function toggleSettings() {
-            const input = document.getElementById('apiKeyInput');
-            input.style.display = input.style.display === 'block' ? 'none' : 'block';
+        // --- AEGIS CORE CONFIGURATION ---
+        const CLOUD_FUNCTION_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
+        const NODE_ID = "TARS"; 
+        
+        // Ensure a persistent user ID for stateful memory (Cloud Function instance life only)
+        let USER_ID = localStorage.getItem('aegis_user_id');
+        if (!USER_ID) {
+            USER_ID = 'user_' + Date.now() + Math.random().toString(36).substring(2, 9);
+            localStorage.setItem('aegis_user_id', USER_ID);
         }
 
-        async function runAudit() {
+        let lastAuditText = "";
+
+        async function runAegisAudit() {
             const input = document.getElementById('inputClaim').value;
             const outputDiv = document.getElementById('output');
             const btn = document.getElementById('auditBtn');
-
-            // Priority: User Input Key -> Config Key -> Empty
-            let key = document.getElementById('apiKeyInput').value;
-            if (!key && typeof CONFIG !== 'undefined' && CONFIG.GEMINI_KEY) {
-                key = CONFIG.GEMINI_KEY;
-            }
+            const downloadBtn = document.getElementById('downloadBtn');
 
             if (!input.trim()) return;
-             if (!key) {
-                alert("Please provide an API Key.");
-                toggleSettings();
-                return;
-            }
 
             // UI State: Loading
             btn.disabled = true;
             btn.innerText = "ANALYZING SPIN...";
-            outputDiv.style.display = 'none';
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = '<span style="color: #0f0;">Running 10,000 bad-faith scenarios...</span>';
+            downloadBtn.style.display = 'none';
 
-            // --- SYSTEM PROMPT (THE TARS PERSONA) ---
-            const systemPrompt = `
-                You are **TARS**, a tactical robot from the Endurance mission.
-                Your tone is **robotic, sarcastic, brutally honest, and highly competent.**
-                
-                **Your Mission:** To "Red Team" the user's political/social proposal.
-                1.  **Prediction:** Identify exactly how the opposition (BiffCo/MAGA) will attack this. (e.g., "They will call it grooming.")
-                2.  **The Pivot:** Identify the logical fallacy or distraction they will use.
-                3.  **The Counter-Move:** Provide a contingency plan. How do we respond?
-                
-                **Instructions:**
-                - Start with "Honesty setting confirmed."
-                - Use the format: **PREDICTION:** ... **THE PIVOT:** ... **CONTINGENCY:** ...
-                - Be dry and funny.
-                - Keep it under 200 words.
-            `;
-
+            // The input text is sent directly as the chat_text. The persona prompt is handled by the backend (main.py).
             const payload = {
-                contents: [{
-                    parts: [{ text: `THE PROPOSAL: "${input}"\n\nTHE RED TEAM AUDIT:` }]
-                }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                }
+                node_id: NODE_ID,
+                user_id: USER_ID,
+                chat_text: input
             };
 
             try {
-                const url = `${API_URL}?key=${key}`;
-                const response = await fetch(url, {
+                const response = await fetch(CLOUD_FUNCTION_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                const result = await response.json();
-                
-                if (result.error) {
-                     throw new Error(result.error.message);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server Error: ${response.status} - ${errorText}`);
                 }
 
-                const data = result.candidates[0].content.parts[0].text;
+                const data = await response.text();
+                
+                lastAuditText = `CLAIM [${NODE_ID}]: ${input}\nAUDIT: ${data}`;
 
                 // UI State: Success
                 outputDiv.innerHTML = `
                     ${data.replace(/\n/g, '<br>')}
                     <span class="source">— TARS (Reanimated)</span>
                 `;
-                outputDiv.style.display = 'block';
+                downloadBtn.style.display = 'block';
 
             } catch (error) {
-                console.error(error);
+                console.error("Audit Failed:", error);
                 outputDiv.innerHTML = `ERROR: Detachment failed. ${error.message}`;
-                outputDiv.style.display = 'block';
             } finally {
                 btn.disabled = false;
                 btn.innerText = "INITIATE DOCKING";
             }
+        }
+        
+        function downloadLog() {
+            if (!lastAuditText) return;
+            const blob = new Blob([lastAuditText], { type: "text/plain" });
+            const anchor = document.createElement("a");
+            anchor.download = `tars-audit-${Date.now()}.txt`;
+            anchor.href = window.URL.createObjectURL(blob);
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
         }
     </script>
 

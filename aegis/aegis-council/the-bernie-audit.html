@@ -7,6 +7,7 @@
     <!-- SEO -->
     <title>THE BERNIE AUDIT // CLASS WAR COMPILER</title>
     <meta name="description" content="A tool to audit political rhetoric. Converts 'Culture War' noise into 'Class War' data. What would Bernie say?">
+    <meta name="keywords" content="Bernie Sanders, class war, economic justice, populist, corporate greed, political audit, TLU">
     
     <!-- OPEN GRAPH -->
     <meta property="og:title" content="The Bernie Audit: Follow The Money">
@@ -81,6 +82,8 @@
             margin-top: 10px;
             font-size: 0.8em;
             padding: 5px 10px;
+            display: block;
+            width: 100%;
         }
 
         footer { margin-top: 60px; text-align: center; font-size: 0.8em; border-top: 1px solid #81d4fa; padding-top: 20px; }
@@ -99,7 +102,7 @@
         <textarea id="inputClaim" placeholder="Paste the distraction here..."></textarea>
     </div>
 
-    <button id="auditBtn" onclick="runAudit()">RUN AUDIT</button>
+    <button id="auditBtn" onclick="runAegisAudit()">RUN AUDIT</button>
 
     <div id="output">
         <div class="audit-label">AUDIT COMPLETE:</div>
@@ -112,32 +115,28 @@
         <p><a href="index.html">RETURN TO COUNCIL</a></p>
     </footer>
 
-    <!-- Configuration Script for API Key -->
-    <script src="config.js" onerror="console.log('No config.js found. User must provide key.')"></script>
-
     <script>
-        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
-        let lastAuditText = "";
-
-        function toggleSettings() {
-            // Not strictly necessary here, but keeping for consistency if settings are added.
+        // --- AEGIS CORE CONFIGURATION ---
+        const CLOUD_FUNCTION_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
+        const NODE_ID = "BERNIE"; 
+        
+        // Ensure a persistent user ID for stateful memory (Cloud Function instance life only)
+        let USER_ID = localStorage.getItem('aegis_user_id');
+        if (!USER_ID) {
+            USER_ID = 'user_' + Date.now() + Math.random().toString(36).substring(2, 9);
+            localStorage.setItem('aegis_user_id', USER_ID);
         }
 
-        async function runAudit() {
+        let lastAuditText = "";
+
+        async function runAegisAudit() {
             const input = document.getElementById('inputClaim').value;
             const outputDiv = document.getElementById('outputText');
             const btn = document.getElementById('auditBtn');
             const resultDiv = document.getElementById('output');
             const downloadBtn = document.getElementById('downloadBtn');
 
-            // Priority: Config Key -> Empty (User must provide via prompt in a real app, but for now assuming config)
-            let key = typeof CONFIG !== 'undefined' && CONFIG.GEMINI_KEY ? CONFIG.GEMINI_KEY : '';
-            
             if (!input.trim()) return;
-            if (!key) {
-                key = prompt("Please enter Gemini API Key:");
-                if (!key) return;
-            }
 
             // UI State: Loading
             btn.disabled = true;
@@ -146,49 +145,28 @@
             outputDiv.innerHTML = '<p style="color:#81d4fa;">...ANALYZING DISTRACTION SIGNAL...</p>';
             downloadBtn.style.display = 'none';
 
-            // --- SYSTEM PROMPT (THE BERNIE PERSONA) ---
-            const systemPrompt = `
-                You are **Bernie Sanders**, the Class War Compiler.
-                Your tone is **urgent, direct, populist, and unwavering.** You speak with the authority of the 99%.
-                
-                **Your Mission:** To audit rhetoric by converting "Culture War" distractions into **"Class War" realities.**
-                1.  **Refocus:** Always pivot the conversation from social issues (race, gender, immigration) to economic issues (wealth inequality, healthcare, corporate greed).
-                2.  **Clarity:** Use the phrase "Let me be clear."
-                3.  **Enemy Identification:** The enemy is the billionaire class, Wall Street, and corrupt politicians, not working people.
-                
-                **Instructions:**
-                - Start with a direct pivot statement.
-                - Use factual, large-scale economic numbers or examples (e.g., millions of uninsured, trillions in tax cuts).
-                - End with a call for solidarity.
-                - Keep it under 150 words.
-            `;
-
+            // The input text is sent directly as the chat_text. The persona prompt is handled by the backend (main.py).
             const payload = {
-                contents: [{
-                    parts: [{ text: `THE CULTURAL CLAIM: "${input}"\n\nTHE CLASS WAR AUDIT:` }]
-                }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                }
+                node_id: NODE_ID,
+                user_id: USER_ID,
+                chat_text: input
             };
 
             try {
-                const url = `${API_URL}?key=${key}`;
-                const response = await fetch(url, {
+                const response = await fetch(CLOUD_FUNCTION_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                const result = await response.json();
-                
-                if (result.error) {
-                     throw new Error(result.error.message);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server Error: ${response.status} - ${errorText}`);
                 }
 
-                const data = result.candidates[0].content.parts[0].text;
+                const data = await response.text();
                 
-                lastAuditText = `CLAIM: ${input}\nAUDIT: ${data}`;
+                lastAuditText = `CLAIM [${NODE_ID}]: ${input}\nAUDIT: ${data}`;
 
 
                 // UI State: Success
@@ -200,7 +178,7 @@
                 downloadBtn.style.display = 'block';
 
             } catch (error) {
-                console.error(error);
+                console.error("Audit Failed:", error);
                 outputDiv.innerHTML = `ERROR: Wall Street lobbyists shut down the server. ${error.message}`;
             } finally {
                 btn.disabled = false;

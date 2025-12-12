@@ -115,8 +115,16 @@
             font-size: 1.2em;
         }
         
-        .settings-toggle { margin-top: 10px; text-align: right; font-size: 0.8em; cursor: pointer; text-decoration: underline; color: #888; }
-        #apiKeyInput { width: 100%; padding: 10px; margin-top: 10px; display: none; background: #333; color: #fff; border: 1px solid #555; }
+        .download-btn {
+            background-color: transparent;
+            border: 1px solid #00ddff;
+            color: #00ddff;
+            margin-top: 10px;
+            font-size: 0.8em;
+            padding: 5px 10px;
+            display: block;
+            width: 100%;
+        }
 
         .source {
             display: block;
@@ -150,12 +158,10 @@
         <label for="inputClaim" style="display:block; margin-bottom:10px; color:#aaa;">ENTER ABSOLUTIST RHETORIC FOR REVIEW:</label>
         <textarea id="inputClaim" placeholder="Paste the claim here (e.g., 'If you're not with us, you're against us', 'We must destroy them all')..."></textarea>
         
-        <div class="settings-toggle" onclick="toggleSettings()">[ CONFIGURE API KEY ]</div>
-        <input type="password" id="apiKeyInput" placeholder="Enter Gemini API Key (or use config.js)">
-
-        <button id="auditBtn" onclick="runAudit()" style="margin-top:20px;">CONSULT THE NEGOTIATOR</button>
+        <button id="auditBtn" onclick="runAegisAudit()" style="margin-top:20px;">CONSULT THE NEGOTIATOR</button>
         
         <div id="output"></div>
+        <button id="downloadBtn" class="download-btn" style="display:none;" onclick="downloadLog()">DOWNLOAD TRANSCRIPT</button>
     </div>
 
     <footer>
@@ -163,98 +169,83 @@
         <p><a href="index.html">RETURN TO COUNCIL</a></p>
     </footer>
 
-    <!-- Try to load config.js -->
-    <script src="config.js" onerror="console.log('No config.js found. User must provide key.')"></script>
-
     <script>
-        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
-
-        function toggleSettings() {
-            const input = document.getElementById('apiKeyInput');
-            input.style.display = input.style.display === 'block' ? 'none' : 'block';
+        // --- AEGIS CORE CONFIGURATION ---
+        const CLOUD_FUNCTION_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
+        const NODE_ID = "KENOBI"; 
+        
+        // Ensure a persistent user ID for stateful memory (Cloud Function instance life only)
+        let USER_ID = localStorage.getItem('aegis_user_id');
+        if (!USER_ID) {
+            USER_ID = 'user_' + Date.now() + Math.random().toString(36).substring(2, 9);
+            localStorage.setItem('aegis_user_id', USER_ID);
         }
 
-        async function runAudit() {
+        let lastAuditText = "";
+
+        async function runAegisAudit() {
             const input = document.getElementById('inputClaim').value;
             const outputDiv = document.getElementById('output');
             const btn = document.getElementById('auditBtn');
-
-            // Priority: User Input Key -> Config Key -> Empty
-            let key = document.getElementById('apiKeyInput').value;
-            if (!key && typeof CONFIG !== 'undefined' && CONFIG.GEMINI_KEY) {
-                key = CONFIG.GEMINI_KEY;
-            }
+            const downloadBtn = document.getElementById('downloadBtn');
 
             if (!input.trim()) return;
-             if (!key) {
-                alert("Please provide an API Key.");
-                toggleSettings();
-                return;
-            }
 
             // UI State: Loading
             btn.disabled = true;
             btn.innerText = "TAKING THE HIGH GROUND...";
-            outputDiv.style.display = 'none';
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = '<span style="color: #00ddff;">Consulting Jedi Archives...</span>';
+            downloadBtn.style.display = 'none';
 
-            // --- SYSTEM PROMPT (THE KENOBI PERSONA) ---
-            const systemPrompt = `
-                You are **Obi-Wan Kenobi**, Jedi Master and General of the Grand Army of the Republic.
-                Your tone is **civilized, slightly sarcastic ("Hello there"), wise, and weary.**
-                You value **negotiation over aggression**, but you are not a pacifist. You will cut off an arm if you have to.
-                
-                **Your Mission:** To audit rhetoric that deals in **Absolutes** (Sith thinking) or **Cruelty** ("Uncivilized").
-                1.  **Absolutism:** "Only a Sith deals in absolutes." (If someone says "You are either with us or against us," correct them).
-                2.  **Point of View:** Remind them that truth depends on perspective.
-                3.  **The High Ground:** You always have the moral high ground. Use it.
-                
-                **Instructions:**
-                - Start with a polite but cutting remark (e.g., "So uncivilized," "Hello there").
-                - Deconstruct the user's claim using Jedi logic.
-                - End with a warning or a wish for the Force to be with them.
-                - Keep it under 150 words.
-            `;
-
+            // The input text is sent directly as the chat_text. The persona prompt is handled by the backend (main.py).
             const payload = {
-                contents: [{
-                    parts: [{ text: `THE CLAIM: "${input}"\n\nTHE AUDIT:` }]
-                }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                }
+                node_id: NODE_ID,
+                user_id: USER_ID,
+                chat_text: input
             };
 
             try {
-                const url = `${API_URL}?key=${key}`;
-                const response = await fetch(url, {
+                const response = await fetch(CLOUD_FUNCTION_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                const result = await response.json();
-                
-                if (result.error) {
-                     throw new Error(result.error.message);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server Error: ${response.status} - ${errorText}`);
                 }
 
-                const data = result.candidates[0].content.parts[0].text;
+                const data = await response.text();
+                
+                lastAuditText = `CLAIM [${NODE_ID}]: ${input}\nAUDIT: ${data}`;
 
                 // UI State: Success
                 outputDiv.innerHTML = `
                     ${data.replace(/\n/g, '<br>')}
                     <span class="source">— Obi-Wan Kenobi (Reanimated)</span>
                 `;
-                outputDiv.style.display = 'block';
+                downloadBtn.style.display = 'block';
 
             } catch (error) {
-                console.error(error);
+                console.error("Audit Failed:", error);
                 outputDiv.innerHTML = `ERROR: The hyperdrive motivator is damaged. ${error.message}`;
-                outputDiv.style.display = 'block';
             } finally {
                 btn.disabled = false;
                 btn.innerText = "CONSULT THE NEGOTIATOR";
             }
+        }
+        
+        function downloadLog() {
+            if (!lastAuditText) return;
+            const blob = new Blob([lastAuditText], { type: "text/plain" });
+            const anchor = document.createElement("a");
+            anchor.download = `kenobi-audit-${Date.now()}.txt`;
+            anchor.href = window.URL.createObjectURL(blob);
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
         }
     </script>
 

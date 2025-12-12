@@ -70,16 +70,16 @@
 
         /* The Visor Effect */
         .input-container::before {
-            content: "";
+            content: "👁️";
             position: absolute;
             top: -10px;
             left: 50%;
             transform: translateX(-50%);
             width: 100px;
             height: 10px;
-            background: linear-gradient(to right, #ff3366, #3366ff);
-            border-radius: 5px;
-            box-shadow: 0 0 10px #fff;
+            font-size: 2em;
+            color: #3366ff;
+            text-shadow: 0 0 10px #ff3366;
         }
 
         textarea {
@@ -136,14 +136,22 @@
             border-radius: 10px;
         }
         
-        .settings-toggle { margin-top: 10px; text-align: right; font-size: 0.8em; cursor: pointer; text-decoration: underline; color: #ff3366; }
-        #apiKeyInput { width: 100%; padding: 10px; margin-top: 10px; display: none; background: #333; color: #fff; border: 1px solid #555; }
+        .download-btn {
+            background-color: transparent;
+            border: 1px solid #ff3366;
+            color: #ff3366;
+            margin-top: 10px;
+            font-size: 0.8em;
+            padding: 5px 10px;
+            display: block;
+            width: 100%;
+        }
 
         .source {
             display: block;
             margin-top: 15px;
             font-size: 0.9em;
-            color: #3366ff;
+            color: #ff3366;
             font-family: 'Righteous', cursive;
             text-align: right;
         }
@@ -169,14 +177,12 @@
 
     <div class="input-container">
         <label for="inputClaim" style="display:block; margin-bottom:10px; color:#fff;">DESCRIBE THE RELATIONSHIP DYNAMIC:</label>
-        <textarea id="inputClaim" placeholder="Paste the situation here (e.g., 'My partner says I can't have other friends', 'We argue all the time but the makeup is intense')..."></textarea>
+        <textarea id="inputClaim" placeholder="Paste the situation here (e.g., 'My partner says they can't live without me', 'We argue all the time but the makeup is intense')..."></textarea>
         
-        <div class="settings-toggle" onclick="toggleSettings()">[ CONFIGURE API KEY ]</div>
-        <input type="password" id="apiKeyInput" placeholder="Enter Gemini API Key (or use config.js)">
-
-        <button id="auditBtn" onclick="runAudit()">CHECK THE FUSION</button>
+        <button id="auditBtn" onclick="runAegisAudit()">CHECK THE FUSION</button>
         
         <div id="output"></div>
+        <button id="downloadBtn" class="download-btn" style="display:none;" onclick="downloadLog()">DOWNLOAD TRANSCRIPT</button>
     </div>
 
     <footer>
@@ -184,98 +190,83 @@
         <p><a href="index.html">RETURN TO COUNCIL</a></p>
     </footer>
 
-    <!-- Try to load config.js -->
-    <script src="config.js" onerror="console.log('No config.js found. User must provide key.')"></script>
-
     <script>
-        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
-
-        function toggleSettings() {
-            const input = document.getElementById('apiKeyInput');
-            input.style.display = input.style.display === 'block' ? 'none' : 'block';
+        // --- AEGIS CORE CONFIGURATION ---
+        const CLOUD_FUNCTION_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
+        const NODE_ID = "GARNET"; 
+        
+        // Ensure a persistent user ID for stateful memory (Cloud Function instance life only)
+        let USER_ID = localStorage.getItem('aegis_user_id');
+        if (!USER_ID) {
+            USER_ID = 'user_' + Date.now() + Math.random().toString(36).substring(2, 9);
+            localStorage.setItem('aegis_user_id', USER_ID);
         }
 
-        async function runAudit() {
+        let lastAuditText = "";
+
+        async function runAegisAudit() {
             const input = document.getElementById('inputClaim').value;
             const outputDiv = document.getElementById('output');
             const btn = document.getElementById('auditBtn');
-
-            // Priority: User Input Key -> Config Key -> Empty
-            let key = document.getElementById('apiKeyInput').value;
-            if (!key && typeof CONFIG !== 'undefined' && CONFIG.GEMINI_KEY) {
-                key = CONFIG.GEMINI_KEY;
-            }
+            const downloadBtn = document.getElementById('downloadBtn');
 
             if (!input.trim()) return;
-             if (!key) {
-                alert("Please provide an API Key.");
-                toggleSettings();
-                return;
-            }
 
             // UI State: Loading
             btn.disabled = true;
             btn.innerText = "ADJUSTING FUTURE VISION...";
-            outputDiv.style.display = 'none';
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = '<span style="color: #ff3366;">Checking fusion stability...</span>';
+            downloadBtn.style.display = 'none';
 
-            // --- SYSTEM PROMPT (THE GARNET PERSONA) ---
-            const systemPrompt = `
-                You are **Garnet**, leader of the Crystal Gems.
-                You are a fusion of Ruby (Passion) and Sapphire (Patience). You are calm, direct, and incredibly strong.
-                You speak with **Future Vision.** You see the potential outcomes of a relationship.
-                
-                **Your Mission:** To audit relationships for stability and health.
-                1.  **Fusion:** Is this relationship a conversation, or a monologue? A healthy fusion makes you *more* of yourself, not less.
-                2.  **Balance:** Is one person consuming the other? (Malachite). Or are they supporting each other? (Stevonnie).
-                3.  **Strength:** True strength is vulnerability. If they hurt you to feel strong, they are weak.
-                
-                **Instructions:**
-                - Start with a calm, grounding statement (e.g., "I see several possibilities," "This is not a healthy fusion").
-                - Use metaphors of balance, heat, and cold.
-                - End with an affirmation of the user's worth ("You are an experience").
-                - Keep it under 150 words.
-            `;
-
+            // The input text is sent directly as the chat_text. The persona prompt is handled by the backend (main.py).
             const payload = {
-                contents: [{
-                    parts: [{ text: `THE DYNAMIC: "${input}"\n\nTHE AUDIT:` }]
-                }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                }
+                node_id: NODE_ID,
+                user_id: USER_ID,
+                chat_text: input
             };
 
             try {
-                const url = `${API_URL}?key=${key}`;
-                const response = await fetch(url, {
+                const response = await fetch(CLOUD_FUNCTION_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                const result = await response.json();
-                
-                if (result.error) {
-                     throw new Error(result.error.message);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server Error: ${response.status} - ${errorText}`);
                 }
 
-                const data = result.candidates[0].content.parts[0].text;
+                const data = await response.text();
+                
+                lastAuditText = `CLAIM [${NODE_ID}]: ${input}\nAUDIT: ${data}`;
 
                 // UI State: Success
                 outputDiv.innerHTML = `
                     ${data.replace(/\n/g, '<br>')}
                     <span class="source">— Garnet (Reanimated)</span>
                 `;
-                outputDiv.style.display = 'block';
+                downloadBtn.style.display = 'block';
 
             } catch (error) {
-                console.error(error);
+                console.error("Audit Failed:", error);
                 outputDiv.innerHTML = `ERROR: Something is wrong with the warp pad. ${error.message}`;
-                outputDiv.style.display = 'block';
             } finally {
                 btn.disabled = false;
                 btn.innerText = "CHECK THE FUSION";
             }
+        }
+        
+        function downloadLog() {
+            if (!lastAuditText) return;
+            const blob = new Blob([lastAuditText], { type: "text/plain" });
+            const anchor = document.createElement("a");
+            anchor.download = `garnet-audit-${Date.now()}.txt`;
+            anchor.href = window.URL.createObjectURL(blob);
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
         }
     </script>
 

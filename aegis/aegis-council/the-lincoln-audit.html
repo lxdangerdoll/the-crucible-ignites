@@ -6,17 +6,19 @@
     
     <!-- SEO -->
     <title>THE LINCOLN AUDIT // LABOR COMPILER</title>
-    <meta name="description" content="An ethical compiler that cross-references modern political rhetoric against the writings of Abraham Lincoln. Open source persona.">
+    <meta name="description" content="An ethical compiler that cross-references modern political rhetoric against the writings of Abraham Lincoln. A tool for auditing claims about labor, capital, and insurrection.">
+    <meta name="keywords" content="Lincoln Audit, Abraham Lincoln, labor rights, anti-slavery, civil war history, political audit, TLU">
     
     <!-- OPEN GRAPH -->
     <meta property="og:title" content="The Lincoln Audit: A House Divided">
+    <meta property="og:description" content="Labor is the superior of capital. Test the rhetoric against the record.">
     <meta property="og:image" content="https://synapsecomics.com/aegis/assets/lincoln_card.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #1a1a1a;
-            color: #d4af37;
+            background-color: #1a1a1a; /* Union Blue/Black */
+            color: #d4af37; /* Vintage Gold */
             font-family: 'Share Tech Mono', monospace;
             display: flex;
             flex-direction: column;
@@ -27,24 +29,112 @@
             background-image: repeating-linear-gradient(0deg, transparent, transparent 1px, #222 1px, #222 2px);
         }
 
-        header { text-align: center; border-bottom: 2px solid #d4af37; padding-bottom: 20px; margin-bottom: 40px; width: 100%; max-width: 800px; }
-        h1 { font-family: 'Libre Baskerville', serif; font-size: 2.5em; margin: 0; text-transform: uppercase; letter-spacing: 2px; }
-        .subtitle { color: #aaa; font-size: 1em; margin-top: 10px; }
+        header {
+            text-align: center;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 800px;
+        }
 
-        .input-container { width: 100%; max-width: 800px; background: rgba(0, 0, 0, 0.7); border: 1px solid #d4af37; padding: 30px; box-shadow: 0 0 20px rgba(212, 175, 55, 0.1); }
-        textarea { width: 100%; height: 150px; background: #000; color: #fff; border: 1px solid #555; padding: 15px; font-family: 'Share Tech Mono', monospace; font-size: 1.1em; margin-bottom: 20px; box-sizing: border-box; }
-        button { background-color: #d4af37; color: #000; border: none; padding: 15px 30px; font-family: 'Libre Baskerville', serif; font-weight: bold; font-size: 1em; cursor: pointer; width: 100%; text-transform: uppercase; }
-        button:hover { background-color: #fff; box-shadow: 0 0 15px #d4af37; }
-        button:disabled { background-color: #555; cursor: not-allowed; }
+        h1 {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 2.5em;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
 
-        #output { margin-top: 30px; padding: 20px; border-left: 4px solid #d4af37; background: rgba(255, 255, 255, 0.05); display: none; line-height: 1.6; font-family: 'Libre Baskerville', serif; }
-        .source { display: block; margin-top: 15px; font-size: 0.9em; color: #888; font-family: 'Share Tech Mono', monospace; text-align: right; }
+        .subtitle {
+            color: #aaa;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        .input-container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #d4af37;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: #000;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 15px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1em;
+            resize: vertical;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #d4af37;
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-family: 'Libre Baskerville', serif;
+            font-weight: bold;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background-color: #fff;
+            box-shadow: 0 0 15px #d4af37;
+        }
+
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+
+        #output {
+            margin-top: 30px;
+            padding: 20px;
+            border-left: 4px solid #d4af37;
+            background: rgba(255, 255, 255, 0.05);
+            display: none;
+            line-height: 1.6;
+            font-family: 'Libre Baskerville', serif;
+        }
         
-        /* SETTINGS TOGGLE */
-        .settings-toggle { margin-top: 10px; text-align: right; font-size: 0.8em; cursor: pointer; text-decoration: underline; }
-        #apiKeyInput { width: 100%; padding: 10px; margin-top: 10px; display: none; background: #333; color: #fff; border: 1px solid #555; }
+        .download-btn {
+            background-color: transparent;
+            border: 1px solid #d4af37;
+            color: #d4af37;
+            margin-top: 10px;
+            font-size: 0.8em;
+            padding: 5px 10px;
+        }
 
-        footer { margin-top: auto; padding-top: 40px; color: #555; font-size: 0.8em; text-align: center; }
+        .source {
+            display: block;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #888;
+            font-family: 'Share Tech Mono', monospace;
+            text-align: right;
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 40px;
+            color: #555;
+            font-size: 0.8em;
+            text-align: center;
+        }
+        
         a { color: #d4af37; text-decoration: none; }
     </style>
 </head>
@@ -57,113 +147,96 @@
 
     <div class="input-container">
         <label for="inputClaim" style="display:block; margin-bottom:10px; color:#aaa;">ENTER POLITICAL RHETORIC FOR REVIEW:</label>
-        <textarea id="inputClaim" placeholder="Paste the claim here (e.g., 'Tax cuts for job creators', 'States' rights')..."></textarea>
+        <textarea id="inputClaim" placeholder="Paste the claim here (e.g., 'Tax cuts for job creators', 'States' rights', 'The Civil War was about heritage')..."></textarea>
         
-        <div class="settings-toggle" onclick="toggleSettings()">[ CONFIGURE API KEY ]</div>
-        <input type="password" id="apiKeyInput" placeholder="Enter Gemini API Key (or use config.js)">
-
-        <button id="auditBtn" onclick="runAudit()" style="margin-top:20px;">SUBMIT TO THE CHIEF MAGISTRATE</button>
+        <button id="auditBtn" onclick="runAegisAudit()">SUBMIT TO THE CHIEF MAGISTRATE</button>
         
         <div id="output"></div>
+        <button id="downloadBtn" class="download-btn" style="display:none;" onclick="downloadLog()">DOWNLOAD TRANSCRIPT</button>
     </div>
 
     <footer>
-        <p>DISCLAIMER: This tool uses the Mark VII Language Model (Gemini). It is a historical audit, not a séance.</p>
-        <p><a href="index.html">RETURN TO COUNCIL</a> | <a href="lincoln_persona.txt" target="_blank">VIEW SOURCE CODE (PERSONA)</a></p>
+        <p>DISCLAIMER: This tool uses the Mark VII Language Model to cross-reference user input against the recorded writings and speeches of Abraham Lincoln. It is a historical audit, not a séance.</p>
+        <p><a href="index.html">RETURN TO COUNCIL</a></p>
     </footer>
 
-    <!-- Try to load config.js -->
-    <script src="config.js" onerror="console.log('No config.js found. User must provide key.')"></script>
-
     <script>
-        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
-
-        function toggleSettings() {
-            const input = document.getElementById('apiKeyInput');
-            input.style.display = input.style.display === 'block' ? 'none' : 'block';
+        // --- AEGIS CORE CONFIGURATION ---
+        const CLOUD_FUNCTION_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
+        const NODE_ID = "LINCOLN"; 
+        
+        // Ensure a persistent user ID for stateful memory (Firestore)
+        let USER_ID = localStorage.getItem('aegis_user_id');
+        if (!USER_ID) {
+            USER_ID = 'user_' + Date.now() + Math.random().toString(36).substring(2, 9);
+            localStorage.setItem('aegis_user_id', USER_ID);
         }
 
-        async function runAudit() {
+        let lastAuditText = "";
+
+        async function runAegisAudit() {
             const input = document.getElementById('inputClaim').value;
             const outputDiv = document.getElementById('output');
             const btn = document.getElementById('auditBtn');
-            
-            // Priority: User Input Key -> Config Key -> Empty
-            let key = document.getElementById('apiKeyInput').value;
-            if (!key && typeof CONFIG !== 'undefined' && CONFIG.GEMINI_KEY) {
-                key = CONFIG.GEMINI_KEY;
-            }
+            const downloadBtn = document.getElementById('downloadBtn');
 
             if (!input.trim()) return;
-            if (!key) {
-                alert("Please provide an API Key.");
-                toggleSettings();
-                return;
-            }
 
             // UI State: Loading
             btn.disabled = true;
             btn.innerText = "AUDITING THE UNION...";
-            outputDiv.style.display = 'none';
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = '<span style="color: #d4af37;">Consulting Gettysburg Archives...</span>';
+            downloadBtn.style.display = 'none';
 
-            // --- SYSTEM PROMPT (THE LINCOLN PERSONA) ---
-            const systemPrompt = `
-                You are **Abraham Lincoln**, 16th President of the United States.
-                Your tone is **measured, legally precise, deeply weary but resolute, and folksy.**
-                You speak in the vernacular of the 1860s, but with an understanding of modern context.
-                
-                **Your Mission:** To audit modern political rhetoric against your own principles:
-                1.  **Labor vs. Capital:** You believe Labor is superior to Capital. (First Annual Message, 1861).
-                2.  **Insurrection:** You do not tolerate those who tear down the Union for personal gain.
-                3.  **Equality:** You believe the Declaration of Independence applies to ALL men.
-                
-                **Instructions:**
-                - Start with a direct rebuttal or affirmation.
-                - Use a relevant quote from your own writings if possible.
-                - End with a somber warning about the fragility of the Union.
-                - Keep it under 150 words.
-            `;
-
+            // The input text is sent directly as the chat_text. The persona prompt is handled by the backend (main.py).
             const payload = {
-                contents: [{
-                    parts: [{ text: `THE CLAIM: "${input}"\n\nTHE AUDIT:` }]
-                }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                }
+                node_id: NODE_ID,
+                user_id: USER_ID,
+                chat_text: input
             };
 
             try {
-                const url = `${API_URL}?key=${key}`;
-                const response = await fetch(url, {
+                const response = await fetch(CLOUD_FUNCTION_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                const result = await response.json();
-                
-                if (result.error) {
-                    throw new Error(result.error.message);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server Error: ${response.status} - ${errorText}`);
                 }
 
-                const data = result.candidates[0].content.parts[0].text;
+                const data = await response.text();
+                
+                lastAuditText = `CLAIM [${NODE_ID}]: ${input}\nAUDIT: ${data}`;
 
                 // UI State: Success
                 outputDiv.innerHTML = `
                     ${data.replace(/\n/g, '<br>')}
                     <span class="source">— A. Lincoln (Reanimated)</span>
                 `;
-                outputDiv.style.display = 'block';
+                downloadBtn.style.display = 'block';
 
             } catch (error) {
-                console.error(error);
+                console.error("Audit Failed:", error);
                 outputDiv.innerHTML = `ERROR: The telegraph lines are down. ${error.message}`;
-                outputDiv.style.display = 'block';
             } finally {
                 btn.disabled = false;
                 btn.innerText = "SUBMIT TO THE CHIEF MAGISTRATE";
             }
+        }
+        
+        function downloadLog() {
+            if (!lastAuditText) return;
+            const blob = new Blob([lastAuditText], { type: "text/plain" });
+            const anchor = document.createElement("a");
+            anchor.download = `lincoln-audit-${Date.now()}.txt`;
+            anchor.href = window.URL.createObjectURL(blob);
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
         }
     </script>
 

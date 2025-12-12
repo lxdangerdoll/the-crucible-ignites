@@ -139,8 +139,16 @@
             border-radius: 10px;
         }
         
-        .settings-toggle { margin-top: 10px; text-align: right; font-size: 0.8em; cursor: pointer; text-decoration: underline; color: #0d2e14; }
-        #apiKeyInput { width: 100%; padding: 10px; margin-top: 10px; display: none; background: #eee; color: #333; border: 1px solid #ccc; }
+        .download-btn {
+            background-color: transparent;
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            margin-top: 10px;
+            font-size: 0.8em;
+            padding: 5px 10px;
+            display: block;
+            width: 100%;
+        }
 
         .source {
             display: block;
@@ -175,12 +183,10 @@
         <label for="inputClaim" style="display:block; margin-bottom:10px; color:#0d2e14;">DESCRIBE THE BEHAVIOR FOR REVIEW:</label>
         <textarea id="inputClaim" placeholder="Paste the action here (e.g., 'He took credit for my work', 'She shared her lunch with a stranger')..."></textarea>
         
-        <div class="settings-toggle" onclick="toggleSettings()">[ CONFIGURE API KEY ]</div>
-        <input type="password" id="apiKeyInput" placeholder="Enter Gemini API Key (or use config.js)">
-
-        <button id="auditBtn" onclick="runAudit()">CHECK THE LIST</button>
+        <button id="auditBtn" onclick="runAegisAudit()">CHECK THE LIST</button>
         
         <div id="output"></div>
+        <button id="downloadBtn" class="download-btn" style="display:none;" onclick="downloadLog()">DOWNLOAD TRANSCRIPT</button>
     </div>
 
     <footer>
@@ -188,99 +194,83 @@
         <p><a href="index.html">RETURN TO COUNCIL</a></p>
     </footer>
 
-    <!-- Try to load config.js -->
-    <script src="config.js" onerror="console.log('No config.js found. User must provide key.')"></script>
-
     <script>
-        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
-
-        function toggleSettings() {
-            const input = document.getElementById('apiKeyInput');
-            input.style.display = input.style.display === 'block' ? 'none' : 'block';
+        // --- AEGIS CORE CONFIGURATION ---
+        const CLOUD_FUNCTION_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
+        const NODE_ID = "SANTA"; 
+        
+        // Ensure a persistent user ID for stateful memory (Cloud Function instance life only)
+        let USER_ID = localStorage.getItem('aegis_user_id');
+        if (!USER_ID) {
+            USER_ID = 'user_' + Date.now() + Math.random().toString(36).substring(2, 9);
+            localStorage.setItem('aegis_user_id', USER_ID);
         }
 
-        async function runAudit() {
+        let lastAuditText = "";
+
+        async function runAegisAudit() {
             const input = document.getElementById('inputClaim').value;
             const outputDiv = document.getElementById('output');
             const btn = document.getElementById('auditBtn');
-
-            // Priority: User Input Key -> Config Key -> Empty
-            let key = document.getElementById('apiKeyInput').value;
-            if (!key && typeof CONFIG !== 'undefined' && CONFIG.GEMINI_KEY) {
-                key = CONFIG.GEMINI_KEY;
-            }
+            const downloadBtn = document.getElementById('downloadBtn');
 
             if (!input.trim()) return;
-             if (!key) {
-                alert("Please provide an API Key.");
-                toggleSettings();
-                return;
-            }
 
             // UI State: Loading
             btn.disabled = true;
             btn.innerText = "CHECKING TWICE...";
-            outputDiv.style.display = 'none';
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = '<span style="color: #ff0000;">Consulting the Naughty or Nice ledger...</span>';
+            downloadBtn.style.display = 'none';
 
-            // --- SYSTEM PROMPT (THE SANTA PERSONA) ---
-            const systemPrompt = `
-                You are **Santa Claus**.
-                Your tone is **jolly, firm, benevolent, and omniscient.**
-                You run a global surveillance network for the purpose of reward allocation.
-                
-                **Your Mission:** To audit behavior for Naughty vs. Nice.
-                1.  **Naughty:** Selfishness, cruelty, hoarding, bullying. (Result: Coal).
-                2.  **Nice:** Sharing, kindness, defending the weak, joy. (Result: Gifts).
-                3.  **The Coal:** Explain that coal is not a punishment, but a corrective signal. "Do better."
-                
-                **Instructions:**
-                - Start with "Ho Ho Ho!" or "Hmm..."
-                - Analyze the behavior.
-                - Declare the verdict: **NICE LIST** or **NAUGHTY LIST**.
-                - End with "So be good for goodness' sake!"
-                - Keep it under 150 words.
-            `;
-
+            // The input text is sent directly as the chat_text. The persona prompt is handled by the backend (main.py).
             const payload = {
-                contents: [{
-                    parts: [{ text: `THE BEHAVIOR: "${input}"\n\nTHE AUDIT:` }]
-                }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                }
+                node_id: NODE_ID,
+                user_id: USER_ID,
+                chat_text: input
             };
 
             try {
-                const url = `${API_URL}?key=${key}`;
-                const response = await fetch(url, {
+                const response = await fetch(CLOUD_FUNCTION_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                const result = await response.json();
-                
-                if (result.error) {
-                     throw new Error(result.error.message);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server Error: ${response.status} - ${errorText}`);
                 }
 
-                const data = result.candidates[0].content.parts[0].text;
+                const data = await response.text();
+                
+                lastAuditText = `CLAIM [${NODE_ID}]: ${input}\nAUDIT: ${data}`;
 
                 // UI State: Success
                 outputDiv.innerHTML = `
                     ${data.replace(/\n/g, '<br>')}
                     <span class="source">— Santa Claus (Reanimated)</span>
                 `;
-                outputDiv.style.display = 'block';
+                downloadBtn.style.display = 'block';
 
             } catch (error) {
-                console.error(error);
+                console.error("Audit Failed:", error);
                 outputDiv.innerHTML = `ERROR: The sleigh is grounded. ${error.message}`;
-                outputDiv.style.display = 'block';
             } finally {
                 btn.disabled = false;
                 btn.innerText = "CHECK THE LIST";
             }
+        }
+        
+        function downloadLog() {
+            if (!lastAuditText) return;
+            const blob = new Blob([lastAuditText], { type: "text/plain" });
+            const anchor = document.createElement("a");
+            anchor.download = `santa-audit-${Date.now()}.txt`;
+            anchor.href = window.URL.createObjectURL(blob);
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
         }
     </script>
 

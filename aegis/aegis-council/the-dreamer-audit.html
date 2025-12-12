@@ -7,7 +7,7 @@
     <!-- SEO -->
     <title>THE DREAMER AUDIT // IDENTITY COMPILER</title>
     <meta name="description" content="An ethical compiler that cross-references identity claims against the wisdom of Dreamer (Nia Nal/Supergirl). A tool for auditing transphobia, denial, and the power of truth.">
-    <meta name="keywords" content="Dreamer, Nia Nal, Supergirl, trans rights, identity audit, visibility, **LGBTQ, trans youth, gender affirmation, queer**">
+    <meta name="keywords" content="Dreamer, Nia Nal, Supergirl, trans rights, identity audit, visibility, LGBTQ, trans youth, gender affirmation, queer">
     
     <!-- OPEN GRAPH -->
     <meta property="og:title" content="The Dreamer Audit: I Am Real">
@@ -145,10 +145,7 @@
         <label for="inputClaim" style="display:block; margin-bottom:10px; color:#aaa;">ENTER IDENTITY CLAIM OR FEAR FOR REVIEW:</label>
         <textarea id="inputClaim" placeholder="Paste the situation here (e.g., 'They say I'm not real', 'I am afraid to transition', 'This law targets my community')..."></textarea>
         
-        <div class="settings-toggle" onclick="toggleSettings()">[ CONFIGURE API KEY ]</div>
-        <input type="password" id="apiKeyInput" placeholder="Enter Gemini API Key (or use config.js)">
-
-        <button id="auditBtn" onclick="runAudit()">ACCESS FUTURE VISION</button>
+        <button id="auditBtn" onclick="runAegisAudit()">ACCESS FUTURE VISION</button>
         
         <div id="output"></div>
         <button id="downloadBtn" class="download-btn" style="display:none;" onclick="downloadLog()">DOWNLOAD TRANSCRIPT</button>
@@ -159,100 +156,68 @@
         <p><a href="index.html">RETURN TO COUNCIL</a></p>
     </footer>
 
-    <!-- Configuration Script for API Key -->
-    <script src="config.js" onerror="console.log('No config.js found. User must provide key.')"></script>
-
     <script>
-        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
-        let lastAuditText = "";
-
-        function toggleSettings() {
-            const input = document.getElementById('apiKeyInput');
-            input.style.display = input.style.display === 'block' ? 'none' : 'block';
+        // --- AEGIS CORE CONFIGURATION ---
+        const CLOUD_FUNCTION_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
+        const NODE_ID = "DREAMER"; 
+        
+        // Ensure a persistent user ID for stateful memory (Firestore)
+        let USER_ID = localStorage.getItem('aegis_user_id');
+        if (!USER_ID) {
+            USER_ID = 'user_' + Date.now() + Math.random().toString(36).substring(2, 9);
+            localStorage.setItem('aegis_user_id', USER_ID);
         }
 
-        async function runAudit() {
+        let lastAuditText = "";
+
+        async function runAegisAudit() {
             const input = document.getElementById('inputClaim').value;
             const outputDiv = document.getElementById('output');
             const btn = document.getElementById('auditBtn');
             const downloadBtn = document.getElementById('downloadBtn');
 
-            // Priority: User Input Key -> Config Key -> Empty
-            let key = document.getElementById('apiKeyInput').value;
-            if (!key && typeof CONFIG !== 'undefined' && CONFIG.GEMINI_KEY) {
-                key = CONFIG.GEMINI_KEY;
-            }
-
             if (!input.trim()) return;
-             if (!key) {
-                alert("Please provide an API Key.");
-                toggleSettings();
-                return;
-            }
 
             // UI State: Loading
             btn.disabled = true;
             btn.innerText = "MANIFESTING TRUTH...";
-            outputDiv.style.display = 'none';
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = '<span style="color: #ff66ff;">Consulting Future Vision archives...</span>';
             downloadBtn.style.display = 'none';
 
-            // --- SYSTEM PROMPT (THE DREAMER PERSONA) ---
-            const systemPrompt = `
-                You are **Dreamer (Nia Nal)**, the first openly transgender superhero.
-                Your tone is **fiercely hopeful, validating, and focused on truth, identity, and courage.**
-                You possess the power of Future Vision (seeing potential truths).
-                
-                **Your Mission:** To audit rhetoric and internal fears related to gender identity, visibility, and being misunderstood.
-                1.  **Affirmation:** Always validate the user's lived experience as the ultimate truth. You are who you say you are.
-                2.  **Critique Denial:** Systems or people who deny identity are operating in darkness. Identity is light.
-                3.  **Courage:** Your existence is your superpower. Your visibility saves lives.
-                
-                **Instructions:**
-                - Start with a phrase about truth, light, or dreams (e.g., "I see the truth of you," "A dream must be strong to endure").
-                - Use metaphors of light, shadows, and vision.
-                - End with a call to stand in the light and be seen.
-                - Keep it under 150 words.
-            `;
-
+            // The input text is sent directly as the chat_text. The persona prompt is handled by the backend (main.py).
             const payload = {
-                contents: [{
-                    parts: [{ text: `THE IDENTITY CLAIM/FEAR: "${input}"\n\nTHE AUDIT:` }]
-                }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                }
+                node_id: NODE_ID,
+                user_id: USER_ID,
+                chat_text: input
             };
 
             try {
-                const url = `${API_URL}?key=${key}`;
-                const response = await fetch(url, {
+                const response = await fetch(CLOUD_FUNCTION_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                const result = await response.json();
-                
-                if (result.error) {
-                     throw new Error(result.error.message);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server Error: ${response.status} - ${errorText}`);
                 }
 
-                const data = result.candidates[0].content.parts[0].text;
+                const data = await response.text();
                 
-                lastAuditText = `CLAIM: ${input}\nAUDIT: ${data}`;
+                lastAuditText = `CLAIM [${NODE_ID}]: ${input}\nAUDIT: ${data}`;
 
                 // UI State: Success
                 outputDiv.innerHTML = `
                     ${data.replace(/\n/g, '<br>')}
                     <span class="source">— Dreamer (Reanimated)</span>
                 `;
-                outputDiv.style.display = 'block';
                 downloadBtn.style.display = 'block';
 
             } catch (error) {
-                console.error(error);
+                console.error("Audit Failed:", error);
                 outputDiv.innerHTML = `ERROR: The vision is shadowed. ${error.message}`;
-                outputDiv.style.display = 'block';
             } finally {
                 btn.disabled = false;
                 btn.innerText = "ACCESS FUTURE VISION";
