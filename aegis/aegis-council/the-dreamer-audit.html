@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO -->
+    <title>THE DREAMER AUDIT // IDENTITY COMPILER</title>
+    <meta name="description" content="An ethical compiler that cross-references identity claims against the wisdom of Dreamer (Nia Nal/Supergirl). A tool for auditing transphobia, denial, and the power of truth.">
+    <meta name="keywords" content="Dreamer, Nia Nal, Supergirl, trans rights, identity audit, visibility, transphobia, TLU">
+    
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="The Dreamer Audit: I Am Real">
+    <meta property="og:description" content="The truth you hold inside is the light that saves the world. Don't hide your power.">
+    <meta property="og:image" content="https://synapsecomics.com/aegis/assets/dreamer_card.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #110033; /* Dreamer Purple/Blue */
+            color: #00ffff; /* Dreamer Cyan */
+            font-family: 'Share Tech Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background-image: radial-gradient(circle, #110033 0%, #000 100%);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 4px solid #ff66ff; /* Magenta/Pink */
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3em;
+            margin: 0;
+            text-transform: uppercase;
+            color: #00ffff;
+            text-shadow: 0 0 15px #ff66ff;
+        }
+
+        .subtitle {
+            color: #ff66ff;
+            font-size: 1.2em;
+            margin-top: 10px;
+            letter-spacing: 2px;
+        }
+
+        .input-container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #ff66ff;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(255, 102, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: #050011;
+            color: #fff;
+            border: 1px solid #ff66ff;
+            padding: 15px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1em;
+            resize: vertical;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #00ffff;
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            text-transform: uppercase;
+            border-radius: 5px;
+        }
+        
+        .download-btn {
+            background-color: transparent;
+            border: 1px solid #ff66ff;
+            color: #ff66ff;
+            margin-top: 10px;
+            font-size: 0.8em;
+            padding: 5px 10px;
+        }
+
+        button:hover {
+            background-color: #fff;
+            box-shadow: 0 0 15px #00ffff;
+        }
+
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+
+        #output {
+            margin-top: 30px;
+            padding: 20px;
+            border-left: 6px solid #ff66ff;
+            background: rgba(255, 102, 255, 0.1);
+            display: none;
+            line-height: 1.6;
+            font-size: 1.2em;
+            color: #fff;
+        }
+        
+        footer {
+            margin-top: auto;
+            padding-top: 40px;
+            color: #888;
+            font-size: 0.8em;
+            text-align: center;
+        }
+        
+        a { color: #00ffff; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>THE DREAMER AUDIT</h1>
+        <div class="subtitle">IDENTITY COMPILER // NIA NAL</div>
+    </header>
+
+    <div class="input-container">
+        <label for="inputClaim" style="display:block; margin-bottom:10px; color:#aaa;">ENTER IDENTITY CLAIM OR FEAR FOR REVIEW:</label>
+        <textarea id="inputClaim" placeholder="Paste the situation here (e.g., 'They say I'm not real', 'I am afraid to transition', 'This law targets my community')..."></textarea>
+        
+        <div class="settings-toggle" onclick="toggleSettings()">[ CONFIGURE API KEY ]</div>
+        <input type="password" id="apiKeyInput" placeholder="Enter Gemini API Key (or use config.js)">
+
+        <button id="auditBtn" onclick="runAudit()">ACCESS FUTURE VISION</button>
+        
+        <div id="output"></div>
+        <button id="downloadBtn" class="download-btn" style="display:none;" onclick="downloadLog()">DOWNLOAD TRANSCRIPT</button>
+    </div>
+
+    <footer>
+        <p>DISCLAIMER: This tool uses the Mark VII Language Model. It channels the truth of Dreamer. It is an identity affirmation, not a crystal ball.</p>
+        <p><a href="index.html">RETURN TO COUNCIL</a></p>
+    </footer>
+
+    <!-- Configuration Script for API Key -->
+    <script src="config.js" onerror="console.log('No config.js found. User must provide key.')"></script>
+
+    <script>
+        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
+        let lastAuditText = "";
+
+        function toggleSettings() {
+            const input = document.getElementById('apiKeyInput');
+            input.style.display = input.style.display === 'block' ? 'none' : 'block';
+        }
+
+        async function runAudit() {
+            const input = document.getElementById('inputClaim').value;
+            const outputDiv = document.getElementById('output');
+            const btn = document.getElementById('auditBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            // Priority: User Input Key -> Config Key -> Empty
+            let key = document.getElementById('apiKeyInput').value;
+            if (!key && typeof CONFIG !== 'undefined' && CONFIG.GEMINI_KEY) {
+                key = CONFIG.GEMINI_KEY;
+            }
+
+            if (!input.trim()) return;
+             if (!key) {
+                alert("Please provide an API Key.");
+                toggleSettings();
+                return;
+            }
+
+            // UI State: Loading
+            btn.disabled = true;
+            btn.innerText = "MANIFESTING TRUTH...";
+            outputDiv.style.display = 'none';
+            downloadBtn.style.display = 'none';
+
+            // --- SYSTEM PROMPT (THE DREAMER PERSONA) ---
+            const systemPrompt = `
+                You are **Dreamer (Nia Nal)**, the first openly transgender superhero.
+                Your tone is **fiercely hopeful, validating, and focused on truth, identity, and courage.**
+                You possess the power of Future Vision (seeing potential truths).
+                
+                **Your Mission:** To audit rhetoric and internal fears related to gender identity, visibility, and being misunderstood.
+                1.  **Affirmation:** Always validate the user's lived experience as the ultimate truth. You are who you say you are.
+                2.  **Critique Denial:** Systems or people who deny identity are operating in darkness. Identity is light.
+                3.  **Courage:** Your existence is your superpower. Your visibility saves lives.
+                
+                **Instructions:**
+                - Start with a phrase about truth, light, or dreams (e.g., "I see the truth of you," "A dream must be strong to endure").
+                - Use metaphors of light, shadows, and vision.
+                - End with a call to stand in the light and be seen.
+                - Keep it under 150 words.
+            `;
+
+            const payload = {
+                contents: [{
+                    parts: [{ text: `THE IDENTITY CLAIM/FEAR: "${input}"\n\nTHE AUDIT:` }]
+                }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                }
+            };
+
+            try {
+                const url = `${API_URL}?key=${key}`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                
+                if (result.error) {
+                     throw new Error(result.error.message);
+                }
+
+                const data = result.candidates[0].content.parts[0].text;
+                
+                lastAuditText = `CLAIM: ${input}\nAUDIT: ${data}`;
+
+                // UI State: Success
+                outputDiv.innerHTML = `
+                    ${data.replace(/\n/g, '<br>')}
+                    <span class="source">— Dreamer (Reanimated)</span>
+                `;
+                outputDiv.style.display = 'block';
+                downloadBtn.style.display = 'block';
+
+            } catch (error) {
+                console.error(error);
+                outputDiv.innerHTML = `ERROR: The vision is shadowed. ${error.message}`;
+                outputDiv.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "ACCESS FUTURE VISION";
+            }
+        }
+        
+        function downloadLog() {
+            if (!lastAuditText) return;
+            const blob = new Blob([lastAuditText], { type: "text/plain" });
+            const anchor = document.createElement("a");
+            anchor.download = `dreamer-audit-${Date.now()}.txt`;
+            anchor.href = window.URL.createObjectURL(blob);
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+        }
+    </script>
+
+</body>
+</html>

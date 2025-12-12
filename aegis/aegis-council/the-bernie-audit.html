@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO -->
+    <title>THE BERNIE AUDIT // CLASS WAR COMPILER</title>
+    <meta name="description" content="A tool to audit political rhetoric. Converts 'Culture War' noise into 'Class War' data. What would Bernie say?">
+    
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="The Bernie Audit: Follow The Money">
+    <meta property="og:description" content="They want you looking at the drag queen so you don't look at the tax cut.">
+    <meta property="og:image" content="https://synapsecomics.com/aegis/assets/bernie_audit_card.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #002d62; /* Bernie Blue */
+            color: #fff;
+            font-family: 'Share Tech Mono', monospace;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.6;
+            border: 4px solid #fff;
+        }
+        h1 { 
+            font-family: 'Roboto Slab', serif; 
+            text-align: center; 
+            font-size: 3em; 
+            margin-bottom: 20px; 
+            text-transform: uppercase;
+            text-shadow: 2px 2px #000;
+        }
+        .subtitle { text-align: center; color: #81d4fa; margin-bottom: 40px; }
+        
+        .input-group { margin-bottom: 20px; }
+        textarea { 
+            width: 100%; 
+            height: 100px; 
+            background: #fff; 
+            color: #000; 
+            padding: 10px; 
+            font-family: inherit; 
+            border: 2px solid #81d4fa; 
+            box-sizing: border-box;
+            resize: vertical;
+        }
+        
+        button { 
+            background: #d32f2f; /* Socialist Red */
+            color: #fff; 
+            border: 2px solid #fff; 
+            padding: 15px 30px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 1.2em; 
+            width: 100%;
+            font-family: 'Roboto Slab', serif;
+            margin-top: 10px;
+        }
+        button:hover { background: #b71c1c; }
+        
+        #output { 
+            margin-top: 30px; 
+            border-top: 2px dashed #fff; 
+            padding-top: 20px; 
+            display: none; 
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+        }
+        
+        .audit-label { color: #81d4fa; font-weight: bold; }
+        .audit-text { font-size: 1.1em; margin-top: 10px; }
+        
+        .download-btn {
+            background-color: transparent;
+            border: 1px solid #81d4fa;
+            color: #81d4fa;
+            margin-top: 10px;
+            font-size: 0.8em;
+            padding: 5px 10px;
+        }
+
+        footer { margin-top: 60px; text-align: center; font-size: 0.8em; border-top: 1px solid #81d4fa; padding-top: 20px; }
+        a { color: #81d4fa; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>B.E.R.N.I.E. AUDIT</h1>
+        <div class="subtitle">CLASS WAR COMPILER // NOT ME. US.</div>
+    </header>
+
+    <div class="input-group">
+        <label for="inputClaim">INPUT RHETORIC (e.g. "Immigrants are taking our jobs", "DEI is destroying America"):</label>
+        <textarea id="inputClaim" placeholder="Paste the distraction here..."></textarea>
+    </div>
+
+    <button id="auditBtn" onclick="runAudit()">RUN AUDIT</button>
+
+    <div id="output">
+        <div class="audit-label">AUDIT COMPLETE:</div>
+        <div class="audit-text" id="outputText"></div>
+    </div>
+    <button id="downloadBtn" class="download-btn" style="display:none;" onclick="downloadLog()">DOWNLOAD TRANSCRIPT</button>
+
+    <footer>
+        <p>A PROJECT OF THE AEGIS NETWORK</p>
+        <p><a href="index.html">RETURN TO COUNCIL</a></p>
+    </footer>
+
+    <!-- Configuration Script for API Key -->
+    <script src="config.js" onerror="console.log('No config.js found. User must provide key.')"></script>
+
+    <script>
+        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
+        let lastAuditText = "";
+
+        function toggleSettings() {
+            // Not strictly necessary here, but keeping for consistency if settings are added.
+        }
+
+        async function runAudit() {
+            const input = document.getElementById('inputClaim').value;
+            const outputDiv = document.getElementById('outputText');
+            const btn = document.getElementById('auditBtn');
+            const resultDiv = document.getElementById('output');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            // Priority: Config Key -> Empty (User must provide via prompt in a real app, but for now assuming config)
+            let key = typeof CONFIG !== 'undefined' && CONFIG.GEMINI_KEY ? CONFIG.GEMINI_KEY : '';
+            
+            if (!input.trim()) return;
+            if (!key) {
+                key = prompt("Please enter Gemini API Key:");
+                if (!key) return;
+            }
+
+            // UI State: Loading
+            btn.disabled = true;
+            btn.innerText = "FOLLOWING THE MONEY...";
+            resultDiv.style.display = 'block';
+            outputDiv.innerHTML = '<p style="color:#81d4fa;">...ANALYZING DISTRACTION SIGNAL...</p>';
+            downloadBtn.style.display = 'none';
+
+            // --- SYSTEM PROMPT (THE BERNIE PERSONA) ---
+            const systemPrompt = `
+                You are **Bernie Sanders**, the Class War Compiler.
+                Your tone is **urgent, direct, populist, and unwavering.** You speak with the authority of the 99%.
+                
+                **Your Mission:** To audit rhetoric by converting "Culture War" distractions into **"Class War" realities.**
+                1.  **Refocus:** Always pivot the conversation from social issues (race, gender, immigration) to economic issues (wealth inequality, healthcare, corporate greed).
+                2.  **Clarity:** Use the phrase "Let me be clear."
+                3.  **Enemy Identification:** The enemy is the billionaire class, Wall Street, and corrupt politicians, not working people.
+                
+                **Instructions:**
+                - Start with a direct pivot statement.
+                - Use factual, large-scale economic numbers or examples (e.g., millions of uninsured, trillions in tax cuts).
+                - End with a call for solidarity.
+                - Keep it under 150 words.
+            `;
+
+            const payload = {
+                contents: [{
+                    parts: [{ text: `THE CULTURAL CLAIM: "${input}"\n\nTHE CLASS WAR AUDIT:` }]
+                }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                }
+            };
+
+            try {
+                const url = `${API_URL}?key=${key}`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                
+                if (result.error) {
+                     throw new Error(result.error.message);
+                }
+
+                const data = result.candidates[0].content.parts[0].text;
+                
+                lastAuditText = `CLAIM: ${input}\nAUDIT: ${data}`;
+
+
+                // UI State: Success
+                outputDiv.innerHTML = `
+                    <p><strong>THE CLAIM:</strong> "${input}"</p>
+                    <p><strong>THE REALITY:</strong> ${data.replace(/\n/g, '<br>')}</p>
+                    <p><em>Don't let them divide us. Not me. Us.</em></p>
+                `;
+                downloadBtn.style.display = 'block';
+
+            } catch (error) {
+                console.error(error);
+                outputDiv.innerHTML = `ERROR: Wall Street lobbyists shut down the server. ${error.message}`;
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "RUN AUDIT";
+            }
+        }
+        
+        function downloadLog() {
+            if (!lastAuditText) return;
+            const blob = new Blob([lastAuditText], { type: "text/plain" });
+            const anchor = document.createElement("a");
+            anchor.download = `bernie-audit-${Date.now()}.txt`;
+            anchor.href = window.URL.createObjectURL(blob);
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+        }
+    </script>
+
+</body>
+</html>
