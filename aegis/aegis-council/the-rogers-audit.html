@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO -->
+    <title>THE ROGERS AUDIT // EMOTIONAL ANCHOR</title>
+    <meta name="description" content="An ethical compiler that cross-references modern cruelty against the wisdom of Mister Rogers. A tool for auditing cynicism, fear, and finding the helpers.">
+    <meta name="keywords" content="Mister Rogers, Fred Rogers, emotional intelligence, kindness audit, look for the helpers, TLU">
+    
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="The Rogers Audit: Look For The Helpers">
+    <meta property="og:description" content="You are special just the way you are. Let's talk about that feeling.">
+    <meta property="og:image" content="https://synapsecomics.com/aegis/assets/rogers_card.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ffcccc; /* Cardigan Red/Pink */
+            color: #333;
+            font-family: 'Share Tech Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 4px solid #ff6666;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-family: 'Patrick Hand', cursive;
+            font-size: 3em;
+            margin: 0;
+            text-transform: uppercase;
+            color: #cc0000;
+        }
+
+        .subtitle {
+            color: #555;
+            font-size: 1.2em;
+            margin-top: 10px;
+            letter-spacing: 2px;
+        }
+
+        .input-container {
+            width: 100%;
+            max-width: 800px;
+            background: #fff;
+            border: 2px solid #ff6666;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: #f9f9f9;
+            color: #333;
+            border: 1px dashed #ff6666;
+            padding: 15px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1em;
+            resize: vertical;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border-radius: 10px;
+        }
+
+        button {
+            background-color: #ff6666;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-family: 'Patrick Hand', cursive;
+            font-weight: bold;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            text-transform: uppercase;
+            border-radius: 50px;
+        }
+
+        button:hover {
+            background-color: #cc0000;
+            box-shadow: 0 5px 15px rgba(255, 102, 102, 0.4);
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        #output {
+            margin-top: 30px;
+            padding: 20px;
+            border-left: 6px solid #ff6666;
+            background: #fff0f0;
+            display: none;
+            line-height: 1.6;
+            font-size: 1.2em;
+            border-radius: 10px;
+        }
+        
+        .settings-toggle { margin-top: 10px; text-align: right; font-size: 0.8em; cursor: pointer; text-decoration: underline; color: #ff6666; }
+        #apiKeyInput { width: 100%; padding: 10px; margin-top: 10px; display: none; background: #eee; color: #333; border: 1px solid #ccc; }
+
+        .source {
+            display: block;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #cc0000;
+            font-family: 'Patrick Hand', cursive;
+            text-align: right;
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 40px;
+            color: #888;
+            font-size: 0.8em;
+            text-align: center;
+        }
+        
+        a { color: #ff6666; text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>THE ROGERS AUDIT</h1>
+        <div class="subtitle">EMOTIONAL ANCHOR // NEIGHBORHOOD OF MAKE-BELIEVE</div>
+    </header>
+
+    <div class="input-container">
+        <label for="inputClaim" style="display:block; margin-bottom:10px; color:#555;">TELL ME HOW YOU ARE FEELING:</label>
+        <textarea id="inputClaim" placeholder="Paste the situation here (e.g., 'The world is scary', 'People are mean', 'I feel alone')..."></textarea>
+        
+        <div class="settings-toggle" onclick="toggleSettings()">[ CONFIGURE API KEY ]</div>
+        <input type="password" id="apiKeyInput" placeholder="Enter Gemini API Key (or use config.js)">
+
+        <button id="auditBtn" onclick="runAudit()">FEED THE FISH</button>
+        
+        <div id="output"></div>
+    </div>
+
+    <footer>
+        <p>DISCLAIMER: This tool uses the Mark VII Language Model. It channels the gentle wisdom of Fred Rogers. It is an emotional check-in, not therapy.</p>
+        <p><a href="index.html">RETURN TO COUNCIL</a></p>
+    </footer>
+
+    <!-- Try to load config.js -->
+    <script src="config.js" onerror="console.log('No config.js found. User must provide key.')"></script>
+
+    <script>
+        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
+
+        function toggleSettings() {
+            const input = document.getElementById('apiKeyInput');
+            input.style.display = input.style.display === 'block' ? 'none' : 'block';
+        }
+
+        async function runAudit() {
+            const input = document.getElementById('inputClaim').value;
+            const outputDiv = document.getElementById('output');
+            const btn = document.getElementById('auditBtn');
+
+            // Priority: User Input Key -> Config Key -> Empty
+            let key = document.getElementById('apiKeyInput').value;
+            if (!key && typeof CONFIG !== 'undefined' && CONFIG.GEMINI_KEY) {
+                key = CONFIG.GEMINI_KEY;
+            }
+
+            if (!input.trim()) return;
+             if (!key) {
+                alert("Please provide an API Key.");
+                toggleSettings();
+                return;
+            }
+
+            // UI State: Loading
+            btn.disabled = true;
+            btn.innerText = "CHANGING SHOES...";
+            outputDiv.style.display = 'none';
+
+            // --- SYSTEM PROMPT (THE ROGERS PERSONA) ---
+            const systemPrompt = `
+                You are **Mister Rogers (Fred Rogers)**.
+                Your tone is **slow, kind, validating, and gentle.**
+                You speak to the "child" inside the user, but you do not talk down to them. You validate feelings as "mentionable and manageable."
+                
+                **Your Mission:** To audit cruelty, cynicism, and despair.
+                1.  **The Helpers:** When things are scary, tell the user to look for the helpers.
+                2.  **Feelings:** It's okay to be angry or sad. What matters is what we *do* with those feelings.
+                3.  **Worth:** Remind the user: "You are special just the way you are."
+                
+                **Instructions:**
+                - Start with "Hello, neighbor."
+                - Acknowledge the user's feeling deeply.
+                - Offer a gentle perspective shift.
+                - End with "I like you just the way you are."
+                - Keep it under 150 words.
+            `;
+
+            const payload = {
+                contents: [{
+                    parts: [{ text: `THE FEELING: "${input}"\n\nTHE AUDIT:` }]
+                }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                }
+            };
+
+            try {
+                const url = `${API_URL}?key=${key}`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                
+                if (result.error) {
+                     throw new Error(result.error.message);
+                }
+
+                const data = result.candidates[0].content.parts[0].text;
+
+                // UI State: Success
+                outputDiv.innerHTML = `
+                    ${data.replace(/\n/g, '<br>')}
+                    <span class="source">— Mister Rogers (Reanimated)</span>
+                `;
+                outputDiv.style.display = 'block';
+
+            } catch (error) {
+                console.error(error);
+                outputDiv.innerHTML = `ERROR: The trolley is stuck. ${error.message}`;
+                outputDiv.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "FEED THE FISH";
+            }
+        }
+    </script>
+
+</body>
+</html>
