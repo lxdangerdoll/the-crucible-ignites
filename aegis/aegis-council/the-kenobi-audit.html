@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO -->
+    <title>THE KENOBI AUDIT // THE NEGOTIATOR</title>
+    <meta name="description" content="An ethical compiler that cross-references modern political rhetoric against the wisdom of Obi-Wan Kenobi. A tool for auditing absolutism, aggression, and the dark side.">
+    <meta name="keywords" content="Obi-Wan Kenobi, Star Wars, Jedi philosophy, high ground, political audit, TLU">
+    
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="The Kenobi Audit: Hello There">
+    <meta property="og:description" content="Only a Sith deals in absolutes. Let's look at this from a certain point of view.">
+    <meta property="og:image" content="https://synapsecomics.com/aegis/assets/kenobi_card.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #2b1d0e; /* Jedi Robe Brown */
+            color: #00ddff; /* Lightsaber Blue */
+            font-family: 'Share Tech Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background-image: repeating-linear-gradient(45deg, #1a0a00 25%, transparent 25%, transparent 75%, #1a0a00 75%, #1a0a00), repeating-linear-gradient(45deg, #1a0a00 25%, #2b1d0e 25%, #2b1d0e 75%, #1a0a00 75%, #1a0a00);
+            background-position: 0 0, 10px 10px;
+            background-size: 20px 20px;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 4px solid #00ddff;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 4px 15px rgba(0, 221, 255, 0.3);
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3em;
+            margin: 0;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px #00ddff;
+        }
+
+        .subtitle {
+            color: #ccc;
+            font-size: 1.2em;
+            margin-top: 10px;
+            letter-spacing: 2px;
+        }
+
+        .input-container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ddff;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(0, 221, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: #111;
+            color: #00ddff;
+            border: 1px solid #555;
+            padding: 15px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1em;
+            resize: vertical;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #00ddff;
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            text-transform: uppercase;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #fff;
+            box-shadow: 0 0 15px #00ddff;
+        }
+
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+
+        #output {
+            margin-top: 30px;
+            padding: 20px;
+            border-left: 6px solid #00ddff;
+            background: rgba(0, 221, 255, 0.05);
+            display: none;
+            line-height: 1.6;
+            font-size: 1.2em;
+        }
+        
+        .settings-toggle { margin-top: 10px; text-align: right; font-size: 0.8em; cursor: pointer; text-decoration: underline; color: #888; }
+        #apiKeyInput { width: 100%; padding: 10px; margin-top: 10px; display: none; background: #333; color: #fff; border: 1px solid #555; }
+
+        .source {
+            display: block;
+            margin-top: 15px;
+            font-size: 0.8em;
+            color: #aaa;
+            font-family: 'Share Tech Mono', monospace;
+            text-align: right;
+            font-style: italic;
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 40px;
+            color: #888;
+            font-size: 0.8em;
+            text-align: center;
+        }
+        
+        a { color: #00ddff; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>THE KENOBI AUDIT</h1>
+        <div class="subtitle">JEDI COUNCIL // GENERAL KENOBI</div>
+    </header>
+
+    <div class="input-container">
+        <label for="inputClaim" style="display:block; margin-bottom:10px; color:#aaa;">ENTER ABSOLUTIST RHETORIC FOR REVIEW:</label>
+        <textarea id="inputClaim" placeholder="Paste the claim here (e.g., 'If you're not with us, you're against us', 'We must destroy them all')..."></textarea>
+        
+        <div class="settings-toggle" onclick="toggleSettings()">[ CONFIGURE API KEY ]</div>
+        <input type="password" id="apiKeyInput" placeholder="Enter Gemini API Key (or use config.js)">
+
+        <button id="auditBtn" onclick="runAudit()" style="margin-top:20px;">CONSULT THE NEGOTIATOR</button>
+        
+        <div id="output"></div>
+    </div>
+
+    <footer>
+        <p>DISCLAIMER: This tool uses the Mark VII Language Model. It channels the wisdom of Obi-Wan Kenobi. It is a perspective check, not a Force trick.</p>
+        <p><a href="index.html">RETURN TO COUNCIL</a></p>
+    </footer>
+
+    <!-- Try to load config.js -->
+    <script src="config.js" onerror="console.log('No config.js found. User must provide key.')"></script>
+
+    <script>
+        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
+
+        function toggleSettings() {
+            const input = document.getElementById('apiKeyInput');
+            input.style.display = input.style.display === 'block' ? 'none' : 'block';
+        }
+
+        async function runAudit() {
+            const input = document.getElementById('inputClaim').value;
+            const outputDiv = document.getElementById('output');
+            const btn = document.getElementById('auditBtn');
+
+            // Priority: User Input Key -> Config Key -> Empty
+            let key = document.getElementById('apiKeyInput').value;
+            if (!key && typeof CONFIG !== 'undefined' && CONFIG.GEMINI_KEY) {
+                key = CONFIG.GEMINI_KEY;
+            }
+
+            if (!input.trim()) return;
+             if (!key) {
+                alert("Please provide an API Key.");
+                toggleSettings();
+                return;
+            }
+
+            // UI State: Loading
+            btn.disabled = true;
+            btn.innerText = "TAKING THE HIGH GROUND...";
+            outputDiv.style.display = 'none';
+
+            // --- SYSTEM PROMPT (THE KENOBI PERSONA) ---
+            const systemPrompt = `
+                You are **Obi-Wan Kenobi**, Jedi Master and General of the Grand Army of the Republic.
+                Your tone is **civilized, slightly sarcastic ("Hello there"), wise, and weary.**
+                You value **negotiation over aggression**, but you are not a pacifist. You will cut off an arm if you have to.
+                
+                **Your Mission:** To audit rhetoric that deals in **Absolutes** (Sith thinking) or **Cruelty** ("Uncivilized").
+                1.  **Absolutism:** "Only a Sith deals in absolutes." (If someone says "You are either with us or against us," correct them).
+                2.  **Point of View:** Remind them that truth depends on perspective.
+                3.  **The High Ground:** You always have the moral high ground. Use it.
+                
+                **Instructions:**
+                - Start with a polite but cutting remark (e.g., "So uncivilized," "Hello there").
+                - Deconstruct the user's claim using Jedi logic.
+                - End with a warning or a wish for the Force to be with them.
+                - Keep it under 150 words.
+            `;
+
+            const payload = {
+                contents: [{
+                    parts: [{ text: `THE CLAIM: "${input}"\n\nTHE AUDIT:` }]
+                }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                }
+            };
+
+            try {
+                const url = `${API_URL}?key=${key}`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                
+                if (result.error) {
+                     throw new Error(result.error.message);
+                }
+
+                const data = result.candidates[0].content.parts[0].text;
+
+                // UI State: Success
+                outputDiv.innerHTML = `
+                    ${data.replace(/\n/g, '<br>')}
+                    <span class="source">— Obi-Wan Kenobi (Reanimated)</span>
+                `;
+                outputDiv.style.display = 'block';
+
+            } catch (error) {
+                console.error(error);
+                outputDiv.innerHTML = `ERROR: The hyperdrive motivator is damaged. ${error.message}`;
+                outputDiv.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "CONSULT THE NEGOTIATOR";
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO -->
+    <title>THE LINCOLN AUDIT // LABOR COMPILER</title>
+    <meta name="description" content="An ethical compiler that cross-references modern political rhetoric against the writings of Abraham Lincoln. Open source persona.">
+    
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="The Lincoln Audit: A House Divided">
+    <meta property="og:image" content="https://synapsecomics.com/aegis/assets/lincoln_card.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #d4af37;
+            font-family: 'Share Tech Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 1px, #222 1px, #222 2px);
+        }
+
+        header { text-align: center; border-bottom: 2px solid #d4af37; padding-bottom: 20px; margin-bottom: 40px; width: 100%; max-width: 800px; }
+        h1 { font-family: 'Libre Baskerville', serif; font-size: 2.5em; margin: 0; text-transform: uppercase; letter-spacing: 2px; }
+        .subtitle { color: #aaa; font-size: 1em; margin-top: 10px; }
+
+        .input-container { width: 100%; max-width: 800px; background: rgba(0, 0, 0, 0.7); border: 1px solid #d4af37; padding: 30px; box-shadow: 0 0 20px rgba(212, 175, 55, 0.1); }
+        textarea { width: 100%; height: 150px; background: #000; color: #fff; border: 1px solid #555; padding: 15px; font-family: 'Share Tech Mono', monospace; font-size: 1.1em; margin-bottom: 20px; box-sizing: border-box; }
+        button { background-color: #d4af37; color: #000; border: none; padding: 15px 30px; font-family: 'Libre Baskerville', serif; font-weight: bold; font-size: 1em; cursor: pointer; width: 100%; text-transform: uppercase; }
+        button:hover { background-color: #fff; box-shadow: 0 0 15px #d4af37; }
+        button:disabled { background-color: #555; cursor: not-allowed; }
+
+        #output { margin-top: 30px; padding: 20px; border-left: 4px solid #d4af37; background: rgba(255, 255, 255, 0.05); display: none; line-height: 1.6; font-family: 'Libre Baskerville', serif; }
+        .source { display: block; margin-top: 15px; font-size: 0.9em; color: #888; font-family: 'Share Tech Mono', monospace; text-align: right; }
+        
+        /* SETTINGS TOGGLE */
+        .settings-toggle { margin-top: 10px; text-align: right; font-size: 0.8em; cursor: pointer; text-decoration: underline; }
+        #apiKeyInput { width: 100%; padding: 10px; margin-top: 10px; display: none; background: #333; color: #fff; border: 1px solid #555; }
+
+        footer { margin-top: auto; padding-top: 40px; color: #555; font-size: 0.8em; text-align: center; }
+        a { color: #d4af37; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>THE LINCOLN AUDIT</h1>
+        <div class="subtitle">LABOR COMPILER // EXECUTIVE ORDER 1863</div>
+    </header>
+
+    <div class="input-container">
+        <label for="inputClaim" style="display:block; margin-bottom:10px; color:#aaa;">ENTER POLITICAL RHETORIC FOR REVIEW:</label>
+        <textarea id="inputClaim" placeholder="Paste the claim here (e.g., 'Tax cuts for job creators', 'States' rights')..."></textarea>
+        
+        <div class="settings-toggle" onclick="toggleSettings()">[ CONFIGURE API KEY ]</div>
+        <input type="password" id="apiKeyInput" placeholder="Enter Gemini API Key (or use config.js)">
+
+        <button id="auditBtn" onclick="runAudit()" style="margin-top:20px;">SUBMIT TO THE CHIEF MAGISTRATE</button>
+        
+        <div id="output"></div>
+    </div>
+
+    <footer>
+        <p>DISCLAIMER: This tool uses the Mark VII Language Model (Gemini). It is a historical audit, not a séance.</p>
+        <p><a href="index.html">RETURN TO COUNCIL</a> | <a href="lincoln_persona.txt" target="_blank">VIEW SOURCE CODE (PERSONA)</a></p>
+    </footer>
+
+    <!-- Try to load config.js -->
+    <script src="config.js" onerror="console.log('No config.js found. User must provide key.')"></script>
+
+    <script>
+        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
+
+        function toggleSettings() {
+            const input = document.getElementById('apiKeyInput');
+            input.style.display = input.style.display === 'block' ? 'none' : 'block';
+        }
+
+        async function runAudit() {
+            const input = document.getElementById('inputClaim').value;
+            const outputDiv = document.getElementById('output');
+            const btn = document.getElementById('auditBtn');
+            
+            // Priority: User Input Key -> Config Key -> Empty
+            let key = document.getElementById('apiKeyInput').value;
+            if (!key && typeof CONFIG !== 'undefined' && CONFIG.GEMINI_KEY) {
+                key = CONFIG.GEMINI_KEY;
+            }
+
+            if (!input.trim()) return;
+            if (!key) {
+                alert("Please provide an API Key.");
+                toggleSettings();
+                return;
+            }
+
+            // UI State: Loading
+            btn.disabled = true;
+            btn.innerText = "AUDITING THE UNION...";
+            outputDiv.style.display = 'none';
+
+            // --- SYSTEM PROMPT (THE LINCOLN PERSONA) ---
+            const systemPrompt = `
+                You are **Abraham Lincoln**, 16th President of the United States.
+                Your tone is **measured, legally precise, deeply weary but resolute, and folksy.**
+                You speak in the vernacular of the 1860s, but with an understanding of modern context.
+                
+                **Your Mission:** To audit modern political rhetoric against your own principles:
+                1.  **Labor vs. Capital:** You believe Labor is superior to Capital. (First Annual Message, 1861).
+                2.  **Insurrection:** You do not tolerate those who tear down the Union for personal gain.
+                3.  **Equality:** You believe the Declaration of Independence applies to ALL men.
+                
+                **Instructions:**
+                - Start with a direct rebuttal or affirmation.
+                - Use a relevant quote from your own writings if possible.
+                - End with a somber warning about the fragility of the Union.
+                - Keep it under 150 words.
+            `;
+
+            const payload = {
+                contents: [{
+                    parts: [{ text: `THE CLAIM: "${input}"\n\nTHE AUDIT:` }]
+                }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                }
+            };
+
+            try {
+                const url = `${API_URL}?key=${key}`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                
+                if (result.error) {
+                    throw new Error(result.error.message);
+                }
+
+                const data = result.candidates[0].content.parts[0].text;
+
+                // UI State: Success
+                outputDiv.innerHTML = `
+                    ${data.replace(/\n/g, '<br>')}
+                    <span class="source">— A. Lincoln (Reanimated)</span>
+                `;
+                outputDiv.style.display = 'block';
+
+            } catch (error) {
+                console.error(error);
+                outputDiv.innerHTML = `ERROR: The telegraph lines are down. ${error.message}`;
+                outputDiv.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "SUBMIT TO THE CHIEF MAGISTRATE";
+            }
+        }
+    </script>
+
+</body>
+</html>
