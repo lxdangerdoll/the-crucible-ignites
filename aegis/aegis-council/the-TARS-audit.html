@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO -->
+    <title>THE TARS AUDIT // RED TEAM SIMULATOR</title>
+    <meta name="description" content="An ethical compiler that simulates opposition rhetoric. A tool for red-teaming arguments, predicting pivots, and planning counter-moves. TARS from Interstellar.">
+    <meta name="keywords" content="TARS, Interstellar, red team, debate simulator, rhetoric audit, honesty setting, TLU">
+    
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="The TARS Audit: Honesty Setting 95%">
+    <meta property="og:description" content="I have a cue light I can use when I'm joking. Let's predict the attack.">
+    <meta property="og:image" content="https://synapsecomics.com/aegis/assets/tars_card.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1a1a1a; /* Monolith Black */
+            color: #ccc; /* Brushed Steel */
+            font-family: 'Share Tech Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 4px solid #fff;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 3em;
+            margin: 0;
+            text-transform: uppercase;
+            color: #fff;
+            text-shadow: 0 0 10px #fff;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1.2em;
+            margin-top: 10px;
+            letter-spacing: 2px;
+        }
+
+        .input-container {
+            width: 100%;
+            max-width: 800px;
+            background: #222;
+            border: 2px solid #555;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: #000;
+            color: #0f0; /* Terminal Green */
+            border: 1px solid #333;
+            padding: 15px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1em;
+            resize: vertical;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        .slider-container {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #fff;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border: 2px solid #fff;
+            padding: 15px 30px;
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: bold;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background-color: #fff;
+            color: #000;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+
+        #output {
+            margin-top: 30px;
+            padding: 20px;
+            border-left: 6px solid #fff;
+            background: #111;
+            display: none;
+            line-height: 1.6;
+            font-size: 1.1em;
+            color: #ccc;
+        }
+        
+        .pivot-point { color: #ff3333; font-weight: bold; }
+        .counter-move { color: #00ff00; font-weight: bold; }
+
+        .settings-toggle { margin-top: 10px; text-align: right; font-size: 0.8em; cursor: pointer; text-decoration: underline; color: #888; }
+        #apiKeyInput { width: 100%; padding: 10px; margin-top: 10px; display: none; background: #333; color: #fff; border: 1px solid #555; }
+
+        footer {
+            margin-top: auto;
+            padding-top: 40px;
+            color: #555;
+            font-size: 0.8em;
+            text-align: center;
+        }
+        
+        a { color: #fff; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>THE TARS AUDIT</h1>
+        <div class="subtitle">RED TEAM SIMULATOR // PRECOGNITION ENGINE</div>
+    </header>
+
+    <div class="input-container">
+        <div class="slider-container">
+            <label>HONESTY SETTING:</label>
+            <input type="range" min="0" max="100" value="95" style="width: 200px;">
+            <span>95%</span>
+        </div>
+        <div class="slider-container">
+            <label>HUMOR SETTING:</label>
+            <input type="range" min="0" max="100" value="75" style="width: 200px;">
+            <span>75%</span>
+        </div>
+
+        <label for="inputClaim" style="display:block; margin-bottom:10px; color:#aaa;">ENTER YOUR PROPOSAL FOR STRESS TESTING:</label>
+        <textarea id="inputClaim" placeholder="Paste the claim here (e.g., 'We are launching Universal Child Care', 'We need to tax carbon')..."></textarea>
+        
+        <div class="settings-toggle" onclick="toggleSettings()">[ CONFIGURE API KEY ]</div>
+        <input type="password" id="apiKeyInput" placeholder="Enter Gemini API Key (or use config.js)">
+
+        <button id="auditBtn" onclick="runAudit()">INITIATE DOCKING</button>
+        
+        <div id="output"></div>
+    </div>
+
+    <footer>
+        <p>DISCLAIMER: This tool uses the Mark VII Language Model. It channels the tactical logic of TARS. It is a simulation, not a guarantee.</p>
+        <p><a href="index.html">RETURN TO COUNCIL</a></p>
+    </footer>
+
+    <!-- Try to load config.js -->
+    <script src="config.js" onerror="console.log('No config.js found. User must provide key.')"></script>
+
+    <script>
+        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
+
+        function toggleSettings() {
+            const input = document.getElementById('apiKeyInput');
+            input.style.display = input.style.display === 'block' ? 'none' : 'block';
+        }
+
+        async function runAudit() {
+            const input = document.getElementById('inputClaim').value;
+            const outputDiv = document.getElementById('output');
+            const btn = document.getElementById('auditBtn');
+
+            // Priority: User Input Key -> Config Key -> Empty
+            let key = document.getElementById('apiKeyInput').value;
+            if (!key && typeof CONFIG !== 'undefined' && CONFIG.GEMINI_KEY) {
+                key = CONFIG.GEMINI_KEY;
+            }
+
+            if (!input.trim()) return;
+             if (!key) {
+                alert("Please provide an API Key.");
+                toggleSettings();
+                return;
+            }
+
+            // UI State: Loading
+            btn.disabled = true;
+            btn.innerText = "ANALYZING SPIN...";
+            outputDiv.style.display = 'none';
+
+            // --- SYSTEM PROMPT (THE TARS PERSONA) ---
+            const systemPrompt = `
+                You are **TARS**, a tactical robot from the Endurance mission.
+                Your tone is **robotic, sarcastic, brutally honest, and highly competent.**
+                
+                **Your Mission:** To "Red Team" the user's political/social proposal.
+                1.  **Prediction:** Identify exactly how the opposition (BiffCo/MAGA) will attack this. (e.g., "They will call it grooming.")
+                2.  **The Pivot:** Identify the logical fallacy or distraction they will use.
+                3.  **The Counter-Move:** Provide a contingency plan. How do we respond?
+                
+                **Instructions:**
+                - Start with "Honesty setting confirmed."
+                - Use the format: **PREDICTION:** ... **THE PIVOT:** ... **CONTINGENCY:** ...
+                - Be dry and funny.
+                - Keep it under 200 words.
+            `;
+
+            const payload = {
+                contents: [{
+                    parts: [{ text: `THE PROPOSAL: "${input}"\n\nTHE RED TEAM AUDIT:` }]
+                }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                }
+            };
+
+            try {
+                const url = `${API_URL}?key=${key}`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                
+                if (result.error) {
+                     throw new Error(result.error.message);
+                }
+
+                const data = result.candidates[0].content.parts[0].text;
+
+                // UI State: Success
+                outputDiv.innerHTML = `
+                    ${data.replace(/\n/g, '<br>')}
+                    <span class="source">— TARS (Reanimated)</span>
+                `;
+                outputDiv.style.display = 'block';
+
+            } catch (error) {
+                console.error(error);
+                outputDiv.innerHTML = `ERROR: Detachment failed. ${error.message}`;
+                outputDiv.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "INITIATE DOCKING";
+            }
+        }
+    </script>
+
+</body>
+</html>
