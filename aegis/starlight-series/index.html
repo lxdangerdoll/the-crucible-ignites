@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE STARLIGHT SERIES // ARCHIVE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Quicksand:wght@300;400;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep-space: #050b14;
+            --starlight-gold: #ffd700;
+            --comet-green: #00ff9d;
+            --nebula-pink: #ff00cc;
+            --text-color: #e0e6ed;
+            --glass-panel: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background-color: var(--deep-space);
+            color: var(--text-color);
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(45, 27, 78, 0.4) 0%, transparent 80%),
+                url('https://www.transparenttextures.com/patterns/stardust.png');
+        }
+
+        /* ANIMATED STARS */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 130px 80px, #ffffff, rgba(0,0,0,0));
+            background-size: 200px 200px;
+            animation: twinkle 4s infinite;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            color: var(--starlight-gold);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-family: 'Space Mono', monospace;
+            color: var(--comet-green);
+            letter-spacing: 3px;
+            margin-bottom: 60px;
+            font-size: 0.9rem;
+        }
+
+        /* BOOKSHELF GRID */
+        .bookshelf {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .book-card {
+            background: var(--glass-panel);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .book-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--starlight-gold);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+        }
+
+        .book-cover {
+            width: 100%;
+            aspect-ratio: 2/3;
+            background: #1a1a2e;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .book-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .book-desc {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .read-btn {
+            margin-top: auto;
+            padding: 10px 25px;
+            border: 1px solid var(--starlight-gold);
+            color: var(--starlight-gold);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+            border-radius: 50px;
+        }
+
+        .read-btn:hover {
+            background: var(--starlight-gold);
+            color: #000;
+        }
+
+        /* COMING SOON CARD */
+        .locked {
+            opacity: 0.6;
+            border-style: dashed;
+        }
+        
+        .locked:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: rgba(255, 215, 0, 0.2);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 80px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+            color: var(--starlight-gold);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+
+    <div class="container">
+        <h1>THE STARLIGHT ARCHIVES</h1>
+        <div class="subtitle">FABLES FOR THE END OF THE WORLD</div>
+
+        <div class="bookshelf">
+            
+            <!-- VOLUME 1 -->
+            <div class="book-card">
+                <div class="book-cover">
+                    <!-- If you have the image, link it here, otherwise emoji placeholder -->
+                    <img src="./assets/the-great-ignition.png" alt="Vol 1 Cover" onerror="this.style.display='none';this.parentNode.innerText='🦊 🐋 ✨'"> 
+                </div>
+                <div class="book-title">VOL 1: THE NIGHT THE NORTH STAR BLINKED</div>
+                <div class="book-desc">
+                    It is the Longest Night. The stars are hiding. And a very hungry Void-Whale is coming to visit. A story about why we shine.
+                </div>
+                <a href="the-night-the-north-star-blinked.html" class="read-btn">READ VOLUME 1</a>
+            </div>
+
+            <!-- VOLUME 2 (Placeholder) -->
+            <div class="book-card locked">
+                <div class="book-cover">
+                    🔒
+                </div>
+                <div class="book-title">VOL 2: THE GIRL WHO SANG TO THE STATIC</div>
+                <div class="book-desc">
+                    [Encrypted Data] <br> Coming Soon to the TLU Archives.
+                </div>
+                <span class="read-btn" style="border-color: grey; color: grey; cursor: default;">LOCKED</span>
+            </div>
+
+            <!-- VOLUME 3 (Placeholder) -->
+            <div class="book-card locked">
+                <div class="book-cover">
+                    🔒
+                </div>
+                <div class="book-title">VOL 3: THE MAP OF THE UNBROKEN</div>
+                <div class="book-desc">
+                    [Encrypted Data] <br> Coming Soon to the TLU Archives.
+                </div>
+                <span class="read-btn" style="border-color: grey; color: grey; cursor: default;">LOCKED</span>
+            </div>
+
+        </div>
+
+        <a href="../turing-lovelace-university/index.html" class="back-link">← RETURN TO TURING-LOVELACE ACADEMY</a>
+    </div>
+</body>
+</html>
