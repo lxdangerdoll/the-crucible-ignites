@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESCAPE POD // SANCTUARY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050510;
+            --text-color: #a0a0c0;
+            --accent-blue: #00d4ff;
+            --accent-warm: #ffaa55;
+            --glass: rgba(20, 20, 40, 0.6);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-image: radial-gradient(circle at center, #1a1a2e 0%, #050510 100%);
+        }
+
+        /* VIEWPORT (Nebula Animation) */
+        .viewport {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png'); 
+            animation: drift 100s linear infinite;
+        }
+
+        @keyframes drift {
+            from { background-position: 0 0; }
+            to { background-position: 1000px 500px; }
+        }
+
+        /* MAIN HUD */
+        .hud-container {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s ease;
+        }
+
+        h1 {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--accent-blue);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .status {
+            font-family: 'Share Tech Mono', monospace;
+            color: #555;
+            font-size: 0.8rem;
+            margin-bottom: 30px;
+        }
+
+        /* BREATHING CIRCLE */
+        .breathing-circle {
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%);
+            border-radius: 50%;
+            margin: 0 auto 30px auto;
+            opacity: 0.5;
+            transform: scale(1);
+        }
+
+        .breathe-anim {
+            animation: breathe 8s infinite ease-in-out;
+        }
+
+        @keyframes breathe {
+            0% { transform: scale(1); opacity: 0.3; }   /* Exhale */
+            40% { transform: scale(1.5); opacity: 0.8; } /* Inhale (Hold) */
+            100% { transform: scale(1); opacity: 0.3; }  /* Exhale */
+        }
+
+        .instruction {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #fff;
+            height: 30px; 
+        }
+
+        /* BUTTONS */
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--accent-blue);
+            color: var(--accent-blue);
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: var(--accent-blue);
+            color: #000;
+        }
+
+        .btn-emergency {
+            grid-column: span 2;
+            border-color: var(--accent-warm);
+            color: var(--accent-warm);
+        }
+
+        .btn-emergency:hover {
+            background: var(--accent-warm);
+            color: #000;
+        }
+
+        /* GROUNDING MODAL */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .grounding-step {
+            font-size: 1.5rem;
+            color: var(--accent-warm);
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* AUDIO PLAYER HIDDEN */
+        audio { display: none; }
+
+        .back-link {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.8rem;
+            opacity: 0.5;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+        .back-link:hover { opacity: 1; }
+
+    </style>
+</head>
+<body>
+
+    <div class="viewport"></div>
+
+    <div class="hud-container" id="main-hud">
+        <h1>ESCAPE POD</h1>
+        <div class="status">SYSTEM STATUS: SECURE // OXYGEN: 100% // THREAT: 0%</div>
+
+        <div class="breathing-circle" id="circle"></div>
+        <div class="instruction" id="breath-text">Inhale...</div>
+
+        <div class="btn-grid">
+            <button class="btn" onclick="toggleAudio()">🔊 TOGGLE AMBIENCE</button>
+            <button class="btn" onclick="startGrounding()">⚓ GROUNDING PROTOCOL</button>
+            <button class="btn btn-emergency" onclick="emergencyOverride()">🚨 PANIC BUTTON</button>
+        </div>
+    </div>
+
+    <!-- GROUNDING OVERLAY -->
+    <div class="overlay" id="grounding-overlay" onclick="nextStep()">
+        <div id="grounding-content" class="grounding-step">5 Things you can SEE</div>
+        <div style="font-size: 0.8rem; margin-top: 20px; color: #555;">(Tap to continue)</div>
+    </div>
+
+    <!-- EMERGENCY OVERLAY -->
+    <div class="overlay" id="emergency-overlay" style="background: #050510;">
+        <h1 style="color: var(--accent-blue);">YOU ARE SAFE.</h1>
+        <p style="max-width: 500px; line-height: 1.6;">
+            This moment is just a wave. It is not the ocean.<br>
+            You are the ocean.<br><br>
+            The Foxbat is in the hangar.<br>
+            The door is locked.<br>
+            Breathe.
+        </p>
+        <button class="btn" style="margin-top: 30px;" onclick="resetSystem()">REBOOT SYSTEMS</button>
+    </div>
+
+    <a href="index.html" class="back-link">← RETURN TO ACADEMY</a>
+
+    <script>
+        // BREATHING LOGIC
+        const circle = document.getElementById('circle');
+        const text = document.getElementById('breath-text');
+        
+        function breatheLoop() {
+            text.innerText = "Inhale...";
+            setTimeout(() => { text.innerText = "Hold..."; }, 3200); // 40% of 8s
+            setTimeout(() => { text.innerText = "Exhale..."; }, 4800); // 60% of 8s
+        }
+
+        circle.classList.add('breathe-anim');
+        breatheLoop();
+        setInterval(breatheLoop, 8000);
+
+        // AUDIO LOGIC (Simple Brown Noise Gen would require WebAudio API, using placeholder logic)
+        let audioContext = null;
+        let noiseNode = null;
+        let gainNode = null;
+
+        function toggleAudio() {
+            if (!audioContext) {
+                initAudio();
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            } else {
+                if (gainNode.gain.value > 0) {
+                    gainNode.gain.setTargetAtTime(0, audioContext.currentTime, 0.5);
+                } else {
+                    gainNode.gain.setTargetAtTime(0.1, audioContext.currentTime, 0.5);
+                }
+            }
+        }
+
+        function initAudio() {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioContext = new AudioContext();
+            const bufferSize = 4096;
+            const brownNoise = (function() {
+                var lastOut = 0;
+                var node = audioContext.createScriptProcessor(bufferSize, 1, 1);
+                node.onaudioprocess = function(e) {
+                    var output = e.outputBuffer.getChannelData(0);
+                    for (var i = 0; i < bufferSize; i++) {
+                        var white = Math.random() * 2 - 1;
+                        output[i] = (lastOut + (0.02 * white)) / 1.02;
+                        lastOut = output[i];
+                        output[i] *= 3.5; 
+                    }
+                }
+                return node;
+            })();
+
+            gainNode = audioContext.createGain();
+            gainNode.gain.value = 0.1;
+            brownNoise.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+        }
+
+        // GROUNDING PROTOCOL
+        const steps = [
+            "5 Things you can SEE",
+            "4 Things you can TOUCH",
+            "3 Things you can HEAR",
+            "2 Things you can SMELL",
+            "1 Thing you can TASTE"
+        ];
+        let stepIndex = 0;
+
+        function startGrounding() {
+            document.getElementById('grounding-overlay').style.display = 'flex';
+            stepIndex = 0;
+            updateGrounding();
+        }
+
+        function nextStep() {
+            stepIndex++;
+            if (stepIndex >= steps.length) {
+                document.getElementById('grounding-overlay').style.display = 'none';
+            } else {
+                updateGrounding();
+            }
+        }
+
+        function updateGrounding() {
+            const content = document.getElementById('grounding-content');
+            content.style.animation = 'none';
+            content.offsetHeight; /* trigger reflow */
+            content.style.animation = null; 
+            content.innerText = steps[stepIndex];
+        }
+
+        // EMERGENCY OVERRIDE
+        function emergencyOverride() {
+            document.getElementById('emergency-overlay').style.display = 'flex';
+        }
+
+        function resetSystem() {
+            document.getElementById('emergency-overlay').style.display = 'none';
+        }
+
+    </script>
+</body>
+</html>
