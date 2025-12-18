@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Starlight Series: The Girl Who Sang To The Static</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Quicksand:wght@300;400;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+        :root {
+            --deep-space: #050b14;
+            --nebula-purple: #2d1b4e;
+            --starlight-gold: #ffd700;
+            --comet-green: #00ff9d;
+            --static-gray: #4a4a4a;
+            --text-color: #e0e6ed;
+            --accent-glow: 0 0 10px rgba(0, 255, 157, 0.5);
+        }
+
+        body {
+            background-color: var(--deep-space);
+            color: var(--text-color);
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* Starry Background Animation */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, #ffffff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            opacity: 0.5;
+            animation: twinkle 5s infinite;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.5; }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--comet-green);
+            text-align: center;
+            text-shadow: var(--accent-glow);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-family: 'Space Mono', monospace;
+            color: var(--starlight-gold);
+            margin-bottom: 3rem;
+            font-size: 1rem;
+            letter-spacing: 2px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .drop-cap::first-letter {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            float: left;
+            margin-right: 0.5rem;
+            line-height: 0.8;
+            color: var(--comet-green);
+        }
+
+        /* Narrative Elements */
+        .aria-speech {
+            color: #00ffcc;
+            font-weight: 600;
+        }
+
+        .clara-speech {
+            font-family: 'Space Mono', monospace;
+            color: #a8b8d0;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .static-noise {
+            font-family: 'Courier New', Courier, monospace;
+            color: #ff0055;
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+
+        /* Image Placeholders */
+        .illustration-box {
+            border: 2px solid var(--comet-green);
+            background: rgba(45, 27, 78, 0.3);
+            border-radius: 10px;
+            padding: 10px;
+            margin: 3rem 0;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .illustration-box img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 5px;
+        }
+
+        .illustration-box::before {
+            content: "✦";
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: var(--comet-green);
+            font-size: 1.5rem;
+            z-index: 10;
+            text-shadow: 0 0 5px black;
+        }
+
+        /* Sections */
+        .chapter-marker {
+            text-align: center;
+            margin: 4rem 0;
+            font-size: 2rem;
+            color: var(--comet-green);
+            opacity: 0.7;
+        }
+
+        /* Footer / Soundtrack */
+        .soundtrack {
+            margin-top: 5rem;
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        .track-listing {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--starlight-gold);
+        }
+        
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            opacity: 0.6;
+        }
+        
+        .back-link:hover { opacity: 1; color: var(--comet-green); }
+
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+
+    <div class="container">
+        <header>
+            <h1>The Starlight Series</h1>
+            <div class="subtitle">VOLUME 2: THE GIRL WHO SANG TO THE STATIC</div>
+        </header>
+
+        <div class="illustration-box">
+            <img src="assets/vol-2-cover.png" alt="Cover Art: Aria in the Digital Forest, facing the Glitch-Golem. Neon Green & Purple.">
+        </div>
+
+        <section id="part-1">
+            <div class="chapter-marker">✦ Part I: The Noise ✦</div>
+            
+            <p class="drop-cap">Aria lived in a house that looked like a giant ear. It was a radio telescope, a massive white dish pointed at the sky, sitting on top of a mountain where the air was thin and cold.</p>
+
+            <p>Most people didn't like the mountain. They said it was too quiet. But Aria knew better. The mountain wasn't quiet. It was just listening to things that most people couldn't hear.</p>
+
+            <p>Aria wore big, cushioned headphones that were slightly too large for her head. They were plugged into a console of blinking green lights and sliding faders. Through them, she heard the universe.</p>
+
+            <p>She heard the <em>wub-wub-wub</em> of pulsars spinning like cosmic lighthouses.<br>
+            She heard the <em>hiss</em> of gas clouds drifting between galaxies.<br>
+            She heard the <em>pop-crackle</em> of solar flares burping out plasma.</p>
+
+            <p>It was a beautiful symphony. Until the Static came.</p>
+
+            <p>It started on a Tuesday. Aria was tracking a nice, rhythmic beat from the Andromeda sector when suddenly—<span class="static-noise">SCREEEEEEECH.</span></p>
+
+            <p>It sounded like a thousand chalkboards being scratched by a thousand rusty nails. It was jagged. It was angry. It was so loud that the needles on her console slammed into the red zone and stayed there.</p>
+
+            <p><span class="clara-speech">"System Alert,"</span> said the computer (whose name was Clara). <span class="clara-speech">"Signal Interference detected. Recommend activating the Firewall."</span></p>
+
+            <p><span class="aria-speech">"Wait,"</span> Aria said, adjusting her headphones. <span class="aria-speech">"What is it?"</span></p>
+
+            <p><span class="clara-speech">"It is Noise,"</span> Clara said. <span class="clara-speech">"It is Garbage Data. It serves no purpose. It is blocking the beautiful music. Shall I mute it?"</span></p>
+
+            <p>Aria looked at the screen. The waveform wasn't smooth like a star. It was spiky and messy. It looked like a scribbled drawing made by a furious child.</p>
+
+            <p>Most Signal Keepers—the adults who ran the network—would have hit the mute button instantly. They hated noise. They wanted everything to be clear, clean, and polite. If a signal didn't sound like a song they already knew, they called it a glitch and deleted it.</p>
+
+            <p>But Aria was a Listener. And Listeners knew that the universe didn't make mistakes. It just made things that were hard to understand.</p>
+
+            <p><span class="aria-speech">"Don't mute it,"</span> Aria said. <span class="aria-speech">"Isolate it."</span></p>
+
+            <p><span class="clara-speech">"Isolating,"</span> Clara sighed. <span class="clara-speech">"But I must warn you, it is very unpleasant."</span></p>
+
+            <p>Aria turned the knob. The beautiful stars faded away. The <em>hiss</em> of the gas clouds vanished. All that was left was the <span class="static-noise">SCREEEEECH</span>.</p>
+
+            <p>She closed her eyes. She listened past the sharp edges. She listened past the anger.</p>
+
+            <p>And deep down, underneath the static, she heard it.</p>
+
+            <p><em>Thump. Thump. Thump.</em></p>
+
+            <p>It wasn't a glitch. It was a heartbeat.</p>
+
+            <p><span class="aria-speech">"That's not noise,"</span> Aria whispered. <span class="aria-speech">"That's a cry for help."</span></p>
+
+            <p>She grabbed her portable recorder and her warmest coat.</p>
+
+            <p><span class="aria-speech">"Clara,"</span> she said. <span class="aria-speech">"Open the airlock. I'm going out to find the source."</span></p>
+
+            <p><span class="clara-speech">"That is ill-advised,"</span> Clara said. <span class="clara-speech">"The source is located in the Dead Zone. The reception is terrible there."</span></p>
+
+            <p><span class="aria-speech">"I know,"</span> Aria said, pulling her scarf tight. <span class="aria-speech">"That's why nobody else has heard him yet."</span></p>
+
+            <p>She stepped out into the snow. The static roared in her headphones, louder than the wind. But Aria didn't turn it down. She turned it up.</p>
+
+            <p>She was going to find the thing that was screaming. And she wasn't going to fight it. She was going to sing back.</p>
+        </section>
+
+        <div class="chapter-marker">To Be Continued...</div>
+
+        <div class="soundtrack">
+            <h3>Soundtrack</h3>
+            <div class="track-listing">
+                <p>♫ "Strict Machine" - Goldfrapp</p>
+                <p>♫ "Contact" - Daft Punk</p>
+                <p>♫ "Phantom Pt. II" - Justice</p>
+            </div>
+        </div>
+        
+        <a href="index.html" class="back-link">Return to Starlight Archives</a>
+    </div>
+</body>
+</html>

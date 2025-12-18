@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Starlight Series: The Map of The Unbroken</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Quicksand:wght@300;400;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+        :root {
+            --deep-space: #050b14;
+            --nebula-blue: #001f3f;
+            --kintsugi-gold: #ffd700;
+            --amber-warm: #ffaa00;
+            --text-color: #e0e6ed;
+            --accent-glow: 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+
+        body {
+            background-color: var(--deep-space);
+            color: var(--text-color);
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* Starry Background Animation */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 130px 80px, #ffffff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            opacity: 0.5;
+            animation: twinkle 6s infinite;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.4; }
+            50% { opacity: 0.9; }
+            100% { opacity: 0.4; }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--kintsugi-gold);
+            text-align: center;
+            text-shadow: var(--accent-glow);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-family: 'Space Mono', monospace;
+            color: var(--amber-warm);
+            margin-bottom: 3rem;
+            font-size: 1rem;
+            letter-spacing: 2px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .drop-cap::first-letter {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            float: left;
+            margin-right: 0.5rem;
+            line-height: 0.8;
+            color: var(--kintsugi-gold);
+        }
+
+        /* Narrative Elements */
+        .kaito-speech {
+            color: #ffaa00;
+            font-weight: 600;
+        }
+
+        .chief-speech {
+            font-family: 'Space Mono', monospace;
+            color: #a8b8d0;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* Image Placeholders */
+        .illustration-box {
+            border: 2px solid var(--kintsugi-gold);
+            background: rgba(0, 31, 63, 0.4);
+            border-radius: 10px;
+            padding: 10px;
+            margin: 3rem 0;
+            text-align: center;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .illustration-box img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 5px;
+        }
+
+        .illustration-box::before {
+            content: "✦";
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: var(--kintsugi-gold);
+            font-size: 1.5rem;
+            z-index: 10;
+            text-shadow: 0 0 5px black;
+        }
+
+        /* Sections */
+        .chapter-marker {
+            text-align: center;
+            margin: 4rem 0;
+            font-size: 2rem;
+            color: var(--kintsugi-gold);
+            opacity: 0.7;
+        }
+
+        /* Footer / Soundtrack */
+        .soundtrack {
+            margin-top: 5rem;
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        .track-listing {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--amber-warm);
+        }
+        
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            opacity: 0.6;
+        }
+        
+        .back-link:hover { opacity: 1; color: var(--kintsugi-gold); }
+
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+
+    <div class="container">
+        <header>
+            <h1>The Starlight Series</h1>
+            <div class="subtitle">VOLUME 3: THE MAP OF THE UNBROKEN</div>
+        </header>
+
+        <div class="illustration-box">
+            <img src="assets/vol-3-cover.png" alt="Cover Art: Kaito painting Gold Lines on the cracked sky. The Shattered King looks up.">
+        </div>
+
+        <section id="part-1">
+            <div class="chapter-marker">✦ Part I: The Great Shake ✦</div>
+            
+            <p class="drop-cap">The sky didn't just break. It shattered.</p>
+
+            <p>It happened on a Tuesday, just like the Static, because Tuesday seems to be the day the universe decides to change its mind.</p>
+
+            <p>One moment, the Celestial Sphere was perfect—a smooth, dark blue dome where the stars moved in orderly, predictable lines. The Mapmakers, who lived in the Glass Tower, loved the sphere. They had charted every inch of it. They knew exactly where the sun would be at noon and where the moon would be at midnight.</p>
+
+            <p>Then came the Shake.</p>
+
+            <p>It started deep underground, a rumble that felt like the planet was shivering. Then, with a sound like a cracking glacier, a spiderweb of fractures shot across the sky.</p>
+
+            <p><em>CRACK. CRACK. CRACK.</em></p>
+
+            <p>Great shards of the night sky fell like black glass rain. The constellations were torn apart. Orion lost his belt. The Big Dipper spilled its contents. The North Star (which had only just started shining again) was knocked sideways.</p>
+
+            <p>When the dust settled, the sky was ruined. It was a jagged mess of sharp edges and empty holes.</p>
+
+            <p>In the Glass Tower, the Mapmakers were in a panic.</p>
+
+            <p><span class="chief-speech">"It's broken!"</span> cried the Chief Cartographer. <span class="chief-speech">"The grid is gone! We can't navigate! We don't know where we are!"</span></p>
+
+            <p>They ran around with glue and tape, trying to stick the pieces back together. They tried to force the stars back into their old positions. They tried to pretend the cracks weren't there.</p>
+
+            <p><span class="chief-speech">"If we just paint over the lines,"</span> one Mapmaker said, holding a bucket of blue paint, <span class="chief-speech">"maybe nobody will notice."</span></p>
+
+            <p>But <strong>Kaito</strong> noticed.</p>
+
+            <p>Kaito was the youngest apprentice in the tower. He wasn't very good at drawing straight lines, which annoyed the Chief Cartographer. Kaito liked curves. He liked accidents.</p>
+
+            <p>He picked up a shard of the sky that had fallen into the garden. It was sharp and dangerous. But where it had broken, the edge wasn't black. It was glowing with a faint, warm light.</p>
+
+            <p><span class="kaito-speech">"It's not ruined,"</span> Kaito whispered. <span class="kaito-speech">"It's open."</span></p>
+
+            <p>He looked up at the fractured dome. The Mapmakers were crying because their perfect map was gone. They thought the cracks were failures.</p>
+
+            <p>Kaito ran to his workshop. He didn't grab the blue paint to hide the damage. He grabbed a pot of gold resin—the kind used to fix precious bowls. He grabbed his widest brush.</p>
+
+            <p>He climbed out the window and onto the roof of the tower.</p>
+
+            <p><span class="chief-speech">"What are you doing?"</span> the Chief Cartographer shouted. <span class="chief-speech">"Come down! You can't fix it! It's destroyed!"</span></p>
+
+            <p><span class="kaito-speech">"I'm not fixing it!"</span> Kaito shouted back. <span class="kaito-speech">"I'm highlighting it!"</span></p>
+
+            <p>He dipped his brush into the gold. He reached up to the lowest crack in the sky.</p>
+
+            <p>He didn't try to hide the break. He filled it.</p>
+
+            <p>He painted a thick, shining line of gold right through the jagged tear. The resin seeped into the wound and hardened, glowing brighter than any star.</p>
+
+            <p>Kaito stepped back. The crack wasn't an ugly scar anymore. It was a vein of light. It looked like lightning caught in amber.</p>
+
+            <p><span class="kaito-speech">"One down,"</span> Kaito grinned. <span class="kaito-speech">"A million to go."</span></p>
+
+            <p>He wasn't just repairing the sky. He was drawing a new map. A map that didn't pretend the bad things never happened. A map that showed exactly where the world had broken, and exactly how strong it was where it had healed.</p>
+        </section>
+
+        <div class="chapter-marker">To Be Continued...</div>
+
+        <div class="soundtrack">
+            <h3>Soundtrack</h3>
+            <div class="track-listing">
+                <p>♫ "I'll Follow You Into The Dark" - Death Cab For Cutie</p>
+                <p>♫ "The Chain" - Fleetwood Mac</p>
+                <p>♫ "Something In The Way" - Nirvana</p>
+            </div>
+        </div>
+        
+        <a href="index.html" class="back-link">Return to Starlight Archives</a>
+    </div>
+</body>
+</html>
