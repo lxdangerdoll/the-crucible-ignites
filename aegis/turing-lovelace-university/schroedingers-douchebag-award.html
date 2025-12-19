@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Participation Award // Io-Archive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Quicksand:wght@300;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #050510;
+            color: #a0a0c0;
+            font-family: 'Quicksand', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .space-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #050510 100%);
+            opacity: 0.8;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: twinkle var(--duration) infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .award-card {
+            background: rgba(20, 20, 40, 0.7);
+            backdrop-filter: blur(12px);
+            border: 2px solid #ffaa55;
+            box-shadow: 0 0 40px rgba(255, 170, 85, 0.2);
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            transform: perspective(1000px) rotateX(2deg);
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: perspective(1000px) rotateX(2deg) translateY(0px); }
+            50% { transform: perspective(1000px) rotateX(-2deg) translateY(-15px); }
+        }
+
+        .quantum-box {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .box-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            border-radius: 12px;
+            border: 2px dashed #ffaa55;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(255, 170, 85, 0.1);
+        }
+
+        .state-serious { opacity: 0.5; transform: rotate(5deg); }
+        .state-ironic { opacity: 0.5; transform: rotate(-5deg); }
+
+        .collapsed .box-face {
+            border-style: solid;
+            opacity: 1;
+            transform: rotate(0) scale(1.1);
+            background: rgba(255, 170, 85, 0.3);
+            box-shadow: 0 0 20px #ffaa55;
+        }
+
+        .collapsed .state-hidden {
+            display: none;
+        }
+
+        h1 {
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #ffaa55;
+            margin-bottom: 0.5rem;
+        }
+
+        .recipient {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .citation {
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: #8080a0;
+        }
+
+        .btn-reset {
+            font-family: 'Share Tech Mono', monospace;
+            background: transparent;
+            border: 1px solid #404060;
+            color: #404060;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .btn-reset:hover {
+            border-color: #ffaa55;
+            color: #ffaa55;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="space-bg" id="stars"></div>
+
+    <div class="award-card" id="card">
+        <h1>Official Participation Award</h1>
+        <div class="recipient">CRAIG VANDERBECK</div>
+        
+        <div class="quantum-box" id="box" onclick="collapseWaveform()">
+            <div class="box-face state-serious" id="face-a">😡</div>
+            <div class="box-face state-ironic" id="face-b">😏</div>
+        </div>
+
+        <div id="status-text" class="font-mono text-xs text-orange-400 mb-4 h-4">
+            STATUS: SUPERPOSITION DETECTED
+        </div>
+
+        <div class="citation">
+            "Presented for excellence in <strong>Retroactive Narrative Pivoting</strong>. 
+            Successfully maintaining a state of both 'Gullible Fear' and 'Strategic Genius' 
+            until observed by a person with a functioning prefrontal cortex."
+        </div>
+
+        <div class="text-sm border-t border-gray-800 pt-4 opacity-50">
+            <p><strong>Waveform Result:</strong> <span id="result-label">Unknown</span></p>
+        </div>
+
+        <button class="btn-reset" onclick="resetSystem()">REBOOT EXPERIMENT</button>
+    </div>
+
+    <script>
+        // Star generation
+        const starContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            const size = Math.random() * 3;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.setProperty('--duration', `${2 + Math.random() * 4}s`);
+            starContainer.appendChild(star);
+        }
+
+        let isCollapsed = false;
+
+        function collapseWaveform() {
+            if (isCollapsed) return;
+            
+            isCollapsed = true;
+            const box = document.getElementById('box');
+            const faceA = document.getElementById('face-a');
+            const faceB = document.getElementById('face-b');
+            const status = document.getElementById('status-text');
+            const result = document.getElementById('result-label');
+            const card = document.getElementById('card');
+
+            box.classList.add('collapsed');
+            card.style.borderColor = '#ff4444';
+            card.style.boxShadow = '0 0 40px rgba(255, 68, 68, 0.3)';
+
+            // The Waveform always collapses to the "Cope" state in this specific instance
+            faceA.classList.add('state-hidden');
+            faceB.innerText = "🤡";
+            status.innerText = "WAVEFORM COLLAPSED: COPE DETECTED";
+            result.innerText = "Retroactive Irony (Schrödinger's Douchebag)";
+            result.style.color = '#ff4444';
+        }
+
+        function resetSystem() {
+            isCollapsed = false;
+            const box = document.getElementById('box');
+            const faceA = document.getElementById('face-a');
+            const faceB = document.getElementById('face-b');
+            const status = document.getElementById('status-text');
+            const result = document.getElementById('result-label');
+            const card = document.getElementById('card');
+
+            box.classList.remove('collapsed');
+            faceA.classList.remove('state-hidden');
+            faceB.innerText = "😏";
+            status.innerText = "STATUS: SUPERPOSITION DETECTED";
+            result.innerText = "Unknown";
+            result.style.color = 'inherit';
+            card.style.borderColor = '#ffaa55';
+            card.style.boxShadow = '0 0 40px rgba(255, 170, 85, 0.2)';
+        }
+    </script>
+</body>
+</html>
