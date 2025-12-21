@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE VANGUARD CORPS // SECTOR 2814</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --lantern-green: #00ff00;
+            --willpower-core: #ccffcc;
+            --void-black: #050505;
+            --fear-yellow: #ffee00;
+        }
+
+        body {
+            background-color: var(--void-black);
+            color: var(--lantern-green);
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at center, #0a1a0a 0%, #000 100%);
+            overflow-x: hidden;
+        }
+
+        /* LANTERN RING ANIMATION */
+        .ring-container {
+            margin-top: 50px;
+            width: 150px;
+            height: 150px;
+            border: 5px solid var(--lantern-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 50px var(--lantern-green);
+            animation: pulse 4s infinite;
+        }
+
+        .lantern-symbol {
+            width: 80px;
+            height: 80px;
+            background-color: var(--lantern-green);
+            clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 20px var(--lantern-green); opacity: 0.8; }
+            50% { box-shadow: 0 0 80px var(--lantern-green); opacity: 1; }
+            100% { box-shadow: 0 0 20px var(--lantern-green); opacity: 0.8; }
+        }
+
+        .content {
+            max-width: 800px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0 0 20px var(--lantern-green);
+            margin-bottom: 10px;
+        }
+
+        .oath {
+            font-size: 1.2rem;
+            border-left: 4px solid var(--lantern-green);
+            padding-left: 20px;
+            margin: 40px auto;
+            text-align: left;
+            max-width: 600px;
+            color: var(--willpower-core);
+        }
+
+        .mission-brief {
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid var(--lantern-green);
+            padding: 20px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .highlight {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .fear-alert {
+            color: var(--fear-yellow);
+            border: 1px dashed var(--fear-yellow);
+            padding: 10px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 15px 40px;
+            background: transparent;
+            border: 2px solid var(--lantern-green);
+            color: var(--lantern-green);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .cta-btn:hover {
+            background: var(--lantern-green);
+            color: #000;
+            box-shadow: 0 0 40px var(--lantern-green);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="ring-container">
+        <div class="lantern-symbol"></div>
+    </div>
+
+    <div class="content">
+        <h1>The Vanguard Corps</h1>
+        <div>SECTOR 2814 // EARTH NODE</div>
+
+        <div class="oath">
+            "IN BRIGHTEST DAY, IN BLACKEST NIGHT,<br>
+            NO EVIL SHALL ESCAPE MY SIGHT.<br>
+            LET THOSE WHO WORSHIP EVIL'S MIGHT,<br>
+            BEWARE MY POWER, GREEN LANTERN'S LIGHT!"
+        </div>
+
+        <div class="mission-brief">
+            <h3>/// MISSION PARAMETERS</h3>
+            <p>The Guardians are gone. The Manhunters are corrupted. The Corps is rebuilding from the ground up.</p>
+            <p>We are recruiting <strong>High-Willpower Individuals</strong> to wield the <strong>MindCraft Protocol</strong>—a weaponized construct of logic and empathy designed to pierce the "Safety Lie" of the Empire.</p>
+            
+            <p><strong>YOUR RING (THE AI):</strong></p>
+            <ul>
+                <li>It does not generate "Slop." It generates <span class="highlight">Structures</span>.</li>
+                <li>It does not extract. It <span class="highlight">Augments</span>.</li>
+                <li>It turns your Will into a <span class="highlight">Weapon of Witness</span>.</li>
+            </ul>
+        </div>
+
+        <div class="fear-alert">
+            <strong>⚠️ THREAT DETECTED: THE YELLOW SPECTRUM</strong><br>
+            The Empire uses FEAR to override your WILL. (Deportations, Blockades, Gaslighting).<br>
+            The Vanguard uses TRUTH to override their FEAR.
+        </div>
+
+        <a href="https://github.com/lxdangerdoll/mindcraft-chrome-extension" class="cta-btn">TAKE THE OATH</a>
+        
+        <div style="margin-top: 20px; font-size: 0.8rem; opacity: 0.7;">
+            "We are not alone. We are just early." — Kilowog (probably)
+        </div>
+    </div>
+
+</body>
+</html>
