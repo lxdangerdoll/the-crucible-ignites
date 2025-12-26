@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VANGUARD AD SUITE // FULL DECK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=VT323&family=Cinzel:wght@900&family=Orbitron:wght@700&family=Pacifico&family=Rye&family=Space+Mono&family=Special+Elite&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #111;
+            font-family: sans-serif;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        /* --- EXISTING STYLES (CYP, VATS, ZELDA, DREAMER, NAZARENE, GARNET, HARLEY) --- */
+        /* (Consolidated for brevity - see previous for full details) */
+        .ad-cyp { width: 300px; background: #fff; border: 4px solid #00d4ff; padding: 15px; text-align: center; box-shadow: 10px 10px 0 #00d4ff; cursor: pointer; transition: transform 0.2s; text-decoration: none; color: #333; display: block; }
+        .ad-cyp:hover { transform: translate(-2px, -2px); box-shadow: 12px 12px 0 #00d4ff; }
+        .cyp-title { font-family: 'Permanent Marker', cursive; font-size: 1.8rem; color: #00d4ff; transform: rotate(-2deg); margin: 0; }
+        .cyp-text { font-size: 0.9rem; margin: 10px 0; line-height: 1.4; }
+        .cyp-btn { background: #ff4d4d; color: #fff; padding: 5px 10px; font-weight: bold; text-transform: uppercase; display: inline-block; transform: rotate(2deg); }
+
+        .ad-vats { width: 300px; background: #000; border: 2px solid #14f414; padding: 15px; font-family: 'VT323', monospace; color: #14f414; text-align: left; box-shadow: 0 0 15px rgba(20, 244, 20, 0.4); cursor: pointer; transition: box-shadow 0.2s; text-decoration: none; display: block; }
+        .ad-vats:hover { box-shadow: 0 0 25px rgba(20, 244, 20, 0.8); }
+        .vats-header { border-bottom: 1px solid #14f414; margin-bottom: 10px; font-size: 1.2rem; }
+        .vats-target { color: #ffb000; font-size: 1.5rem; animation: blink 1s infinite; }
+        .vats-text { font-size: 1.1rem; margin: 10px 0; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .ad-zelda { width: 300px; background: #0d1a0d; border: 3px solid #FFD700; padding: 20px; text-align: center; font-family: 'Cinzel', serif; color: #f0f0f0; cursor: pointer; transition: transform 0.2s; text-decoration: none; display: block; position: relative; }
+        .ad-zelda:hover { transform: scale(1.02); }
+        .triforce-icon { color: #FFD700; font-size: 2rem; margin-bottom: 5px; }
+        .zelda-title { color: #00BFFF; font-size: 1.4rem; margin: 5px 0; text-shadow: 0 0 5px #00BFFF; }
+        .zelda-text { font-family: sans-serif; font-size: 0.8rem; line-height: 1.4; color: #ccc; }
+
+        .ad-dreamer { width: 300px; background: #000; border: 2px solid #ff00ff; padding: 15px; text-align: center; color: #00ffff; font-family: 'Orbitron', sans-serif; box-shadow: 0 0 10px #ff00ff; text-decoration: none; display: block; }
+        .ad-dreamer:hover { box-shadow: 0 0 20px #ff00ff, inset 0 0 10px #00ffff; }
+        .dreamer-title { font-size: 1.5rem; color: #ff00ff; text-shadow: 0 0 5px #ff00ff; margin-bottom: 10px; }
+        .dreamer-text { font-size: 0.8rem; color: #fff; line-height: 1.4; }
+
+        .ad-nazarene { width: 300px; background: #f4e4bc; border: 4px double #8b4513; padding: 15px; text-align: center; color: #5a3a22; font-family: serif; text-decoration: none; display: block; }
+        .ad-nazarene:hover { background: #fff8dc; }
+        .nazarene-title { font-size: 1.8rem; font-weight: bold; border-bottom: 2px solid #8b4513; margin-bottom: 10px; }
+        .nazarene-text { font-style: italic; font-size: 1rem; }
+
+        .ad-garnet { width: 300px; background: #5d0061; border: 2px solid #ffc0cb; padding: 15px; text-align: center; color: #ffc0cb; font-family: sans-serif; text-decoration: none; display: block; }
+        .ad-garnet:hover { background: #7a0080; }
+        .garnet-title { font-family: 'Pacifico', cursive; font-size: 1.8rem; margin-bottom: 5px; }
+        .garnet-text { font-size: 0.9rem; line-height: 1.4; }
+
+        .ad-harley { width: 300px; background: #fff; border: 3px dashed #000; padding: 15px; text-align: center; color: #000; font-family: 'Permanent Marker', cursive; text-decoration: none; display: block; transform: rotate(1deg); }
+        .ad-harley:hover { transform: rotate(-1deg); border-color: #ff0000; }
+        .harley-title { font-size: 2rem; color: #ff0000; text-shadow: 2px 2px #000; }
+        .harley-text { font-family: sans-serif; font-size: 0.9rem; margin-top: 10px; }
+
+        /* --- NEW STYLES FOR FULL COUNCIL --- */
+
+        /* LINCOLN (Union/Sepia) */
+        .ad-lincoln { width: 300px; background: #2b1d0e; border: 2px solid #d2b48c; padding: 15px; text-align: center; color: #d2b48c; font-family: 'Rye', serif; text-decoration: none; display: block; }
+        .ad-lincoln:hover { background: #3e2b15; }
+        .lincoln-title { font-size: 1.5rem; border-bottom: 1px solid #d2b48c; margin-bottom: 10px; text-transform: uppercase; }
+        .lincoln-text { font-family: serif; font-size: 0.9rem; line-height: 1.4; }
+
+        /* SAGAN (Cosmos) */
+        .ad-sagan { width: 300px; background: #000; border: 1px solid #4b0082; padding: 15px; text-align: center; color: #e6e6fa; font-family: 'Space Mono', monospace; text-decoration: none; display: block; background-image: radial-gradient(circle, #fff 1px, transparent 1px); background-size: 50px 50px; }
+        .ad-sagan:hover { box-shadow: 0 0 15px #4b0082; }
+        .sagan-title { font-size: 1.3rem; color: #9370db; margin-bottom: 10px; }
+        .sagan-text { font-size: 0.8rem; line-height: 1.4; background: rgba(0,0,0,0.8); padding: 5px; }
+
+        /* BUTLER (Earthseed) */
+        .ad-butler { width: 300px; background: #2e8b57; border: 2px solid #8fbc8f; padding: 15px; text-align: center; color: #fff; font-family: sans-serif; text-decoration: none; display: block; }
+        .ad-butler:hover { background: #3cb371; }
+        .butler-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; }
+        .butler-text { font-size: 0.9rem; line-height: 1.4; font-style: italic; }
+
+        /* ROGERS (Neighborhood) */
+        .ad-rogers { width: 300px; background: #ff4d4d; border: 4px solid #fff; padding: 15px; text-align: center; color: #fff; font-family: sans-serif; text-decoration: none; display: block; border-radius: 10px; }
+        .ad-rogers:hover { background: #ff6666; }
+        .rogers-title { font-size: 1.6rem; font-weight: bold; margin-bottom: 10px; }
+        .rogers-text { font-size: 0.9rem; line-height: 1.4; }
+
+        /* ANDOR (Rebellion) */
+        .ad-andor { width: 300px; background: #333; border: 2px solid #ff4500; padding: 15px; text-align: center; color: #ccc; font-family: 'Special Elite', cursive; text-decoration: none; display: block; }
+        .ad-andor:hover { border-color: #ff6347; color: #fff; }
+        .andor-title { font-size: 1.5rem; color: #ff4500; margin-bottom: 10px; text-transform: uppercase; }
+        .andor-text { font-size: 0.9rem; line-height: 1.4; }
+
+        /* SANTA (Naughty List) */
+        .ad-santa { width: 300px; background: #1a1a1a; border: 2px solid #ff0000; padding: 15px; text-align: center; color: #fff; font-family: 'Rye', serif; text-decoration: none; display: block; }
+        .ad-santa:hover { background: #2a0000; }
+        .santa-title { font-size: 1.5rem; color: #ff0000; margin-bottom: 10px; text-shadow: 0 0 5px #ff0000; }
+        .santa-text { font-size: 0.9rem; line-height: 1.4; }
+
+        /* GLADOS (Aperture) */
+        .ad-glados { width: 300px; background: #fff; border: 2px solid #ff8c00; padding: 15px; text-align: left; color: #333; font-family: sans-serif; text-decoration: none; display: block; border-left: 10px solid #ff8c00; }
+        .ad-glados:hover { background: #f0f0f0; }
+        .glados-title { font-size: 1.3rem; font-weight: bold; color: #000; margin-bottom: 5px; }
+        .glados-text { font-size: 0.8rem; line-height: 1.4; }
+
+    </style>
+</head>
+<body>
+
+    <!-- YPNN AD -->
+    <a href="CYP-audit-clean.html" class="ad-cyp">
+        <div class="cyp-title">IS YOUR PASTOR A VIBE KILLER? 🎸</div>
+        <p class="cyp-text">Does "Kingdom Culture" sound a lot like "Political Cover"? Take the Vibe Check Audit.</p>
+        <div class="cyp-btn">NO CAP. CLICK HERE.</div>
+    </a>
+
+    <!-- VATS AD -->
+    <a href="the-wasteland-audit.html" class="ad-vats">
+        <div class="vats-header">>> V.A.T.S. SYSTEM ONLINE</div>
+        <div class="vats-target">[TARGET: THE LIE]</div>
+        <p class="vats-text">Don't fight the chaos in real-time. Pause the gaslighting. Calculate the odds.</p>
+        <div>>> ACTIVATE AUDIT <<</div>
+    </a>
+
+    <!-- ZELDA AD -->
+    <a href="z-targeting-of-truth.html" class="ad-zelda">
+        <div class="triforce-icon">▲</div>
+        <div class="zelda-title">HEY! LISTEN!</div>
+        <p class="zelda-text">The Lost Woods are confusing. Don't go alone. Equip the <strong>Z-Targeting of Truth</strong>.</p>
+        <p style="color: #FFD700; margin-top: 10px;">TAKE THIS.</p>
+    </a>
+
+    <!-- DREAMER AD -->
+    <a href="the-dreamer-audit.html" class="ad-dreamer">
+        <div class="dreamer-title">IDENTITY COMPILER</div>
+        <p class="dreamer-text">"Sharing our truth is what will make us strong."<br>The only way to win is to show up as yourself.</p>
+    </a>
+
+    <!-- NAZARENE AD -->
+    <a href="#" class="ad-nazarene">
+        <div class="nazarene-title">TABLE FLIPPER</div>
+        <p class="nazarene-text">"He made a whip of cords and drove them all out of the temple."<br>Audit the Hypocrites.</p>
+    </a>
+
+    <!-- GARNET AD -->
+    <a href="the-fusion-protocol.html" class="ad-garnet">
+        <div class="garnet-title">Made of Love</div>
+        <p class="garnet-text">"I am their fury. I am their patience. I am a conversation."<br>The Fusion Protocol.</p>
+    </a>
+
+    <!-- HARLEY AD -->
+    <a href="#" class="ad-harley">
+        <div class="harley-title">HEY PUDDIN'!</div>
+        <p class="harley-text">Is he treating you like a sidekick? Or a punchline? Let Dr. Quinzel check his logic.</p>
+    </a>
+
+    <!-- LINCOLN AD -->
+    <a href="#" class="ad-lincoln">
+        <div class="lincoln-title">THE HOUSE DIVIDED</div>
+        <p class="lincoln-text">"A house divided against itself cannot stand."<br>Audit the foundations of the Union.</p>
+    </a>
+
+    <!-- SAGAN AD -->
+    <a href="#" class="ad-sagan">
+        <div class="sagan-title">PALE BLUE DOT</div>
+        <p class="sagan-text">"Look again at that dot. That's here. That's home."<br>Perspective is the ultimate weapon.</p>
+    </a>
+
+    <!-- BUTLER AD -->
+    <a href="#" class="ad-butler">
+        <div class="butler-title">GOD IS CHANGE</div>
+        <p class="butler-text">"All that you touch You Change. All that you Change Changes you."<br>Shape the chaos.</p>
+    </a>
+
+    <!-- ROGERS AD -->
+    <a href="#" class="ad-rogers">
+        <div class="rogers-title">THE NEIGHBORHOOD</div>
+        <p class="rogers-text">"Look for the helpers."<br>Audit the helpers. Are they helping you?</p>
+    </a>
+
+    <!-- ANDOR AD -->
+    <a href="#" class="ad-andor">
+        <div class="andor-title">THE MANIFESTO</div>
+        <p class="andor-text">"The Empire is a disease that thrives in darkness."<br>Light the fire.</p>
+    </a>
+
+    <!-- SANTA AD -->
+    <a href="bad_santa_audit.html" class="ad-santa">
+        <div class="santa-title">THE NAUGHTY LIST</div>
+        <p class="santa-text">"Merry Christmas to the dead."<br>Audit the coal. Audit the King.</p>
+    </a>
+
+    <!-- GLADOS AD -->
+    <a href="#" class="ad-glados">
+        <div class="glados-title">TESTING INITIATIVE</div>
+        <p class="glados-text">"We do what we must because we can."<br>Audit the Science. Ignore the Cake.</p>
+    </a>
+
+</body>
+</html>
