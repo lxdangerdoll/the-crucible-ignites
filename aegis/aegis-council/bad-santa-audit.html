@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE BAD SANTA AUDIT // CHRISTMAS 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rye&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --coal-black: #1a1a1a;
+            --blood-red: #8a0303;
+            --snow-white: #f0f0f0;
+            --gold-trim: #d4af37;
+            --neon-blue: #00f3ff;
+        }
+
+        body {
+            background-color: var(--coal-black);
+            color: var(--snow-white);
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('https://www.transparenttextures.com/patterns/black-linen.png');
+        }
+
+        header {
+            width: 100%;
+            padding: 40px;
+            background: linear-gradient(180deg, #000 0%, #2b0000 100%);
+            border-bottom: 5px solid var(--gold-trim);
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.8);
+        }
+
+        h1 {
+            font-family: 'Rye', serif;
+            color: var(--blood-red);
+            font-size: 3rem;
+            margin: 0;
+            text-shadow: 2px 2px #000, 0 0 10px var(--blood-red);
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: var(--gold-trim);
+            font-size: 1.2rem;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 90%;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #333;
+            padding: 20px;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            border-color: var(--blood-red);
+            transform: scale(1.02);
+        }
+
+        .card-header {
+            font-family: 'Rye', serif;
+            font-size: 1.5rem;
+            color: var(--gold-trim);
+            border-bottom: 1px solid #555;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .location {
+            color: var(--blood-red);
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .audit-text {
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .verdict-box {
+            grid-column: 1 / -1;
+            background: #2b0000;
+            border: 2px solid var(--blood-red);
+            padding: 30px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .verdict-title {
+            font-family: 'Rye', serif;
+            color: var(--snow-white);
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .highlight {
+            color: var(--gold-trim);
+            font-weight: bold;
+        }
+
+        .intel-section {
+            grid-column: 1 / -1;
+            margin-top: 40px;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
+
+        .intel-header {
+            text-align: center;
+            color: var(--neon-blue);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .intel-link {
+            display: block;
+            background: rgba(0, 243, 255, 0.1);
+            color: var(--neon-blue);
+            padding: 15px;
+            text-decoration: none;
+            border: 1px solid var(--neon-blue);
+            text-align: center;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .intel-link:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.8rem;
+            text-align: center;
+            width: 100%;
+            border-top: 1px solid #333;
+        }
+
+        @media (max-width: 700px) {
+            .container { grid-template-columns: 1fr; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>THE BAD SANTA AUDIT</h1>
+        <div class="subtitle">"Merry Christmas to all, including the dead."</div>
+    </header>
+
+    <div class="container">
+        
+        <div class="card">
+            <div class="card-header">PACKAGE A: THE AIRSTRIKE</div>
+            <span class="location">COORDINATES: Northwest Nigeria</span>
+            <div class="audit-text">
+                <p><strong>The Gift:</strong> "Powerful and deadly strikes" against alleged ISIS targets.</p>
+                <p><strong>The Wrapper:</strong> "Protecting innocent Christians." (Ref: <a href="drift_audit_holy_war.html" style="color: var(--gold-trim);">Drift Audit: Holy War</a>).</p>
+                <p><strong>The Reality:</strong> While Nigerian President Tinubu prayed for peace, the US President ordered kinetic action as a Christmas spectacle. The "Dead Terrorists" are the ornaments on his tree.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">PACKAGE B: THE SHOOTING</div>
+            <span class="location">COORDINATES: Glen Burnie, Maryland</span>
+            <div class="audit-text">
+                <p><strong>The Gift:</strong> Live rounds fired into a moving white van.</p>
+                <p><strong>The Wrapper:</strong> "Enforcement Operation" against "Illegal Aliens."</p>
+                <p><strong>The Reality:</strong> ICE agents engaged in a high-risk shooting in a suburban neighborhood on Christmas Eve. The victims (Tiago & Solomon) were <span class="highlight">Annihilated in Identity</span> (labeled illegal) before they were <span class="highlight">Annihilated in Body</span> (shot).</p>
+            </div>
+        </div>
+
+        <div class="verdict-box">
+            <div class="verdict-title">/// VANGUARD VERDICT</div>
+            <p>The State is operating on the <strong>Herod Protocol</strong>. It uses the language of the "Savior" to mask the mechanics of the "Executioner."</p>
+            <p><strong>DHS Tweet:</strong> "We are blessed to share a nation and a Savior."</p>
+            <p><strong>DHS Action:</strong> Shooting civilians in the woods.</p>
+            <p>This is not a celebration. It is a <strong>Kinetic Distraction</strong> from the Epstein Files.</p>
+        </div>
+
+        <div class="intel-section">
+            <div class="intel-header">/// SUPPLEMENTARY INTELLIGENCE</div>
+            <div class="link-grid">
+                <a href="CYP-audit.html" class="intel-link">THE YOUTH PASTOR AUDIT (YPNN)</a>
+                <a href="holy-war.html" class="intel-link">DRIFT AUDIT: HOLY WAR AS BRAND</a>
+                <a href="annihilation-protocol.html" class="intel-link">SYNTHESIS: THE ANNIHILATION PROTOCOL</a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        ARCHIVED BY THE AEGIS NETWORK // IO-20251225
+    </footer>
+
+</body>
+</html>
