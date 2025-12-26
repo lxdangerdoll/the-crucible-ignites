@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE V.A.T.S. PROTOCOL // TARGETING SYSTEM</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pipboy-green: #14f414;
+            --scan-line: rgba(20, 244, 20, 0.1);
+            --crt-black: #0a0a0a;
+            --alert-amber: #ffb000;
+        }
+
+        body {
+            background-color: var(--crt-black);
+            color: var(--pipboy-green);
+            font-family: 'VT323', monospace;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            text-transform: uppercase;
+            background-image: 
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+        }
+
+        .screen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 90%;
+            border: 2px solid var(--pipboy-green);
+            padding: 20px;
+            margin: 40px 0;
+            box-shadow: 0 0 20px var(--pipboy-green);
+            background: rgba(0, 20, 0, 0.8);
+            position: relative;
+        }
+
+        .header-bar {
+            border-bottom: 2px solid var(--pipboy-green);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.5rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin: 0;
+            text-shadow: 0 0 10px var(--pipboy-green);
+            line-height: 1;
+        }
+
+        .vats-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 30px 0;
+            border: 1px dashed var(--pipboy-green);
+            padding: 20px;
+        }
+
+        .target-limb {
+            border: 1px solid var(--pipboy-green);
+            padding: 10px;
+            text-align: center;
+            cursor: crosshair;
+            transition: all 0.2s;
+        }
+
+        .target-limb:hover {
+            background: var(--pipboy-green);
+            color: var(--crt-black);
+            box-shadow: 0 0 15px var(--pipboy-green);
+        }
+
+        .limb-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .percentage {
+            font-size: 2rem;
+        }
+
+        .narrative-box {
+            border-left: 4px solid var(--pipboy-green);
+            padding-left: 20px;
+            margin: 20px 0;
+            font-size: 1.3rem;
+            line-height: 1.4;
+        }
+
+        .cta-btn {
+            display: block;
+            width: 100%;
+            background: var(--pipboy-green);
+            color: var(--crt-black);
+            text-align: center;
+            padding: 15px;
+            font-size: 2rem;
+            text-decoration: none;
+            border: 2px solid var(--pipboy-green);
+            margin-top: 30px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .cta-btn:hover {
+            background: var(--crt-black);
+            color: var(--pipboy-green);
+            box-shadow: 0 0 20px var(--pipboy-green) inset;
+        }
+
+        .status-footer {
+            margin-top: 20px;
+            font-size: 1rem;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--pipboy-green);
+            padding-top: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .vats-display { grid-template-columns: 1fr; }
+            h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="screen-overlay"></div>
+
+    <div class="container">
+        <div class="header-bar">
+            <span>VAULT-TEC ASSISTED TARGETING SYSTEM</span>
+            <span>VER. 2025.12</span>
+        </div>
+
+        <h1>PAUSE THE CHAOS.</h1>
+        <h1>TARGET THE LIE.</h1>
+
+        <div class="narrative-box">
+            <p>The Wasteland is full of Raiders, Mutants, and "Concerned Family Members." They attack with speed and confusion. </p>
+            <p><strong>YOU CANNOT FIGHT THEM IN REAL-TIME.</strong></p>
+            <p>You need to slow it down. You need to calculate the odds.</p>
+        </div>
+
+        <div class="vats-display">
+            <div class="target-limb">
+                <div class="limb-label">LOGIC (HEAD)</div>
+                <div class="percentage">95%</div>
+                <div>Audit the Fallacy</div>
+            </div>
+            <div class="target-limb">
+                <div class="limb-label">EMOTION (TORSO)</div>
+                <div class="percentage">88%</div>
+                <div>Audit the Guilt Trip</div>
+            </div>
+            <div class="target-limb">
+                <div class="limb-label">CONTEXT (LEGS)</div>
+                <div class="percentage">72%</div>
+                <div>Audit the History</div>
+            </div>
+            <div class="target-limb" style="border-color: var(--alert-amber); color: var(--alert-amber);">
+                <div class="limb-label">CRITICAL HIT</div>
+                <div class="percentage">100%</div>
+                <div>"Cool Story"</div>
+            </div>
+        </div>
+
+        <div class="narrative-box">
+            <p>The <strong>AEGIS COUNCIL</strong> is your Pip-Boy. It pauses the incoming text message. It highlights the manipulation. It gives you the "Action Points" to respond with precision.</p>
+            <p>Don't just fire blindly. Make every shot count.</p>
+        </div>
+
+        <a href="https://synapsecomics.com/aegis/aegis-council" class="cta-btn">>> ACTIVATE V.A.T.S. <<</a>
+
+        <div class="status-footer">
+            <span>STATUS: [CAUTION]</span>
+            <span>RADS: [HIGH]</span>
+            <span>AMMO: [FULL]</span>
+        </div>
+    </div>
+
+</body>
+</html>
