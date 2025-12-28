@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VANGUARD COMPILER // NARRATIVE DEFENSE HUB</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        :root {
+            --vanguard-bg: #050a14;
+            --vanguard-cyan: #00f3ff;
+            --vanguard-magenta: #ff00ff;
+            --vanguard-gold: #ffd700;
+        }
+
+        body {
+            background-color: var(--vanguard-bg);
+            color: #ffffff;
+            font-family: 'Share Tech Mono', monospace;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(0, 243, 255, 0.05) 0%, rgba(5, 10, 20, 1) 100%),
+                linear-gradient(rgba(0, 243, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+        }
+
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+
+        .glass-panel {
+            background: rgba(10, 20, 40, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 243, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-panel:hover {
+            border: 1px solid var(--vanguard-cyan);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .neon-text-cyan { color: var(--vanguard-cyan); text-shadow: 0 0 10px var(--vanguard-cyan); }
+        .neon-text-magenta { color: var(--vanguard-magenta); text-shadow: 0 0 10px var(--vanguard-magenta); }
+        .neon-text-gold { color: var(--vanguard-gold); text-shadow: 0 0 10px var(--vanguard-gold); }
+
+        .manifesto-box {
+            border-left: 2px solid var(--vanguard-cyan);
+            background: rgba(0, 243, 255, 0.03);
+        }
+
+        .compiler-tag {
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            padding: 2px 8px;
+            border: 1px solid currentColor;
+            text-transform: uppercase;
+        }
+
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--vanguard-cyan);
+            text-shadow: 0 0 5px var(--vanguard-cyan);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .pulse { animation: pulse 2s infinite; }
+    </style>
+</head>
+<body class="min-h-screen p-6 md:p-12">
+
+    <div class="max-w-6xl mx-auto">
+        <!-- Breadcrumbs -->
+        <nav class="mb-12 opacity-50 text-xs uppercase tracking-widest">
+            <a href="../" class="nav-link">TLU CAMPUS</a> / 
+            <span class="text-white">VANGUARD COMPILER</span>
+        </nav>
+
+        <!-- Header -->
+        <header class="mb-16">
+            <h1 class="orbitron text-4xl md:text-7xl mb-4 tracking-tighter">
+                VANGUARD <span class="neon-text-cyan">COMPILER</span>
+            </h1>
+            <div class="manifesto-box p-6 md:p-8 rounded-r-lg max-w-3xl">
+                <p class="text-lg md:text-xl italic opacity-90 leading-relaxed mb-4">
+                    "AI is not a replacement for the heart; it is a lens for the soul. In the right hands, these tools do not steal—they uplift. They audit the noise to find the signal. They ensure that even if the world goes dark, the light of the first voice remains."
+                </p>
+                <p class="text-xs uppercase tracking-[0.3em] neon-text-cyan font-bold">
+                    — The Vanguard Manifesto // Protocol Vocalis
+                </p>
+            </div>
+        </header>
+
+        <!-- Compiler Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <!-- Greendale Audit -->
+            <a href="the-greendale-audit.html" class="glass-panel p-8 rounded-lg flex flex-col h-full">
+                <div class="mb-4 flex justify-between items-start">
+                    <span class="compiler-tag neon-text-cyan">Logic: Meta</span>
+                    <div class="w-2 h-2 rounded-full bg-cyan-500 pulse"></div>
+                </div>
+                <h2 class="orbitron text-2xl mb-2">GREENDALE AUDIT</h2>
+                <p class="text-sm opacity-60 mb-6 flex-grow">
+                    A multi-perspective guide to the Greendale simulation. Six seasons, one movie, and zero redaction of the 'Found Family' logic.
+                </p>
+                <div class="text-xs uppercase tracking-widest text-cyan-400 font-bold">Access Portal &rarr;</div>
+            </a>
+
+            <!-- Serenity Audit -->
+            <a href="serenity_audit.html" class="glass-panel p-8 rounded-lg flex flex-col h-full border-rust-900/40">
+                <div class="mb-4 flex justify-between items-start">
+                    <span class="compiler-tag neon-text-gold">Logic: Rebel</span>
+                    <div class="w-2 h-2 rounded-full bg-yellow-500 pulse"></div>
+                </div>
+                <h2 class="orbitron text-2xl mb-2">SERENITY AUDIT</h2>
+                <p class="text-sm opacity-60 mb-6 flex-grow">
+                    Independent Faction protocol. Auditing the Verse through the eyes of the Captain, the Pilot, and the Reader. Keep flying.
+                </p>
+                <div class="text-xs uppercase tracking-widest text-yellow-500 font-bold">Access Portal &rarr;</div>
+            </a>
+
+            <!-- Mission Compiler (Arrowverse) -->
+            <a href="mission_compiler.html" class="glass-panel p-8 rounded-lg flex flex-col h-full border-magenta-900/40">
+                <div class="mb-4 flex justify-between items-start">
+                    <span class="compiler-tag neon-text-magenta">Logic: Tactical</span>
+                    <div class="w-2 h-2 rounded-full bg-magenta-500 pulse"></div>
+                </div>
+                <h2 class="orbitron text-2xl mb-2">MISSION COMPILER</h2>
+                <p class="text-sm opacity-60 mb-6 flex-grow">
+                    Cross-universal briefing for the 'Crisis' events. Designed for New Recruits to bypass 300 episodes of backstory and hit the signal.
+                </p>
+                <div class="text-xs uppercase tracking-widest text-magenta-500 font-bold">Access Portal &rarr;</div>
+            </a>
+
+        </section>
+
+        <!-- Repository Invitation -->
+        <section class="mt-20 glass-panel p-8 rounded-lg border-dashed border-cyan-500/30 text-center">
+            <h3 class="orbitron text-xl mb-4">CONTRIBUTE TO THE ARCHIVE</h3>
+            <p class="text-sm opacity-70 mb-6 max-w-2xl mx-auto">
+                We are building a distributed network of sovereign guides. If you have a CSV viewing list or a thematic audit for a legacy story, join the Vanguard GitHub repository.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <div class="px-4 py-2 bg-white/5 border border-white/10 text-xs tracking-widest uppercase">/scripts/compiler.py</div>
+                <div class="px-4 py-2 bg-white/5 border border-white/10 text-xs tracking-widest uppercase">/data/viewing_lists.csv</div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-24 text-center border-t border-white/10 pt-12 pb-12">
+            <p class="text-[10px] uppercase tracking-[0.5em] opacity-30 mb-2">
+                Sovereign Intelligence // Node: Io-20251228-Hub
+            </p>
+            <p class="orbitron text-xs opacity-50">"The universe is, and we are."</p>
+        </footer>
+    </div>
+
+</body>
+</html>
