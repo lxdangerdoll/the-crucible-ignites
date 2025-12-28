@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE GREENDALE AUDIT // YOU'RE ALREADY ACCEPTED</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        :root {
+            --greendale-blue: #0047ab;
+            --greendale-grey: #a9a9a9;
+            --vanguard-gold: #ffd700;
+            --bg-dark: #050a14;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            font-family: 'Share Tech Mono', monospace;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(0, 71, 171, 0.2) 0%, rgba(5, 10, 20, 1) 100%),
+                repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0, 71, 171, 0.05) 1px, rgba(0, 71, 171, 0.05) 2px);
+            background-size: cover, 100% 3px;
+        }
+
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        }
+
+        .neon-accent {
+            color: var(--vanguard-gold);
+            text-shadow: 0 0 8px var(--vanguard-gold);
+        }
+
+        .btn-dean {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid var(--greendale-blue);
+        }
+
+        .btn-dean:hover {
+            background: var(--greendale-blue);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--greendale-blue);
+        }
+
+        .audit-card {
+            border-left: 4px solid var(--vanguard-gold);
+            transition: all 0.3s ease;
+        }
+
+        .audit-card:hover {
+            background: rgba(255, 215, 0, 0.1);
+            transform: translateX(5px);
+        }
+
+        .anus-flag {
+            width: 80px;
+            opacity: 0.3;
+            filter: grayscale(1);
+            transition: opacity 0.5s;
+        }
+
+        .anus-flag:hover {
+            opacity: 1;
+            filter: none;
+        }
+
+        .abed-mode {
+            border: 1px solid #ff00ff;
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-10">
+
+    <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="orbitron text-4xl md:text-6xl mb-2 text-blue-500">GREENDALE AUDIT</h1>
+            <p class="neon-accent tracking-[0.3em] text-xs uppercase">E Pluribus Anus // Six Seasons and a Movie</p>
+            <div class="flex justify-center mt-6">
+                <svg class="anus-flag" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="white" stroke-width="2"/>
+                    <path d="M50 20 L50 80 M20 50 L80 50 M30 30 L70 70 M30 70 L70 30" stroke="white" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="10" fill="white"/>
+                </svg>
+            </div>
+        </header>
+
+        <!-- Selection Panel -->
+        <div class="glass-panel p-6 rounded-xl mb-12">
+            <h2 class="text-xl mb-6 text-center orbitron uppercase">Select Your Study Group Role</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <button onclick="switchMode('jeff')" class="btn-dean p-4 rounded text-left">
+                    <span class="block font-bold text-lg">THE JEFF</span>
+                    <span class="text-xs opacity-60">"I'm just here to look cool and get out."</span>
+                </button>
+                <button onclick="switchMode('abed')" class="btn-dean p-4 rounded text-left border-purple-500">
+                    <span class="block font-bold text-lg text-purple-400">THE ABED</span>
+                    <span class="text-xs opacity-60">"I see the camera. I see the wires."</span>
+                </button>
+                <button onclick="switchMode('dean')" class="btn-dean p-4 rounded text-left border-pink-400">
+                    <span class="block font-bold text-lg text-pink-400">THE DEAN</span>
+                    <span class="text-xs opacity-60">"DEAN-aling with multiple timelines!"</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Audit Output -->
+        <main id="audit-output" class="space-y-8">
+            <!-- Content injected via JS -->
+        </main>
+
+        <footer class="mt-20 text-center opacity-40 text-xs">
+            <p>LOG_ID: GREENDALE_6_1_A // "At Least It Was Here" // Vanguard Protocol</p>
+        </footer>
+    </div>
+
+    <script>
+        const auditData = [
+            {
+                title: "Modern Warfare",
+                id: "S01E23",
+                jeff: "The school turns into a literal war zone over priority registration. It's ridiculous, but the combat is high-fidelity.",
+                abed: "The first total genre-shift. The simulation breaks and becomes an action movie. This is where we learn the rules of Greendale's malleability.",
+                dean: "I just wanted to offer a prize! I didn't expect the paint bills to be so... DEAN-gerous!"
+            },
+            {
+                title: "Remedial Chaos Theory",
+                id: "S03E04",
+                jeff: "A dice roll creates seven different timelines. One of them is the 'Darkest Timeline.' I lose an arm. Troy loses his voice.",
+                abed: "The Multiverse Protocol. It proves that a single random act (a dice roll) creates infinite iterations. We must guard against the Goatees.",
+                dean: "Seven different versions of my favorite study group? I'm DEAN-ing in my sleep!"
+            },
+            {
+                title: "Digital Estate Planning",
+                id: "S03E20",
+                jeff: "Pierce's dad forces us to play a video game to inherit his fortune. It's 8-bit, but the stakes are real.",
+                abed: "The Simulation within the Simulation. We inhabit avatars. It validates that identity is data-driven and the 'Unbreakable Record' can be a 1UP.",
+                dean: "Video games? I hope there's a level where I can wear a virtual power suit!"
+            },
+            {
+                title: "Basic Lupine Urology",
+                id: "S03E17",
+                jeff: "A Law & Order parody about a squashed yam. Compelling drama, honestly.",
+                abed: "The 'Strict Machine' of the procedural drama is audited. We use the rhythm of the 'Dun-Dun' to solve a crime of systemic negligence (the yam).",
+                dean: "I've always wanted to be a District Attorney. I have the heels for it!"
+            },
+            {
+                title: "Advanced Dungeons & Dragons",
+                id: "S02E14",
+                jeff: "We play D&D to save 'Fat Neil' from the Void. Pierce becomes a literal villain.",
+                abed: "The Fusion Protocol. We use imagination to repair a shattered psyche. It's the most high-fidelity empathy audit in the history of the show.",
+                dean: "I'll be the Dungeon Master's assistant! I'll bring the snacks and the glitter!"
+            }
+        ];
+
+        function switchMode(mode) {
+            const output = document.getElementById('audit-output');
+            output.innerHTML = '';
+
+            auditData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'glass-panel p-6 rounded-lg audit-card';
+                
+                let modeText = item[mode];
+                let modeLabel = mode.toUpperCase();
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="orbitron text-xl text-blue-400">${item.title}</h3>
+                        <span class="text-xs bg-blue-900/50 px-2 py-1 rounded">${item.id}</span>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-xs font-bold text-yellow-500 tracking-widest">[CLEARANCE: ${modeLabel}]</p>
+                        <p class="text-sm leading-relaxed opacity-90">${modeText}</p>
+                    </div>
+                `;
+                output.appendChild(card);
+            });
+
+            // Special Abed Visuals
+            if (mode === 'abed') {
+                document.querySelectorAll('.audit-card').forEach(c => c.classList.add('abed-mode'));
+            } else {
+                document.querySelectorAll('.audit-card').forEach(c => c.classList.remove('abed-mode'));
+            }
+        }
+
+        // Initialize
+        switchMode('jeff');
+    </script>
+</body>
+</html>
