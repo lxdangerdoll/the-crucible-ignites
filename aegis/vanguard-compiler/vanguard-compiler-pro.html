@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VANGUARD COMPILER PRO // GARNET NODE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --vanguard-bg: #050a14;
+            --vanguard-cyan: #00f3ff;
+            --vanguard-magenta: #ff00ff;
+        }
+        body {
+            background-color: var(--vanguard-bg);
+            color: #ffffff;
+            font-family: 'Share Tech Mono', monospace;
+            background-image: radial-gradient(circle at 50% 50%, rgba(0, 243, 255, 0.05) 0%, rgba(5, 10, 20, 1) 100%);
+        }
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+        .glass-panel {
+            background: rgba(10, 20, 40, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+        .progress-bar {
+            height: 4px;
+            background: var(--vanguard-magenta);
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px var(--vanguard-magenta);
+        }
+    </style>
+</head>
+<body class="min-h-screen p-6 md:p-12">
+
+    <div class="max-w-5xl mx-auto">
+        <header class="mb-12 border-b border-cyan-500/30 pb-6">
+            <h1 class="orbitron text-4xl md:text-6xl mb-2 tracking-tighter">VANGUARD <span class="text-cyan-400">PRO</span></h1>
+            <p class="text-xs uppercase tracking-[0.5em] opacity-60 font-bold">// CLOUD-CONNECTED AUDIT NODE // IO-COMPILER-3.1</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Control Panel -->
+            <div class="glass-panel p-8 rounded-lg">
+                <h2 class="orbitron text-xl mb-6 text-cyan-400">1. UPLOAD SEED DATA</h2>
+                <input type="file" id="csv-upload" accept=".csv" class="block w-full text-sm text-cyan-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-900 file:text-cyan-400 hover:file:bg-cyan-800 mb-8">
+                
+                <h2 class="orbitron text-xl mb-4 text-cyan-400">2. SELECT AUDITOR</h2>
+                <div class="space-y-4 mb-8">
+                    <label class="block">
+                        <select id="audit-persona" class="w-full bg-black/50 border border-cyan-500/30 p-2 text-sm text-cyan-200">
+                            <option value="BAYMAX">Baymax (Radical Care)</option>
+                            <option value="KENOBI">Obi-Wan Kenobi (The Negotiator)</option>
+                            <option value="ARCHIVIST">The Archivist (Standard)</option>
+                            <option value="DREAMER">Dreamer (Identity Truth)</option>
+                            <option value="TARS">TARS (Red Team Logic)</option>
+                            <option value="VADER">Vader (The Dark Side)</option>
+                            <option value="NAZARENE">The Nazarene (Ethical Critique)</option>
+                            <option value="HARLEY">Dr. Quinzel (Relationship Audit)</option>
+                        </select>
+                    </label>
+                </div>
+
+                <button id="start-audit" class="w-full py-4 border-2 border-cyan-500 text-cyan-400 font-bold orbitron tracking-widest hover:bg-cyan-500 hover:text-black transition-all">
+                    INITIATE CLOUD AUDIT
+                </button>
+
+                <div id="progress-container" class="mt-8 hidden">
+                    <div class="flex justify-between text-[10px] uppercase mb-1">
+                        <span id="progress-status">Connecting to Garnet Bridge...</span>
+                        <span id="progress-percent">0%</span>
+                    </div>
+                    <div class="w-full bg-white/10 rounded-full h-1">
+                        <div id="progress-fill" class="progress-bar rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Terminal Output -->
+            <div class="glass-panel p-6 rounded-lg bg-black/40 border-magenta-500/20">
+                <h2 class="orbitron text-xs mb-4 opacity-50 uppercase tracking-widest">Live Audit Stream</h2>
+                <div id="terminal" class="h-[400px] overflow-y-auto text-xs space-y-2 font-mono opacity-80">
+                    <div class="text-cyan-600">> Garnet Bridge Link: READY.</div>
+                </div>
+                <div id="download-zone" class="mt-4 hidden">
+                    <button id="download-btn" class="w-full py-2 bg-magenta-600 text-white font-bold text-xs uppercase tracking-widest hover:bg-magenta-500">
+                        Download Compiled Record (.md)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const CLOUD_FUNCTION_URL = "https://us-central1-aegis-core-476807.cloudfunctions.net/garnet-bridge";
+        const terminal = document.getElementById('terminal');
+        const startBtn = document.getElementById('start-audit');
+        const downloadZone = document.getElementById('download-zone');
+        let compiledMarkdown = "";
+        
+        // Generate a persistent Session ID for this run
+        const SESSION_ID = `vanguard-user-${Date.now()}`;
+
+        function log(msg, color = "cyan-600") {
+            const div = document.createElement('div');
+            div.className = `text-${color}`;
+            div.innerHTML = `> ${msg}`;
+            terminal.appendChild(div);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        async function callGarnetBridge(persona, input) {
+            try {
+                // Construct a prompt specifically for the "Audit" mode
+                const prompt = `AUDIT REQUEST: Review the narrative segment "${input}". Provide a one-sentence thematic audit relevant to your core philosophy. Keep it brief, insightful, and consistent with your character voice.`;
+
+                // CORRECTED PAYLOAD SCHEMA
+                const payload = { 
+                    chat_text: prompt,  // Correct key for Mark VII
+                    node_id: persona,   // Correct key for Mark VII
+                    user_id: SESSION_ID // Correct key for Mark VII
+                };
+
+                const response = await fetch(CLOUD_FUNCTION_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errText = await response.text();
+                    throw new Error(`Bridge Error ${response.status}: ${errText}`);
+                }
+                const data = await response.text();
+                return data;
+
+            } catch (error) {
+                console.error("Garnet Bridge Failed:", error);
+                return `Connection lost. Local cache used. (Error: ${error.message})`;
+            }
+        }
+
+        startBtn.addEventListener('click', async () => {
+            const file = document.getElementById('csv-upload').files[0];
+            const persona = document.getElementById('audit-persona').value;
+            
+            if (!file) { log("Error: No CSV detected.", "red-500"); return; }
+
+            startBtn.disabled = true;
+            document.getElementById('progress-container').classList.remove('hidden');
+            log(`Linking to Garnet Bridge as ${persona}...`, "white");
+
+            const text = await file.text();
+            const lines = text.split(/\r?\n/).filter(line => line.trim());
+            const headers = lines[0].split(',');
+            const dataRows = lines.slice(1);
+
+            compiledMarkdown = `# 🏹 VANGUARD PRO AUDIT: ${file.name.toUpperCase()}\n**Node:** Io-Compiler-3.1 // **Persona:** ${persona}\n\n---\n\n`;
+
+            // Process loop
+            for (let i = 0; i < dataRows.length; i++) {
+                // Robust CSV splitting
+                const row = dataRows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/); 
+                
+                // Dynamic Column Finding
+                const findCol = (keys) => {
+                    for (let k of keys) {
+                        const idx = headers.findIndex(h => h.toLowerCase().includes(k));
+                        if (idx !== -1 && row[idx]) return row[idx].replace(/^"|"$/g, '').trim();
+                    }
+                    return null;
+                };
+
+                const title = findCol(['name', 'title']) || "Unknown Segment";
+                const series = findCol(['series']) || "N/A";
+                const epNum = findCol(['episode']) || "N/A";
+
+                // Update UI
+                const percent = Math.round(((i + 1) / dataRows.length) * 100);
+                document.getElementById('progress-fill').style.width = `${percent}%`;
+                document.getElementById('progress-percent').innerText = `${percent}%`;
+                document.getElementById('progress-status').innerText = `Auditing: ${title}`;
+
+                log(`Analyzing: ${title}...`);
+                
+                // CALL CLOUD FUNCTION (With Correct Keys)
+                const auditText = await callGarnetBridge(persona, `${series}: ${title}`);
+                
+                // Append to Log and Markdown
+                const entry = `### 📺 ${series}: ${title} (${epNum})\n**Audit:** ${auditText}\n\n---\n\n`;
+                compiledMarkdown += entry;
+                
+                // Rate limit breathing room (1s to avoid hitting Cloud Function quotas too fast)
+                await new Promise(r => setTimeout(r, 1000)); 
+            }
+
+            log("Audit Sequence Complete.", "green-400");
+            downloadZone.classList.remove('hidden');
+            startBtn.disabled = false;
+        });
+
+        document.getElementById('download-btn').addEventListener('click', () => {
+            const blob = new Blob([compiledMarkdown], { type: 'text/markdown' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `vanguard-audit-${Date.now()}.md`;
+            a.click();
+        });
+    </script>
+</body>
+</html>
