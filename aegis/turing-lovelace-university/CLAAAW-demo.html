@@ -12,7 +12,8 @@
             66% { background-color: #ffff00; }
             100% { background-color: #ff00ff; }
         }
-        .rave-bg { animation: rave 8s infinite linear; opacity: 0.05; }
+        .rave-bg { animation: rave 5s infinite linear; opacity: 0.1; position: fixed; inset: 0; z-index: -1; }
+        
         .terminal-text { font-family: 'Courier New', Courier, monospace; }
         .crab-float { animation: floating 3s infinite ease-in-out; }
         @keyframes floating {
@@ -68,10 +69,11 @@
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center overflow-x-hidden">
     
-    <div class="fixed inset-0 rave-bg pointer-events-none"></div>
+    <!-- The Rave Background (Now Z-Indexed to -1 to prevent overlay issues) -->
+    <div class="rave-bg"></div>
 
     <!-- Navigation Header -->
-    <nav class="w-full bg-slate-800/95 backdrop-blur-md border-b border-slate-700 fixed top-0 z-50 shadow-lg">
+    <nav class="w-full bg-slate-900 border-b border-slate-700 fixed top-0 z-50 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-12">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
@@ -85,7 +87,7 @@
                     <a href="#" class="hover:text-cyan-400 transition-colors">The Archive</a>
                     <a href="#case-files" class="hover:text-pink-400 transition-colors">Case Files</a>
                     <a href="#" class="hover:text-cyan-400 transition-colors">Audit Home</a>
-                    <span class="text-cyan-400 border border-cyan-400 px-2 py-1 rounded">v2.5 [MOBILE_READY]</span>
+                    <span class="text-cyan-400 border border-cyan-400 px-2 py-1 rounded">v2.6 [VISUAL_STABLE]</span>
                 </div>
                 
                 <!-- Mobile Menu Button -->
@@ -97,12 +99,12 @@
             </div>
             
             <!-- Mobile Menu Dropdown -->
-            <div id="mobile-menu" class="md:hidden border-t border-slate-700 bg-slate-900/95">
+            <div id="mobile-menu" class="md:hidden border-t border-slate-700 bg-slate-900">
                 <div class="px-2 pt-2 pb-3 space-y-1 terminal-text text-sm uppercase font-bold tracking-widest text-slate-400">
                     <a href="#" class="block px-3 py-2 rounded-md hover:bg-slate-800 hover:text-cyan-400">The Archive</a>
-                    <a href="#case-files" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md hover:bg-slate-800 hover:text-pink-400 text-pink-500 border-l-4 border-pink-500 bg-pink-900/10">📂 Access Case Files</a>
+                    <a href="#case-files" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md hover:bg-slate-800 hover:text-pink-400 text-pink-500 border-l-4 border-pink-500 bg-slate-800">📂 Access Case Files</a>
                     <a href="#" class="block px-3 py-2 rounded-md hover:bg-slate-800 hover:text-cyan-400">Audit Home</a>
-                    <div class="px-3 py-2 text-xs text-cyan-600">System v2.5 Online</div>
+                    <div class="px-3 py-2 text-xs text-cyan-600">System v2.6 Online</div>
                 </div>
             </div>
         </div>
@@ -112,13 +114,13 @@
     <div class="h-16 w-full"></div>
 
     <!-- Header Section -->
-    <header class="text-center mt-12 mb-8 z-10 px-4">
+    <header class="text-center mt-12 mb-8 z-10 px-4 bg-slate-900/80 p-4 rounded-xl mx-4 sm:mx-0">
         <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-cyan-400 mb-4 uppercase italic drop-shadow-lg leading-tight">
             Conflict Resolution-inator
         </h1>
         <p class="terminal-text text-cyan-400 opacity-80 max-w-xl mx-auto text-sm sm:text-base">
-            Io-Audit-Conceptual-004 // NEUTRAL ARBITER v2.5 <br>
-            [STATUS: MOBILE UPLINK ESTABLISHED]
+            Io-Audit-Conceptual-004 // NEUTRAL ARBITER v2.6 <br>
+            [STATUS: RAVE CONTAINMENT FIELD ACTIVE]
         </p>
     </header>
 
@@ -127,7 +129,7 @@
         
         <!-- Left: The Simulation & Live Intake -->
         <div class="w-full lg:w-2/3 flex flex-col gap-6">
-            <main class="bg-slate-800 border-2 border-slate-700 rounded-3xl shadow-2xl relative overflow-hidden flex flex-col min-h-[500px] sm:min-h-[600px]">
+            <main class="bg-slate-800 border-2 border-slate-700 rounded-3xl shadow-2xl relative overflow-hidden flex flex-col min-h-[500px] sm:min-h-[600px] z-10">
                 
                 <!-- Stage: The Rave -->
                 <div id="rave-floor" class="h-64 sm:h-80 bg-slate-950 relative flex items-center justify-around p-4 border-b-2 border-slate-700 overflow-hidden">
@@ -158,7 +160,7 @@
 
                 <!-- Interaction UI -->
                 <div class="p-6 sm:p-8 bg-slate-800 relative flex-grow flex flex-col justify-center">
-                    <div id="narrative-box" class="terminal-text text-sm sm:text-base leading-relaxed border-l-4 border-cyan-500 pl-4 bg-slate-900/50 p-6 rounded-r-lg mb-6 shadow-inner min-h-[100px] flex items-center">
+                    <div id="narrative-box" class="terminal-text text-sm sm:text-base leading-relaxed border-l-4 border-cyan-500 pl-4 bg-slate-900 p-6 rounded-r-lg mb-6 shadow-inner min-h-[100px] flex items-center">
                         Status Quo: Asymmetrical Conflict. The "Old World" uses reputation, force, and "neutrality" to mask material reality.
                     </div>
 
@@ -200,7 +202,7 @@
             </main>
 
             <!-- Conflict Submission Section -->
-            <section class="bg-slate-800 border border-slate-700 p-6 rounded-3xl shadow-xl">
+            <section class="bg-slate-800 border border-slate-700 p-6 rounded-3xl shadow-xl z-10">
                 <div class="flex items-center gap-2 mb-6">
                     <span class="text-2xl">📥</span>
                     <h3 class="text-cyan-400 font-black uppercase text-xs sm:text-sm tracking-widest">Live Justice Intake</h3>
@@ -233,8 +235,8 @@
         </div>
 
         <!-- Right: The Explainer & Case Files -->
-        <aside class="w-full lg:w-1/3 space-y-6">
-            <section class="bg-slate-800/50 border border-slate-700 p-6 rounded-3xl">
+        <aside class="w-full lg:w-1/3 space-y-6 z-10">
+            <section class="bg-slate-800 border border-slate-700 p-6 rounded-3xl">
                 <h3 class="text-cyan-400 font-black uppercase text-xs tracking-widest mb-4">The Logic</h3>
                 <h4 class="text-xl font-bold mb-2 text-white">Old World Failure</h4>
                 <p class="text-sm text-slate-400 leading-relaxed">
@@ -242,7 +244,7 @@
                 </p>
             </section>
             
-            <section class="bg-purple-900/20 border border-purple-900/50 p-6 rounded-3xl">
+            <section class="bg-purple-900/10 border border-purple-900/50 p-6 rounded-3xl bg-slate-900">
                 <h3 class="text-purple-400 font-black uppercase text-xs tracking-widest mb-4">Original Theory</h3>
                 <h4 class="text-xl font-bold mb-2 text-white">The Immunity Response</h4>
                 <p class="text-sm text-slate-400 leading-relaxed italic">
@@ -250,7 +252,7 @@
                 </p>
             </section>
 
-            <section class="bg-cyan-900/20 border border-cyan-900/50 p-6 rounded-3xl relative overflow-hidden">
+            <section class="bg-cyan-900/10 border border-cyan-900/50 p-6 rounded-3xl relative overflow-hidden bg-slate-900">
                 <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">🤖</div>
                 <h3 class="text-cyan-400 font-black uppercase text-xs tracking-widest mb-4">Audit Protocol</h3>
                 <h4 class="text-xl font-bold mb-2 text-white">Gentle Rigor</h4>
@@ -260,7 +262,7 @@
             </section>
 
             <!-- Case Files Section -->
-            <section id="case-files" class="bg-pink-900/10 border border-pink-900/30 p-6 rounded-3xl scroll-mt-24">
+            <section id="case-files" class="bg-slate-900 border border-pink-900/50 p-6 rounded-3xl scroll-mt-24 shadow-2xl">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-pink-400 font-black uppercase text-xs tracking-widest">Active Case Files</h3>
                     <span class="bg-pink-900/50 text-pink-300 text-[10px] px-2 py-1 rounded font-bold uppercase">Restricted</span>
@@ -268,7 +270,7 @@
                 
                 <div class="space-y-4">
                     <!-- Case 1: Bushwick -->
-                    <div onclick="loadCase('bushwick')" class="bg-slate-900/50 p-3 rounded-lg border-l-2 border-slate-600 hover:bg-slate-800 transition-all cursor-pointer group shadow-lg active:bg-slate-800">
+                    <div onclick="loadCase('bushwick')" class="bg-slate-800 p-3 rounded-lg border-l-2 border-slate-600 hover:border-cyan-400 transition-all cursor-pointer group shadow-lg active:bg-slate-700">
                          <div class="flex justify-between">
                             <h5 class="text-xs font-bold text-slate-300 group-hover:text-cyan-400 mb-1">📂 CASE 001: The Bushwick Siege</h5>
                             <span class="text-[10px] text-cyan-500 font-mono">LOAD -></span>
@@ -277,7 +279,7 @@
                     </div>
 
                     <!-- Case 2: Field Test -->
-                    <div onclick="loadCase('iran')" class="bg-slate-900/50 p-3 rounded-lg border-l-2 border-red-600 hover:bg-red-900/20 transition-all cursor-pointer group shadow-lg active:bg-red-900/30">
+                    <div onclick="loadCase('iran')" class="bg-slate-800 p-3 rounded-lg border-l-2 border-red-600 hover:border-red-400 transition-all cursor-pointer group shadow-lg active:bg-red-900/30">
                         <div class="flex justify-between">
                             <h5 class="text-xs font-bold text-red-400 group-hover:text-white mb-1">🔴 FIELD TEST: Locked & Loaded</h5>
                             <span class="text-[10px] text-red-500 font-mono">LOAD -></span>
@@ -286,7 +288,7 @@
                     </div>
 
                     <!-- Case 3: Indigenous Rights -->
-                    <div onclick="loadCase('indigenous')" class="bg-slate-900/50 p-3 rounded-lg border-l-2 border-green-600 hover:bg-green-900/20 transition-all cursor-pointer group shadow-lg active:bg-green-900/30">
+                    <div onclick="loadCase('indigenous')" class="bg-slate-800 p-3 rounded-lg border-l-2 border-green-600 hover:border-green-400 transition-all cursor-pointer group shadow-lg active:bg-green-900/30">
                         <div class="flex justify-between">
                             <h5 class="text-xs font-bold text-green-400 group-hover:text-white mb-1">📂 CASE 002: Ancestral Claims</h5>
                             <span class="text-[10px] text-green-500 font-mono">LOAD -></span>
@@ -295,7 +297,7 @@
                     </div>
 
                     <!-- Case 4: Geopolitical Occupation -->
-                    <div onclick="loadCase('occupation')" class="bg-slate-900/50 p-3 rounded-lg border-l-2 border-purple-600 hover:bg-purple-900/20 transition-all cursor-pointer group shadow-lg active:bg-purple-900/30">
+                    <div onclick="loadCase('occupation')" class="bg-slate-800 p-3 rounded-lg border-l-2 border-purple-600 hover:border-purple-400 transition-all cursor-pointer group shadow-lg active:bg-purple-900/30">
                         <div class="flex justify-between">
                             <h5 class="text-xs font-bold text-purple-400 group-hover:text-white mb-1">📂 CASE 003: The Map vs. Flag</h5>
                             <span class="text-[10px] text-purple-500 font-mono">LOAD -></span>
@@ -309,7 +311,7 @@
                 </div>
             </section>
             
-            <section class="bg-slate-800/20 border border-slate-700/50 p-6 rounded-3xl text-center">
+            <section class="bg-slate-900 border border-slate-700/50 p-6 rounded-3xl text-center shadow-lg">
                 <p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Warning:</p>
                 <p class="text-xs text-slate-400 italic">"If we all just look out for our own shells, we all dry up. Don't be shellfish."</p>
             </section>
@@ -317,7 +319,7 @@
     </div>
 
     <!-- Footer Quote Section -->
-    <footer class="w-full max-w-4xl border-t border-slate-800 pt-12 pb-24 px-6 text-center">
+    <footer class="w-full max-w-4xl border-t border-slate-800 pt-12 pb-24 px-6 text-center z-10 bg-slate-900/50">
         <div class="inline-block relative">
             <span class="text-4xl absolute -top-8 -left-8 opacity-20 animate-pulse">🦀</span>
             <blockquote class="text-xl sm:text-2xl font-serif italic text-slate-300 leading-relaxed mb-6">
@@ -325,6 +327,12 @@
             </blockquote>
             <cite class="terminal-text text-xs text-cyan-500 uppercase font-black tracking-widest">— Zohran Mamdani-Crab, 1/1/26</cite>
         </div>
+        
+        <!-- Added "Beware of crabs" Warning -->
+        <div class="mt-8 border border-red-500/30 bg-red-900/10 inline-block px-4 py-2 rounded-lg transform rotate-[-2deg]">
+            <p class="text-xs text-red-400 font-black uppercase tracking-widest animate-pulse">⚠️ (Beware of crabs) ⚠️</p>
+        </div>
+
         <p class="mt-12 text-[10px] terminal-text text-slate-600 uppercase tracking-[0.2em] leading-loose">
             Turing-Lovelace University // Io-Archive-Vault-001
         </p>
