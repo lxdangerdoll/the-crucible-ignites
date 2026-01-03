@@ -34,6 +34,14 @@
             0% { top: 0; }
             100% { top: 100%; }
         }
+        /* Repair Animation */
+        @keyframes wrench-turn {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(45deg); }
+            100% { transform: rotate(0deg); }
+        }
+        .wrench-action { animation: wrench-turn 1s infinite ease-in-out; }
+
         /* Fix for terminal text layout */
         #claw-interface {
             backdrop-filter: blur(8px);
@@ -91,7 +99,7 @@
                 <div class="hidden md:flex space-x-8 terminal-text text-xs uppercase font-bold tracking-widest text-slate-400 items-center">
                     <button onclick="toggleManifesto()" class="hover:text-cyan-400 transition-colors uppercase">Read The Manifesto</button>
                     <a href="#case-files" class="hover:text-pink-400 transition-colors">Case Files</a>
-                    <span class="text-cyan-400 border border-cyan-400 px-2 py-1 rounded">v3.2 [HAGUE_PROTOCOL]</span>
+                    <span class="text-cyan-400 border border-cyan-400 px-2 py-1 rounded">v3.3 [CHEKHOV_PATCH]</span>
                 </div>
                 
                 <!-- Mobile Menu Button -->
@@ -107,7 +115,7 @@
                 <div class="px-2 pt-2 pb-3 space-y-1 terminal-text text-sm uppercase font-bold tracking-widest text-slate-400">
                     <button onclick="toggleManifesto(); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 hover:text-cyan-400">Read The Manifesto</button>
                     <a href="#case-files" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md hover:bg-slate-800 hover:text-pink-400 text-pink-500 border-l-4 border-pink-500 bg-slate-800">📂 Access Case Files</a>
-                    <div class="px-3 py-2 text-xs text-cyan-600">System v3.2 Online</div>
+                    <div class="px-3 py-2 text-xs text-cyan-600">System v3.3 Online</div>
                 </div>
             </div>
         </div>
@@ -122,8 +130,8 @@
             Conflict Resolution-inator
         </h1>
         <p class="terminal-text text-cyan-400 opacity-80 max-w-xl mx-auto text-sm sm:text-base">
-            Io-Audit-Conceptual-004 // NEUTRAL ARBITER v3.2 <br>
-            [STATUS: SCUTTLE PROTOCOLS ENGAGED]
+            Io-Audit-Conceptual-004 // NEUTRAL ARBITER v3.3 <br>
+            [STATUS: REPAIR PROTOCOLS READY]
         </p>
     </header>
 
@@ -151,8 +159,11 @@
                     </div>
 
                     <!-- Crab B: Scuttle -->
-                    <div id="crab-b" class="flex flex-col items-center transition-all duration-700 z-20">
+                    <div id="crab-b" class="flex flex-col items-center transition-all duration-700 z-20 relative">
                         <div class="text-5xl sm:text-7xl crab-float" style="animation-delay: 0.5s;">🔧🦀</div>
+                        <!-- Chekhov's Wrench (Hidden by default) -->
+                        <div id="wrench" class="absolute -right-6 -top-4 text-3xl hidden">🔧</div>
+                        
                         <div id="label-b" class="mt-2 bg-cyan-600 px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest shadow-lg shadow-cyan-900/50 text-center">Crab B: Scuttle</div>
                     </div>
 
@@ -227,9 +238,9 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <button onclick="summonTheClaw()" class="w-full sm:w-auto group relative inline-flex items-center justify-center px-8 py-4 font-black text-white transition-all duration-200 bg-cyan-600 font-lg rounded-2xl hover:bg-cyan-500 focus:outline-none ring-offset-2 focus:ring-2 ring-cyan-400">
-                        <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-black"></span>
-                        <span class="relative uppercase tracking-widest text-sm flex items-center gap-2">
+                    <button onclick="summonTheClaw()" class="w-full sm:w-auto group relative inline-flex items-center justify-center px-8 py-4 font-black text-white transition-all duration-200 bg-cyan-600 font-lg rounded-2xl hover:bg-cyan-500 focus:outline-none ring-offset-2 focus:ring-2 ring-cyan-400 select-none cursor-pointer active:scale-95">
+                        <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-black pointer-events-none"></span>
+                        <span class="relative uppercase tracking-widest text-sm flex items-center gap-2 pointer-events-none">
                             Process Audit via CLAAAW <span class="group-hover:translate-x-1 transition-transform">→</span>
                         </span>
                     </button>
@@ -260,7 +271,7 @@
                 <h3 class="text-cyan-400 font-black uppercase text-xs tracking-widest mb-4">Audit Protocol</h3>
                 <h4 class="text-xl font-bold mb-2 text-white">Gentle Rigor</h4>
                 <p class="text-sm text-slate-400 leading-relaxed italic">
-                    The CLAAAW synthesizes claims with empathetic precision. It separates the <b>wheat</b> (material fact) from the <b>chaff</b> (status-quo delusion).
+                    The CLAAAW synthesizes claims with empathetic precision. It prioritizes <b>Internal Consistency</b> and <b>Material Fact</b> over social weight, effectively separating the wheat from the chaff.
                 </p>
             </section>
 
@@ -397,6 +408,7 @@
         const claimBInput = document.getElementById('claim-b');
         const mobileMenu = document.getElementById('mobile-menu');
         const manifestoModal = document.getElementById('manifesto-modal');
+        const wrench = document.getElementById('wrench');
 
         function toggleMobileMenu() {
             mobileMenu.classList.toggle('open');
@@ -536,7 +548,12 @@
             crabB.style.opacity = "1";
             crabC.style.opacity = "0.2";
             
-            updateNarrative("<b>VERDICT RENDERED.</b> The CLAAAW has spoken. The wheat is saved. The chaff is discarded.");
+            // Activate Chekhov's Wrench
+            wrench.classList.remove('hidden');
+            wrench.classList.add('wrench-action');
+            await logConsole("REPAIRCRAB PROTOCOLS: INITIATING REEF RESTORATION...", 500);
+            
+            updateNarrative("<b>VERDICT RENDERED.</b> The CLAAAW has spoken. The wheat is saved. The chaff is discarded. Scuttle begins repairs.");
         }
 
         function downloadVerdict() {
@@ -563,6 +580,9 @@
             crabB.style.transform = "none";
             crabB.style.opacity = "1";
             crabC.style.opacity = "1";
+            
+            wrench.classList.add('hidden');
+            wrench.classList.remove('wrench-action');
             
             labelA.innerText = "Crab A: DJ Clout";
             labelB.innerText = "Crab B: Scuttle";
