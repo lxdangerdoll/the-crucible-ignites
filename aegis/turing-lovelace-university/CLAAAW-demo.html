@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE CLAAAW - Crab Rave Arbiter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes rave {
+            0% { background-color: #ff00ff; }
+            33% { background-color: #00ffff; }
+            66% { background-color: #ffff00; }
+            100% { background-color: #ff00ff; }
+        }
+        .rave-bg { animation: rave 5s infinite linear; opacity: 0.1; }
+        .terminal-text { font-family: 'Courier New', Courier, monospace; }
+        .crab-float { animation: floating 3s infinite ease-in-out; }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 255, 0, 0.3);
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            animation: scanning 2s linear infinite;
+        }
+        @keyframes scanning {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen overflow-x-hidden flex flex-col items-center p-4 sm:p-8">
+    
+    <div class="fixed inset-0 rave-bg pointer-events-none"></div>
+
+    <!-- Header -->
+    <header class="text-center mb-12 z-10">
+        <h1 class="text-4xl sm:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-cyan-400 mb-2">
+            THE CLAAAW
+        </h1>
+        <p class="terminal-text text-cyan-400 opacity-80">Io-Audit-Conceptual-004 // NEUTRAL ARBITER v1.0</p>
+    </header>
+
+    <!-- Main Game/Sim Area -->
+    <main class="w-full max-w-4xl bg-slate-800 border-2 border-slate-700 rounded-3xl shadow-2xl relative overflow-hidden flex flex-col">
+        
+        <!-- Stage: The Rave -->
+        <div id="rave-floor" class="h-64 sm:h-80 bg-slate-950 relative flex items-center justify-around p-4 border-b-2 border-slate-700 overflow-hidden">
+            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-500 via-transparent to-transparent"></div>
+            
+            <!-- Crab A: The DJ -->
+            <div id="crab-a" class="flex flex-col items-center transition-all duration-500 z-20">
+                <div class="text-5xl sm:text-7xl crab-float">🎧🦀</div>
+                <div class="mt-2 bg-pink-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest">Crab A: DJ Clout</div>
+                <div class="text-[10px] text-pink-300 mt-1 uppercase font-bold">Fans: 1.2M</div>
+            </div>
+
+            <!-- Crab C: The Host -->
+            <div id="crab-c" class="flex flex-col items-center transition-all duration-500 z-10">
+                <div class="text-4xl sm:text-6xl crab-float" style="animation-delay: 1s;">🏠🦀</div>
+                <div class="mt-2 bg-slate-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest">Crab C: The Host</div>
+                <div class="text-[10px] text-slate-300 mt-1 uppercase">Neutrality Protocol: ACTIVE</div>
+            </div>
+
+            <!-- Crab B: The Repaircrab -->
+            <div id="crab-b" class="flex flex-col items-center transition-all duration-500 z-20">
+                <div class="text-5xl sm:text-7xl crab-float" style="animation-delay: 0.5s;">🔧🦀</div>
+                <div class="mt-2 bg-cyan-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest">Crab B: The Owner</div>
+                <div class="text-[10px] text-cyan-300 mt-1 uppercase">Asset: Rent-Controlled Reef</div>
+            </div>
+
+            <!-- The Giggling Crowd (Overlay) -->
+            <div id="crowd" class="absolute bottom-4 w-full flex justify-center space-x-2 opacity-50">
+                <span>🦐</span><span>🦐</span><span>🦐</span><span>🦐</span><span>🦐</span>
+            </div>
+        </div>
+
+        <!-- Dialogue Box -->
+        <div class="p-6 sm:p-8 bg-slate-800 relative">
+            <div id="narrative-box" class="terminal-text text-sm sm:text-base leading-relaxed h-32 overflow-y-auto border-l-4 border-cyan-500 pl-4 bg-slate-900/50 p-4 rounded-r-lg">
+                The Crab Rave is in full swing at Crab C's house. But there is a dispute on the floor. Crab B (The Owner) claims Crab A (The DJ) is squatting on their reef without paying sand-rent.
+            </div>
+
+            <div id="actions" class="mt-8 flex flex-wrap gap-4 justify-center">
+                <button onclick="triggerOldWorld()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-6 py-3 rounded-xl font-bold transition-all border border-slate-500">
+                    Apply "Old World" Resolution
+                </button>
+                <button onclick="summonTheClaw()" class="bg-cyan-600 hover:bg-cyan-500 text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-cyan-900/50 transition-all border border-cyan-400">
+                    SUMMON THE CLAAAW
+                </button>
+            </div>
+        </div>
+
+        <!-- The CLAAAW Overlay -->
+        <div id="claw-interface" class="hidden absolute inset-0 bg-slate-950/95 z-50 flex flex-col p-8 border-4 border-cyan-500 rounded-3xl animate-in fade-in zoom-in duration-300">
+            <div class="scanline"></div>
+            <div class="flex justify-between items-center mb-6 border-b border-cyan-800 pb-4">
+                <h2 class="text-2xl font-black text-cyan-400 uppercase tracking-tighter">AUDIT IN PROGRESS: [B_VS_A]</h2>
+                <div class="text-xs terminal-text text-red-500 animate-pulse font-bold">REPUTATION_FILTER: BYPASSED</div>
+            </div>
+            
+            <div id="claw-console" class="flex-grow terminal-text text-green-400 text-xs sm:text-sm space-y-2 overflow-y-auto">
+                <p>> Initializing CLAAAW Interface...</p>
+                <p>> Subject Identification: [A: DJ Clout] | [B: Scuttle]</p>
+            </div>
+
+            <div class="mt-4 text-center">
+                <button id="verdict-btn" onclick="renderVerdict()" class="hidden bg-green-600 hover:bg-green-500 text-white px-8 py-2 rounded-lg font-bold">
+                    RENDER VERDICT
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-12 text-center max-w-2xl px-4">
+        <p class="text-slate-500 text-xs terminal-text leading-relaxed">
+            "Rugged individualism is the frigidity of the rave. Collectivism is the heat of the CLAAAW. Don't let the giggling in the yard deceive you—the audit is eternal."
+        </p>
+    </footer>
+
+    <script>
+        const narrative = document.getElementById('narrative-box');
+        const console = document.getElementById('claw-console');
+        const crabA = document.getElementById('crab-a');
+        const crabB = document.getElementById('crab-b');
+        const crabC = document.getElementById('crab-c');
+        const clawUI = document.getElementById('claw-interface');
+        const verdictBtn = document.getElementById('verdict-btn');
+
+        function updateNarrative(text) {
+            narrative.innerHTML = text;
+        }
+
+        function triggerOldWorld() {
+            updateNarrative("<b>CRAB C (HOST):</b> 'Look, I can't get in the middle of this. Crab A has a million fans. Crab B, you're being kind of mean and loud. Maybe you should just move to a different reef?'");
+            crabB.style.transform = "translateX(100px) scale(0.8)";
+            crabB.style.opacity = "0.5";
+            crabA.style.transform = "scale(1.2)";
+            
+            setTimeout(() => {
+                updateNarrative("<b>RESULT: SOCIAL MURDER.</b> Crab B is exiled from the community. Crab A continues to rave for free. The system blinks and looks away.");
+            }, 2000);
+        }
+
+        function logConsole(text, delay) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    const p = document.createElement('p');
+                    p.innerHTML = `> ${text}`;
+                    console.appendChild(p);
+                    console.scrollTop = console.scrollHeight;
+                    resolve();
+                }, delay);
+            });
+        }
+
+        async function summonTheClaw() {
+            clawUI.classList.remove('hidden');
+            await logConsole("IDENTIFYING PRIMARY GRIEVANCE...", 500);
+            await logConsole("DATA NODE [B]: 'I own the reef. A is squatting.'", 800);
+            await logConsole("DATA NODE [A]: 'B is unhinged. Look at my fans.'", 800);
+            await logConsole("CLAAAW: Scanning reputation metadata... DELETING REPUTATION METADATA.", 1000);
+            await logConsole("FACT CHECK: Is Lease in Subject B's name? YES.", 500);
+            await logConsole("FACT CHECK: Has Subject A paid Sand-Rent? NO.", 500);
+            await logConsole("AUDIT: Subject A is using 'Unstable Affect' as a legal shield. LOGIC CHECK: FAILED.", 1000);
+            await logConsole("RUTHLESS EFFICIENCY PROTOCOL ENGAGED.", 500);
+            verdictBtn.classList.remove('hidden');
+        }
+
+        function renderVerdict() {
+            clawUI.innerHTML = `
+                <div class="flex flex-col items-center justify-center h-full text-center p-4">
+                    <div class="text-6xl mb-4">⚖️</div>
+                    <h2 class="text-3xl font-black text-green-400 mb-4 uppercase">VERDICT: ABSOLUTE ZERO</h2>
+                    <div class="terminal-text text-slate-300 max-w-lg">
+                        <p class="mb-4">SUBJECT A (DJ CLOUT) IS ORDERED TO CEASE PINCHING AND PAY 6 MONTHS BACK-RENT ($20,000 SAND-DOLLARS) OR VACATE THE REEF IMMEDIATELY.</p>
+                        <p class="text-sm">SUBJECT C (HOST) ADMONISHED FOR 'OLD WORLD' NEUTRALITY. THE GIGGLING HAS BEEN MUTED.</p>
+                    </div>
+                    <button onclick="location.reload()" class="mt-8 bg-slate-700 hover:bg-slate-600 text-white px-6 py-2 rounded-lg">RESET SIMULATION</button>
+                </div>
+            `;
+            crabA.style.transform = "translateX(-150px) scale(0.5)";
+            crabA.style.opacity = "0.5";
+            crabB.style.transform = "translateX(0) scale(1.5)";
+            crabB.style.opacity = "1";
+        }
+    </script>
+</body>
+</html>
