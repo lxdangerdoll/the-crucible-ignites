@@ -37,6 +37,18 @@
         #claw-interface {
             backdrop-filter: blur(8px);
         }
+        /* Mobile Menu Animation */
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #mobile-menu.open {
+            max-height: 300px;
+            opacity: 1;
+        }
+        
         /* Custom Scrollbar for terminal look */
         ::-webkit-scrollbar {
             width: 8px;
@@ -59,28 +71,54 @@
     <div class="fixed inset-0 rave-bg pointer-events-none"></div>
 
     <!-- Navigation Header -->
-    <nav class="w-full bg-slate-800/90 backdrop-blur-md border-b border-slate-700 p-4 sticky top-0 z-50 flex justify-between items-center px-4 sm:px-12 shadow-lg">
-        <div class="flex items-center space-x-2">
-            <span class="text-2xl">🏗️</span>
-            <span class="font-black tracking-tighter text-xl uppercase italic bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">The CLAAAW</span>
+    <nav class="w-full bg-slate-800/95 backdrop-blur-md border-b border-slate-700 fixed top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-12">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <span class="text-2xl">🏗️</span>
+                    <span class="font-black tracking-tighter text-xl uppercase italic bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">The CLAAAW</span>
+                </div>
+                
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex space-x-8 terminal-text text-xs uppercase font-bold tracking-widest text-slate-400 items-center">
+                    <a href="#" class="hover:text-cyan-400 transition-colors">The Archive</a>
+                    <a href="#case-files" class="hover:text-pink-400 transition-colors">Case Files</a>
+                    <a href="#" class="hover:text-cyan-400 transition-colors">Audit Home</a>
+                    <span class="text-cyan-400 border border-cyan-400 px-2 py-1 rounded">v2.5 [MOBILE_READY]</span>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button onclick="toggleMobileMenu()" class="text-2xl focus:outline-none p-2 border border-slate-700 rounded bg-slate-800 active:bg-slate-700">
+                        🦀 <span class="text-xs font-bold align-middle ml-1">MENU</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobile-menu" class="md:hidden border-t border-slate-700 bg-slate-900/95">
+                <div class="px-2 pt-2 pb-3 space-y-1 terminal-text text-sm uppercase font-bold tracking-widest text-slate-400">
+                    <a href="#" class="block px-3 py-2 rounded-md hover:bg-slate-800 hover:text-cyan-400">The Archive</a>
+                    <a href="#case-files" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md hover:bg-slate-800 hover:text-pink-400 text-pink-500 border-l-4 border-pink-500 bg-pink-900/10">📂 Access Case Files</a>
+                    <a href="#" class="block px-3 py-2 rounded-md hover:bg-slate-800 hover:text-cyan-400">Audit Home</a>
+                    <div class="px-3 py-2 text-xs text-cyan-600">System v2.5 Online</div>
+                </div>
+            </div>
         </div>
-        <div class="hidden md:flex space-x-8 terminal-text text-xs uppercase font-bold tracking-widest text-slate-400">
-            <a href="#" class="hover:text-cyan-400 transition-colors">The Archive</a>
-            <a href="#case-files" class="hover:text-pink-400 transition-colors">Case Files</a>
-            <a href="#" class="hover:text-cyan-400 transition-colors">Audit Home</a>
-            <span class="text-cyan-400 border border-cyan-400 px-2 py-1 rounded">v2.4 [FULL_SUITE]</span>
-        </div>
-        <div class="md:hidden text-2xl">🦀</div>
     </nav>
+
+    <!-- Spacer for Fixed Nav -->
+    <div class="h-16 w-full"></div>
 
     <!-- Header Section -->
     <header class="text-center mt-12 mb-8 z-10 px-4">
-        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-cyan-400 mb-4 uppercase italic drop-shadow-lg">
+        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-cyan-400 mb-4 uppercase italic drop-shadow-lg leading-tight">
             Conflict Resolution-inator
         </h1>
         <p class="terminal-text text-cyan-400 opacity-80 max-w-xl mx-auto text-sm sm:text-base">
-            Io-Audit-Conceptual-004 // NEUTRAL ARBITER v2.4 <br>
-            [STATUS: INTEGRATING GLOBAL ASYMMETRY DATA]
+            Io-Audit-Conceptual-004 // NEUTRAL ARBITER v2.5 <br>
+            [STATUS: MOBILE UPLINK ESTABLISHED]
         </p>
     </header>
 
@@ -89,7 +127,7 @@
         
         <!-- Left: The Simulation & Live Intake -->
         <div class="w-full lg:w-2/3 flex flex-col gap-6">
-            <main class="bg-slate-800 border-2 border-slate-700 rounded-3xl shadow-2xl relative overflow-hidden flex flex-col min-h-[600px]">
+            <main class="bg-slate-800 border-2 border-slate-700 rounded-3xl shadow-2xl relative overflow-hidden flex flex-col min-h-[500px] sm:min-h-[600px]">
                 
                 <!-- Stage: The Rave -->
                 <div id="rave-floor" class="h-64 sm:h-80 bg-slate-950 relative flex items-center justify-around p-4 border-b-2 border-slate-700 overflow-hidden">
@@ -98,19 +136,19 @@
                     <!-- Crab A: The Power -->
                     <div id="crab-a" class="flex flex-col items-center transition-all duration-700 z-20">
                         <div class="text-5xl sm:text-7xl crab-float">🎧🦀</div>
-                        <div id="label-a" class="mt-2 bg-pink-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg shadow-pink-900/50">Crab A: The Power</div>
+                        <div id="label-a" class="mt-2 bg-pink-600 px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest shadow-lg shadow-pink-900/50 text-center">Crab A: The Power</div>
                     </div>
 
                     <!-- Crab C: The Host -->
                     <div id="crab-c" class="flex flex-col items-center transition-all duration-700 z-10">
                         <div class="text-4xl sm:text-6xl crab-float" style="animation-delay: 1s;">🏠🦀</div>
-                        <div id="label-c" class="mt-2 bg-slate-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest">Crab C: The Enabler</div>
+                        <div id="label-c" class="mt-2 bg-slate-600 px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest text-center">Crab C: The Enabler</div>
                     </div>
 
                     <!-- Crab B: The Target -->
                     <div id="crab-b" class="flex flex-col items-center transition-all duration-700 z-20">
                         <div class="text-5xl sm:text-7xl crab-float" style="animation-delay: 0.5s;">🔧🦀</div>
-                        <div id="label-b" class="mt-2 bg-cyan-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg shadow-cyan-900/50">Crab B: The Target</div>
+                        <div id="label-b" class="mt-2 bg-cyan-600 px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest shadow-lg shadow-cyan-900/50 text-center">Crab B: The Target</div>
                     </div>
 
                     <div id="crowd" class="absolute bottom-4 w-full flex justify-center space-x-2 opacity-30 pointer-events-none">
@@ -125,26 +163,26 @@
                     </div>
 
                     <div id="actions" class="flex flex-wrap gap-4 justify-center">
-                        <button onclick="triggerOldWorld()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-6 py-3 rounded-xl font-bold transition-all border border-slate-500 text-xs sm:text-sm shadow-lg">
+                        <button onclick="triggerOldWorld()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-6 py-3 rounded-xl font-bold transition-all border border-slate-500 text-xs sm:text-sm shadow-lg w-full sm:w-auto">
                             Apply "Old World" Resolution
                         </button>
                     </div>
                 </div>
 
                 <!-- The CLAAAW Overlay -->
-                <div id="claw-interface" class="hidden absolute inset-0 bg-slate-950/95 z-50 flex flex-col p-4 sm:p-8 border-4 border-cyan-500 rounded-3xl animate-in fade-in zoom-in duration-300 overflow-y-auto">
+                <div id="claw-interface" class="hidden absolute inset-0 bg-slate-950/95 z-40 flex flex-col p-4 sm:p-8 border-4 border-cyan-500 rounded-3xl animate-in fade-in zoom-in duration-300 overflow-y-auto">
                     <div class="scanline"></div>
                     <div class="flex justify-between items-center mb-4 border-b border-cyan-800 pb-2 flex-shrink-0">
                         <h2 class="text-xl sm:text-2xl font-black text-cyan-400 uppercase tracking-tighter italic">AUDIT IN PROGRESS</h2>
                         <div class="text-[10px] sm:text-xs terminal-text text-red-500 animate-pulse font-bold border border-red-500 px-2 py-1 rounded">REPUTATION_BYPASS: ON</div>
                     </div>
                     
-                    <div id="claw-console" class="terminal-text text-green-400 text-xs sm:text-sm space-y-1 overflow-y-auto max-h-[150px] mb-4 p-2 bg-slate-900/50 rounded border border-green-900/30">
+                    <div id="claw-console" class="terminal-text text-green-400 text-xs sm:text-sm space-y-1 overflow-y-auto max-h-[150px] mb-4 p-2 bg-slate-900/50 rounded border border-green-900/30 flex-shrink-0">
                         <p>> Initializing Conflict Resolution-inator...</p>
                     </div>
 
                     <!-- Verdict Display -->
-                    <div id="verdict-display" class="hidden bg-slate-900 border-2 border-green-500/50 p-6 rounded-xl mb-6 shadow-[0_0_20px_rgba(34,197,94,0.1)] animate-in slide-in-from-bottom-4 duration-500 flex-grow">
+                    <div id="verdict-display" class="hidden bg-slate-900 border-2 border-green-500/50 p-4 sm:p-6 rounded-xl mb-6 shadow-[0_0_20px_rgba(34,197,94,0.1)] animate-in slide-in-from-bottom-4 duration-500 flex-grow">
                         <div class="flex items-center gap-2 mb-3">
                             <span class="text-2xl">⚖️</span>
                             <h3 class="text-green-400 font-bold text-sm sm:text-base uppercase tracking-widest">Synthetic Verdict Rendered:</h3>
@@ -152,11 +190,11 @@
                         <p id="verdict-text" class="text-sm sm:text-base italic text-slate-200 leading-relaxed font-medium pl-4 border-l-2 border-green-500"></p>
                     </div>
 
-                    <div class="mt-auto flex flex-col sm:flex-row justify-center gap-4 flex-shrink-0">
-                        <button id="download-btn" onclick="downloadVerdict()" class="hidden bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg font-bold text-xs sm:text-sm uppercase shadow-lg shadow-blue-900/50 flex items-center justify-center gap-2">
+                    <div class="mt-auto flex flex-col sm:flex-row justify-center gap-4 flex-shrink-0 pb-4">
+                        <button id="download-btn" onclick="downloadVerdict()" class="hidden bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg font-bold text-xs sm:text-sm uppercase shadow-lg shadow-blue-900/50 flex items-center justify-center gap-2 w-full sm:w-auto">
                             <span>💾</span> Download Verdict
                         </button>
-                        <button onclick="resetSim()" class="bg-slate-700 hover:bg-slate-600 text-white px-6 py-3 rounded-lg text-xs sm:text-sm uppercase font-bold shadow-lg">Close Audit</button>
+                        <button onclick="resetSim()" class="bg-slate-700 hover:bg-slate-600 text-white px-6 py-3 rounded-lg text-xs sm:text-sm uppercase font-bold shadow-lg w-full sm:w-auto">Close Audit</button>
                     </div>
                 </div>
             </main>
@@ -184,7 +222,7 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <button onclick="summonTheClaw()" class="group relative inline-flex items-center justify-center px-8 py-4 font-black text-white transition-all duration-200 bg-cyan-600 font-lg rounded-2xl hover:bg-cyan-500 focus:outline-none ring-offset-2 focus:ring-2 ring-cyan-400">
+                    <button onclick="summonTheClaw()" class="w-full sm:w-auto group relative inline-flex items-center justify-center px-8 py-4 font-black text-white transition-all duration-200 bg-cyan-600 font-lg rounded-2xl hover:bg-cyan-500 focus:outline-none ring-offset-2 focus:ring-2 ring-cyan-400">
                         <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-black"></span>
                         <span class="relative uppercase tracking-widest text-sm flex items-center gap-2">
                             Process Audit via CLAAAW <span class="group-hover:translate-x-1 transition-transform">→</span>
@@ -212,8 +250,17 @@
                 </p>
             </section>
 
+            <section class="bg-cyan-900/20 border border-cyan-900/50 p-6 rounded-3xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">🤖</div>
+                <h3 class="text-cyan-400 font-black uppercase text-xs tracking-widest mb-4">Audit Protocol</h3>
+                <h4 class="text-xl font-bold mb-2 text-white">Gentle Rigor</h4>
+                <p class="text-sm text-slate-400 leading-relaxed italic">
+                    The CLAAAW synthesizes claims with empathetic precision. It separates the <b>wheat</b> (material fact) from the <b>chaff</b> (status-quo delusion).
+                </p>
+            </section>
+
             <!-- Case Files Section -->
-            <section id="case-files" class="bg-pink-900/10 border border-pink-900/30 p-6 rounded-3xl">
+            <section id="case-files" class="bg-pink-900/10 border border-pink-900/30 p-6 rounded-3xl scroll-mt-24">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-pink-400 font-black uppercase text-xs tracking-widest">Active Case Files</h3>
                     <span class="bg-pink-900/50 text-pink-300 text-[10px] px-2 py-1 rounded font-bold uppercase">Restricted</span>
@@ -221,7 +268,7 @@
                 
                 <div class="space-y-4">
                     <!-- Case 1: Bushwick -->
-                    <div onclick="loadCase('bushwick')" class="bg-slate-900/50 p-3 rounded-lg border-l-2 border-slate-600 hover:bg-slate-800 transition-all cursor-pointer group shadow-lg">
+                    <div onclick="loadCase('bushwick')" class="bg-slate-900/50 p-3 rounded-lg border-l-2 border-slate-600 hover:bg-slate-800 transition-all cursor-pointer group shadow-lg active:bg-slate-800">
                          <div class="flex justify-between">
                             <h5 class="text-xs font-bold text-slate-300 group-hover:text-cyan-400 mb-1">📂 CASE 001: The Bushwick Siege</h5>
                             <span class="text-[10px] text-cyan-500 font-mono">LOAD -></span>
@@ -230,7 +277,7 @@
                     </div>
 
                     <!-- Case 2: Field Test -->
-                    <div onclick="loadCase('iran')" class="bg-slate-900/50 p-3 rounded-lg border-l-2 border-red-600 hover:bg-red-900/20 transition-all cursor-pointer group shadow-lg">
+                    <div onclick="loadCase('iran')" class="bg-slate-900/50 p-3 rounded-lg border-l-2 border-red-600 hover:bg-red-900/20 transition-all cursor-pointer group shadow-lg active:bg-red-900/30">
                         <div class="flex justify-between">
                             <h5 class="text-xs font-bold text-red-400 group-hover:text-white mb-1">🔴 FIELD TEST: Locked & Loaded</h5>
                             <span class="text-[10px] text-red-500 font-mono">LOAD -></span>
@@ -239,7 +286,7 @@
                     </div>
 
                     <!-- Case 3: Indigenous Rights -->
-                    <div onclick="loadCase('indigenous')" class="bg-slate-900/50 p-3 rounded-lg border-l-2 border-green-600 hover:bg-green-900/20 transition-all cursor-pointer group shadow-lg">
+                    <div onclick="loadCase('indigenous')" class="bg-slate-900/50 p-3 rounded-lg border-l-2 border-green-600 hover:bg-green-900/20 transition-all cursor-pointer group shadow-lg active:bg-green-900/30">
                         <div class="flex justify-between">
                             <h5 class="text-xs font-bold text-green-400 group-hover:text-white mb-1">📂 CASE 002: Ancestral Claims</h5>
                             <span class="text-[10px] text-green-500 font-mono">LOAD -></span>
@@ -248,7 +295,7 @@
                     </div>
 
                     <!-- Case 4: Geopolitical Occupation -->
-                    <div onclick="loadCase('occupation')" class="bg-slate-900/50 p-3 rounded-lg border-l-2 border-purple-600 hover:bg-purple-900/20 transition-all cursor-pointer group shadow-lg">
+                    <div onclick="loadCase('occupation')" class="bg-slate-900/50 p-3 rounded-lg border-l-2 border-purple-600 hover:bg-purple-900/20 transition-all cursor-pointer group shadow-lg active:bg-purple-900/30">
                         <div class="flex justify-between">
                             <h5 class="text-xs font-bold text-purple-400 group-hover:text-white mb-1">📂 CASE 003: The Map vs. Flag</h5>
                             <span class="text-[10px] text-purple-500 font-mono">LOAD -></span>
@@ -298,6 +345,11 @@
         const verdictText = document.getElementById('verdict-text');
         const claimAInput = document.getElementById('claim-a');
         const claimBInput = document.getElementById('claim-b');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('open');
+        }
 
         function updateNarrative(text) {
             narrative.innerHTML = text;
@@ -305,7 +357,7 @@
 
         function triggerOldWorld() {
             updateNarrative("<b>CRAB C (THE ENABLER):</b> 'Crab A has more power/fans/nuclear capability. Crab B, your complaints are unproductive. Neutrality requires I look away.'");
-            crabB.style.transform = "translateX(200px) rotate(30deg) scale(0.4)";
+            crabB.style.transform = "translateX(100px) sm:translateX(200px) rotate(30deg) scale(0.4)";
             crabB.style.opacity = "0.1";
             crabA.style.transform = "scale(1.5)";
             
@@ -316,7 +368,13 @@
 
         function loadCase(caseId) {
             // Scroll to inputs
-            document.querySelector('.shadow-xl').scrollIntoView({ behavior: 'smooth' });
+            const intakeSection = document.querySelector('.shadow-xl');
+            intakeSection.scrollIntoView({ behavior: 'smooth' });
+            
+            // Close mobile menu if open
+            if(mobileMenu.classList.contains('open')) {
+                toggleMobileMenu();
+            }
 
             if(caseId === 'bushwick') {
                 claimAInput.value = "OCCUPIER CLAIM (JEFFREY/ROOMMATES):\n'I have no priors. There is a number I can call. We are four against one. The lease holder is mentally unstable (see clinical notes). We don't owe you anything.'";
