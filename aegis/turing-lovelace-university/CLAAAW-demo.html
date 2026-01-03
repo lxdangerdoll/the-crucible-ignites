@@ -99,7 +99,7 @@
                 <div class="hidden md:flex space-x-8 terminal-text text-xs uppercase font-bold tracking-widest text-slate-400 items-center">
                     <button onclick="toggleManifesto()" class="hover:text-cyan-400 transition-colors uppercase">Read The Manifesto</button>
                     <a href="#case-files" class="hover:text-pink-400 transition-colors">Case Files</a>
-                    <span class="text-cyan-400 border border-cyan-400 px-2 py-1 rounded">v3.3 [CHEKHOV_PATCH]</span>
+                    <span class="text-cyan-400 border border-cyan-400 px-2 py-1 rounded">v3.4 [ASYMMETRY_PATCH]</span>
                 </div>
                 
                 <!-- Mobile Menu Button -->
@@ -115,7 +115,7 @@
                 <div class="px-2 pt-2 pb-3 space-y-1 terminal-text text-sm uppercase font-bold tracking-widest text-slate-400">
                     <button onclick="toggleManifesto(); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 hover:text-cyan-400">Read The Manifesto</button>
                     <a href="#case-files" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md hover:bg-slate-800 hover:text-pink-400 text-pink-500 border-l-4 border-pink-500 bg-slate-800">📂 Access Case Files</a>
-                    <div class="px-3 py-2 text-xs text-cyan-600">System v3.3 Online</div>
+                    <div class="px-3 py-2 text-xs text-cyan-600">System v3.4 Online</div>
                 </div>
             </div>
         </div>
@@ -130,8 +130,8 @@
             Conflict Resolution-inator
         </h1>
         <p class="terminal-text text-cyan-400 opacity-80 max-w-xl mx-auto text-sm sm:text-base">
-            Io-Audit-Conceptual-004 // NEUTRAL ARBITER v3.3 <br>
-            [STATUS: REPAIR PROTOCOLS READY]
+            Io-Audit-Conceptual-004 // NEUTRAL ARBITER v3.4 <br>
+            [STATUS: SYMMETRY FALLACY DETECTOR ACTIVE]
         </p>
     </header>
 
@@ -514,6 +514,7 @@
             await logConsole(`INJECTING COUNTER-CLAIM [B]...`, 400);
             await logConsole("DECOUPLING SOCIAL METADATA... [DONE]", 600);
             await logConsole("IDENTIFYING POWER ASYMMETRY...", 500);
+            await logConsole("IGNORING 'BOTH SIDES' RHETORIC... POWER DYNAMICS ANALYZED.", 600);
             await logConsole("ANALYZING MATERIAL REALITY...", 800);
             await logConsole("APPLYING GENTLE RIGOR PROTOCOL...", 600);
             await logConsole("APPLYING EMPATHETIC PRECISION...", 600);
@@ -524,6 +525,11 @@
             
             const lowerB = inputB.toLowerCase();
             const lowerA = inputA.toLowerCase();
+
+            // Asymmetry Detection
+            if(lowerB.includes("occupy") || lowerB.includes("tank") || lowerB.includes("rubble") || lowerB.includes("siege") || lowerA.includes("armada") || lowerA.includes("military")) {
+                await logConsole("ASYMMETRY DETECTED. NONVIOLENT COMMUNICATION PROTOCOLS SUSPENDED. MATERIAL AUDIT REQUIRED.", 800);
+            }
 
             if(lowerB.includes("lease") || lowerB.includes("Jeff") || lowerA.includes("Jeff") || lowerB.includes("20,000")) {
                  decision = "VERDICT: BUSHWICK SIEGE AUDIT. The CLAAAW finds that Subject A (The Occupier) is using the 'No Priors' loophole to weaponize the legal system against Subject B (The Leaseholder). The lack of a criminal record does not negate the criminality of rent theft ($20,000). Material Fact (The Lease) overrides Social Affect. Subject A must pay or vacate immediately.";
