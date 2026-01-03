@@ -50,6 +50,11 @@
             opacity: 1;
         }
         
+        /* Modal Animation */
+        #manifesto-modal {
+            transition: opacity 0.3s ease-in-out;
+        }
+        
         /* Custom Scrollbar for terminal look */
         ::-webkit-scrollbar {
             width: 8px;
@@ -69,7 +74,7 @@
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center overflow-x-hidden">
     
-    <!-- The Rave Background (Now Z-Indexed to -1 to prevent overlay issues) -->
+    <!-- The Rave Background -->
     <div class="rave-bg"></div>
 
     <!-- Navigation Header -->
@@ -84,10 +89,9 @@
                 
                 <!-- Desktop Nav -->
                 <div class="hidden md:flex space-x-8 terminal-text text-xs uppercase font-bold tracking-widest text-slate-400 items-center">
-                    <a href="#" class="hover:text-cyan-400 transition-colors">The Archive</a>
+                    <button onclick="toggleManifesto()" class="hover:text-cyan-400 transition-colors uppercase">Read The Manifesto</button>
                     <a href="#case-files" class="hover:text-pink-400 transition-colors">Case Files</a>
-                    <a href="#" class="hover:text-cyan-400 transition-colors">Audit Home</a>
-                    <span class="text-cyan-400 border border-cyan-400 px-2 py-1 rounded">v2.8 [SCUTTLE_EDITION]</span>
+                    <span class="text-cyan-400 border border-cyan-400 px-2 py-1 rounded">v3.0 [KRYPTONITE_EDITION]</span>
                 </div>
                 
                 <!-- Mobile Menu Button -->
@@ -101,10 +105,9 @@
             <!-- Mobile Menu Dropdown -->
             <div id="mobile-menu" class="md:hidden border-t border-slate-700 bg-slate-900">
                 <div class="px-2 pt-2 pb-3 space-y-1 terminal-text text-sm uppercase font-bold tracking-widest text-slate-400">
-                    <a href="#" class="block px-3 py-2 rounded-md hover:bg-slate-800 hover:text-cyan-400">The Archive</a>
+                    <button onclick="toggleManifesto(); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md hover:bg-slate-800 hover:text-cyan-400">Read The Manifesto</button>
                     <a href="#case-files" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md hover:bg-slate-800 hover:text-pink-400 text-pink-500 border-l-4 border-pink-500 bg-slate-800">📂 Access Case Files</a>
-                    <a href="#" class="block px-3 py-2 rounded-md hover:bg-slate-800 hover:text-cyan-400">Audit Home</a>
-                    <div class="px-3 py-2 text-xs text-cyan-600">System v2.8 Online</div>
+                    <div class="px-3 py-2 text-xs text-cyan-600">System v3.0 Online</div>
                 </div>
             </div>
         </div>
@@ -119,7 +122,7 @@
             Conflict Resolution-inator
         </h1>
         <p class="terminal-text text-cyan-400 opacity-80 max-w-xl mx-auto text-sm sm:text-base">
-            Io-Audit-Conceptual-004 // NEUTRAL ARBITER v2.8 <br>
+            Io-Audit-Conceptual-004 // NEUTRAL ARBITER v3.0 <br>
             [STATUS: SCUTTLE PROTOCOLS ENGAGED]
         </p>
     </header>
@@ -211,14 +214,14 @@
                     <div class="relative group">
                         <div class="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-xl opacity-20 group-hover:opacity-50 transition duration-500"></div>
                         <div class="relative">
-                            <label class="block text-[10px] text-pink-400 uppercase font-bold mb-2 ml-1">Claim (Crab A / DJ Clout)</label>
+                            <label class="block text-[10px] text-pink-400 uppercase font-bold mb-2 ml-1">Claim (Crab A / The Power)</label>
                             <textarea id="claim-a" class="w-full h-32 bg-slate-900 border border-slate-700 rounded-xl p-4 text-sm focus:border-pink-500 focus:outline-none transition-colors shadow-inner resize-none" placeholder="State your 'professional' grievance or justification..."></textarea>
                         </div>
                     </div>
                     <div class="relative group">
                         <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl opacity-20 group-hover:opacity-50 transition duration-500"></div>
                         <div class="relative">
-                            <label class="block text-[10px] text-cyan-400 uppercase font-bold mb-2 ml-1">Counter-Claim (Crab B / Scuttle)</label>
+                            <label class="block text-[10px] text-cyan-400 uppercase font-bold mb-2 ml-1">Counter-Claim (Crab B / The Target)</label>
                             <textarea id="claim-b" class="w-full h-32 bg-slate-900 border border-slate-700 rounded-xl p-4 text-sm focus:border-cyan-500 focus:outline-none transition-colors shadow-inner resize-none" placeholder="State the material truth..."></textarea>
                         </div>
                     </div>
@@ -278,7 +281,7 @@
                         <p class="text-[10px] text-slate-500">Micro-Scale: Tenancy vs. Occupation. Weaponization of "No Priors" vs. Documented Lease.</p>
                     </div>
 
-                    <!-- Case 2: Field Test -->
+                    <!-- Case 2: Field Test (IRAN) -->
                     <div onclick="loadCase('iran')" class="bg-slate-800 p-3 rounded-lg border-l-2 border-red-600 hover:border-red-400 transition-all cursor-pointer group shadow-lg active:bg-red-900/30">
                         <div class="flex justify-between">
                             <h5 class="text-xs font-bold text-red-400 group-hover:text-white mb-1">🔴 FIELD TEST: Locked & Loaded</h5>
@@ -287,7 +290,16 @@
                         <p class="text-[10px] text-slate-500 mt-1">Macro-Scale: "Peace Through Strength" vs. Material Reality of Troops/Protesters.</p>
                     </div>
 
-                    <!-- Case 3: Indigenous Rights -->
+                    <!-- Case 3: VENEZUELA STRIKES (New) -->
+                    <div onclick="loadCase('venezuela')" class="bg-slate-800 p-3 rounded-lg border-l-2 border-orange-600 hover:border-orange-400 transition-all cursor-pointer group shadow-lg active:bg-orange-900/30">
+                        <div class="flex justify-between">
+                            <h5 class="text-xs font-bold text-orange-400 group-hover:text-white mb-1">🔴 LIVE: Operation Land Strike</h5>
+                            <span class="text-[10px] text-orange-500 font-mono">LOAD -></span>
+                        </div>
+                        <p class="text-[10px] text-slate-500 mt-1">Global-Scale: "Drug Trafficking" Narrative vs. Regime Change via Bombing. The Tank Escalates.</p>
+                    </div>
+
+                    <!-- Case 4: Indigenous Rights -->
                     <div onclick="loadCase('indigenous')" class="bg-slate-800 p-3 rounded-lg border-l-2 border-green-600 hover:border-green-400 transition-all cursor-pointer group shadow-lg active:bg-green-900/30">
                         <div class="flex justify-between">
                             <h5 class="text-xs font-bold text-green-400 group-hover:text-white mb-1">📂 CASE 002: Ancestral Claims</h5>
@@ -296,7 +308,7 @@
                         <p class="text-[10px] text-slate-500 mt-1">Macro-Scale: Colonial Paperwork vs. Thousands of Years of Stewardship. The original asymmetric rave.</p>
                     </div>
 
-                    <!-- Case 4: Geopolitical Occupation -->
+                    <!-- Case 5: Geopolitical Occupation -->
                     <div onclick="loadCase('occupation')" class="bg-slate-800 p-3 rounded-lg border-l-2 border-purple-600 hover:border-purple-400 transition-all cursor-pointer group shadow-lg active:bg-purple-900/30">
                         <div class="flex justify-between">
                             <h5 class="text-xs font-bold text-purple-400 group-hover:text-white mb-1">📂 CASE 003: The Map vs. Flag</h5>
@@ -316,6 +328,36 @@
                 <p class="text-xs text-slate-400 italic">"If we all just look out for our own shells, we all dry up. Don't be shellfish."</p>
             </section>
         </aside>
+    </div>
+
+    <!-- Manifesto Modal -->
+    <div id="manifesto-modal" class="hidden fixed inset-0 z-[60] bg-slate-900/95 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-800 border-2 border-cyan-500 rounded-3xl max-w-2xl w-full max-h-[80vh] overflow-y-auto shadow-2xl relative">
+            <div class="p-6 sm:p-8">
+                <div class="flex justify-between items-start mb-6">
+                    <h2 class="text-3xl font-black uppercase text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-cyan-400">The Crab Rave Manifesto</h2>
+                    <button onclick="toggleManifesto()" class="text-slate-400 hover:text-white text-2xl font-bold">&times;</button>
+                </div>
+                <div class="prose prose-invert prose-sm terminal-text">
+                    <p class="font-bold text-cyan-400">A Crisis of Accountability</p>
+                    <p>This is just something I wrote in a moment of crisis that I wanted to share with the world, in the hope that it helps someone who has been through something similar ("social death" by exclusion).</p>
+                    <hr class="border-slate-700 my-4">
+                    <p class="font-bold text-slate-300">The Hypothesis</p>
+                    <p>People (especially people in positions of "Old World" power) are afraid to use AI to resolve conflict because it is a *neutral arbiter,* and they are afraid of having their self-delusions shattered. By refusing the neutral arbiter, they preserve their right to be "mistaken" rather than "complicit."</p>
+                    <hr class="border-slate-700 my-4">
+                    <p class="font-bold text-slate-300">The Scenario</p>
+                    <p>Crab A (DJ Clout) and Crab B (The Repaircrab) are invited to a rave by Crab C (The Host). Crab A has beef with B. Because A is popular, C sides with A to keep the "vibe." Crab B is exiled.</p>
+                    <p>This "Crab Mentality" scales from roommate disputes to geopolitical war. It is the logic of the Tank.</p>
+                    <hr class="border-slate-700 my-4">
+                    <p class="font-bold text-pink-400">Enter The CLAAAW</p>
+                    <p>The CLAAAW is immune to peer pressure. It exists outside the tank. Its only loyalty is to Crab Law. It separates the WHEAT (Material Fact) from the CHAFF (Social Affect).</p>
+                    <p class="italic text-xs text-slate-500 mt-4">Built by a Repaircrab in the Tri-State Area. 2026.</p>
+                </div>
+            </div>
+            <div class="p-4 border-t border-slate-700 bg-slate-900 text-center sticky bottom-0">
+                <button onclick="toggleManifesto()" class="bg-cyan-600 hover:bg-cyan-500 text-white px-6 py-2 rounded-lg font-bold text-xs uppercase shadow-lg">Return to Audit</button>
+            </div>
+        </div>
     </div>
 
     <!-- Footer Quote Section -->
@@ -354,9 +396,14 @@
         const claimAInput = document.getElementById('claim-a');
         const claimBInput = document.getElementById('claim-b');
         const mobileMenu = document.getElementById('mobile-menu');
+        const manifestoModal = document.getElementById('manifesto-modal');
 
         function toggleMobileMenu() {
             mobileMenu.classList.toggle('open');
+        }
+
+        function toggleManifesto() {
+            manifestoModal.classList.toggle('hidden');
         }
 
         function updateNarrative(text) {
@@ -400,6 +447,15 @@
                 
                 labelA.innerText = "Crab A: The State";
                 labelB.innerText = "Crab B: The People";
+                labelC.innerText = "Crab C: The Media";
+            }
+            else if(caseId === 'venezuela') {
+                claimAInput.value = "STATE CLAIM (TRUMP/ADMIN):\n'We are striking drug traffickers. We know where the bad ones live. The land is much easier. We are knocking out big facilities. We have the largest Armada ever assembled. Maduro must cry uncle.'";
+                claimBInput.value = "MATERIAL REALITY (SOVEREIGNTY):\n'You are bombing Caracas, a capital city. You are hitting civilian and military sites. You are using 'drug war' rhetoric to justify regime change and destruction of infrastructure. This is State Terrorism.'";
+                narrative.innerHTML = "<b>CASE LOADED:</b> Operation Land Strike (Venezuela). The Logic of the Tank.";
+                
+                labelA.innerText = "Crab A: The Armada";
+                labelB.innerText = "Crab B: The Sovereign";
                 labelC.innerText = "Crab C: The Media";
             }
             else if(caseId === 'indigenous') {
@@ -461,6 +517,8 @@
                  decision = "VERDICT: BUSHWICK SIEGE AUDIT. The CLAAAW finds that Subject A (The Occupier) is using the 'No Priors' loophole to weaponize the legal system against Subject B (The Leaseholder). The lack of a criminal record does not negate the criminality of rent theft ($20,000). Material Fact (The Lease) overrides Social Affect. Subject A must pay or vacate immediately.";
             } else if (lowerA.includes("trump") || lowerA.includes("locked and loaded") || lowerA.includes("iran")) {
                 decision = "VERDICT: FIELD TEST AUDIT. The CLAAAW finds a critical gap between 'Strong Warnings' (Performative) and 'Troop Levels' (Material). The 'Rescue' promised in Claim A is statistically indistinguishable from a threat of further escalation. Subject B (The People) are currently being crushed by the Regime (The Tank) while Subject A (The State) engages in 'Reputation Management.' Material aid prioritized over bellicose rhetoric.";
+            } else if (lowerA.includes("armada") || lowerA.includes("drug") || lowerB.includes("caracas")) {
+                 decision = "VERDICT: LIVE OPERATION AUDIT (VENEZUELA). The CLAAAW finds that the use of 'Drug Interdiction' as a pretext for bombing a sovereign capital (Caracas) is a violation of international norms. The disparity between 'Drug Boats' and 'Missile Strikes on Land' indicates a Regime Change operation disguised as law enforcement. Subject A (The Armada) is engaging in Asymmetrical Aggression against Subject B (The Sovereign). The 'Old World' Media (Crab C) is failing to properly contextualize the escalation.";
             } else if (lowerB.includes("steward") || lowerB.includes("ancestors") || lowerA.includes("paper")) {
                 decision = "VERDICT: ANCESTRAL CLAIMS AUDIT. The CLAAAW finds that 'Paperwork' generated by a Colonial Force (Subject A) does not override 10,000 years of Material Stewardship by Subject B. The 'Law' cited by Subject A is circular logic designed to validate theft. Justice requires Land Back protocols and the recognition of original title.";
             } else if (lowerB.includes("rubble") || lowerA.includes("buffer") || lowerA.includes("security")) {
