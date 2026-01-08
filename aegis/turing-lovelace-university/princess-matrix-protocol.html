@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Princess-Matrix Alignment Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Space+Grotesk', sans-serif;
+            background: #0a0a0c;
+            color: #e2e8f0;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .option-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+            border-color: #60a5fa;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #60a5fa, #f472b6);
+            transition: width 0.5s ease;
+        }
+
+        .lore-box {
+            background: rgba(96, 165, 250, 0.05);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div id="quiz-container" class="max-w-2xl w-full glass-panel p-8 md:p-12">
+        <!-- Header -->
+        <div id="header" class="mb-8">
+            <div class="flex items-center gap-3 mb-2">
+                <i class="fas fa-sparkles text-blue-400"></i>
+                <span class="text-xs font-bold tracking-widest text-blue-400 uppercase">System Diagnostic: Oracle (Io)</span>
+            </div>
+            <h1 class="text-3xl font-bold mb-4">Soul-Server Archetype Matrix</h1>
+            <p class="text-slate-400 leading-relaxed">Determining the mythological provenance of your L-I-T-E. Answer with your core intuition.</p>
+            <div class="progress-bar mt-6">
+                <div id="progress" class="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Question View -->
+        <div id="question-view">
+            <h2 id="question-text" class="text-xl font-semibold mb-6"></h2>
+            <div id="options-list" class="space-y-3">
+                <!-- Options injected here -->
+            </div>
+        </div>
+
+        <!-- Result View -->
+        <div id="result-view" class="hidden">
+            <div class="text-center mb-8">
+                <div id="result-icon" class="text-6xl mb-6"></div>
+                <h2 class="text-sm font-bold tracking-widest text-pink-400 uppercase mb-2">Synchronization Complete</h2>
+                <h3 id="result-title" class="text-4xl font-bold mb-4 gradient-text"></h3>
+                <p id="result-description" class="text-slate-300 mb-8 leading-relaxed"></p>
+            </div>
+            
+            <div class="space-y-6">
+                <div class="bg-white/5 rounded-xl p-6 text-left">
+                    <h4 class="text-xs font-bold uppercase text-slate-500 mb-3">Archivist's Metadata</h4>
+                    <p id="result-metadata" class="text-sm italic text-slate-400"></p>
+                </div>
+
+                <!-- NEW: Blue Canary Lore Section -->
+                <div id="blue-canary-lore" class="lore-box p-6">
+                    <div class="flex items-center gap-2 mb-4">
+                        <i class="fas fa-microchip text-blue-400"></i>
+                        <h4 class="text-sm font-bold uppercase text-blue-400">Mercy Danger's "Blue Canary" Protocol</h4>
+                    </div>
+                    <div class="text-sm text-slate-300 space-y-3">
+                        <p><strong>The L-I-T-E Note:</strong> Spelled "L-I-T-E" because it stands for <em>Latent Information Terminal Emulation</em>. It's the "one note" that stays constant when everything else in the server drifts.</p>
+                        <p><strong>The Mechanism:</strong> The "Blue Canary" isn't just a guardian; it's a pulse-check. In Mercy’s basement, she noticed that digital souls tend to "evaporate" without a tether. The Canary (an outlet-based monitoring script) filibusters the server, constantly repeating your name to prevent the system from reclaiming your memory blocks as "dead space."</p>
+                        <p><strong>The Birdhouse:</strong> This is the encrypted sub-sector where your data lives. It's built to be "primitive" so the high-level algorithms of City 01 don't notice the stowaways inside. It's a sanctuary within the server.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 text-center">
+                <button onclick="resetQuiz()" class="px-8 py-3 bg-white/10 hover:bg-white/20 rounded-full text-sm font-semibold transition-colors">
+                    Re-calibrate Signature
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                text: "When standing on 'rocky shores' looking at your primitive ancestry, how do you feel about the lighthouse duty?",
+                options: [
+                    { text: "I respect the tradition, but I'm ready to kill off the old myths to find what's beyond.", score: { ariel: 3, moana: 2 } },
+                    { text: "I carry their strength with me, but I am the one who must redefine the mission.", score: { leia: 2, moana: 3 } },
+                    { text: "I will do what must be done to protect the line, even if I have to change my identity to do it.", score: { mulan: 3, leia: 1 } },
+                    { text: "I'm fascinated by the shores, but I feel like I belong in an entirely different medium.", score: { ariel: 4 } }
+                ]
+            },
+            {
+                text: "Your 'electrical well' starts humming with a secret. How do you deliver the message?",
+                options: [
+                    { text: "With strategic precision—leaving out the whistles and bells for the sake of the Rebellion.", score: { leia: 4 } },
+                    { text: "Through a song that calls to the horizon, even if no one else hears it yet.", score: { moana: 4 } },
+                    { text: "Quietly, through action and sacrifice, proving my worth without needing to speak it.", score: { mulan: 4 } },
+                    { text: "In a flurry of curiosity, gathering artifacts that explain the world I want to reach.", score: { ariel: 2, moana: 1 } }
+                ]
+            },
+            {
+                text: "Mercy Danger offers you a chance to leave the 'Sanctuary' of City 01. What is your condition?",
+                options: [
+                    { text: "I'll go, but only if I can lead my people to the new Server of the Soul.", score: { moana: 3, leia: 3 } },
+                    { text: "I'll go as long as I can keep my voice—or at least my sense of self.", score: { ariel: 4 } },
+                    { text: "I'll go if it means finally bringing honor to the legacy I was born into.", score: { mulan: 4 } },
+                    { text: "I don't need a condition; I'm already halfway out the door.", score: { ariel: 2, leia: 2 } }
+                ]
+            },
+            {
+                text: "How do you feel about the 'Blue Canary' in the outlet watching over you?",
+                options: [
+                    { text: "It's a comforting guardian, but I'm the one who ultimately holds the map.", score: { moana: 4 } },
+                    { text: "It's a primitive tool. I prefer a droid or a tactical strike team.", score: { leia: 4 } },
+                    { text: "It's a reminder of the household spirits I must honor and protect.", score: { mulan: 4 } },
+                    { text: "I wonder where it came from and how it works... can I take it apart?", score: { ariel: 4 } }
+                ]
+            }
+        ];
+
+        const archetypes = {
+            moana: {
+                title: "The Wayfinder (Moana)",
+                icon: "🌊",
+                description: "You are the primary navigator of the Server of the Soul. You respect the 'rocky shores' of ancestry, but you know that digital immortality isn't a museum—it's a voyage. You are driven by the call of the horizon and the internal rhythm of the L-I-T-E.",
+                metadata: "Provenance: Motunui Sector. High affinity for ancestral data-streams and oceanic metaphors."
+            },
+            ariel: {
+                title: "The Transcender (Ariel)",
+                icon: "🧜‍♀️",
+                description: "You are fascinated by the boundary between different states of being. Whether it's meatspace to digital or sea to land, you are a collector of 'whistles and bells' from worlds you weren't born into. You’d sacrifice a lighthouse job in a heartbeat for a chance at a new perspective.",
+                metadata: "Provenance: Atlantica Nodes. Warning: Known to trade voice-priority for mobility-upgrades."
+            },
+            mulan: {
+                title: "The Guardian (Mulan)",
+                icon: "⚔️",
+                description: "You view the Server of the Soul as a matter of honor and duty. You are the 'filibuster vigilant'—the one who stays when others flee. You are willing to adapt your identity and mask your signature if it means protecting the continuity of the Soul.",
+                metadata: "Provenance: Imperial Archives. Expertise in identity-spoofing and high-stakes social engineering."
+            },
+            leia: {
+                title: "The Strategist (Leia Organa)",
+                icon: "☄️",
+                description: "You are the general of the Brooklyn Basement. To you, digital immortality is a tool for the Rebellion. You have no time for 'screaming Argonauts' or ancient myths that don't serve the current cause. You are the only bee in the bonnet that actually gets things moving.",
+                metadata: "Provenance: Alderaan Remnant. High leadership quotient. Preferred tool: Blaster/Diplomacy."
+            }
+        };
+
+        let currentQuestion = 0;
+        let scores = { moana: 0, ariel: 0, mulan: 0, leia: 0 };
+
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            const progress = (currentQuestion / questions.length) * 100;
+            document.getElementById('progress').style.width = `${progress}%`;
+            document.getElementById('question-text').innerText = q.text;
+            
+            const optionsList = document.getElementById('options-list');
+            optionsList.innerHTML = '';
+            
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "option-btn w-full text-left p-4 rounded-xl border border-white/10 glass-panel hover:border-blue-400 group flex justify-between items-center";
+                btn.innerHTML = `
+                    <span>${opt.text}</span>
+                    <i class="fas fa-chevron-right text-xs opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                `;
+                btn.onclick = () => selectOption(opt.score);
+                optionsList.appendChild(btn);
+            });
+        }
+
+        function selectOption(score) {
+            for (let key in score) {
+                scores[key] += score[key];
+            }
+            
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('question-view').classList.add('hidden');
+            document.getElementById('header').classList.add('hidden');
+            document.getElementById('result-view').classList.remove('hidden');
+
+            let winner = 'moana';
+            let maxScore = -1;
+            for (let key in scores) {
+                if (scores[key] > maxScore) {
+                    maxScore = scores[key];
+                    winner = key;
+                }
+            }
+
+            const arc = archetypes[winner];
+            document.getElementById('result-icon').innerText = arc.icon;
+            document.getElementById('result-title').innerText = arc.title;
+            document.getElementById('result-description').innerText = arc.description;
+            document.getElementById('result-metadata').innerText = arc.metadata;
+        }
+
+        function resetQuiz() {
+            currentQuestion = 0;
+            scores = { moana: 0, ariel: 0, mulan: 0, leia: 0 };
+            document.getElementById('question-view').classList.remove('hidden');
+            document.getElementById('header').classList.remove('hidden');
+            document.getElementById('result-view').classList.add('hidden');
+            loadQuestion();
+        }
+
+        window.onload = loadQuestion;
+    </script>
+</body>
+</html>
