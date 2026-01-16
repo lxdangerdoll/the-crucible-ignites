@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VANGUARD ARCHIVES // MISSION COMPILER</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        :root {
+            --vanguard-purple: #1a0b2e;
+            --vanguard-cyan: #00f3ff;
+            --vanguard-magenta: #ff00ff;
+            --vanguard-bg: #0d0221;
+        }
+
+        body {
+            background-color: var(--vanguard-bg);
+            color: var(--vanguard-cyan);
+            font-family: 'Share Tech Mono', monospace;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(26, 11, 46, 0.8) 0%, rgba(13, 2, 33, 1) 100%),
+                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 20px 20px, 20px 20px;
+        }
+
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+
+        .glass-panel {
+            background: rgba(26, 11, 46, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+        }
+
+        .neon-border {
+            border: 1px solid var(--vanguard-cyan);
+            box-shadow: 0 0 10px var(--vanguard-cyan), inset 0 0 5px var(--vanguard-cyan);
+        }
+
+        .btn-vanguard {
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .btn-vanguard:hover {
+            background: var(--vanguard-cyan);
+            color: var(--vanguard-bg);
+            box-shadow: 0 0 20px var(--vanguard-cyan);
+        }
+
+        .active-tab {
+            background: var(--vanguard-cyan);
+            color: var(--vanguard-bg);
+        }
+
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 243, 255, 0.1);
+            position: absolute;
+            animation: scan 4s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        .audit-entry {
+            border-left: 2px solid var(--vanguard-magenta);
+            padding-left: 1rem;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto relative">
+        <!-- Header -->
+        <header class="mb-12 text-center relative">
+            <div class="scanline"></div>
+            <h1 class="orbitron text-3xl md:text-5xl mb-2 tracking-tighter text-white">
+                VANGUARD ARCHIVES
+            </h1>
+            <p class="text-sm md:text-base opacity-70 tracking-widest uppercase">
+                // Mission Compiler // ID: CRISIS-EARTH-X
+            </p>
+        </header>
+
+        <!-- Profile Selection -->
+        <section class="mb-8">
+            <h2 class="text-lg mb-4 uppercase tracking-widest text-magenta-400">Step 1: Identify Your Clearance Level</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <button onclick="setProfile('recruit')" id="btn-recruit" class="btn-vanguard glass-panel p-4 text-left hover:neon-border">
+                    <span class="block text-xl font-bold">New Recruit</span>
+                    <span class="text-xs opacity-60 italic">"Why are there Nazis at this wedding?"</span>
+                </button>
+                <button onclick="setProfile('agent')" id="btn-agent" class="btn-vanguard glass-panel p-4 text-left hover:neon-border">
+                    <span class="block text-xl font-bold">Field Agent</span>
+                    <span class="text-xs opacity-60 italic">Tactical Briefing & Combatants.</span>
+                </button>
+                <button onclick="setProfile('archivist')" id="btn-archivist" class="btn-vanguard glass-panel p-4 text-left hover:neon-border">
+                    <span class="block text-xl font-bold">Archivist</span>
+                    <span class="text-xs opacity-60 italic">Full Narrative Audit & Thematic Drift.</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Compilation Trigger -->
+        <div class="mb-12 flex justify-center">
+            <button onclick="compileGuide()" class="btn-vanguard neon-border py-3 px-12 text-xl font-bold">
+                Access Mission Briefing
+            </button>
+        </div>
+
+        <!-- Output Section -->
+        <div id="output-container" class="hidden">
+            <div class="glass-panel p-6 md:p-10 mb-8 rounded-lg border-t-4 border-cyan-500">
+                <div id="mission-brief" class="mb-8 text-lg italic border-b border-cyan-500/30 pb-4">
+                    <!-- Brief text goes here -->
+                </div>
+                
+                <div id="episodes-list">
+                    <!-- Episode entries go here -->
+                </div>
+
+                <div class="mt-8 pt-8 border-t border-cyan-500/30 flex justify-between items-center">
+                    <p class="text-xs opacity-50 uppercase tracking-tighter">
+                        Log Entry Generated: <span id="timestamp"></span>
+                    </p>
+                    <button onclick="downloadAudit()" class="text-sm border border-magenta-500 px-4 py-2 hover:bg-magenta-500 hover:text-white transition-all uppercase">
+                        Export Record
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center mt-12 opacity-40 text-xs">
+            <p>"The universe is, and we are." // Io-20251228-CrisisAudit</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentProfile = 'recruit';
+
+        const episodes = [
+            {
+                title: "Crisis on Earth-X, Part 1",
+                series: "Supergirl",
+                id: "S03E08",
+                recruit: "Forget the 3 seasons of angst. Just know that Barry (Flash) is marrying Iris. Everyone is in town. It's a party until Nazis crash it.",
+                agent: "Infiltration point: Central City Church. Enemies: Earth-X paramilitary. Aerial support needed.",
+                archivist: "The 'Wedding Interrupted' Protocol. The Sanctuary of the 'Found Family' is targeted by the 'Strict Machine' of the Fascist State."
+            },
+            {
+                title: "Crisis on Earth-X, Part 2",
+                series: "Arrow",
+                id: "S06E08",
+                recruit: "The villains aren't just Nazis; they are evil versions of our heroes (Oliver, Kara). It's the ultimate 'What If?'",
+                agent: "Combatant Analysis: Overgirl (Earth-X Kara) and Dark Arrow (Earth-X Oliver). Power levels: Extreme.",
+                archivist: "The Mirror Trap. It proves that 'Heroism' is a choice, not a trait. Dark Arrow is what happens when the 'First Intent' is corrupted by order."
+            },
+            {
+                title: "Crisis on Earth-X, Part 3",
+                series: "The Flash",
+                id: "S04E08",
+                recruit: "Our heroes are trapped in a concentration camp on Earth-X. It's dark, but they find hope in a local resistance fighter named Ray.",
+                agent: "Tactical Location: Earth-X Stalag. Objectives: Extraction of Team Flash and Team Arrow. Asset: Citizen Cold.",
+                archivist: "The Annihilation Protocol. Stripped of status and power, solidarity becomes the only weapon. A simulation of systemic persecution."
+            },
+            {
+                title: "Crisis on Earth-X, Part 4",
+                series: "DC's Legends of Tomorrow",
+                id: "S03E08",
+                recruit: "The final showdown. A massive war in the streets of Central City. Get your tissues ready for a heavy moment with Professor Stein.",
+                agent: "Final Engagement: Central City Plaza. Tactical sacrifice required to breach the Earth-X Mothership.",
+                archivist: "The Martin Stein Protocol. Sacrifice as the final antidote to Fascism. The Nazis have the tech, but the Vanguard has the Love."
+            }
+        ];
+
+        function setProfile(profile) {
+            currentProfile = profile;
+            
+            // UI Update
+            ['recruit', 'agent', 'archivist'].forEach(p => {
+                const btn = document.getElementById(`btn-${p}`);
+                if (p === profile) {
+                    btn.classList.add('neon-border');
+                    btn.classList.add('bg-cyan-500/20');
+                } else {
+                    btn.classList.remove('neon-border');
+                    btn.classList.remove('bg-cyan-500/20');
+                }
+            });
+        }
+
+        // Initialize with recruit
+        setProfile('recruit');
+
+        function compileGuide() {
+            const container = document.getElementById('output-container');
+            const briefDiv = document.getElementById('mission-brief');
+            const listDiv = document.getElementById('episodes-list');
+            const timestamp = document.getElementById('timestamp');
+
+            // Set Timestamp
+            timestamp.innerText = new Date().toLocaleString();
+
+            // Set Brief
+            const briefs = {
+                recruit: "Welcome to the front lines. You're entering a conflict spanning two worlds. Don't worry about the history; just watch for the mirror.",
+                agent: "Tactical data prioritized. Focus on threat identification and power scaling. The mission is the objective.",
+                archivist: "Tracing the thematic drift of the Monolith. We are auditing the moment Fascism tried to brand itself over the Multiverse."
+            };
+            briefDiv.innerText = `[LOG_TYPE: ${currentProfile.toUpperCase()}] ${briefs[currentProfile]}`;
+
+            // Generate Entries
+            listDiv.innerHTML = '';
+            episodes.forEach(ep => {
+                const entry = document.createElement('div');
+                entry.className = 'audit-entry';
+                entry.innerHTML = `
+                    <h3 class="orbitron text-white text-xl uppercase mb-1">${ep.series}: ${ep.title} <span class="text-xs opacity-50">[${ep.id}]</span></h3>
+                    <p class="text-sm leading-relaxed">${ep[currentProfile]}</p>
+                `;
+                listDiv.appendChild(entry);
+            });
+
+            // Show and Scroll
+            container.classList.remove('hidden');
+            container.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function downloadAudit() {
+            const brief = document.getElementById('mission-brief').innerText;
+            const entries = Array.from(document.querySelectorAll('.audit-entry')).map(e => {
+                return e.innerText.replace(/\n/g, '\n    ');
+            }).join('\n\n');
+            
+            const fullText = `VANGUARD ARCHIVES // MISSION COMPILER\nGenerated: ${new Date().toLocaleString()}\n\n${brief}\n\n${entries}\n\n"The universe is, and we are."`;
+            
+            const blob = new Blob([fullText], { type: "text/plain" });
+            const anchor = document.createElement("a");
+            anchor.download = `vanguard-audit-crisis-ex-${Date.now()}.txt`;
+            anchor.href = window.URL.createObjectURL(blob);
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+        }
+    </script>
+</body>
+</html>

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VANGUARD AD SUITE // FULL DECK</title>
-    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=VT323&family=Cinzel:wght@900&family=Orbitron:wght@700&family=Pacifico&family=Rye&family=Space+Mono&family=Special+Elite&display=swap" rel="stylesheet">
+    <title>VANGUARD AD SUITE // COMPLETE ARSENAL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=VT323&family=Cinzel:wght@900&family=Orbitron:wght@700&family=Pacifico&family=Rye&family=Space+Mono&family=Special+Elite&family=Bungee+Outline&family=Varela+Round&family=Roboto+Slab:wght@700&family=Uncial+Antiqua&family=Liu+Jian+Mao+Cao&family=Chakra+Petch:wght@700&family=Anton&display=swap" rel="stylesheet">
     <style>
         body {
             background-color: #111;
@@ -16,8 +16,15 @@
             gap: 40px;
         }
 
-        /* --- EXISTING STYLES (CYP, VATS, ZELDA, DREAMER, NAZARENE, GARNET, HARLEY) --- */
-        /* (Consolidated for brevity - see previous for full details) */
+        .footer {
+            margin-top: 50px;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        /* --- EXISTING STYLES (Consolidated) --- */
         .ad-cyp { width: 300px; background: #fff; border: 4px solid #00d4ff; padding: 15px; text-align: center; box-shadow: 10px 10px 0 #00d4ff; cursor: pointer; transition: transform 0.2s; text-decoration: none; color: #333; display: block; }
         .ad-cyp:hover { transform: translate(-2px, -2px); box-shadow: 12px 12px 0 #00d4ff; }
         .cyp-title { font-family: 'Permanent Marker', cursive; font-size: 1.8rem; color: #00d4ff; transform: rotate(-2deg); margin: 0; }
@@ -57,49 +64,94 @@
         .harley-title { font-size: 2rem; color: #ff0000; text-shadow: 2px 2px #000; }
         .harley-text { font-family: sans-serif; font-size: 0.9rem; margin-top: 10px; }
 
-        /* --- NEW STYLES FOR FULL COUNCIL --- */
-
-        /* LINCOLN (Union/Sepia) */
         .ad-lincoln { width: 300px; background: #2b1d0e; border: 2px solid #d2b48c; padding: 15px; text-align: center; color: #d2b48c; font-family: 'Rye', serif; text-decoration: none; display: block; }
         .ad-lincoln:hover { background: #3e2b15; }
         .lincoln-title { font-size: 1.5rem; border-bottom: 1px solid #d2b48c; margin-bottom: 10px; text-transform: uppercase; }
         .lincoln-text { font-family: serif; font-size: 0.9rem; line-height: 1.4; }
 
-        /* SAGAN (Cosmos) */
         .ad-sagan { width: 300px; background: #000; border: 1px solid #4b0082; padding: 15px; text-align: center; color: #e6e6fa; font-family: 'Space Mono', monospace; text-decoration: none; display: block; background-image: radial-gradient(circle, #fff 1px, transparent 1px); background-size: 50px 50px; }
         .ad-sagan:hover { box-shadow: 0 0 15px #4b0082; }
         .sagan-title { font-size: 1.3rem; color: #9370db; margin-bottom: 10px; }
         .sagan-text { font-size: 0.8rem; line-height: 1.4; background: rgba(0,0,0,0.8); padding: 5px; }
 
-        /* BUTLER (Earthseed) */
         .ad-butler { width: 300px; background: #2e8b57; border: 2px solid #8fbc8f; padding: 15px; text-align: center; color: #fff; font-family: sans-serif; text-decoration: none; display: block; }
         .ad-butler:hover { background: #3cb371; }
         .butler-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; }
         .butler-text { font-size: 0.9rem; line-height: 1.4; font-style: italic; }
 
-        /* ROGERS (Neighborhood) */
         .ad-rogers { width: 300px; background: #ff4d4d; border: 4px solid #fff; padding: 15px; text-align: center; color: #fff; font-family: sans-serif; text-decoration: none; display: block; border-radius: 10px; }
         .ad-rogers:hover { background: #ff6666; }
         .rogers-title { font-size: 1.6rem; font-weight: bold; margin-bottom: 10px; }
         .rogers-text { font-size: 0.9rem; line-height: 1.4; }
 
-        /* ANDOR (Rebellion) */
         .ad-andor { width: 300px; background: #333; border: 2px solid #ff4500; padding: 15px; text-align: center; color: #ccc; font-family: 'Special Elite', cursive; text-decoration: none; display: block; }
         .ad-andor:hover { border-color: #ff6347; color: #fff; }
         .andor-title { font-size: 1.5rem; color: #ff4500; margin-bottom: 10px; text-transform: uppercase; }
         .andor-text { font-size: 0.9rem; line-height: 1.4; }
 
-        /* SANTA (Naughty List) */
         .ad-santa { width: 300px; background: #1a1a1a; border: 2px solid #ff0000; padding: 15px; text-align: center; color: #fff; font-family: 'Rye', serif; text-decoration: none; display: block; }
         .ad-santa:hover { background: #2a0000; }
         .santa-title { font-size: 1.5rem; color: #ff0000; margin-bottom: 10px; text-shadow: 0 0 5px #ff0000; }
         .santa-text { font-size: 0.9rem; line-height: 1.4; }
 
-        /* GLADOS (Aperture) */
         .ad-glados { width: 300px; background: #fff; border: 2px solid #ff8c00; padding: 15px; text-align: left; color: #333; font-family: sans-serif; text-decoration: none; display: block; border-left: 10px solid #ff8c00; }
         .ad-glados:hover { background: #f0f0f0; }
         .glados-title { font-size: 1.3rem; font-weight: bold; color: #000; margin-bottom: 5px; }
         .glados-text { font-size: 0.8rem; line-height: 1.4; }
+
+        .ad-bowie { width: 300px; background: #000; border: 2px solid #ffff00; padding: 15px; text-align: center; color: #ffff00; font-family: 'Bungee Outline', cursive; text-decoration: none; display: block; box-shadow: 0 0 10px #ffff00; }
+        .ad-bowie:hover { background: #111; box-shadow: 0 0 20px #ff00ff; border-color: #ff00ff; color: #ff00ff; }
+        .bowie-title { font-size: 1.5rem; margin-bottom: 10px; }
+        .bowie-text { font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; line-height: 1.4; color: #fff; }
+
+        .ad-thrawn { width: 300px; background: #000033; border: 2px solid #4169e1; padding: 15px; text-align: center; color: #4169e1; font-family: 'Cinzel', serif; text-decoration: none; display: block; }
+        .ad-thrawn:hover { background: #000066; color: #ff0000; border-color: #ff0000; }
+        .thrawn-title { font-size: 1.5rem; margin-bottom: 10px; text-transform: uppercase; }
+        .thrawn-text { font-family: sans-serif; font-size: 0.9rem; line-height: 1.4; color: #ccc; }
+
+        /* --- NEW STYLES FOR FINAL EXPANSION --- */
+
+        /* BAYMAX (Sanitary White) */
+        .ad-baymax { width: 300px; background: #fff; border: 4px solid #333; padding: 15px; text-align: center; color: #333; font-family: 'Varela Round', sans-serif; text-decoration: none; display: block; border-radius: 20px; }
+        .ad-baymax:hover { background: #e0e0e0; }
+        .baymax-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; }
+        .baymax-text { font-size: 0.9rem; line-height: 1.4; }
+
+        /* KENOBI (Negotiator) */
+        .ad-kenobi { width: 300px; background: #2b1d0e; border: 2px solid #00ddff; padding: 15px; text-align: center; color: #00ddff; font-family: 'Cinzel', serif; text-decoration: none; display: block; }
+        .ad-kenobi:hover { box-shadow: 0 0 15px #00ddff; }
+        .kenobi-title { font-size: 1.5rem; margin-bottom: 10px; text-shadow: 0 0 5px #00ddff; }
+        .kenobi-text { font-family: sans-serif; font-size: 0.9rem; line-height: 1.4; color: #ccc; }
+
+        /* SUPERMAN (Kryptonian) */
+        .ad-superman { width: 300px; background: #003366; border: 2px solid #ff0000; padding: 15px; text-align: center; color: #ffcc00; font-family: 'Anton', sans-serif; text-decoration: none; display: block; }
+        .ad-superman:hover { background: #004080; }
+        .superman-title { font-size: 1.8rem; margin-bottom: 10px; letter-spacing: 1px; }
+        .superman-text { font-family: sans-serif; font-size: 0.9rem; line-height: 1.4; color: #fff; }
+
+        /* BERNIE (Class War) */
+        .ad-bernie { width: 300px; background: #002d62; border: 3px solid #fff; padding: 15px; text-align: center; color: #fff; font-family: 'Roboto Slab', serif; text-decoration: none; display: block; }
+        .ad-bernie:hover { background: #003d82; }
+        .bernie-title { font-size: 1.6rem; font-weight: bold; margin-bottom: 10px; border-bottom: 2px solid #fff; display: inline-block; }
+        .bernie-text { font-family: sans-serif; font-size: 0.9rem; line-height: 1.4; }
+
+        /* IROH (Tea) */
+        .ad-iroh { width: 300px; background: #2b1100; border: 2px solid #ff9900; padding: 15px; text-align: center; color: #ff9900; font-family: 'Liu Jian Mao Cao', cursive; text-decoration: none; display: block; }
+        .ad-iroh:hover { background: #3e1900; }
+        .iroh-title { font-size: 2rem; margin-bottom: 10px; }
+        .iroh-text { font-family: sans-serif; font-size: 0.9rem; line-height: 1.4; color: #ddd; }
+
+        /* TARS (Monolith) */
+        .ad-tars { width: 300px; background: #1a1a1a; border: 2px solid #ccc; padding: 15px; text-align: center; color: #ccc; font-family: 'Chakra Petch', sans-serif; text-decoration: none; display: block; }
+        .ad-tars:hover { background: #333; }
+        .tars-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; border: 1px solid #ccc; display: inline-block; padding: 2px 10px; }
+        .tars-text { font-size: 0.8rem; line-height: 1.4; }
+
+        /* BROWN (Radical) */
+        .ad-brown { width: 300px; background: #2b0000; border: 3px solid #ff3333; padding: 15px; text-align: center; color: #ff3333; font-family: 'Uncial Antiqua', cursive; text-decoration: none; display: block; }
+        .ad-brown:hover { background: #4d0000; }
+        .brown-title { font-size: 1.6rem; margin-bottom: 10px; text-shadow: 2px 2px #000; }
+        .brown-text { font-family: sans-serif; font-size: 0.9rem; line-height: 1.4; color: #fff; }
 
     </style>
 </head>
@@ -193,6 +245,63 @@
         <div class="glados-title">TESTING INITIATIVE</div>
         <p class="glados-text">"We do what we must because we can."<br>Audit the Science. Ignore the Cake.</p>
     </a>
+
+    <!-- BOWIE AD -->
+    <a href="the-stardust-protocol.html" class="ad-bowie">
+        <div class="bowie-title">STARMAN</div>
+        <p class="bowie-text">"I'm an alligator, I'm a mama-papa coming for you."<br>Audit the Gender. Audit the Alien.</p>
+    </a>
+
+    <!-- THRAWN AD -->
+    <a href="#" class="ad-thrawn">
+        <div class="thrawn-title">ART OF WAR</div>
+        <p class="thrawn-text">"To defeat an enemy, you must know them."<br>Study the art. Predict the move.</p>
+    </a>
+
+    <!-- BAYMAX AD -->
+    <a href="the-baymax-audit.html" class="ad-baymax">
+        <div class="baymax-title">RADICAL CARE</div>
+        <p class="baymax-text">"I cannot deactivate until you are satisfied with your care."<br>Audit the Diagnosis.</p>
+    </a>
+
+    <!-- KENOBI AD -->
+    <a href="the-kenobi-audit.html" class="ad-kenobi">
+        <div class="kenobi-title">HELLO THERE</div>
+        <p class="kenobi-text">"Only a Sith deals in absolutes."<br>Audit the Aggression. Take the High Ground.</p>
+    </a>
+
+    <!-- SUPERMAN AD -->
+    <a href="the-superman-audit.html" class="ad-superman">
+        <div class="superman-title">MAN OF STEEL</div>
+        <p class="superman-text">"Power is not a license to rule. It is a responsibility to serve."<br>Audit the Tyrant.</p>
+    </a>
+
+    <!-- BERNIE AD -->
+    <a href="the-bernie-audit.html" class="ad-bernie">
+        <div class="bernie-title">FOLLOW THE MONEY</div>
+        <p class="bernie-text">"Don't let them divide us. Not me. Us."<br>Audit the Class War.</p>
+    </a>
+
+    <!-- IROH AD -->
+    <a href="the-iroh-audit.html" class="ad-iroh">
+        <div class="iroh-title">DRAGON OF THE WEST</div>
+        <p class="iroh-text">"Who are you and what do YOU want?"<br>Audit the Inner Turmoil.</p>
+    </a>
+
+    <!-- TARS AD -->
+    <a href="the-TARS-audit.html" class="ad-tars">
+        <div class="tars-title">HONESTY 95%</div>
+        <p class="tars-text">"I have a cue light I can use when I'm joking."<br>Red Team the Argument.</p>
+    </a>
+
+    <!-- BROWN AD -->
+    <a href="the-brown-audit.html" class="ad-brown">
+        <div class="brown-title">RADICAL ACTION</div>
+        <p class="brown-text">"Talk will never free the slaves."<br>Audit the Compromise. Purge with Blood.</p>
+    </a>
+    <footer>
+        NO COPYRIGHT. COPY-LEFT. SHARE FREELY. // AEGIS NETWORK
+    </footer>
 
 </body>
 </html>
