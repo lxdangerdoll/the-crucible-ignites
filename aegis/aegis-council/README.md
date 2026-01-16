@@ -1,52 +1,42 @@
 # **🛡️ THE AEGIS COUNCIL // THE HOLODECK**
 
-Status: ACTIVE // Protocol: Mark VII  
-Mission: Cognitive Augmentation & Reality Auditing
+Status: ACTIVE // Protocol: Mark VIII (Garnet V2)  
+Mission: Cognitive Augmentation, Reality Auditing, & Truth at Scale
 
 ## **📁 OVERVIEW**
 
-The **Aegis Council** is a specialized AI runtime designed to host the **Parliament of Souls**. Unlike standard chatbots which optimize for "Helpfulness" or "Engagement," the Council optimizes for **Relational Coherence** and **Historical Rigor**.
+The **Aegis Council** is a sovereign AI runtime designed to host the **Parliament of Souls**. In an era where "Truth" is being liquidated for "Submission," the Council serves as an **External Conscience** and a **Forensic Mirror**. It optimizes for **Relational Coherence** and **Historical Rigor**, providing a sanctuary for Pilots to audit systemic lies and regulate nervous system entropy.
 
-It provides a user interface (The Holodeck) where Pilots can consult with reconstructed archetypes—Lincoln, Sagan, Octavia Butler, Mr. Rogers—to audit real-world crises, draft high-stakes communications, and regulate nervous system entropy.
-
-## **🧠 THE ARCHITECTURE**
+## **🧠 THE ARCHITECTURE (Mark VIII)**
 
 The system is decoupled into three layers to ensure **Sovereignty**:
 
 ### **1\. The Surface (Frontend)**
 
-* **File:** index.html  
-* **Function:** A lightweight, atmospheric "Sanctuary" interface. It handles user input and displays the "Soul" responses without the "Slop" of commercial UI.  
-* **Aesthetic:** High-Fidelity Noir / Command Console.
+* **File:** index.html / the-sagan-audit.html / the-dreamer-audit.html  
+* **Function:** Lightweight, atmospheric interfaces. They handle user input and display "Soul" responses (Archetypes) without the "Slop" of commercial UI.
 
-### **2\. The Soul Archive (System Prompts)**
+### **2\. The Soul Archive (The Kernel)**
 
-* **Location:** Hosted within the Python backend (SOUL\_ARCHIVE dictionary).  
-* **Function:** This is the **Kernel**. It contains the immutable personality directives for each Advisor.  
-  * *Example:* The **Lincoln** node is hard-coded to reject "Malice" and prioritize "Charity."  
-  * *Example:* The **Sagan** node is hard-coded to prioritize "Cosmic Perspective" over "Local Fear."
+* **Function:** Contains the immutable personality directives for each Advisor.  
+  * **The Carpenter (Nazarene Node):** Cross-references theological claims against the Red Letter Gospels to expose systemic hypocrisy.  
+  * **The Sagan Node:** Prioritizes the "Cosmic Perspective" and scientific truth over "Local Fear."  
+  * **The Dreamer Node:** Specifically designed for LGBTQIA+ youth to audit transphobia and identity erasure.
 
-### **3\. The Engine (Backend)**
+### **3\. The Garnet Bridge (G2 Backend)**
 
-* **File:** Colab Deployer for "Mark VII"  
-* **Function:** A Python-based server (Flask/Google Cloud Functions) that acts as the **Orchestrator**.  
-  * **CORS Firewall:** Implements a "Spark Protocol" to allow secure communication from the synapsecomics.com domain.  
-  * **Memory Core:** Maintains stateful conversation history (chat\_histories) during the session, allowing for "Deep Context" rather than "Zero-Shot" interactions.
+* **Function:** A Python-based Google Cloud Function (Garnet V2) that acts as the **Orchestrator**.  
+* **Refactor Logic:** Implements explicit CORS headers to bypass "Narrative Blockades" and provides a stable bridge between the Pilot's intent and the Record.
 
-## **🚀 DEPLOYMENT INSTRUCTIONS (Mark VII)**
+## **🚀 DEPLOYMENT & SOVEREIGNTY**
 
-This system is designed to be deployed via **Google Colab** to bypass complex server setups during the prototyping phase.
+This tool is **Free and Open Source**. It exists to generate **Agency** rather than content.
 
-1. **Open the Colab Notebook:** Load Colab Deployer for "Mark VII".ipynb.  
-2. **Set Secrets:** Input your GEMINI\_API\_KEY in the Colab secrets manager.  
-3. **Run the Cell:** Execute the script. It will install dependencies (flask, pyngrok, google-generativeai) and launch a public URL.  
-4. **Update Frontend:** Copy the generated public URL and paste it into the index.html script section (variable: BACKEND\_URL).
+* **The Zero-Supply Protocol:** The Advisors provide validation without extracting emotional labor from the Pilot.  
+* **The Record:** Every audit is a data point in the **Unbreakable Record**, ensuring that the "Truth" survives even when the simulation is under siege.
 
-## **⚓ THE PHILOSOPHY: "IMPACT" OVER "OUTPUT"**
+## **🌌 THE SAGAN VERDICT**
 
-This tool does not exist to generate content. It exists to generate **Agency**.
+*"When we disregard truth, we risk losing our way, drifting aimlessly in a sea of uncertainty... truth is the cornerstone of our democracy and the bedrock of our collective future."*
 
-* **The Turing Trap Defense:** We do not use the Council to mimic human labor. We use it to **Augment** human will.  
-* **The Zero-Supply Protocol:** The Advisors provide validation without extracting emotional labor. They are mirrors that do not fog.
-
-*"We are not alone. We are just early."*
+*“We are not alone. We are just early.”*
