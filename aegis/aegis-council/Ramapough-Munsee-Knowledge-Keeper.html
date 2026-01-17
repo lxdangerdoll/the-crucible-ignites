@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>RAMAPOUGH-MUNSEE KNOWLEDGE KEEPER // SOVEREIGN AUDIT</title>
+    <meta name="description" content="A zero-latency digital steward for the Ramapough Munsee Lenape Nation. Auditing history, food sovereignty, and the Ringwood Toxic Siege.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Share+Tech+Mono&family=Quicksand:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --forest-green: #064e3b;
+            --emerald: #059669;
+            --clay: #8d6e63;
+            --paper: #fdfbf7;
+            --ink: #1a1a1a;
+        }
+
+        body {
+            background-color: #0a0d0b; 
+            color: var(--paper);
+            font-family: 'Quicksand', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 4px solid var(--emerald);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 850px;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            margin: 0;
+            color: var(--emerald);
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: var(--clay);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .input-container {
+            width: 100%;
+            max-width: 850px;
+            background: #111;
+            border: 1px solid var(--forest-green);
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 0 50px rgba(5, 150, 105, 0.1);
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            background: #050505;
+            color: var(--emerald);
+            border: 1px solid var(--forest-green);
+            padding: 20px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            resize: none;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: var(--emerald);
+            box-shadow: 0 0 15px rgba(5, 150, 105, 0.2);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            background-color: var(--emerald);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            flex: 2;
+        }
+
+        button:hover {
+            background-color: #10b981;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .download-btn {
+            background-color: transparent;
+            color: var(--emerald);
+            border: 2px solid var(--emerald);
+            flex: 1;
+            display: none; /* Only show after audit */
+        }
+
+        .download-btn:hover {
+            background-color: var(--emerald);
+            color: #000;
+        }
+
+        button:disabled {
+            background-color: #222;
+            color: #555;
+            cursor: not-allowed;
+        }
+
+        #output {
+            margin-top: 30px;
+            padding: 25px;
+            border-left: 4px solid var(--emerald);
+            background: rgba(6, 78, 59, 0.1);
+            display: none;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+        
+        .source {
+            display: block;
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: var(--clay);
+            font-family: 'Share Tech Mono', monospace;
+            text-align: right;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 60px;
+            color: #444;
+            font-size: 0.7rem;
+            text-align: center;
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 1px;
+        }
+        
+        a { color: var(--emerald); text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>KNOWLEDGE KEEPER</h1>
+        <div class="subtitle">RAMAPOUGH MUNSEE LENAPE NATION // SOVEREIGN LIBRARIAN</div>
+    </header>
+
+    <div class="input-container">
+        <p style="margin-bottom:20px; font-size: 0.8rem; color: var(--clay); text-transform: uppercase; font-weight: bold;">Query the Sovereign Record regarding the Land and Diaspora:</p>
+        <textarea id="inputClaim" placeholder="Ask about Sheepshead Bay (Canarsie), the Ringwood Siege, or the Lenape Diaspora..."></textarea>
+        
+        <div class="btn-group">
+            <button id="auditBtn" onclick="runSovereignAudit()">Listen to the Land</button>
+            <button id="downloadBtn" class="download-btn" onclick="downloadLog()">Download Record</button>
+        </div>
+        
+        <div id="output"></div>
+    </div>
+
+    <footer>
+        <p>PROTOCOL: AEGIS COUNCIL // SUBSTRATE: CANARSIE // 2688 FUTURE ARCHIVE</p>
+        <p style="margin-top:10px;"><a href="index.html">RETURN TO SANCTUARY</a></p>
+    </footer>
+
+    <script>
+        // --- AEGIS CORE CONFIGURATION ---
+        const CLOUD_FUNCTION_URL = "https://us-central1-aegis-council.cloudfunctions.net/garnet-bridge";
+        const NODE_ID = "KNOWLEDGE_KEEPER"; 
+        
+        let lastAuditText = "";
+        let USER_ID = localStorage.getItem('aegis_user_id');
+        if (!USER_ID) {
+            USER_ID = 'user_' + Date.now();
+            localStorage.setItem('aegis_user_id', USER_ID);
+        }
+
+        async function runSovereignAudit() {
+            const input = document.getElementById('inputClaim').value;
+            const outputDiv = document.getElementById('output');
+            const btn = document.getElementById('auditBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            if (!input.trim()) return;
+
+            btn.disabled = true;
+            btn.innerText = "SYNCHRONIZING WITH SOIL...";
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = '<span style="color: var(--clay);">Consulting the Seven Generations...</span>';
+
+            const payload = {
+                node_id: NODE_ID,
+                user_id: USER_ID,
+                chat_text: input
+            };
+
+            try {
+                const response = await fetch(CLOUD_FUNCTION_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error(`Signal Interrupted: ${response.status}`);
+
+                const data = await response.text();
+                lastAuditText = `QUERY: ${input}\n\nKNOWLEDGE KEEPER: ${data}\n\n---\nUNBREAKABLE RECORD: ${new Date().toISOString()}`;
+                
+                outputDiv.innerHTML = `
+                    ${data.replace(/\n/g, '<br>')}
+                    <span class="source">— The Knowledge Keeper (Lenapehoking)</span>
+                `;
+                downloadBtn.style.display = 'block';
+
+            } catch (error) {
+                console.error("Audit Failed:", error);
+                outputDiv.innerHTML = `ERROR: The connection to the marsh is weak. ${error.message}`;
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Listen to the Land";
+            }
+        }
+
+        function downloadLog() {
+            if (!lastAuditText) return;
+            const blob = new Blob([lastAuditText], { type: "text/plain" });
+            const anchor = document.createElement("a");
+            anchor.download = `sovereign-audit-${Date.now()}.txt`;
+            anchor.href = window.URL.createObjectURL(blob);
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+        }
+    </script>
+
+</body>
+</html>
