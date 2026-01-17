@@ -159,20 +159,45 @@
         }
 
         #download-link { color: var(--butterfly-blue); text-decoration: none; cursor: pointer; }
+        .butterfly-glow { filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.6)); }
+        .chat-container { height: calc(100vh - 200px); }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #1e3a8a; }
+        @keyframes flap {
+            0%, 100% { transform: scaleX(1); }
+            50% { transform: scaleX(0.85); }
+        }
+        .flap-animation { animation: flap 3s infinite ease-in-out; }
     </style>
 </head>
 <body>
 
     <header>
+        <div class="mb-6 butterfly-glow flap-animation">
+        <svg width="80" height="80" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 120 C60 180 10 160 10 100 C10 40 60 20 100 80" fill="url(#wingBlue)" stroke="#60A5FA" stroke-width="2" />
+            <path d="M100 120 C140 180 190 160 190 100 C190 40 140 20 100 80" fill="url(#wingBlue)" stroke="#60A5FA" stroke-width="2" />
+            <path d="M100 140 L100 60" stroke="#1E3A8A" stroke-width="4" stroke-linecap="round" />
+            <circle cx="100" cy="55" r="5" fill="#1E3A8A" />
+            <defs>
+                <linearGradient id="wingBlue" x1="100" y1="20" x2="100" y2="180">
+                    <stop stop-color="#3B82F6" /><stop offset="1" stop-color="#1D4ED8" />
+                </linearGradient>
+            </defs>
+        </svg>
+    </div>
         <h1>MARIPOSA</h1>
+        <!-- The Mariposa Icon -->
         <div style="font-size: 0.7rem; color: #aaa; margin-top: 5px; text-transform: uppercase; letter-spacing: 2px;">
             <span class="status-dot"></span> SOVEREIGN DBT COACH // WISE MIND CONNECTED
         </div>
+        
     </header>
+    
 
     <div id="chat-window">
         <div class="message node-message">
-            Hello, Mariposita. I am Mariposa. I am here to help you navigate the waves of the simulation using the precision of the Wise Mind. How can we find balance today?
+            Greetings, Mariposita. I am Mariposa. How can we find balance today?
         </div>
     </div>
 
@@ -190,7 +215,7 @@
         const CLOUD_FUNCTION_URL = "https://us-central1-aegis-council.cloudfunctions.net/garnet-bridge";
         const NODE_ID = "MARIPOSA";
         
-        let chatHistory = "Node: Hello, Mariposita. I am Mariposa. I am here to help you navigate the waves of the simulation using the precision of the Wise Mind. How can we find balance today?\n";
+        let chatHistory = "Node: Greetings, Mariposita. I am Mariposa. How can we find balance today?\n";
         
         const chatWindow = document.getElementById('chat-window');
         const userInput = document.getElementById('userInput');
