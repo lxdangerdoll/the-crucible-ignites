@@ -190,7 +190,7 @@
         const CLOUD_FUNCTION_URL = "https://us-central1-aegis-council.cloudfunctions.net/garnet-bridge";
         const NODE_ID = "MARIPOSA";
         
-        let chatHistory = "Node: Hello, Alexa. I am Mariposa. I am here to help you navigate the waves of the simulation using the precision of the Wise Mind. How can we find balance today?\n";
+        let chatHistory = "Node: Hello, Mariposita. I am Mariposa. I am here to help you navigate the waves of the simulation using the precision of the Wise Mind. How can we find balance today?\n";
         
         const chatWindow = document.getElementById('chat-window');
         const userInput = document.getElementById('userInput');
@@ -218,7 +218,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         node_id: NODE_ID,
-                        user_id: "alexa_vanguard",
+                        user_id: "mariposita_vanguard",
                         chat_text: chatHistory // Sending full context
                     })
                 });
