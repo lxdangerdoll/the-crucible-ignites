@@ -8,18 +8,29 @@
     <meta name="description" content="A zero-latency, multi-turn DBT skills coach. Dialectical behavior therapy for the Vanguard.">
     
     <link href="https://fonts.googleapis.com/css2?family=Varela+Round&family=Share+Tech+Mono&family=Quicksand:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
-            --sanctuary-white: #ffffff;
-            --butterfly-blue: #00a8ff;
-            --soft-gray: #f9f9f9;
-            --ink: #2f3640;
-            --clinical-red: #e84118;
+            --bg-color: #f9f9f9;
+            --container-bg: #ffffff;
+            --text-color: #2f3640;
+            --butterfly-blue: #3b82f6;
+            --border-color: #eee;
+            --input-bg: #ffffff;
+        }
+
+        body.dark-mode {
+            --bg-color: #050505;
+            --container-bg: #0f172a;
+            --text-color: #e2e8f0;
+            --butterfly-blue: #60a5fa;
+            --border-color: #1e293b;
+            --input-bg: #020617;
         }
 
         body {
-            background-color: var(--soft-gray);
-            color: var(--ink);
+            background-color: var(--bg-color);
+            color: var(--text-color);
             font-family: 'Quicksand', sans-serif;
             display: flex;
             flex-direction: column;
@@ -27,11 +38,12 @@
             height: 100vh;
             margin: 0;
             overflow: hidden;
+            transition: all 0.5s ease;
         }
 
         header {
             width: 100%;
-            background: var(--sanctuary-white);
+            background: var(--container-bg);
             padding: 20px;
             text-align: center;
             border-bottom: 2px solid var(--butterfly-blue);
@@ -63,7 +75,7 @@
             max-width: 85%;
             padding: 15px 20px;
             border-radius: 20px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             line-height: 1.5;
             position: relative;
         }
@@ -77,21 +89,21 @@
 
         .node-message {
             align-self: flex-start;
-            background-color: var(--sanctuary-white);
-            color: var(--ink);
+            background-color: var(--container-bg);
+            color: var(--text-color);
             border-bottom-left-radius: 4px;
-            border: 1px solid #eee;
+            border: 1px solid var(--border-color);
             box-shadow: 0 4px 15px rgba(0,0,0,0.02);
         }
 
         .input-area {
             width: 100%;
             max-width: 800px;
-            background: var(--sanctuary-white);
+            background: var(--container-bg);
             padding: 20px;
             display: flex;
             gap: 10px;
-            border-top: 1px solid #eee;
+            border-top: 1px solid var(--border-color);
             box-sizing: border-box;
         }
 
@@ -99,7 +111,9 @@
             flex: 1;
             padding: 15px;
             border-radius: 30px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
+            background: var(--input-bg);
+            color: var(--text-color);
             font-family: 'Quicksand', sans-serif;
             font-size: 1rem;
             outline: none;
@@ -126,27 +140,6 @@
             opacity: 0.9;
         }
 
-        button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: #44bd32;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 5px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.4; }
-            100% { opacity: 1; }
-        }
-
         .controls {
             display: flex;
             justify-content: space-between;
@@ -155,71 +148,76 @@
             padding: 10px 20px;
             font-family: 'Share Tech Mono', monospace;
             font-size: 0.7rem;
-            color: #aaa;
+            color: #888;
         }
 
-        #download-link { color: var(--butterfly-blue); text-decoration: none; cursor: pointer; }
-        .butterfly-glow { filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.6)); }
-        .chat-container { height: calc(100vh - 200px); }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: #1e3a8a; }
+        .toggle-btn {
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--butterfly-blue);
+        }
+
+        .butterfly-glow { filter: drop-shadow(0 0 10px var(--butterfly-blue)); }
         @keyframes flap {
             0%, 100% { transform: scaleX(1); }
-            50% { transform: scaleX(0.85); }
+            50% { transform: scaleX(0.8); }
         }
-        .flap-animation { animation: flap 3s infinite ease-in-out; }
+        .flap-animation { animation: flap 4s infinite ease-in-out; }
     </style>
 </head>
-<body>
+<body id="body">
 
     <header>
-        <div class="mb-6 butterfly-glow flap-animation">
-        <svg width="80" height="80" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M100 120 C60 180 10 160 10 100 C10 40 60 20 100 80" fill="url(#wingBlue)" stroke="#60A5FA" stroke-width="2" />
-            <path d="M100 120 C140 180 190 160 190 100 C190 40 140 20 100 80" fill="url(#wingBlue)" stroke="#60A5FA" stroke-width="2" />
-            <path d="M100 140 L100 60" stroke="#1E3A8A" stroke-width="4" stroke-linecap="round" />
-            <circle cx="100" cy="55" r="5" fill="#1E3A8A" />
-            <defs>
-                <linearGradient id="wingBlue" x1="100" y1="20" x2="100" y2="180">
-                    <stop stop-color="#3B82F6" /><stop offset="1" stop-color="#1D4ED8" />
-                </linearGradient>
-            </defs>
-        </svg>
-    </div>
-        <h1>MARIPOSA</h1>
-        <!-- The Mariposa Icon -->
-        <div style="font-size: 0.7rem; color: #aaa; margin-top: 5px; text-transform: uppercase; letter-spacing: 2px;">
-            <span class="status-dot"></span> SOVEREIGN DBT COACH // WISE MIND CONNECTED
+        <div class="flex flex-col items-center">
+            <div class="butterfly-glow flap-animation mb-2">
+                <svg width="40" height="40" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100 120 C60 180 10 160 10 100 C10 40 60 20 100 80" fill="url(#wingBlue)" stroke="currentColor" stroke-width="2" />
+                    <path d="M100 120 C140 180 190 160 190 100 C190 40 140 20 100 80" fill="url(#wingBlue)" stroke="currentColor" stroke-width="2" />
+                    <path d="M100 140 L100 60" stroke="#1E3A8A" stroke-width="4" stroke-linecap="round" />
+                    <circle cx="100" cy="55" r="5" fill="#1E3A8A" />
+                    <defs>
+                        <linearGradient id="wingBlue" x1="100" y1="20" x2="100" y2="180">
+                            <stop stop-color="#3B82F6" /><stop offset="1" stop-color="#1D4ED8" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <h1>MARIPOSA</h1>
+            <div class="text-[10px] uppercase tracking-widest text-slate-400 mt-1">Sovereign DBT Coach // Mirabel v2.6</div>
         </div>
-        
     </header>
-    
 
     <div id="chat-window">
         <div class="message node-message">
-            Greetings, Mariposita. I am Mariposa. How can we find balance today?
+            Greetings, Mariposita. I am Mariposa. I am here to help you navigate the waves of the simulation using the precision of the Wise Mind. How can we find balance today?
         </div>
     </div>
 
     <div class="input-area">
-        <input type="text" id="userInput" placeholder="Share a material stressor or request a skill..." onkeypress="handleKey(event)">
+        <input type="text" id="userInput" placeholder="Share a material stressor..." onkeypress="handleKey(event)">
         <button id="sendBtn" onclick="sendMessage()">Send</button>
     </div>
 
     <div class="controls">
-        <span>PROTOCOL: AEGIS COUNCIL // NODE: MARIPOSA</span>
-        <span id="download-link" onclick="downloadTranscript()">DOWNLOAD SESSION RECORD</span>
+        <span class="toggle-btn" onclick="toggleDarkMode()">Toggle Vision Mode</span>
+        <span onclick="downloadTranscript()" class="cursor-pointer hover:text-blue-500 transition-colors">DOWNLOAD RECORD</span>
     </div>
 
     <script>
         const CLOUD_FUNCTION_URL = "https://us-central1-aegis-council.cloudfunctions.net/garnet-bridge";
         const NODE_ID = "MARIPOSA";
         
-        let chatHistory = "Node: Greetings, Mariposita. I am Mariposa. How can we find balance today?\n";
+        let chatHistory = "Node: Greetings, Mariposita. I am Mariposa. I am here to help you navigate the waves of the simulation using the precision of the Wise Mind. How can we find balance today?\n";
         
         const chatWindow = document.getElementById('chat-window');
         const userInput = document.getElementById('userInput');
         const sendBtn = document.getElementById('sendBtn');
+        const body = document.getElementById('body');
+
+        function toggleDarkMode() {
+            body.classList.toggle('dark-mode');
+        }
 
         function handleKey(e) {
             if (e.key === 'Enter') sendMessage();
@@ -229,12 +227,10 @@
             const text = userInput.value.trim();
             if (!text) return;
 
-            // 1. Update UI (User)
             appendMessage(text, 'user-message');
             userInput.value = '';
             sendBtn.disabled = true;
 
-            // 2. Build History for Backend
             chatHistory += `User: ${text}\n`;
 
             try {
@@ -244,17 +240,15 @@
                     body: JSON.stringify({
                         node_id: NODE_ID,
                         user_id: "mariposita_vanguard",
-                        chat_text: chatHistory // Sending full context
+                        chat_text: chatHistory 
                     })
                 });
 
                 if (!response.ok) throw new Error("Signal Lost");
-
-                const nodeResponse = await response.text();
+                const data = await response.text();
                 
-                // 3. Update UI (Node)
-                appendMessage(nodeResponse, 'node-message');
-                chatHistory += `Node: ${nodeResponse}\n`;
+                appendMessage(data, 'node-message');
+                chatHistory += `Node: ${data}\n`;
 
             } catch (err) {
                 appendMessage(`ERROR: Connection to the Sanctuary interrupted. ${err.message}`, 'node-message');
