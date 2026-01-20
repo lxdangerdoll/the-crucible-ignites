@@ -28,209 +28,127 @@
             --input-bg: #020617;
         }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Quicksand', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            transition: all 0.5s ease;
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            font-family: 'Quicksand', sans-serif; 
+            transition: all 0.5s ease; 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+            margin: 0; 
         }
 
-        header {
-            width: 100%;
-            background: var(--container-bg);
-            padding: 20px;
-            text-align: center;
-            border-bottom: 2px solid var(--butterfly-blue);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            z-index: 10;
-        }
-
-        h1 {
-            font-family: 'Varela Round', sans-serif;
-            font-size: 1.5rem;
-            margin: 0;
-            color: var(--butterfly-blue);
-            letter-spacing: 1px;
-        }
-
-        #chat-window {
-            flex: 1;
-            width: 100%;
-            max-width: 800px;
-            overflow-y: auto;
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            scroll-behavior: smooth;
-        }
-
-        .message {
-            max-width: 85%;
-            padding: 15px 20px;
-            border-radius: 20px;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            position: relative;
-        }
-
-        .user-message {
-            align-self: flex-end;
-            background-color: var(--butterfly-blue);
-            color: white;
-            border-bottom-right-radius: 4px;
-        }
-
-        .node-message {
-            align-self: flex-start;
-            background-color: var(--container-bg);
-            color: var(--text-color);
-            border-bottom-left-radius: 4px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
-        }
-
-        .input-area {
-            width: 100%;
-            max-width: 800px;
-            background: var(--container-bg);
-            padding: 20px;
-            display: flex;
-            gap: 10px;
-            border-top: 1px solid var(--border-color);
-            box-sizing: border-box;
-        }
-
-        input {
-            flex: 1;
-            padding: 15px;
-            border-radius: 30px;
-            border: 1px solid var(--border-color);
-            background: var(--input-bg);
-            color: var(--text-color);
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        input:focus {
-            border-color: var(--butterfly-blue);
-        }
-
-        button {
-            background: var(--butterfly-blue);
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s, opacity 0.2s;
-        }
-
-        button:hover {
-            transform: scale(1.05);
-            opacity: 0.9;
-        }
-
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 800px;
-            padding: 10px 20px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.7rem;
-            color: #888;
-        }
-
-        .toggle-btn {
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--butterfly-blue);
-        }
-
+        .message { max-width: 85%; padding: 12px 18px; border-radius: 20px; font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px; }
+        .user-message { align-self: flex-end; background-color: var(--butterfly-blue); color: white; border-bottom-right-radius: 4px; }
+        .node-message { align-self: flex-start; background-color: var(--container-bg); border: 1px solid var(--border-color); border-bottom-left-radius: 4px; }
+        
         .butterfly-glow { filter: drop-shadow(0 0 10px var(--butterfly-blue)); }
-        @keyframes flap {
-            0%, 100% { transform: scaleX(1); }
-            50% { transform: scaleX(0.8); }
-        }
+        @keyframes flap { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(0.8); } }
         .flap-animation { animation: flap 4s infinite ease-in-out; }
+
+        #about-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #about-modal.active { display: flex; }
     </style>
 </head>
-<body id="body">
+<body id="body" class="dark-mode">
 
-    <header>
-        <div class="flex flex-col items-center">
-            <div class="butterfly-glow flap-animation mb-2">
-                <svg width="40" height="40" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Header -->
+    <header class="p-6 flex justify-between items-center border-b-2 border-blue-500 bg-slate-900/50 backdrop-blur-md italic font-semibold">
+        <div class="flex items-center gap-3">
+            <div class="butterfly-glow flap-animation inline-block">
+                <svg width="32" height="32" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M100 120 C60 180 10 160 10 100 C10 40 60 20 100 80" fill="url(#wingBlue)" stroke="currentColor" stroke-width="2" />
                     <path d="M100 120 C140 180 190 160 190 100 C190 40 140 20 100 80" fill="url(#wingBlue)" stroke="currentColor" stroke-width="2" />
                     <path d="M100 140 L100 60" stroke="#1E3A8A" stroke-width="4" stroke-linecap="round" />
-                    <circle cx="100" cy="55" r="5" fill="#1E3A8A" />
-                    <defs>
-                        <linearGradient id="wingBlue" x1="100" y1="20" x2="100" y2="180">
-                            <stop stop-color="#3B82F6" /><stop offset="1" stop-color="#1D4ED8" />
-                        </linearGradient>
-                    </defs>
+                    <defs><linearGradient id="wingBlue" x1="100" y1="20" x2="100" y2="180"><stop stop-color="#3B82F6" /><stop offset="1" stop-color="#1D4ED8" /></linearGradient></defs>
                 </svg>
             </div>
-            <h1>MARIPOSA</h1>
-            <div class="text-[10px] uppercase tracking-widest text-slate-400 mt-1">Sovereign DBT Coach // Mirabel v2.6</div>
+            <div>
+                <h1 class="text-blue-400 font-['Varela_Round'] tracking-widest text-lg uppercase italic leading-none">MARIPOSA</h1>
+                <p class="text-[8px] uppercase tracking-[0.2em] opacity-50 mt-1">Sovereign DBT Coach // Mirabel v2.9</p>
+            </div>
         </div>
+        <button onclick="toggleModal(true)" class="p-2 text-blue-400 hover:text-white transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </button>
     </header>
 
-    <div id="chat-window">
+    <!-- About Modal -->
+    <div id="about-modal">
+        <div class="bg-slate-900 border border-blue-900 p-8 rounded-3xl max-w-sm w-full relative">
+            <button onclick="toggleModal(false)" class="absolute top-4 right-4 text-slate-500 hover:text-white">✕</button>
+            
+            <h2 class="text-blue-400 font-['Varela_Round'] text-xl uppercase italic mb-4">About Mariposa</h2>
+            
+            <div class="text-xs text-slate-300 space-y-4 mb-8 italic leading-relaxed">
+                <p>Mariposa is a 24/7/365 Sovereign DBT Skills Coach built by a solo developer and "fellow traveler."</p>
+                <p><strong>Protocol: 0% Violence. 100% Presence.</strong></p>
+                <p>I built this alone in my bedroom because I believe no one should have to navigate the waves of life in silence. This app is free to use for all who seek their Wise Mind.</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <a href="https://account.venmo.com/u/alexa-king-8" target="_blank" class="bg-blue-600/20 border border-blue-500 py-3 rounded-xl text-center text-[10px] font-bold tracking-widest hover:bg-blue-500 hover:text-white transition-all uppercase">Venmo</a>
+                <a href="https://paypal.me/notallwhowanderr" target="_blank" class="bg-slate-800 border border-slate-700 py-3 rounded-xl text-center text-[10px] font-bold tracking-widest hover:bg-slate-700 hover:text-white transition-all uppercase">PayPal</a>
+            </div>
+
+            <p class="text-[8px] text-center mt-6 text-slate-600 uppercase tracking-widest">Aegis Council // The Unbreakable Record</p>
+        </div>
+    </div>
+
+    <!-- Chat Interface -->
+    <div id="chat-window" class="flex-1 overflow-y-auto p-6 flex flex-col scrollbar-hide">
         <div class="message node-message">
             Greetings, Mariposita. I am Mariposa. I am here to help you navigate the waves of the simulation using the precision of the Wise Mind. How can we find balance today?
         </div>
     </div>
 
-    <div class="input-area">
-        <input type="text" id="userInput" placeholder="Share a material stressor..." onkeypress="handleKey(event)">
-        <button id="sendBtn" onclick="sendMessage()">Send</button>
+    <!-- Input Area -->
+    <div class="p-4 bg-slate-950/80 border-t border-slate-900 flex gap-2">
+        <input type="text" id="userInput" placeholder="Share a material stressor..." onkeypress="if(event.key==='Enter')sendMessage()" class="flex-1 bg-black border border-slate-800 rounded-full px-5 py-3 text-sm outline-none focus:border-blue-500 transition-all font-mono uppercase italic text-blue-400">
+        <button id="sendBtn" onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest transition-all">Send</button>
     </div>
 
-    <div class="controls">
-        <span class="toggle-btn" onclick="toggleDarkMode()">Toggle Vision Mode</span>
-        <span onclick="downloadTranscript()" class="cursor-pointer hover:text-blue-500 transition-colors">DOWNLOAD RECORD</span>
+    <!-- Sub-Footer -->
+    <div class="p-2 flex justify-between items-center text-[9px] font-mono text-slate-600 uppercase tracking-widest italic bg-black">
+        <span onclick="document.getElementById('body').classList.toggle('dark-mode')" class="cursor-pointer hover:text-blue-400">Vision Mode</span>
+        <span onclick="downloadTranscript()" class="cursor-pointer hover:text-blue-400">Download Record</span>
     </div>
 
     <script>
         const CLOUD_FUNCTION_URL = "https://us-central1-aegis-council.cloudfunctions.net/garnet-bridge";
         const NODE_ID = "MARIPOSA";
-        
-        let chatHistory = "Node: Greetings, Mariposita. I am Mariposa. I am here to help you navigate the waves of the simulation using the precision of the Wise Mind. How can we find balance today?\n";
-        
-        const chatWindow = document.getElementById('chat-window');
-        const userInput = document.getElementById('userInput');
-        const sendBtn = document.getElementById('sendBtn');
-        const body = document.getElementById('body');
+        let chatHistory = "Node: Greetings, Mariposita. I am Mariposa. I am here to help you navigate the waves of the simulation using the precision of the Wise Mind. How can we find balance today? \n";
 
-        function toggleDarkMode() {
-            body.classList.toggle('dark-mode');
-        }
-
-        function handleKey(e) {
-            if (e.key === 'Enter') sendMessage();
+        function toggleModal(show) {
+            const modal = document.getElementById('about-modal');
+            if (show) modal.classList.add('active');
+            else modal.classList.remove('active');
         }
 
         async function sendMessage() {
-            const text = userInput.value.trim();
+            const input = document.getElementById('userInput');
+            const sendBtn = document.getElementById('sendBtn');
+            const chatWindow = document.getElementById('chat-window');
+            const text = input.value.trim();
+            
             if (!text) return;
 
             appendMessage(text, 'user-message');
-            userInput.value = '';
+            input.value = '';
             sendBtn.disabled = true;
-
             chatHistory += `User: ${text}\n`;
 
             try {
@@ -261,6 +179,7 @@
             const div = document.createElement('div');
             div.className = `message ${className}`;
             div.innerText = text;
+            const chatWindow = document.getElementById('chat-window');
             chatWindow.appendChild(div);
             chatWindow.scrollTop = chatWindow.scrollHeight;
         }
