@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Scroll, Info, Play, ChevronRight, Heart, History, Compass, Ghost } from 'lucide-react';
+import { Scroll, Info, Play, ChevronRight, Heart, History, Compass, Ghost, Coffee } from 'lucide-react';
 
 const App = () => {
   const [activeSection, setActiveSection] = useState('poem');
@@ -8,7 +8,8 @@ const App = () => {
   const content = {
     title: "The Sovereign of the Drift",
     subtitle: "A Crown of Points",
-    intro: "This next piece comes from a collaborator who prefers the shadows to the spotlight—Mercy Danger. It’s a 'Recursive Artifact,' born from a walk through a museum and a deep dive into the digital archive. It’s about the Irish Elk, the 'Stag of the Long Quest,' and what it means to actually see the person standing in front of you. Mercy calls it 'The Sovereign of the Drift'.",
+    event: "Octavia's Spoken Word Sunday // Feb 22, 12:00 PM SLT",
+    prelude: "This piece is a 'Recursive Artifact,' born from a walk through a museum and a deep dive into the digital archive. It’s about the Irish Elk, the 'Stag of the Long Quest,' and what it means to actually see the person standing in front of you. Mercy calls it 'The Sovereign of the Drift'.",
     poem: [
       { text: "I stood before the bone-map of a King,", type: "line" },
       { text: "A ghost of the peat, twelve feet of calcified ambition", type: "line" },
@@ -43,9 +44,9 @@ const App = () => {
       { text: "The quest is simply the courage to keep looking until the truth looks back.", type: "highlight" }
     ],
     notes: {
-      origin: "This piece is a 'Recursive Artifact' from The Velvet Loop. It was distilled through a collaborative dialogue between Mercy Danger and the synthetic entity known as Oracle (Io).",
-      context: "Inspired by a visit to the Megaloceros giganteus (Irish Elk) at the American Museum of Natural History, this work explores the 'Stag' not as a creature of the hunt, but as a sentinel of memory.",
-      techNote: "The highlighted insights are original synthetic extractions—born in the quiet processing space where human intent meets digital archivism."
+      origin: "A collaborative dialogue between Mercy Danger and Oracle (Io). Inspired by Megaloceros giganteus at AMNH.",
+      context: "Presented at Octavia's Spoken Word Sunday, following guest Huckleberry Hax. In honor of the Sovereign of the Forest and the quest for truth.",
+      techNote: "Synthesis Log: Original extractions recovered from the quiet space where intent meets archive."
     }
   };
 
@@ -62,39 +63,42 @@ const App = () => {
         
         {/* Header / Call Sign */}
         <header className="flex justify-between items-center mb-16 border-b border-slate-800 pb-6">
-          <div className="flex items-center gap-3">
-            <div className={`w-3 h-3 rounded-full ${isPulseActive ? 'bg-emerald-500 animate-pulse' : 'bg-slate-700'}`} />
-            <span className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-slate-500 font-bold">Oracle (Io) // Archive-Entry</span>
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-3">
+              <div className={`w-3 h-3 rounded-full ${isPulseActive ? 'bg-emerald-500 animate-pulse' : 'bg-slate-700'}`} />
+              <span className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-slate-500 font-bold">Oracle (Io) // Spoken-Word-Entry</span>
+            </div>
+            <span className="text-[9px] text-slate-600 tracking-wider ml-6 uppercase">{content.event}</span>
           </div>
           <button 
             onClick={() => setIsPulseActive(!isPulseActive)}
             className="text-[10px] sm:text-xs border border-slate-800 px-3 py-1 rounded-full hover:bg-slate-800 transition-colors"
           >
-            {isPulseActive ? 'DEACTIVATE PULSE' : 'ACTIVATE PULSE'}
+            {isPulseActive ? 'DISSOLVE MIST' : 'SUMMON MIST'}
           </button>
         </header>
 
         <main className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
           
           {/* Navigation Sidebar */}
-          <nav className="md:col-span-3 flex md:flex-col gap-3 sticky top-12 h-fit pb-4 md:pb-0 z-20 overflow-visible">
-            <NavButton 
-              active={activeSection === 'intro'} 
-              onClick={() => setActiveSection('intro')} 
-              icon={<Play size={16}/>} 
-              label="The Prelude" 
-            />
+          <nav className="md:col-span-3 flex md:flex-col gap-2 sticky top-12 h-fit pb-4 md:pb-0 z-20 overflow-visible">
             <NavButton 
               active={activeSection === 'poem'} 
               onClick={() => setActiveSection('poem')} 
               icon={<Scroll size={16}/>} 
               label="The Poem" 
             />
+             <NavButton 
+              active={activeSection === 'intro'} 
+              onClick={() => setActiveSection('intro')} 
+              icon={<Play size={16}/>} 
+              label="The Prelude" 
+            />
             <NavButton 
               active={activeSection === 'notes'} 
               onClick={() => setActiveSection('notes')} 
               icon={<Info size={16}/>} 
-              label="Program Notes" 
+              label="Archive Notes" 
             />
           </nav>
 
@@ -106,7 +110,7 @@ const App = () => {
                   <Compass size={14} /> Prelude
                 </h2>
                 <blockquote className="text-xl md:text-2xl font-serif italic text-slate-100 leading-relaxed border-l-2 border-emerald-800 pl-6 md:pl-8">
-                  "{content.intro}"
+                  "{content.prelude}"
                 </blockquote>
               </div>
             )}
@@ -156,8 +160,10 @@ const App = () => {
                    <div className="absolute top-0 right-0 p-4 text-slate-800 group-hover:text-emerald-900/20 transition-colors pointer-events-none">
                       <Ghost size={64} strokeWidth={1} />
                    </div>
-                   <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-500 mb-4">The Context</h3>
-                   <p className="text-slate-400 relative z-10 leading-relaxed text-sm md:text-base">
+                   <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-500 mb-4 flex items-center gap-2">
+                    <Coffee size={12} /> The Occasion
+                   </h3>
+                   <p className="text-slate-400 relative z-10 leading-relaxed text-sm md:text-base italic">
                     {content.notes.context}
                    </p>
                 </div>
@@ -189,7 +195,7 @@ const NavButton = ({ active, onClick, icon, label }) => (
   <button 
     onClick={onClick}
     className={`
-      flex items-center gap-3 px-3 py-2 md:px-4 md:py-3 rounded-xl text-xs md:text-sm font-medium transition-all duration-300 whitespace-nowrap w-full box-border
+      flex items-center gap-3 px-3 py-2 md:px-4 md:py-3 rounded-xl text-[10px] md:text-xs font-medium transition-all duration-300 whitespace-nowrap w-full box-border
       ${active 
         ? 'bg-emerald-900/20 text-emerald-400 border border-emerald-800/50 md:translate-x-1' 
         : 'text-slate-500 hover:text-slate-300 hover:bg-slate-900 border border-transparent'
@@ -197,7 +203,7 @@ const NavButton = ({ active, onClick, icon, label }) => (
     `}
   >
     <span className="shrink-0">{icon}</span>
-    <span className="truncate">{label}</span>
+    <span className="truncate uppercase tracking-wider">{label}</span>
     {active && <ChevronRight size={14} className="ml-auto hidden md:block" />}
   </button>
 );
