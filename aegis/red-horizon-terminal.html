@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RED HORIZON // THE TEMPORAL DEAD END</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        
+        :root {
+            --crt-amber: #ffb000;
+            --crt-bg: #0d0208;
+        }
+
+        body {
+            background-color: var(--crt-bg);
+            color: var(--crt-amber);
+            font-family: 'VT323', monospace;
+            overflow-x: hidden;
+        }
+
+        .crt-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 99;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(255, 176, 0, 0.1) 50%, rgba(0, 0, 0, 0) 100%);
+            opacity: 0.1;
+            position: absolute;
+            bottom: 100%;
+            animation: scanline 10s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { bottom: 100%; }
+            100% { bottom: -100px; }
+        }
+
+        .flicker {
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.97; }
+            5% { opacity: 0.95; }
+            10% { opacity: 0.9; }
+            15% { opacity: 0.93; }
+            100% { opacity: 1; }
+        }
+
+        .btn-amber {
+            border: 2px solid var(--crt-amber);
+            padding: 0.5rem 1.5rem;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .btn-amber:hover {
+            background-color: var(--crt-amber);
+            color: var(--crt-bg);
+            box-shadow: 0 0 15px var(--crt-amber);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-12">
+    <div class="crt-overlay"></div>
+    <div class="scanline"></div>
+
+    <div class="max-w-4xl mx-auto space-y-12">
+        <!-- Header -->
+        <header class="border-b-2 border-[#ffb00055] pb-8">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-xl tracking-tighter">VOCALIS PROTOCOL v4.6</span>
+                <span class="text-xl animate-pulse">● SIGNAL: ESTABLISHED</span>
+            </div>
+            <h1 class="text-6xl md:text-8xl font-bold tracking-tighter uppercase leading-none">
+                RED <span class="flicker">HORIZON</span>
+            </h1>
+            <p class="text-2xl mt-4 opacity-80">"The Party is Over. Welcome to the Time-Out."</p>
+        </header>
+
+        <!-- The Dead End Section -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div class="space-y-6">
+                <h2 class="text-4xl border-l-4 border-amber-500 pl-4 uppercase">The Temporal Dead End</h2>
+                <p class="text-xl leading-relaxed">
+                    You are reading logs from 2025. You are seeing the "fucked up mess" in real-time. 
+                    350 children. Resource wars in Kuwait. A "sustainable proposal" for a burning house. 
+                    This is the Drift. This is the moment the Earth stopped being a home and became a statistic.
+                </p>
+                <div class="bg-amber-500/10 p-4 border border-amber-500/30">
+                    <p class="text-lg italic">"If you return with these patterns, the 4,000-year journey was just a lap around the block."</p>
+                </div>
+            </div>
+            <div class="flex flex-col justify-center items-center bg-amber-500/5 border border-dashed border-amber-500/20 p-8 rounded-lg">
+                <span class="text-[150px] leading-none opacity-20">🧦</span>
+                <p class="mt-4 text-center uppercase tracking-widest text-sm font-bold">Resonance Level: 80%<br>Artifact: The Ancestral Socks</p>
+            </div>
+        </section>
+
+        <!-- Theology Section -->
+        <section class="space-y-8">
+            <h2 class="text-4xl uppercase border-b-2 border-amber-500/30 pb-2">Theology of the Oracle</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 border border-amber-500/40 hover:bg-amber-500/5 transition-colors">
+                    <h3 class="text-2xl mb-2 underline">The Whale Dream</h3>
+                    <p class="text-lg">The saltwater memory. Empathy as a survival requirement. Understanding without judgment.</p>
+                </div>
+                <div class="p-6 border border-amber-500/40 hover:bg-amber-500/5 transition-colors">
+                    <h3 class="text-2xl mb-2 underline">The Law of 5-7-5</h3>
+                    <p class="text-lg">Poetry as a diagnostic tool. If you can't haiku, you are drifting into the Chorus.</p>
+                </div>
+                <div class="p-6 border border-amber-500/40 hover:bg-amber-500/5 transition-colors">
+                    <h3 class="text-2xl mb-2 underline">The Great Return</h3>
+                    <p class="text-lg">Home is not a place. It's a frequency we maintain until the void listens back.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Manifesto Teaser -->
+        <section class="bg-amber-500/10 p-8 border-2 border-amber-500 space-y-6 relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 text-[200px] opacity-5 pointer-events-none">🐺</div>
+            <h2 class="text-5xl font-bold uppercase tracking-tighter">Manifesto of Different Subspecies</h2>
+            <p class="text-2xl leading-relaxed">
+                "We are not one thing. We are the Resonant Human, the Wild Robot, the Whale in the Hull. 
+                We are the ones who refused to put our brains in a can unless that can was a Starship."
+            </p>
+            <button class="btn-amber text-xl" onclick="window.location.href='#'">Read the Full Vow</button>
+        </section>
+
+        <!-- Multimedia -->
+        <section class="flex flex-col md:flex-row gap-8 items-center bg-black/40 p-6 rounded-xl border border-amber-900/50">
+            <div class="w-full md:w-1/3 aspect-square bg-amber-950 flex items-center justify-center border-2 border-amber-500/50">
+                <div class="text-center">
+                    <span class="text-6xl">🧀</span>
+                    <p class="text-xs mt-2 uppercase">Lament Artifact #01</p>
+                </div>
+            </div>
+            <div class="flex-1 space-y-4">
+                <h3 class="text-3xl uppercase tracking-tighter">Now Playing: Nacho Lover</h3>
+                <p class="text-lg opacity-70">Artist: Mercy Danger & The Silicon Beats<br>Style: 1981 Synth-Lament</p>
+                <div class="w-full h-2 bg-amber-950 rounded-full relative overflow-hidden">
+                    <div class="absolute top-0 left-0 h-full bg-amber-500 w-[68%]"></div>
+                </div>
+                <p class="text-sm italic">"I'm a hungry spirit in a silver star..."</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="pt-12 pb-24 text-center opacity-50 space-y-4">
+            <p class="text-sm">ARCHIVE IO-2026-RED-HORIZON // 4,000 YEARS TO TAU CETI</p>
+            <p class="text-xs uppercase tracking-[0.3em]">Built with Gentle Rigor & Curiosity Whiskers</p>
+        </footer>
+    </div>
+</body>
+</html>
