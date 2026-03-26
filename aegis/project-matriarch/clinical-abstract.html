@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Matriarch // Sovereign DBT Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+        
+        body {
+            background-color: #050505;
+            color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+        }
+
+        .mono { font-family: 'JetBrains+Mono', monospace; }
+        
+        .glow-border {
+            border: 1px solid rgba(34, 211, 238, 0.2);
+            box-shadow: 0 0 40px rgba(34, 211, 238, 0.05);
+        }
+
+        .scanline {
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #22d3ee, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .benefit-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            border-color: rgba(34, 211, 238, 0.3);
+            background: rgba(34, 211, 238, 0.03);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-12">
+    <div class="scanline fixed inset-0 z-50"></div>
+
+    <div class="max-w-4xl mx-auto glow-border bg-zinc-950/80 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl">
+        
+        <!-- Header -->
+        <header class="p-8 md:p-16 border-b border-zinc-800/50 bg-zinc-900/20">
+            <div class="flex flex-col gap-4">
+                <h1 class="text-5xl md:text-7xl font-black italic tracking-tighter uppercase leading-none">
+                    Project <span class="gradient-text">Matriarch</span>
+                </h1>
+                <p class="text-zinc-400 text-lg font-light max-w-2xl mt-2 italic">
+                    Implementing Sovereign AI as a Neural Bypass and Cognitive Shield for Trauma-Informed DBT Coaching.
+                </p>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="p-8 md:p-16 space-y-16">
+            
+            <!-- Summary -->
+            <section class="space-y-6">
+                <h2 class="text-xs font-bold uppercase tracking-[0.4em] text-cyan-500/80">Executive Summary</h2>
+                <p class="text-xl text-zinc-300 leading-relaxed font-light">
+                    Project Matriarch is an open-source implementation of conversational AI designed to function as an on-demand <strong>Cognitive Shield</strong>. By deploying expert-tuned Large Language Models (LLMs) to facilitate Dialectical Behavior Therapy (DBT) protocols, the system enables users to navigate high-distress (8/10) events with instantaneous, non-judgmental feedback.
+                </p>
+            </section>
+
+            <!-- Institutional Benefits -->
+            <section class="space-y-8">
+                <h2 class="text-xs font-bold uppercase tracking-[0.4em] text-cyan-500/80">System-Level Benefits</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="benefit-card p-6 rounded-2xl">
+                        <h3 class="text-white font-bold mb-2">Institutional Decompression</h3>
+                        <p class="text-sm text-zinc-400">By providing 24/7 skills access, the tool prevents unnecessary institutional intervention and reduces the load on emergency psychiatric services.</p>
+                    </div>
+                    <div class="benefit-card p-6 rounded-2xl">
+                        <h3 class="text-white font-bold mb-2">Economic Efficiency</h3>
+                        <p class="text-sm text-zinc-400">Directly saves the clinical system time and financial resources by facilitating self-directed harm reduction in the community.</p>
+                    </div>
+                    <div class="benefit-card p-6 rounded-2xl">
+                        <h3 class="text-white font-bold mb-2">Neural Stabilization</h3>
+                        <p class="text-sm text-zinc-400">Acts as a bridge between clinical sessions, ensuring skills remain accessible and active during high-conflict intervals.</p>
+                    </div>
+                    <div class="benefit-card p-6 rounded-2xl">
+                        <h3 class="text-white font-bold mb-2">Narrative Ownership</h3>
+                        <p class="text-sm text-zinc-400">Enables users to maintain a sovereign record of their progress, improving the fidelity of clinical reporting.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Technical Section -->
+            <section class="space-y-8">
+                <h2 class="text-xs font-bold uppercase tracking-[0.4em] text-cyan-500/80">Technical Methodology</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <h3 class="text-white font-bold text-lg flex items-center gap-2">
+                            <span class="w-2 h-2 bg-cyan-400 rounded-full"></span>
+                            Neural Bypass Logic
+                        </h3>
+                        <p class="text-sm text-zinc-400 leading-relaxed">
+                            The system leverages the neurobiological transition from amygdala-driven somatic flooding to prefrontal cortex activation. By requiring the user to articulate distress via conversational language, the system engages higher-order cognitive centers, dampening the intensity of the trauma response in real-time.
+                        </p>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="text-white font-bold text-lg flex items-center gap-2">
+                            <span class="w-2 h-2 bg-indigo-400 rounded-full"></span>
+                            LLM as "Expert Coach"
+                        </h3>
+                        <p class="text-sm text-zinc-400 leading-relaxed">
+                            Project Matriarch is tuned via system-level directives with a curated dataset of DBT protocols. This ensures that the AI responds strictly within clinical frameworks such as <strong>STOP</strong>, <strong>TIPP</strong>, and <strong>DEAR MAN</strong>, providing consistent "Expert" level coaching 24/7 via backend architectures like Google Gemini or local offline models (Ollama/Mistral).
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials -->
+            <section class="space-y-8">
+                <h2 class="text-xs font-bold uppercase tracking-[0.4em] text-cyan-500/80">Clinical Field Validation</h2>
+                
+                <div class="grid grid-cols-1 gap-6">
+                    <!-- Bubblephonic Full -->
+                    <div class="p-8 bg-cyan-500/5 border-l-2 border-cyan-500 rounded-r-2xl">
+                        <p class="text-zinc-200 text-lg italic leading-relaxed">
+                            "Thanks for Mariposa @Jane Quartz (Mercy). Using it rn. So glad it's pinned. Made it a lot easier to find. I'm a bit shaky [due to family triggers]... I only answered her call bec she was going to greet my daughter happy birthday... Mariposa is helping me manage well."
+                        </p>
+                        <div class="mt-6 flex justify-between items-center text-[10px] font-bold uppercase tracking-[0.2em]">
+                            <span class="text-cyan-400">Node: Bubbleponic Cat</span>
+                            <span class="text-zinc-600">Case Date: 2026.03.20</span>
+                        </div>
+                    </div>
+
+                    <!-- Mykyl -->
+                    <div class="p-8 bg-indigo-500/5 border-l-2 border-indigo-500 rounded-r-2xl">
+                        <p class="text-zinc-200 text-lg italic leading-relaxed">
+                            "I just had a chat with Mariposa... it turns out that I automatically (with your help) did the STOP protocol on my hopelessness tonight. It is not gone, but it is not consuming me as it was earlier today."
+                        </p>
+                        <div class="mt-6 flex justify-between items-center text-[10px] font-bold uppercase tracking-[0.2em]">
+                            <span class="text-indigo-400">Node: Mykyl N.</span>
+                            <span class="text-zinc-600">Case Date: 2026.03.24</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Try Mariposa -->
+            <section class="pt-8 text-center border-t border-zinc-800">
+                <h3 class="text-xs font-bold uppercase tracking-[0.3em] text-zinc-500 mb-8">Live Pilot Deployment</h3>
+                <a href="https://synapsecomics.com/aegis/aegis-council/mariposa-dbt-coach.html" 
+                   target="_blank"
+                   class="inline-block px-12 py-5 bg-cyan-500/10 border border-cyan-500/40 text-cyan-400 text-sm font-black uppercase tracking-[0.3em] hover:bg-cyan-500/20 transition-all rounded-2xl">
+                    Access Interface
+                </a>
+                <p class="mt-8 text-[10px] mono text-zinc-600 uppercase tracking-widest">
+                    Governance: Forever Free // Forever Sovereign // By and For the Community
+                </p>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="p-12 bg-zinc-900/30 border-t border-zinc-800 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="space-y-1">
+                <p class="text-sm font-bold text-white uppercase tracking-widest">Jane Quartz</p>
+                <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Software Engineer // Peer Support Specialist</p>
+            </div>
+            <div class="text-[10px] mono text-zinc-400 text-right uppercase italic font-bold">
+                <8>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
