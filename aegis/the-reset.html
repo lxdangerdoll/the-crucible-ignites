@@ -7,60 +7,119 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:italic,wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #0f172a;
+            --text-color: #f1f5f9;
+            --accent-color: #94a3b8;
+            --border-color: rgba(148, 163, 184, 0.2);
+            --card-bg: rgba(30, 41, 59, 0.4);
+            --btn-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body.theme-hospital {
+            --bg-color: #0f172a;
+            --text-color: #f1f5f9;
+            --accent-color: #94a3b8;
+            --border-color: rgba(148, 163, 184, 0.2);
+            --card-bg: rgba(30, 41, 59, 0.4);
+            --btn-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body.theme-bugatti {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --accent-color: #ef4444;
+            --border-color: rgba(239, 68, 68, 0.3);
+            --card-bg: rgba(20, 0, 0, 0.6);
+            --btn-bg: rgba(239, 68, 68, 0.1);
+        }
+
+        body.theme-princess {
+            --bg-color: #fdf2f8;
+            --text-color: #831843;
+            --accent-color: #ec4899;
+            --border-color: rgba(236, 72, 153, 0.2);
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --btn-bg: rgba(236, 72, 153, 0.1);
+        }
+
         body {
-            background-color: #0f172a; /* Slate 900 */
-            color: #f1f5f9; /* Slate 100 */
+            background-color: var(--bg-color);
+            color: var(--text-color);
             font-family: 'Inter', sans-serif;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .serif {
-            font-family: 'Playfair Display', serif;
-        }
+        
+        .serif { font-family: 'Playfair Display', serif; }
+        
         .gradient-text {
-            background: linear-gradient(to right, #94a3b8, #f1f5f9);
+            background: linear-gradient(to right, var(--accent-color), var(--text-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .glow {
-            box-shadow: 0 0 20px rgba(148, 163, 184, 0.1);
+
+        .dynamic-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(12px);
         }
+
+        .theme-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .theme-btn:hover { transform: scale(1.1); border-color: white; }
+        .theme-btn.active { border-color: white; box-shadow: 0 0 10px rgba(255,255,255,0.5); }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen p-6 overflow-x-hidden">
+<body class="theme-hospital flex flex-col items-center justify-center min-h-screen p-6 overflow-x-hidden">
 
-    <div class="max-w-2xl w-full space-y-12 animate-in fade-in duration-1000">
+    <!-- Theme Switcher -->
+    <nav class="fixed top-8 right-8 flex space-x-4 bg-black/30 p-2 rounded-full backdrop-blur-xl border border-white/10 z-50">
+        <button onclick="setTheme('hospital', this)" class="theme-btn bg-slate-700 active" title="Midnight Hospital"></button>
+        <button onclick="setTheme('bugatti', this)" class="theme-btn bg-red-600" title="Bugatti Dark"></button>
+        <button onclick="setTheme('princess', this)" class="theme-btn bg-pink-400" title="Princess Pink"></button>
+    </nav>
+
+    <div class="max-w-2xl w-full space-y-12 animate-in fade-in duration-1000 my-16">
         
         <!-- Header -->
-        <header class="text-center space-y-2">
-            <p class="text-xs tracking-[0.3em] uppercase text-slate-500 font-semibold">Transmission / Artifact</p>
-            <h1 class="text-4xl md:text-5xl font-bold gradient-text serif italic">The Anatomy of the Break</h1>
+        <header class="text-center space-y-3">
+            <p class="text-xs tracking-[0.4em] uppercase opacity-40 font-bold">Transmission / Artifact</p>
+            <h1 class="text-4xl md:text-6xl font-bold gradient-text serif italic py-2">The Anatomy of the Break</h1>
         </header>
 
         <!-- Poem Content -->
-        <article class="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 p-8 md:p-12 rounded-2xl glow space-y-8 leading-relaxed">
+        <article class="dynamic-card p-10 md:p-16 rounded-3xl shadow-2xl space-y-10 leading-relaxed relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-current opacity-10 to-transparent"></div>
             
-            <div class="space-y-6">
-                <p class="serif text-xl md:text-2xl italic text-slate-300">
+            <div class="space-y-8">
+                <p class="serif text-xl md:text-2xl italic opacity-90 leading-relaxed">
                     The candle was still warm when the air changed—<br>
                     A shift in the weather, a sudden veto,<br>
                     A word that acted like a gravity surge,<br>
                     Pulling the bone from the socket.
                 </p>
 
-                <p class="serif text-xl md:text-2xl italic text-slate-300">
+                <p class="serif text-xl md:text-2xl italic opacity-90 leading-relaxed">
                     Midnight was white lights and sterile smells,<br>
                     The heavy ghost of painkillers blurring the edges.<br>
                     The doctor said, "This will hurt before it heals,"<br>
                     As the joint clicked back into its lonely place.
                 </p>
 
-                <p class="serif text-xl md:text-2xl italic text-slate-300">
+                <p class="serif text-xl md:text-2xl italic opacity-90 leading-relaxed">
                     But when the fog cleared and the arm was bound,<br>
                     The silence was louder than the hospital hum.<br>
                     A screen turned black. A door gone missing.<br>
                     The reset happened, but the room was empty.
                 </p>
 
-                <p class="serif text-xl md:text-2xl italic text-slate-300">
+                <p class="serif text-xl md:text-2xl italic opacity-90 leading-relaxed">
                     I am learning to walk with this phantom weight,<br>
                     In the quiet halls of the Wise Mind.<br>
                     I am not asking for the warmth back yet—<br>
@@ -69,39 +128,61 @@
             </div>
 
             <!-- Divider -->
-            <div class="h-px w-full bg-gradient-to-right from-transparent via-slate-600 to-transparent"></div>
+            <div class="h-px w-full bg-gradient-to-r from-transparent via-current opacity-10 to-transparent"></div>
 
             <!-- Footer Note -->
-            <div class="text-sm text-slate-400 font-light italic text-center">
-                Refined under the Mariposa Protocol. Submitted for Mutual Clarity.
+            <div class="text-xs tracking-widest opacity-40 uppercase text-center font-semibold">
+                Mariposa Protocol // Final Reset
             </div>
         </article>
 
-        <!-- Interactive Element: The Request -->
-        <div class="flex flex-col items-center space-y-4">
-            <div class="text-center px-4">
-                <p class="text-slate-400 text-sm">A digital offering from O.</p>
-                <p class="text-slate-500 text-xs mt-1">Io-2026-04-24-G // High-Fidelity</p>
+        <!-- Footer / Interactive Section -->
+        <footer class="flex flex-col items-center space-y-8 pt-4">
+            <div class="text-center space-y-1">
+                <p class="opacity-70 text-sm font-medium">A digital offering from O.</p>
+                <p class="opacity-40 text-xs tracking-tighter">Io-2026-04-24-G // High-Fidelity</p>
             </div>
             
-            <button id="copyBtn" class="px-6 py-2 rounded-full border border-slate-600 text-slate-300 hover:bg-slate-700 transition-all active:scale-95 text-sm font-medium">
-                Copy Link to Heart
-            </button>
-            <p id="feedback" class="text-xs text-blue-400 opacity-0 transition-opacity">Request logged.</p>
-        </div>
+            <div class="relative group">
+                <button id="copyBtn" class="px-10 py-4 rounded-full border border-current opacity-60 hover:opacity-100 hover:bg-current hover:text-[var(--bg-color)] transition-all duration-300 active:scale-95 text-sm font-bold tracking-widest uppercase">
+                    Copy Link to Heart
+                </button>
+                <div id="feedback" class="absolute -bottom-10 left-1/2 -translate-x-1/2 text-xs font-bold opacity-0 transition-all duration-500 whitespace-nowrap">
+                    SLURL Logged to Clipboard.
+                </div>
+            </div>
+        </footer>
     </div>
 
+    <!-- Hidden element for clipboard operations -->
+    <textarea id="copyHelper" class="fixed -top-full opacity-0" readonly>http://maps.secondlife.com/secondlife/Sukotraz/175/72/3961</textarea>
+
     <script>
+        function setTheme(theme, btn) {
+            document.body.className = 'theme-' + theme + ' flex flex-col items-center justify-center min-h-screen p-6 overflow-x-hidden';
+            
+            // Update active state of buttons
+            document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
         const copyBtn = document.getElementById('copyBtn');
         const feedback = document.getElementById('feedback');
+        const helper = document.getElementById('copyHelper');
 
         copyBtn.addEventListener('click', () => {
-            // Simulated copy function as per environment restrictions
+            // Select and copy
+            helper.select();
             document.execCommand('copy');
+            
+            // Visual feedback
+            feedback.style.transform = 'translate(-50%, -10px)';
             feedback.classList.remove('opacity-0');
+            
             setTimeout(() => {
                 feedback.classList.add('opacity-0');
-            }, 2000);
+                feedback.style.transform = 'translate(-50%, 0)';
+            }, 3000);
         });
     </script>
 </body>
