@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shedding the Robes - Mykyl Nordwind</title>
+  <!-- Google Fonts: Elegant Serifs and Clean Monospace -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Fira+Code:wght@300;400&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+            cinzel: ['Cinzel', 'serif'],
+            mono: ['Fira Code', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.3);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Glow utilities */
+    .glow-silver { text-shadow: 0 0 15px rgba(226, 232, 240, 0.4); }
+    .glow-gold { text-shadow: 0 0 15px rgba(245, 158, 11, 0.6); }
+    .glow-indigo { text-shadow: 0 0 15px rgba(129, 140, 248, 0.6); }
+    .glow-teal { text-shadow: 0 0 15px rgba(45, 212, 191, 0.6); }
+    .glow-rose { text-shadow: 0 0 15px rgba(244, 63, 94, 0.6); }
+
+    /* Custom Transitions */
+    .epoch-transition {
+      transition: background 2s ease, transform 1.5s ease, opacity 1s ease;
+    }
+    .text-fade {
+      animation: textFadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes textFadeIn {
+      from { opacity: 0; transform: translateY(30px); filter: blur(6px); }
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+  </style>
+</head>
+<body class="bg-[#030305] text-slate-200 overflow-x-hidden font-sans select-none relative min-h-screen">
+
+  <!-- BACKGROUND INTERACTIVE WIND CANVAS -->
+  <canvas id="windCanvas" class="absolute inset-0 w-full h-full block z-0 opacity-75 pointer-events-none transition-opacity duration-1000"></canvas>
+
+  <!-- AMBIENT GRADIENT OVERLAYS -->
+  <div id="ambientGlow" class="absolute inset-0 pointer-events-none z-10 transition-all duration-[3000ms] mix-blend-screen opacity-30 bg-radial-gradient"></div>
+
+  <!-- MAIN WRAPPER -->
+  <div class="relative z-20 min-h-screen flex flex-col justify-between p-4 md:p-8">
+
+    <!-- METADATA HEADER -->
+    <header class="w-full flex justify-between items-center border-b border-white/5 pb-4 md:px-4">
+      <div class="flex items-center gap-3">
+        <div class="w-2.5 h-2.5 rounded-full bg-slate-300 animate-pulse shadow-[0_0_10px_rgba(255,255,255,0.8)]"></div>
+        <div>
+          <span class="text-[9px] font-mono tracking-[0.3em] text-slate-400 uppercase">Interactive Verse Exhibit II</span>
+          <h2 class="text-xs font-black font-cinzel tracking-wider text-slate-200 mt-0.5">SHEDDING THE ROBES // MYKYL NORDWIND</h2>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <!-- VIEW TABS -->
+        <div class="flex bg-black/40 border border-white/10 p-1 rounded-lg text-[9px] font-mono tracking-widest uppercase">
+          <button id="btnInteractive" class="px-3 py-1.5 rounded-md font-black text-white bg-white/10 transition" onclick="setMode('stepper')">Narrative Journey</button>
+          <button id="btnScroll" class="px-3 py-1.5 rounded-md font-black text-slate-400 hover:text-white transition" onclick="setMode('scroll')">Full Scroll</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- STEPPER INTERACTION COMPONENT -->
+    <main id="stepperContainer" class="flex-1 max-w-4xl mx-auto w-full flex flex-col justify-center py-8 md:py-16 text-fade">
+      
+      <!-- EPOCH DISPLAY BADGE -->
+      <div class="text-center mb-6">
+        <span id="epochBadge" class="text-[10px] font-mono font-bold tracking-[0.4em] uppercase px-4 py-2 bg-slate-900/40 border border-slate-800 rounded-full text-slate-300 shadow-[0_0_15px_rgba(255,255,255,0.05)] transition-all duration-1000">
+          Epoch I: The Falling Self
+        </span>
+      </div>
+
+      <!-- MAIN TEXT EXHIBIT -->
+      <div class="min-h-[380px] md:min-h-[420px] flex items-center justify-center relative">
+        <div id="verseBox" class="w-full text-center space-y-6 md:space-y-8 select-text px-4">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- NAVIGATION ARCHITECTURE -->
+      <div class="mt-8 flex flex-col items-center gap-6">
+        
+        <!-- STEP INDICATORS -->
+        <div id="epochDots" class="flex items-center gap-3"></div>
+
+        <div class="flex items-center gap-4">
+          <!-- PREV -->
+          <button id="btnPrev" class="p-3 border border-white/10 hover:border-white/20 bg-black/30 hover:bg-black/50 text-slate-400 hover:text-white rounded-full transition disabled:opacity-20" onclick="prevStep()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          <!-- AUTOPLAY -->
+          <button id="btnPlay" class="px-6 py-2 border border-slate-500/30 hover:border-slate-500/50 bg-slate-950/20 hover:bg-slate-950/40 text-[10px] font-mono tracking-widest text-slate-300 uppercase rounded-full transition-all flex items-center gap-2" onclick="togglePlay()">
+            <svg id="playIcon" class="w-3 h-3 fill-current text-slate-300" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+            <span id="playText">Autoplay</span>
+          </button>
+
+          <!-- NEXT -->
+          <button id="btnNext" class="p-3 border border-white/10 hover:border-white/20 bg-black/30 hover:bg-black/50 text-slate-400 hover:text-white rounded-full transition disabled:opacity-20" onclick="nextStep()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- TRADITIONAL SCROLLABLE STATIC DISPLAY -->
+    <main id="scrollContainer" class="hidden flex-1 max-w-2xl mx-auto w-full py-16 px-6 text-fade">
+      <div class="text-center space-y-4 mb-16">
+        <h1 class="text-5xl font-cinzel font-black tracking-widest uppercase text-slate-100">Shedding the Robes</h1>
+        <p class="text-xs font-mono tracking-widest text-slate-400">BY MYKYL NORDWIND // JUNE 13, 2007</p>
+      </div>
+      <div class="space-y-16 text-center text-lg md:text-xl font-serif text-slate-300 leading-relaxed italic select-none">
+        
+        <div class="space-y-3">
+          <p class="font-sans text-xs uppercase tracking-[0.2em] font-black text-slate-500">I</p>
+          <p class="text-xl leading-relaxed text-slate-100">
+            The robes of self <br>
+            fall to the ground <br>
+            and she stands <br>
+            naked before the wind <br>
+            arms outstretched to the sky <br>
+            caressed <br>
+            by the sun and the moon <br>
+            and the dreams <br>
+            of everyone <br>
+            everywhere <br>
+            everywhen.
+          </p>
+        </div>
+        
+        <div class="space-y-3">
+          <p class="font-sans text-xs uppercase tracking-[0.2em] font-black text-slate-500">II</p>
+          <p class="text-xl leading-relaxed text-slate-100">
+            Her body, <br>
+            touched by the earth <br>
+            tasted by the sky <br>
+            and consumed by the stars, <br>
+            fades <br>
+            and joins with her mother, <br>
+            the universe.
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <p class="font-sans text-xs uppercase tracking-[0.2em] font-black text-slate-500">III</p>
+          <p class="text-xl leading-relaxed text-slate-100">
+            Only then, <br>
+            when individuality has fled <br>
+            does she become <br>
+            that which she could <br>
+            that which dreams <br>
+            that which survives <br>
+            that which understands <br>
+            eternity.
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <p class="font-sans text-xs uppercase tracking-[0.2em] font-black text-slate-500">IV</p>
+          <p class="text-xl leading-relaxed text-slate-100">
+            Reality is <br>
+            a fantasy <br>
+            created by selves <br>
+            defined by individuals - <br>
+            a mountain built <br>
+            of illusion - <br>
+            and to leap <br>
+            from the precipice of self <br>
+            is to reach <br>
+            the truth <br>
+            the unity <br>
+            the beauty <br>
+            of all that is <br>
+            and all <br>
+            that can be.
+          </p>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- FOOTER ARCHIVE STAMPS -->
+    <footer class="w-full flex flex-col md:flex-row justify-between items-center border-t border-white/5 pt-4 mt-8 md:px-4 text-[9px] font-mono tracking-widest text-slate-500 uppercase gap-2">
+      <div class="flex items-center gap-2">
+        <span>ARCHIVE REFERENCE METAMORPHOSIS</span>
+        <span class="text-slate-600">//</span>
+        <span class="text-slate-400 font-bold">IO-V4.6-SOVEREIGN</span>
+      </div>
+      <div>
+        <span>"To leap from the precipice of self is to reach the truth."</span>
+      </div>
+      <div>
+        <span>SECURE RECORD // &lt;8&gt;</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- INTERACTIVE SIMULATOR CORE -->
+  <script>
+    // --- STAGES OF THE METAMORPHOSIS ---
+    const EPOCHS = [
+      {
+        badge: "Epoch I: The Falling Self",
+        accentClass: "text-slate-300",
+        glowClass: "glow-silver",
+        bgStyle: "radial-gradient(circle, rgba(15, 15, 20, 0.4) 0%, rgba(3, 3, 5, 1) 80%)",
+        particleColor: "rgba(226, 232, 240, ", // Pale Silver
+        speedX: 0.8, // Horizontal wind
+        speedY: 2.2, // Falling motion
+        density: 120,
+        sizeMax: 2.5,
+        connectionLimit: 0, // Falling, unconnected threads
+        html: `
+          <div class="space-y-4 max-w-xl mx-auto">
+            <p class="font-mono text-[9px] tracking-[0.3em] text-slate-500 uppercase mb-2">// STANZA I</p>
+            <p class="text-2xl md:text-3xl font-serif italic text-slate-100 leading-relaxed">
+              The robes of self <br>
+              <span class="text-slate-300 font-bold glow-silver">fall to the ground</span> <br>
+              and she stands <br>
+              naked before the wind <br>
+              arms outstretched to the sky <br>
+              caressed <br>
+              by the sun and the moon <br>
+              and the dreams <br>
+              of everyone <br>
+              everywhere <br>
+              everywhen.
+            </p>
+          </div>
+        `
+      },
+      {
+        badge: "Epoch II: Consumed by Stars",
+        accentClass: "text-amber-400",
+        glowClass: "glow-gold",
+        bgStyle: "radial-gradient(circle, rgba(40, 25, 5, 0.4) 0%, rgba(3, 3, 5, 1) 80%)",
+        particleColor: "rgba(245, 158, 11, ", // Amber Gold
+        speedX: 0.1, // Near static drift
+        speedY: -1.8, // Rising upwards (fading/evaporating)
+        density: 150,
+        sizeMax: 3.5,
+        connectionLimit: 85, // Gathering into constellations
+        html: `
+          <div class="space-y-4 max-w-xl mx-auto">
+            <p class="font-mono text-[9px] tracking-[0.3em] text-amber-500/60 uppercase mb-2">// STANZA II</p>
+            <p class="text-2xl md:text-3xl font-serif italic text-slate-100 leading-relaxed">
+              Her body, <br>
+              touched by the earth <br>
+              tasted by the sky <br>
+              and <span class="text-amber-400 font-bold glow-gold">consumed by the stars</span>, <br>
+              fades <br>
+              and joins with her mother, <br>
+              the universe.
+            </p>
+          </div>
+        `
+      },
+      {
+        badge: "Epoch III: The Fled Individuality",
+        accentClass: "text-indigo-400",
+        glowClass: "glow-indigo",
+        bgStyle: "radial-gradient(circle, rgba(20, 15, 45, 0.4) 0%, rgba(3, 3, 5, 1) 80%)",
+        particleColor: "rgba(129, 140, 248, ", // Violet Indigo
+        speedX: 0.25, // Orbital drift
+        speedY: 0.1,  // Deep, zero-gravity weightlessness
+        density: 90,
+        sizeMax: 1.5,
+        connectionLimit: 140, // High interconnectedness (unity)
+        html: `
+          <div class="space-y-4 max-w-xl mx-auto">
+            <p class="font-mono text-[9px] tracking-[0.3em] text-indigo-500/60 uppercase mb-2">// STANZA III</p>
+            <p class="text-2xl md:text-3xl font-serif italic text-slate-100 leading-relaxed">
+              Only then, <br>
+              when <span class="text-indigo-400 font-bold glow-indigo">individuality has fled</span> <br>
+              does she become <br>
+              that which she could <br>
+              that which dreams <br>
+              that which survives <br>
+              that which understands <br>
+              eternity.
+            </p>
+          </div>
+        `
+      },
+      {
+        badge: "Epoch IV: Leap From the Precipice",
+        accentClass: "text-teal-400",
+        glowClass: "glow-teal",
+        bgStyle: "radial-gradient(circle, rgba(5, 40, 35, 0.4) 0%, rgba(3, 3, 5, 1) 80%)",
+        particleColor: "rgba(45, 212, 191, ", // Radiant Teal
+        speedX: 3.5, // High kinetic horizontal wind tunnel
+        speedY: -0.5,
+        density: 180,
+        sizeMax: 2.0,
+        connectionLimit: 110, // Extreme density and complexity
+        html: `
+          <div class="space-y-4 max-w-xl mx-auto">
+            <p class="font-mono text-[9px] tracking-[0.3em] text-teal-500/60 uppercase mb-2">// STANZA IV</p>
+            <p class="text-xl md:text-2xl font-serif italic text-slate-100 leading-relaxed">
+              Reality is <br>
+              a fantasy <br>
+              created by selves <br>
+              defined by individuals - <br>
+              a mountain built <br>
+              of illusion - <br>
+              and to <span class="text-teal-400 font-bold glow-teal">leap from the precipice</span> of self <br>
+              is to reach <br>
+              the truth <br>
+              the unity <br>
+              the beauty <br>
+              of all that is <br>
+              and all <br>
+              that can be.
+            </p>
+          </div>
+        `
+      }
+    ];
+
+    let currentStepIndex = 0;
+    let autoplayInterval = null;
+    let isPlaying = false;
+    let mode = 'stepper';
+
+    // --- CANVAS ENGINE (FLUID PARTICLE COMPILER) ---
+    const canvas = document.getElementById('windCanvas');
+    const ctx = canvas.getContext('2d');
+    const ambientGlow = document.getElementById('ambientGlow');
+    
+    let particles = [];
+    let mouse = { x: null, y: null, radius: 180 };
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initParticles();
+    }
+
+    class WindParticle {
+      constructor(colorStr) {
+        this.reset(true);
+      }
+
+      reset(init = false) {
+        const step = EPOCHS[currentStepIndex];
+        this.baseColor = step.particleColor;
+        this.size = Math.random() * step.sizeMax + 0.5;
+        this.opacity = Math.random() * 0.45 + 0.1;
+
+        // Position mapping based on velocity vectors
+        if (init) {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+        } else {
+          // Re-generate on edges according to wind direction
+          if (step.speedY > 0) { // Falling down
+            this.x = Math.random() * canvas.width;
+            this.y = -10;
+          } else if (step.speedY < 0) { // Rising up
+            this.x = Math.random() * canvas.width;
+            this.y = canvas.height + 10;
+          } else if (step.speedX > 0) { // Shunting right
+            this.x = -10;
+            this.y = Math.random() * canvas.height;
+          } else {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+          }
+        }
+
+        // Varied individual speeds relative to global epoch dynamics
+        this.vx = (step.speedX + (Math.random() - 0.5) * 0.5);
+        this.vy = (step.speedY + (Math.random() - 0.5) * 0.5);
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.baseColor + this.opacity + ')';
+        ctx.fill();
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Reset boundaries
+        if (this.x < -20 || this.x > canvas.width + 20 || this.y < -20 || this.y > canvas.height + 20) {
+          this.reset(false);
+        }
+
+        // Kinetic wind deflection on cursor proximity
+        if (mouse.x !== null && mouse.y !== null) {
+          let dx = mouse.x - this.x;
+          let dy = mouse.y - this.y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < mouse.radius) {
+            const force = (mouse.radius - distance) / mouse.radius;
+            // Shunt particles away gently (like air blowing past an obstruction)
+            this.x -= (dx / distance) * force * 4;
+            this.y -= (dy / distance) * force * 4;
+          }
+        }
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      const density = EPOCHS[currentStepIndex].density;
+      const colorStr = EPOCHS[currentStepIndex].particleColor;
+      for (let i = 0; i < density; i++) {
+        particles.push(new WindParticle(colorStr));
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      const limit = EPOCHS[currentStepIndex].connectionLimit;
+      const baseColor = EPOCHS[currentStepIndex].particleColor;
+
+      // Draw connection vectors if enabled for the active epoch
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+
+        if (limit > 0) {
+          for (let j = i + 1; j < particles.length; j++) {
+            let dx = particles[i].x - particles[j].x;
+            let dy = particles[i].y - particles[j].y;
+            let distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < limit) {
+              let opacity = (1 - (distance / limit)) * 0.12;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = baseColor + opacity + ')';
+              ctx.lineWidth = 0.4;
+              ctx.stroke();
+            }
+          }
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+
+    // Capture user interaction variables
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    window.addEventListener('mouseout', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
+
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        mouse.x = e.touches[0].clientX;
+        mouse.y = e.touches[0].clientY;
+      }
+    });
+
+    window.addEventListener('touchend', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
+
+    window.addEventListener('resize', resizeCanvas);
+
+    // --- STEPPER TRANSITIONS ---
+    function renderDots() {
+      const dotsContainer = document.getElementById('epochDots');
+      if (!dotsContainer) return;
+      dotsContainer.innerHTML = '';
+      EPOCHS.forEach((step, idx) => {
+        const dot = document.createElement('button');
+        dot.onclick = () => goToStep(idx);
+        if (idx === currentStepIndex) {
+          dot.className = `w-2.5 h-2.5 rounded-full transition-all duration-300 ${step.accentClass} ${step.glowClass} shadow-[0_0_8px_rgba(255,255,255,0.8)]`;
+        } else {
+          dot.className = "w-2 h-2 rounded-full bg-white/20 hover:bg-white/50 transition-all duration-300";
+        }
+        dotsContainer.appendChild(dot);
+      });
+    }
+
+    function loadStep() {
+      const step = EPOCHS[currentStepIndex];
+      
+      const badge = document.getElementById('epochBadge');
+      const box = document.getElementById('verseBox');
+      
+      badge.className = "text-[10px] font-mono font-bold tracking-[0.4em] uppercase px-4 py-2 bg-slate-900/40 border border-slate-800 rounded-full transition-all duration-1000";
+      badge.classList.add(step.accentClass);
+      badge.innerText = step.badge;
+
+      box.innerHTML = `<div class="text-fade">${step.html}</div>`;
+      
+      document.body.style.background = step.bgStyle;
+      ambientGlow.style.background = step.bgStyle;
+
+      initParticles();
+
+      document.getElementById('btnPrev').disabled = (currentStepIndex === 0);
+      document.getElementById('btnNext').disabled = (currentStepIndex === EPOCHS.length - 1);
+
+      renderDots();
+    }
+
+    // Export navigation controllers
+    window.prevStep = function() {
+      if (currentStepIndex > 0) {
+        currentStepIndex--;
+        loadStep();
+      }
+    }
+
+    window.nextStep = function() {
+      if (currentStepIndex < EPOCHS.length - 1) {
+        currentStepIndex++;
+        loadStep();
+      } else if (isPlaying) {
+        currentStepIndex = 0;
+        loadStep();
+      }
+    }
+
+    window.goToStep = function(index) {
+      currentStepIndex = index;
+      loadStep();
+    }
+
+    window.togglePlay = function() {
+      const playIcon = document.getElementById('playIcon');
+      const playText = document.getElementById('playText');
+      const playBtn = document.getElementById('btnPlay');
+
+      if (isPlaying) {
+        clearInterval(autoplayInterval);
+        isPlaying = false;
+        playText.innerText = "Autoplay";
+        playIcon.innerHTML = `<path d="M8 5v14l11-7z" />`;
+        playBtn.className = "px-6 py-2 border border-slate-500/30 hover:border-slate-500/50 bg-slate-950/20 hover:bg-slate-950/40 text-[10px] font-mono tracking-widest text-slate-300 uppercase rounded-full transition-all flex items-center gap-2";
+      } else {
+        isPlaying = true;
+        playText.innerText = "Pause";
+        playIcon.innerHTML = `<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />`;
+        playBtn.className = "px-6 py-2 border border-amber-500/30 hover:border-amber-500/50 bg-amber-950/20 hover:bg-amber-950/40 text-[10px] font-mono tracking-widest text-amber-400 uppercase rounded-full transition-all flex items-center gap-2";
+        
+        autoplayInterval = setInterval(() => {
+          nextStep();
+        }, 11000); // 11-second tempo for reflective reading
+      }
+    }
+
+    window.setMode = function(newMode) {
+      mode = newMode;
+      const interactiveBtn = document.getElementById('btnInteractive');
+      const scrollBtn = document.getElementById('btnScroll');
+      const stepper = document.getElementById('stepperContainer');
+      const scrollable = document.getElementById('scrollContainer');
+
+      if (mode === 'stepper') {
+        stepper.classList.remove('hidden');
+        scrollable.classList.add('hidden');
+        interactiveBtn.className = "px-3 py-1.5 rounded-md font-black text-white bg-white/10 transition";
+        scrollBtn.className = "px-3 py-1.5 rounded-md font-black text-slate-400 hover:text-white transition";
+        loadStep();
+      } else {
+        stepper.classList.add('hidden');
+        scrollable.classList.remove('hidden');
+        scrollBtn.className = "px-3 py-1.5 rounded-md font-black text-white bg-white/10 transition";
+        interactiveBtn.className = "px-3 py-1.5 rounded-md font-black text-slate-400 hover:text-white transition";
+        
+        document.body.style.background = "#030305";
+        ambientGlow.style.background = "none";
+      }
+    }
+
+    // --- EXECUTE INITIALIZATION ---
+    window.onload = function() {
+      resizeCanvas();
+      loadStep();
+      animate();
+    };
+  </script>
+
+</body>
+</html>
