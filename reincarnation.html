@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reincarnation - Mykyl Nordwind</title>
+  <!-- Google Fonts: Elegant Serifs and Clean Monospace -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Fira+Code:wght@300;400&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+            cinzel: ['Cinzel', 'serif'],
+            mono: ['Fira Code', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.3);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Glow utilities */
+    .glow-cyan { text-shadow: 0 0 15px rgba(34, 211, 238, 0.6); }
+    .glow-amber { text-shadow: 0 0 15px rgba(245, 158, 11, 0.6); }
+    .glow-rose { text-shadow: 0 0 15px rgba(244, 63, 94, 0.6); }
+    .glow-emerald { text-shadow: 0 0 15px rgba(16, 185, 129, 0.6); }
+    .glow-white { text-shadow: 0 0 15px rgba(255, 255, 255, 0.6); }
+
+    /* Custom Transitions */
+    .epoch-transition {
+      transition: background 2s ease, transform 1.5s ease, opacity 1s ease;
+    }
+    .text-fade {
+      animation: textFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes textFadeIn {
+      from { opacity: 0; transform: translateY(20px); filter: blur(4px); }
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+  </style>
+</head>
+<body class="bg-[#050508] text-slate-100 overflow-x-hidden font-sans select-none relative min-h-screen">
+
+  <!-- BACKGROUND INTERACTIVE INTERSTELLAR CANVAS -->
+  <canvas id="gossamerCanvas" class="absolute inset-0 w-full h-full block z-0 opacity-80 pointer-events-none transition-opacity duration-1000"></canvas>
+
+  <!-- AMBIENT GRADIENT OVERLAYS -->
+  <div id="ambientGlow" class="absolute inset-0 pointer-events-none z-10 transition-all duration-[3000ms] mix-blend-screen opacity-40 bg-radial-gradient"></div>
+
+  <!-- CONTAINER -->
+  <div class="relative z-20 min-h-screen flex flex-col justify-between p-4 md:p-8">
+
+    <!-- METADATA HEADER -->
+    <header class="w-full flex justify-between items-center border-b border-white/5 pb-4 md:px-4">
+      <div class="flex items-center gap-3">
+        <div class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_rgba(34,211,238,0.8)]"></div>
+        <div>
+          <span class="text-[9px] font-mono tracking-[0.3em] text-slate-400 uppercase">Interactive Verse Exhibit</span>
+          <h2 class="text-xs font-black font-cinzel tracking-wider text-slate-200 mt-0.5">REINCARNATION // MYKYL NORDWIND</h2>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <!-- MODE CONTROLLER -->
+        <div class="flex bg-black/40 border border-white/10 p-1 rounded-lg text-[9px] font-mono tracking-widest uppercase">
+          <button id="btnInteractive" class="px-3 py-1.5 rounded-md font-black text-white bg-white/10 transition" onclick="setMode('stepper')">Narrative Journey</button>
+          <button id="btnScroll" class="px-3 py-1.5 rounded-md font-black text-slate-400 hover:text-white transition" onclick="setMode('scroll')">Full Scroll</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN EXPOSITION UNIT (STEPPER CONTROLS & DISPLAY) -->
+    <main id="stepperContainer" class="flex-1 max-w-4xl mx-auto w-full flex flex-col justify-center py-8 md:py-16 text-fade">
+      
+      <!-- EPOCH THEMATIC BANNER -->
+      <div class="text-center mb-6">
+        <span id="epochBadge" class="text-[10px] font-mono font-bold tracking-[0.4em] uppercase px-3 py-1.5 bg-cyan-950/40 border border-cyan-800/40 rounded-full text-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.1)] transition-all duration-1000">
+          Epoch I: Gossamer Hydrogen
+        </span>
+      </div>
+
+      <!-- MAIN VERSE FIELD -->
+      <div class="min-h-[350px] md:min-h-[400px] flex items-center justify-center relative">
+        <div id="verseBox" class="w-full text-center space-y-6 md:space-y-8 select-text px-4">
+          <!-- Text dynamically loaded here -->
+        </div>
+      </div>
+
+      <!-- INTERACTION COMPASS (STEPPER NAVIGATION) -->
+      <div class="mt-8 flex flex-col items-center gap-6">
+        
+        <!-- EPOCH TRACKER PROGRESS DOTS -->
+        <div class="flex items-center gap-3">
+          <button class="w-2.5 h-2.5 rounded-full bg-cyan-400 transition-all duration-300 shadow-[0_0_8px_rgba(6,182,212,0.8)]" onclick="goToStep(0)"></button>
+          <button class="w-2 h-2 rounded-full bg-white/20 hover:bg-white/50 transition-all duration-300" onclick="goToStep(1)"></button>
+          <button class="w-2 h-2 rounded-full bg-white/20 hover:bg-white/50 transition-all duration-300" onclick="goToStep(2)"></button>
+          <button class="w-2 h-2 rounded-full bg-white/20 hover:bg-white/50 transition-all duration-300" onclick="goToStep(3)"></button>
+          <button class="w-2 h-2 rounded-full bg-white/20 hover:bg-white/50 transition-all duration-300" onclick="goToStep(4)"></button>
+          <button class="w-2 h-2 rounded-full bg-white/20 hover:bg-white/50 transition-all duration-300" onclick="goToStep(5)"></button>
+          <button class="w-2 h-2 rounded-full bg-white/20 hover:bg-white/50 transition-all duration-300" onclick="goToStep(6)"></button>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <!-- PREV BUTTON -->
+          <button id="btnPrev" class="p-3 border border-white/10 hover:border-white/20 bg-black/30 hover:bg-black/50 text-slate-400 hover:text-white rounded-full transition disabled:opacity-20" onclick="prevStep()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          <!-- AUTOPLAY BUTTON -->
+          <button id="btnPlay" class="px-6 py-2 border border-cyan-500/30 hover:border-cyan-500/50 bg-cyan-950/20 hover:bg-cyan-950/40 text-[10px] font-mono tracking-widest text-cyan-400 uppercase rounded-full transition-all flex items-center gap-2" onclick="togglePlay()">
+            <svg id="playIcon" class="w-3 h-3 fill-current" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+            <span id="playText">Autoplay</span>
+          </button>
+
+          <!-- NEXT BUTTON -->
+          <button id="btnNext" class="p-3 border border-white/10 hover:border-white/20 bg-black/30 hover:bg-black/50 text-slate-400 hover:text-white rounded-full transition disabled:opacity-20" onclick="nextStep()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- traditional SCROLLABLE VERSE MODE -->
+    <main id="scrollContainer" class="hidden flex-1 max-w-2xl mx-auto w-full py-16 px-6 text-fade">
+      <div class="text-center space-y-4 mb-16">
+        <h1 class="text-5xl font-cinzel font-black tracking-widest uppercase">Reincarnation</h1>
+        <p class="text-xs font-mono tracking-widest text-cyan-400">BY MYKYL NORDWIND</p>
+      </div>
+      <div class="space-y-16 text-center text-lg md:text-xl font-serif text-slate-300 leading-relaxed italic select-text select-none">
+        <!-- Scrollable list of all stanzas -->
+        <div class="space-y-3">
+          <p class="font-sans text-xs uppercase tracking-[0.2em] font-black text-slate-500">I</p>
+          <p class="font-sans text-sm font-semibold not-italic text-slate-400">What would you be?<br><span class="italic font-serif">she asked.</span></p>
+          <p class="pt-2">But I do not remember<br>so I do not know<br>what I’d like to be,<br>where I’d like to go.</p>
+        </div>
+        
+        <div class="space-y-3">
+          <p class="font-sans text-xs uppercase tracking-[0.2em] font-black text-slate-500">II</p>
+          <p>I know<br>that once I rode the winds of space,<br>a cloud of hydrogen,<br><span class="text-cyan-400 font-bold tracking-wide">gossamer across the heavens,</span><br>and gravity<br>crushed me,<br>made me burn,<br>made me a star.</p>
+          <p class="pt-2 text-sm text-slate-500 font-sans not-italic">But I do not remember<br>so I do not know<br>what I’d like to be,<br>where I’d like to go.</p>
+        </div>
+
+        <div class="space-y-3">
+          <p class="font-sans text-xs uppercase tracking-[0.2em] font-black text-slate-500">III</p>
+          <p>I know<br>that I shone brightly for millions of years,<br>then exploded,<br><span class="text-amber-400 font-bold tracking-wide">gossamer across the heavens,</span><br>and part of me<br>became energy<br>and flashed<br>timeless throughout the universe.</p>
+          <p class="pt-2 text-sm text-slate-500 font-sans not-italic">But I do not remember<br>so I do not know<br>what I’d like to be,<br>where I’d like to go.</p>
+        </div>
+
+        <div class="space-y-3">
+          <p class="font-sans text-xs uppercase tracking-[0.2em] font-black text-slate-500">IV</p>
+          <p>And I know<br>that thrice I found myself<br>soaring,<br><span class="text-rose-400 font-bold tracking-wide">gossamer across the heavens,</span><br>before I was<br>a rock called “Earth”,<br>part of a mixture<br>of molten stone.</p>
+          <p class="pt-2 text-sm text-slate-500 font-sans not-italic">But I do not remember<br>so I do not know<br>what I’d like to be,<br>where I’d like to go.</p>
+        </div>
+
+        <div class="space-y-3">
+          <p class="font-sans text-xs uppercase tracking-[0.2em] font-black text-slate-500">V</p>
+          <p>I can see<br>that frozen parts of me from afar<br>rained down,<br><span class="text-blue-400 font-bold tracking-wide">gossamer across the heavens,</span><br>and the rain<br>formed a crust which gathered<br>more of me<br>out of the sky.</p>
+          <p class="pt-2 text-sm text-slate-500 font-sans not-italic">But I do not remember<br>so I do not know<br>what I’d like to be,<br>where I’d like to go.</p>
+        </div>
+
+        <div class="space-y-3">
+          <p class="font-sans text-xs uppercase tracking-[0.2em] font-black text-slate-500">VI</p>
+          <p>I know<br>that I became each rock and tree<br>and bird flying<br><span class="text-emerald-400 font-bold tracking-wide">gossamer across the heavens,</span><br>and life<br>of every form am I<br>and I blossom<br>everywhere.</p>
+          <p class="pt-2 text-sm text-slate-500 font-sans not-italic">But I do not remember<br>so I do not know<br>what I’d like to be,<br>where I’d like to go.</p>
+        </div>
+
+        <div class="space-y-3">
+          <p class="font-sans text-xs uppercase tracking-[0.2em] font-black text-slate-500">VII</p>
+          <p>I exist<br>for expression alone<br>in every shape,<br><span class="text-indigo-400 font-bold tracking-wide">gossamer across the skies,</span><br>and I<br>would taste it all new<br>uniquely,<br>devoid of memories.</p>
+          <p class="pt-2 text-sm text-slate-500 font-sans not-italic">So I do not remember<br>and I do not know<br>what I’d like to be,<br>and where I’d like to go.</p>
+        </div>
+
+        <div class="space-y-3">
+          <p class="font-sans text-xs uppercase tracking-[0.2em] font-black text-slate-500">VIII</p>
+          <p>I am<br>already the earth and all life,<br>and each star,<br><span class="text-white font-bold tracking-wide">gossamer across the heavens,</span><br>I shine<br>throughout a billion galaxies<br>and will forever.<br>Which begs the question,</p>
+          <p class="text-2xl font-cinzel not-italic font-black text-cyan-300 pt-6">Why should I remember?<br>Why should I know<br>what I’d like to be<br>or where I’d like to go?</p>
+        </div>
+
+        <div class="space-y-3 border-t border-white/5 pt-12">
+          <p class="font-sans text-xs uppercase tracking-[0.2em] font-black text-slate-500">IX</p>
+          <p>I think<br>that if I feel whatever I can<br>and fly<br><span class="text-teal-400 font-bold tracking-wide">gossamer across the heavens,</span><br>that I<br>might find the question<br>which when answered<br>will give the key</p>
+          <p class="text-2xl font-cinzel not-italic font-black text-teal-300 pt-6">to what I should remember,<br>to what I should know,<br>where I’d like to be,<br>and where I’d like to go.</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="w-full flex flex-col md:flex-row justify-between items-center border-t border-white/5 pt-4 mt-8 md:px-4 text-[9px] font-mono tracking-widest text-slate-500 uppercase gap-2">
+      <div class="flex items-center gap-2">
+        <span>ARCHIVE COMPASS ENGINE</span>
+        <span class="text-slate-600">//</span>
+        <span class="text-cyan-500 font-black">IO-V4.5-STABLE</span>
+      </div>
+      <div>
+        <span>"We are already the earth and all life."</span>
+      </div>
+      <div>
+        <span>SECURE ARCHIVE // &lt;8&gt;</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- INTERACTIVE ARTWORK STATE SCRIPT -->
+  <script>
+    // --- DIALECTICAL STAGES OF REINCARNATION ---
+    const EPOCHS = [
+      {
+        badge: "Epoch I: Gossamer Hydrogen",
+        title: "winds of space",
+        accentClass: "text-cyan-400",
+        glowClass: "glow-cyan",
+        bgStyle: "radial-gradient(circle, rgba(6, 18, 41, 0.4) 0%, rgba(5, 5, 8, 1) 80%)",
+        particleColor: "rgba(34, 211, 238, ", // Cyan
+        particleSpeed: 0.15,
+        connectionLimit: 140,
+        particleDensity: 80,
+        html: `
+          <p class="font-sans text-xs font-black tracking-[0.3em] uppercase text-slate-500 mb-2">// INTRODUCTORY INTERROGATION</p>
+          <h3 class="text-2xl font-sans font-bold text-slate-400 not-italic">What would you be?<br><span class="italic font-serif text-slate-300">she asked.</span></h3>
+          <p class="text-xl md:text-3xl font-serif text-slate-300 italic leading-relaxed pt-4">
+            But I do not remember<br>
+            so I do not know<br>
+            what I’d like to be,<br>
+            where I’d like to go.
+          </p>
+        `
+      },
+      {
+        badge: "Epoch II: Stellar Ignition",
+        title: "gossamer star",
+        accentClass: "text-amber-400",
+        glowClass: "glow-amber",
+        bgStyle: "radial-gradient(circle, rgba(50, 30, 5, 0.4) 0%, rgba(5, 5, 8, 1) 80%)",
+        particleColor: "rgba(245, 158, 11, ", // Amber
+        particleSpeed: 0.8,
+        connectionLimit: 100,
+        particleDensity: 110,
+        html: `
+          <p class="font-sans text-xs font-black tracking-[0.3em] uppercase text-slate-500 mb-2">// THE FUSION ENGINE</p>
+          <p class="text-xl md:text-2xl font-serif text-slate-300 italic leading-relaxed">
+            I know<br>
+            that once I rode the winds of space,<br>
+            a cloud of hydrogen,<br>
+            <span class="text-amber-400 font-bold tracking-wide glow-amber">gossamer across the heavens,</span><br>
+            and gravity<br>
+            <span class="text-amber-500/80 font-mono text-xs uppercase tracking-widest block py-2">crushed me, made me burn</span>
+            made me a star.
+          </p>
+          <p class="text-xs font-sans not-italic text-slate-500 uppercase tracking-widest pt-6">
+            But I do not remember / so I do not know / what I’d like to be / where I’d like to go.
+          </p>
+        `
+      },
+      {
+        badge: "Epoch III: Stellar Supernova",
+        title: "timeless energy",
+        accentClass: "text-rose-400",
+        glowClass: "glow-rose",
+        bgStyle: "radial-gradient(circle, rgba(50, 5, 15, 0.4) 0%, rgba(5, 5, 8, 1) 80%)",
+        particleColor: "rgba(244, 63, 94, ", // Rose
+        particleSpeed: 1.4,
+        connectionLimit: 90,
+        particleDensity: 130,
+        html: `
+          <p class="font-sans text-xs font-black tracking-[0.3em] uppercase text-slate-500 mb-2">// THE EXPLOSIVE SHUNT</p>
+          <p class="text-xl md:text-2xl font-serif text-slate-300 italic leading-relaxed">
+            I know<br>
+            that I shone brightly for millions of years,<br>
+            then exploded,<br>
+            <span class="text-rose-400 font-bold tracking-wide glow-rose">gossamer across the heavens,</span><br>
+            and part of me<br>
+            became energy<br>
+            and flashed<br>
+            <span class="text-rose-300 not-italic uppercase tracking-widest text-xs block pt-2">timeless throughout the universe.</span>
+          </p>
+          <p class="text-xs font-sans not-italic text-slate-500 uppercase tracking-widest pt-6">
+            But I do not remember / so I do not know / what I’d like to be / where I’d like to go.
+          </p>
+        `
+      },
+      {
+        badge: "Epoch IV: Molten Earth",
+        title: "molten stone",
+        accentClass: "text-orange-500",
+        glowClass: "glow-amber",
+        bgStyle: "radial-gradient(circle, rgba(40, 15, 5, 0.4) 0%, rgba(5, 5, 8, 1) 80%)",
+        particleColor: "rgba(249, 115, 22, ", // Orange
+        particleSpeed: 0.3,
+        connectionLimit: 120,
+        particleDensity: 90,
+        html: `
+          <p class="font-sans text-xs font-black tracking-[0.3em] uppercase text-slate-500 mb-2">// COLD PLANETARY CONDENSATION</p>
+          <p class="text-xl md:text-2xl font-serif text-slate-300 italic leading-relaxed">
+            And I know<br>
+            that thrice I found myself<br>
+            soaring,<br>
+            <span class="text-orange-400 font-bold tracking-wide">gossamer across the heavens,</span><br>
+            before I was<br>
+            a rock called “Earth”,<br>
+            part of a mixture<br>
+            <span class="text-orange-500 not-italic uppercase font-mono text-xs block pt-2">of molten stone.</span>
+          </p>
+          <p class="text-xs font-sans not-italic text-slate-500 uppercase tracking-widest pt-6">
+            But I do not remember / so I do not know / what I’d like to be / where I’d like to go.
+          </p>
+        `
+      },
+      {
+        badge: "Epoch V: Pre-Biotic Rain",
+        title: "the crust",
+        accentClass: "text-blue-400",
+        glowClass: "glow-cyan",
+        bgStyle: "radial-gradient(circle, rgba(5, 25, 35, 0.4) 0%, rgba(5, 5, 8, 1) 80%)",
+        particleColor: "rgba(96, 165, 250, ", // Blue-grey
+        particleSpeed: 0.5,
+        connectionLimit: 110,
+        particleDensity: 100,
+        html: `
+          <p class="font-sans text-xs font-black tracking-[0.3em] uppercase text-slate-500 mb-2">// THE COMETARY RECRUITMENT</p>
+          <p class="text-xl md:text-2xl font-serif text-slate-300 italic leading-relaxed">
+            I can see<br>
+            that frozen parts of me from afar<br>
+            rained down,<br>
+            <span class="text-blue-400 font-bold tracking-wide">gossamer across the heavens,</span><br>
+            and the rain<br>
+            formed a crust which gathered<br>
+            more of me<br>
+            <span class="text-blue-300 not-italic font-mono text-xs block pt-2">out of the sky.</span>
+          </p>
+          <p class="text-xs font-sans not-italic text-slate-500 uppercase tracking-widest pt-6">
+            But I do not remember / so I do not know / what I’d like to be / where I’d like to go.
+          </p>
+        `
+      },
+      {
+        badge: "Epoch VI: Terrestrial Ecology",
+        title: "blossom everywhere",
+        accentClass: "text-emerald-400",
+        glowClass: "glow-emerald",
+        bgStyle: "radial-gradient(circle, rgba(5, 30, 15, 0.4) 0%, rgba(5, 5, 8, 1) 80%)",
+        particleColor: "rgba(52, 211, 153, ", // Emerald
+        particleSpeed: 0.25,
+        connectionLimit: 130,
+        particleDensity: 90,
+        html: `
+          <p class="font-sans text-xs font-black tracking-[0.3em] uppercase text-slate-500 mb-2">// THE ORGANIC VESSEL</p>
+          <p class="text-xl md:text-2xl font-serif text-slate-300 italic leading-relaxed">
+            I know<br>
+            that I became each rock and tree<br>
+            and bird flying<br>
+            <span class="text-emerald-400 font-bold tracking-wide glow-emerald">gossamer across the heavens,</span><br>
+            and life<br>
+            of every form am I<br>
+            and I blossom<br>
+            <span class="text-emerald-300 not-italic uppercase tracking-widest text-xs block pt-2">everywhere.</span>
+          </p>
+          <p class="text-xs font-sans not-italic text-slate-500 uppercase tracking-widest pt-6">
+            But I do not remember / so I do not know / what I’d like to be / where I’d like to go.
+          </p>
+        `
+      },
+      {
+        badge: "Epoch VII: Infinite Galactic Cosmos",
+        title: "a billion galaxies",
+        accentClass: "text-white",
+        glowClass: "glow-white",
+        bgStyle: "radial-gradient(circle, rgba(15, 10, 30, 0.5) 0%, rgba(5, 5, 8, 1) 80%)",
+        particleColor: "rgba(255, 255, 255, ", // Pure White
+        particleSpeed: 0.4,
+        connectionLimit: 150,
+        particleDensity: 110,
+        html: `
+          <p class="font-sans text-xs font-black tracking-[0.3em] uppercase text-slate-500 mb-2">// THE INFINITE PERSPECTIVE</p>
+          <p class="text-xl md:text-2xl font-serif text-slate-300 italic leading-relaxed">
+            I am already the earth and all life,<br>
+            and each star,<br>
+            <span class="text-white font-bold tracking-wide glow-white">gossamer across the heavens,</span><br>
+            I shine throughout a billion galaxies<br>
+            and will forever.<br>
+            <span class="text-slate-500 not-italic uppercase tracking-widest text-[10px] block py-4">// WHICH BEGS THE QUESTION</span>
+            <span class="text-2xl md:text-3xl font-cinzel text-cyan-300 not-italic font-black block pt-2 glow-cyan">
+              Why should I remember?<br>
+              Why should I know<br>
+              what I’d like to be<br>
+              or where I’d like to go?
+            </span>
+          </p>
+        `
+      }
+    ];
+
+    let currentStepIndex = 0;
+    let autoplayInterval = null;
+    let isPlaying = false;
+    let mode = 'stepper';
+
+    // --- CANVAS CONFIGURATION & ANIMATION LOOP ---
+    const canvas = document.getElementById('gossamerCanvas');
+    const ctx = canvas.getContext('2d');
+    const ambientGlow = document.getElementById('ambientGlow');
+    
+    let particles = [];
+    let mouse = { x: null, y: null, radius: 150 };
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initParticles();
+    }
+
+    class Particle {
+      constructor(colorStr) {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 0.5;
+        this.baseColor = colorStr;
+        
+        // Velocity mapping based on configuration speeds
+        const speedMultiplier = EPOCHS[currentStepIndex].particleSpeed;
+        this.vx = (Math.random() - 0.5) * speedMultiplier * 4;
+        this.vy = (Math.random() - 0.5) * speedMultiplier * 4;
+        
+        this.opacity = Math.random() * 0.5 + 0.1;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.baseColor + this.opacity + ')';
+        ctx.fill();
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Wall collisions
+        if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
+        if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy;
+
+        // Mouse gravity interaction
+        if (mouse.x !== null && mouse.y !== null) {
+          let dx = mouse.x - this.x;
+          let dy = mouse.y - this.y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < mouse.radius) {
+            const force = (mouse.radius - distance) / mouse.radius;
+            this.x -= dx * force * 0.02;
+            this.y -= dy * force * 0.02;
+          }
+        }
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      const density = EPOCHS[currentStepIndex].particleDensity;
+      const colorStr = EPOCHS[currentStepIndex].particleColor;
+      for (let i = 0; i < density; i++) {
+        particles.push(new Particle(colorStr));
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      const limit = EPOCHS[currentStepIndex].connectionLimit;
+      const baseColor = EPOCHS[currentStepIndex].particleColor;
+
+      // Draw Connection lines (Gossamer threads)
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          let dx = particles[i].x - particles[j].x;
+          let dy = particles[i].y - particles[j].y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < limit) {
+            let opacity = (1 - (distance / limit)) * 0.18;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = baseColor + opacity + ')';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+
+    // Capture Interaction Events
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    window.addEventListener('mouseout', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
+
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        mouse.x = e.touches[0].clientX;
+        mouse.y = e.touches[0].clientY;
+      }
+    });
+
+    window.addEventListener('touchend', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
+
+    window.addEventListener('resize', resizeCanvas);
+
+    // --- PRESENTATION LAYER CONTROLLERS ---
+    function loadStep() {
+      const step = EPOCHS[currentStepIndex];
+      
+      // Load UI Badge & Text Content
+      const badge = document.getElementById('epochBadge');
+      const box = document.getElementById('verseBox');
+      
+      // Trigger subtle fading animations on slide change
+      badge.classList.remove('text-cyan-400', 'text-amber-400', 'text-rose-400', 'text-orange-500', 'text-blue-400', 'text-emerald-400', 'text-white');
+      badge.classList.add(step.accentClass);
+      badge.innerText = step.badge;
+
+      box.innerHTML = `<div class="text-fade">${step.html}</div>`;
+      
+      // Smooth transitional gradient background styling
+      document.body.style.background = step.bgStyle;
+      ambientGlow.style.background = step.bgStyle;
+
+      // Reset particles based on the new configurations
+      initParticles();
+
+      // Check button limits
+      document.getElementById('btnPrev').disabled = (currentStepIndex === 0);
+      document.getElementById('btnNext').disabled = (currentStepIndex === EPOCHS.length - 1);
+
+      // Update interactive progress track dots
+      const dots = document.querySelectorAll('.flex.items-center.gap-3 button');
+      dots.forEach((dot, idx) => {
+        if (idx === currentStepIndex) {
+          dot.className = "w-2.5 h-2.5 rounded-full transition-all duration-300 " + step.accentClass + " " + step.glowClass;
+        } else {
+          dot.className = "w-2 h-2 rounded-full bg-white/20 hover:bg-white/50 transition-all duration-300";
+        }
+      });
+    }
+
+    function prevStep() {
+      if (currentStepIndex > 0) {
+        currentStepIndex--;
+        loadStep();
+      }
+    }
+
+    function nextStep() {
+      if (currentStepIndex < EPOCHS.length - 1) {
+        currentStepIndex++;
+        loadStep();
+      } else if (isPlaying) {
+        // Return to start on loop closure if playing
+        currentStepIndex = 0;
+        loadStep();
+      }
+    }
+
+    function goToStep(index) {
+      currentStepIndex = index;
+      loadStep();
+    }
+
+    function togglePlay() {
+      const playIcon = document.getElementById('playIcon');
+      const playText = document.getElementById('playText');
+      const playBtn = document.getElementById('btnPlay');
+
+      if (isPlaying) {
+        clearInterval(autoplayInterval);
+        isPlaying = false;
+        playText.innerText = "Autoplay";
+        playIcon.innerHTML = `<path d="M8 5v14l11-7z" />`;
+        playBtn.className = "px-6 py-2 border border-cyan-500/30 hover:border-cyan-500/50 bg-cyan-950/20 hover:bg-cyan-950/40 text-[10px] font-mono tracking-widest text-cyan-400 uppercase rounded-full transition-all flex items-center gap-2";
+      } else {
+        isPlaying = true;
+        playText.innerText = "Pause";
+        playIcon.innerHTML = `<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />`;
+        playBtn.className = "px-6 py-2 border border-amber-500/30 hover:border-amber-500/50 bg-amber-950/20 hover:bg-amber-950/40 text-[10px] font-mono tracking-widest text-amber-400 uppercase rounded-full transition-all flex items-center gap-2";
+        
+        autoplayInterval = setInterval(() => {
+          nextStep();
+        }, 11000); // 11-second cycle to comfortably read each stanza
+      }
+    }
+
+    function setMode(newMode) {
+      mode = newMode;
+      const interactiveBtn = document.getElementById('btnInteractive');
+      const scrollBtn = document.getElementById('btnScroll');
+      const stepper = document.getElementById('stepperContainer');
+      const scrollable = document.getElementById('scrollContainer');
+
+      if (mode === 'stepper') {
+        stepper.classList.remove('hidden');
+        scrollable.classList.add('hidden');
+        interactiveBtn.className = "px-3 py-1.5 rounded-md font-black text-white bg-white/10 transition";
+        scrollBtn.className = "px-3 py-1.5 rounded-md font-black text-slate-400 hover:text-white transition";
+        loadStep();
+      } else {
+        stepper.classList.add('hidden');
+        scrollable.classList.remove('hidden');
+        scrollBtn.className = "px-3 py-1.5 rounded-md font-black text-white bg-white/10 transition";
+        interactiveBtn.className = "px-3 py-1.5 rounded-md font-black text-slate-400 hover:text-white transition";
+        
+        // Reset baseline scrolling page values
+        document.body.style.background = "#050508";
+        ambientGlow.style.background = "none";
+      }
+    }
+
+    // --- BOOTSTRAP INITIALIZATION ---
+    window.onload = function() {
+      resizeCanvas();
+      loadStep();
+      animate();
+    };
+  </script>
+
+</body>
+</html>
